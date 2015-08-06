@@ -38,6 +38,9 @@ namespace Fido.Action.Models
                 var UserService = ServiceFactory.CreateService<IUserService>();
                 var UserDtos = UserService.GetPageInSurnameOrder(0, 25); // Magic numbers. Need removal
 
+                // Jamie: The model will be wrapped in json, so the properties need to match what it is expecting. Here is
+                // the reference to use: http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part
+
                 var UsersModel = new UsersModel();
 
                 foreach (var U in UserDtos)
