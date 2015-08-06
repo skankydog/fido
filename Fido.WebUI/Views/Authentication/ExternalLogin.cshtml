@@ -1,0 +1,77 @@
+﻿@using Microsoft.Owin.Security
+@*using Fido.Action.Models*@
+@*model Fido.Action.Models.ExternalLoginModel*@
+
+@{
+    var ExternalProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+
+    var FacebookProvider = ExternalProviders.Where(e => e.Caption == "Facebook").FirstOrDefault();
+    var GoogleProvider = ExternalProviders.Where(e => e.Caption == "Google").FirstOrDefault();
+    var TwitterProvider = ExternalProviders.Where(e => e.Caption == "Twitter").FirstOrDefault();
+    var LinkedInProvider = ExternalProviders.Where(e => e.Caption == "LinkedIn").FirstOrDefault();
+
+    using (Html.BeginForm("ExternalLogin", "Authentication", new { ReturnUrl = Model }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+    
+        <div class="visible-xs skd-socialbuttons">
+            <div class="row">
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-facebook"
+                            name="Provider" value="@FacebookProvider.AuthenticationType">
+                        <span><i class="fa fa-facebook"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-twitter"
+                            name="Provider" value="@TwitterProvider.AuthenticationType">
+                        <span><i class="fa fa-twitter"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-google"
+                            name="Provider" value="@GoogleProvider.AuthenticationType">
+                        <span><i class="fa fa-google-plus"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-linkedin"
+                            name="Provider" value="@LinkedInProvider.AuthenticationType">
+                        <span><i class="fa fa-linkedin"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-xs skd-socialbuttons">
+            <div class="row skd-row-sm-offset-3">
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-facebook"
+                            name="Provider" value="@FacebookProvider.AuthenticationType">
+                        <span><i class="fa fa-facebook"></i>&nbsp;@FacebookProvider.AuthenticationType</span>
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-twitter"
+                            name="Provider" value="@TwitterProvider.AuthenticationType">
+                        <span><i class="fa fa-twitter"></i>&nbsp;@TwitterProvider.AuthenticationType</span>
+                    </button>
+                </div>
+            </div>
+            <span class="skd-spacing"></span>
+            <div class="row skd-row-sm-offset-3">
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-google"
+                            name="Provider" value="@GoogleProvider.AuthenticationType">
+                        <span><i class="fa fa-google-plus"></i>&nbsp;@GoogleProvider.AuthenticationType</span>
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-linkedin"
+                            name="Provider" value="@LinkedInProvider.AuthenticationType">
+                        <span><i class="fa fa-linkedin"></i>&nbsp;@LinkedInProvider.AuthenticationType</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+}

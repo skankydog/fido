@@ -1,0 +1,26 @@
+﻿@model Fido.Action.Models.UsersModel
+
+@{
+    ViewBag.Title = "Users";
+}
+
+@*<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-home"></i> Local</a></li>
+    <li><a href="#tab2" data-toggle="tab"><i class="fa fa-cloud"></i> External</a></li>
+</ul>
+<div class="row skd-spacing"></div>
+<div id="my-tab-content" class="tab-content">
+    <div class="tab-pane fade in active" id="tab1">
+
+    </div>
+    <div class="tab-pane fade" id="tab2">
+
+    </div>
+</div>*@
+
+@foreach(var U in Model.Users)
+{
+    <span>@U.Surname, @U.Firstname</span><hr />
+}
+
+<div class="row skd-spacing"></div>

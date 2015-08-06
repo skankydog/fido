@@ -1,0 +1,87 @@
+﻿@media (min-width: 768px) {
+    .skd-row-sm-offset-3 div:first-child[class*="col-"] {
+        margin-left: 25%;
+    }
+
+    .skd-forgotpassword {
+        text-align: right;
+		margin-top:0;
+        padding-top:7px;
+ 	}
+}
+
+.skd-forgotpassword a:hover, a:focus {
+    text-decoration: none;
+}
+
+.skd-spacing {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    text-align: center;
+	line-height: 300%;
+}
+
+h3 a:hover, a:focus {
+    text-decoration: none;
+}
+
+.skd-socialbuttons button {
+	opacity: 0.9;
+	color: white;
+    text-decoration: none;
+}
+
+.skd-socialbuttons button:hover {
+	color: white;
+    opacity: 1;
+}
+
+.skd-socialbuttons button:focus {
+    color: white;
+	opacity: 1;
+}
+
+.skd-socialbuttons .skd-btn-facebook { background: #3b5998; color: white }
+.skd-socialbuttons .skd-btn-twitter { background: #00aced; color: white }
+.skd-socialbuttons .skd-btn-google { background: #c32f10; color: white }
+.skd-socialbuttons .skd-btn-linkedin { background: #4875B4; color: white }
+
+.skd-login-or {
+	position: relative;
+	font-size: 1.5em;
+	color: #aaa;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.skd-login-or hr {
+	background-color: #cdcdcd;
+	height: 1px;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.skd-login-or span {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: -0.6em;
+	margin-left: -1.5em;
+	background-color: white;
+	width: 3em;
+	text-align: center;
+}
+
+/*.skd-login .input-group.i {
+	width: 2em;
+}
+
+.skd-login .help-block {
+    color: red;
+}*/

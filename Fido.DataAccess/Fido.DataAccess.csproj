@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{23A08897-BF3D-419F-87DE-6624A53DC0DE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fido.DataAccess</RootNamespace>
+    <AssemblyName>Fido.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.0.16006\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\Repositories\ConfigurationRepository.cs" />
+    <Compile Include="Implementation\Repositories\ConfirmationRepository.cs" />
+    <Compile Include="Implementation\Repositories\ExternalCredentialRepository.cs" />
+    <Compile Include="Implementation\Repositories\ProfileImageRepository.cs" />
+    <Compile Include="Pubilc\IDataPrimer.cs" />
+    <Compile Include="Implementation\DataPrimer.cs" />
+    <Compile Include="Implementation\Boot.cs" />
+    <Compile Include="Implementation\GenericRepository.cs" />
+    <Compile Include="Pubilc\IGenericRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IConfigurationRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IConfirmationRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IExternalCredentialRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IProfileImageRespository.cs" />
+    <Compile Include="Pubilc\IRepositories\IProfileImageRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IUserRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IActivityRepository.cs" />
+    <Compile Include="Pubilc\IRepositories\IRoleRepository.cs" />
+    <Compile Include="Pubilc\IUnitOfWork.cs" />
+    <Compile Include="Implementation\Context.cs" />
+    <Compile Include="Pubilc\DataAccessFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Implementation\Repositories\ActivityRepository.cs" />
+    <Compile Include="Implementation\Repositories\UserRepository.cs" />
+    <Compile Include="Implementation\Repositories\RoleRepository.cs" />
+    <Compile Include="Implementation\UnitOfWork.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dataaccess.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fido.Core\Fido.Core.csproj">
+      <Project>{F45BEFD2-0B4E-4FB5-92C2-84F7011B7944}</Project>
+      <Name>Fido.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.DataAccess.Exceptions\Fido.DataAccess.Exceptions.csproj">
+      <Project>{fe8febcd-5d57-4f78-90dd-918e0b8a1166}</Project>
+      <Name>Fido.DataAccess.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.Entities\Fido.Entities.csproj">
+      <Project>{50FD52B8-5489-4FE7-A48F-56AFEAA67D26}</Project>
+      <Name>Fido.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

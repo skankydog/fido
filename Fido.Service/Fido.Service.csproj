@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6955032A-05CC-41E5-AE8B-0A7A6D37F9F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fido.Service</RootNamespace>
+    <AssemblyName>Fido.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\morelinq.1.0.16006\lib\net35\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementation\Mapping\ConfigurationMapping.cs" />
+    <Compile Include="Implementation\Mapping\ConfirmationMapping.cs" />
+    <Compile Include="Implementation\Boot.cs" />
+    <Compile Include="Implementation\Mapping\ExternalCredentialMapping.cs" />
+    <Compile Include="Implementation\Mapping\ProfileImageMapping.cs" />
+    <Compile Include="Implementation\Mapping\ProfileMapping.cs" />
+    <Compile Include="Implementation\Services\ConfirmationService.cs" />
+    <Compile Include="Implementation\Services\ProfileImageService.cs" />
+    <Compile Include="Implementation\Services\AuthenticationService.cs" />
+    <Compile Include="Implementation\Services\ConfigurationService.cs" />
+    <Compile Include="Public\IServices\IConfigurationService.cs" />
+    <Compile Include="Public\IServices\IConfirmationService.cs" />
+    <Compile Include="Public\IServices\IProfileImageService.cs" />
+    <Compile Include="Public\IServices\IAuthenticationService.cs" />
+    <Compile Include="Public\ServiceFactory.cs" />
+    <Compile Include="Public\ICRUDService.cs" />
+    <Compile Include="Public\IServices\IActivityService.cs" />
+    <Compile Include="Public\IServices\IRoleService.cs" />
+    <Compile Include="Public\IServices\IUserService.cs" />
+    <Compile Include="Implementation\CRUDService.cs" />
+    <Compile Include="Implementation\Mapping\ActivityMapping.cs" />
+    <Compile Include="Implementation\Mapping\RoleMapping.cs" />
+    <Compile Include="Implementation\Services\ActivityService.cs" />
+    <Compile Include="Implementation\Services\RoleService.cs" />
+    <Compile Include="Implementation\Mapping\UserMapping.cs" />
+    <Compile Include="Implementation\Services\UserService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fido.Core\Fido.Core.csproj">
+      <Project>{F45BEFD2-0B4E-4FB5-92C2-84F7011B7944}</Project>
+      <Name>Fido.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.DataAccess\Fido.DataAccess.csproj">
+      <Project>{23A08897-BF3D-419F-87DE-6624A53DC0DE}</Project>
+      <Name>Fido.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.Entities\Fido.Entities.csproj">
+      <Project>{50FD52B8-5489-4FE7-A48F-56AFEAA67D26}</Project>
+      <Name>Fido.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.Dtos\Fido.Dtos.csproj">
+      <Project>{2D279D1A-F39B-4866-9CC6-9386C2D40F66}</Project>
+      <Name>Fido.Dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.Service.Exceptions\Fido.Service.Exceptions.csproj">
+      <Project>{369b8259-1382-4fad-b1b9-b7b01d6be103}</Project>
+      <Name>Fido.Service.Exceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
