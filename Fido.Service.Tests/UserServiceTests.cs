@@ -180,8 +180,11 @@ namespace Fido.Service.Tests
                 {
                     Id = UserDTO.Id,
                     About = "<placeholder>",
-                    Firstname = "John",
-                    Surname = "Citizen"
+                    Fullname = new Fullname
+                    {
+                        Firstname = "John",
+                        Surname = "Citizen"
+                    }
                 };
 
             UserService.SetProfile(Profile);

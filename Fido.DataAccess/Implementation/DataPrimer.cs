@@ -58,7 +58,7 @@ namespace Fido.DataAccess.Implementation
             HomerSimpson.ExternalCredentialState = "Active";
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook1", EmailAddress = "homer@gmail.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook2", EmailAddress = "homie@hotmail.com" });
-            HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook3", EmailAddress = "homie@hotmail.com" });
+            HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook3", EmailAddress = "hjs@hotmail.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook3", EmailAddress = "simpsons@skankydog.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "LinkedIn", ProviderKey = "HomerLinkedIn1", EmailAddress = "homer.simpson@skankydog.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Google", ProviderKey = "HomerGoogle1", EmailAddress = "homer.simpson@skankydog.com" });

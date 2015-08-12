@@ -30,7 +30,6 @@ namespace Fido.Action.Implementation
         }
 
         public TRETURN View<TMODEL>(Func<TRETURN> UI)
-            where TMODEL : IModel
         {
             using (new FunctionLogger(Log))
             {
@@ -45,19 +44,16 @@ namespace Fido.Action.Implementation
         }
 
         public TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> SuccessUI)
-            where TMODEL : IModel
         {
             return DoRead<TMODEL>(Id, Page, SuccessUI);
         }
 
         public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> SuccessUI)
-            where TMODEL : IModel
         {
             return DoRead<TMODEL>(Id, null, SuccessUI);
         }
 
         private TRETURN DoRead<TMODEL>(Guid Id, int? Page, Func<TMODEL, TRETURN> SuccessUI)
-            where TMODEL : IModel
         {
             using (new FunctionLogger(Log))
             {
@@ -68,7 +64,7 @@ namespace Fido.Action.Implementation
                 if (RedirectUI != null)
                     return RedirectUI;
 
-                return Processor.ExecuteRead(Id, SuccessUI, Page);
+                return Processor.ExecuteRead(Id, Page, SuccessUI);
             }
         }
 
@@ -77,7 +73,6 @@ namespace Fido.Action.Implementation
             Func<TMODEL, TRETURN> SuccessUI,
             Func<TMODEL, TRETURN> FailureUI,
             Func<TMODEL, TRETURN> InvalidUI)
-                where TMODEL : IModel
         {
             using (new FunctionLogger(Log))
             {
@@ -95,12 +90,11 @@ namespace Fido.Action.Implementation
         public TRETURN Write<TMODEL>(
             TMODEL Model,
             Func<TMODEL, TRETURN> UI)
-                where TMODEL: IModel
         {
             return Write(Model, UI, UI, UI);
         }
 
-        private IHandler<TMODEL> GetHandler<TMODEL>()
+        private IModel<TMODEL> GetHandler<TMODEL>()
         {
             using (new FunctionLogger(Log))
             {
@@ -111,11 +105,11 @@ namespace Fido.Action.Implementation
                 if (HandlerType == null)
                     throw new Exception(string.Format("{0} <T> not found", HandlerPath));
 
-                return (IHandler<TMODEL>)Activator.CreateInstance(HandlerType, FeedbackAPI, AuthenticationAPI, ModelAPI);
+                return (IModel<TMODEL>)Activator.CreateInstance(HandlerType, FeedbackAPI, AuthenticationAPI, ModelAPI);
             }
         }
 
-        private TRETURN Check<TMODEL>(IHandler<TMODEL> Handler)
+        private TRETURN Check<TMODEL>(IModel<TMODEL> Handler)
         {
             if (Handler.RequiresAuthentication)
             {

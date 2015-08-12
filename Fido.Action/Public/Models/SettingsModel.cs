@@ -49,36 +49,26 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var ConfigurationService = ServiceFactory.CreateService<IConfigurationService>();
+                var Settings = UserService.GetSettings(Id);
 
-                var User = UserService.Get(Id, "ExternalCredentials");
-                var Configuration = ConfigurationService.Get();
-
-                return MapToSettings(User, Configuration);
-            }
-        }
-
-        private SettingsModel MapToSettings(Dtos.User User, Dtos.Configuration Configuration)
-        {
-            var Model = new SettingsModel()
+                var Model = new SettingsModel()
                 {
-                    HasLocalCredentials = User.HasLocalCredentials,
-                    LocalCredentialState = User.LocalCredentialState,
-                    EmailAddress = User.EmailAddress,
-                    PasswordChangePolicy = Configuration.PasswordChangePolicy,
-                    DaysUntilPasswordExpires = Configuration.PasswordChangePolicyDays - User.PasswordAgeDays,
-                    
-                    HasExternalCredentials = User.HasExternalCredentials,
-                    ExternalCredentialState = User.ExternalCredentialState,
+                    HasLocalCredentials = Settings.HasLocalCredentials,
+                    LocalCredentialState = Settings.LocalCredentialState,
+                    EmailAddress = Settings.EmailAddress,
+                    PasswordChangePolicy = Settings.PasswordChangePolicy,
+                    DaysUntilPasswordExpires = Settings.PasswordChangePolicyDays - Settings.PasswordAgeDays,
+
+                    HasExternalCredentials = Settings.HasExternalCredentials,
+                    ExternalCredentialState = Settings.ExternalCredentialState,
                     ExternalCredentials = new List<ExternalCredential>()
                 };
 
-            foreach (var Credential in User.ExternalCredentials)
-            {
-                Model.ExternalCredentials.Add(new ExternalCredential { Id = Credential.Id, LoginProvider = Credential.LoginProvider, EmailAddress = Credential.EmailAddress });
-            }
+                foreach (var Credential in Settings.ExternalCredentials)
+                    Model.ExternalCredentials.Add(new ExternalCredential { Id = Credential.Id, LoginProvider = Credential.LoginProvider, EmailAddress = Credential.EmailAddress });
 
-            return Model;
+                return Model;
+            }
         }
     }
 }

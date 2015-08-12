@@ -1,23 +1,16 @@
 ﻿using System;
+using System.Web.Script.Serialization;
 
 namespace Fido.Action.Implementation
 {
-    public abstract class Model<TMODEL> : IHandler<TMODEL>, IModel
-        where TMODEL : IModel
+    public abstract class Model<TMODEL> : IModel<TMODEL>
     {
         protected IFeedbackAPI FeedbackAPI;
         protected IAuthenticationAPI AuthenticationAPI;
         protected IModelAPI ModelAPI;
 
+        [ScriptIgnore]
         public bool RequiresAuthentication { get; private set; }
-
-        #region Data
-        public Guid Id { get; set; } // Hidden
-        public DateTime CreatedUtc { get; set; } // Hidden
-        public bool IsNew { get; set; } // Hidden
-        public byte[] RowVersion { get; set; } // Hidden
-        public string FormState { get; set; } // Hidden
-        #endregion
 
         public Model() { }
         internal Model(

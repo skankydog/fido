@@ -2,12 +2,14 @@
 
 namespace Fido.Action.Implementation
 {
-    public interface IModel
+    internal interface IModel<TMODEL>
     {
-        Guid Id { get; set; } // Hidden
-        DateTime CreatedUtc { get; set; } // Hidden
-        bool IsNew { get; set; } // Hidden
-        byte[] RowVersion { get; set; } // Hidden
-        string FormState { get; set; } // Hidden
+        bool RequiresAuthentication { get; }
+
+        TMODEL Read(Guid Id);
+        TMODEL Read(Guid Id, int Page);
+        bool Write(TMODEL Model);
+        void OnInvalidWrite(TMODEL Model);
+        void OnFailedWrite(TMODEL Model);
     }
 }

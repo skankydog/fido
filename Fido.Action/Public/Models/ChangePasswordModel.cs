@@ -41,8 +41,15 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var UserService = ServiceFactory.CreateService<IUserService>();
+                var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
+                if (!AuthenticationService.PasswordPassesValidation(Model.NewPassword))
+                {
+                    ModelAPI.PropertyError("Password", "The password does not meet the minimum validation requirements");
+                    return false;
+                }
+
+                var UserService = ServiceFactory.CreateService<IUserService>();
                 var User = UserService.ChangeLocalPassword(AuthenticationAPI.AuthenticatedId, Model.OldPassword, Model.NewPassword);
                 AuthenticationAPI.LoggedInCredentialState = User.LocalCredentialState;
 

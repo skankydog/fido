@@ -7,23 +7,21 @@ namespace Fido.Dtos
 {
     public class User : Dto
     {
-        public string EmailAddress { get; set; } // Read only
+        public string EmailAddress { get; set; }
         public Fullname Fullname { get; set; }
         public string About { get; set; }
 
         #region Local Credentials
-        public bool HasLocalCredentials { get; set; } // Read only
-        public string LocalCredentialState { get; set; } // Read only
-        public DateTime? EmailAddressLastChangeUtc { get; set; } // Read only
-        public DateTime? PasswordLastChangeUtc { get; set; } // Read only
-
-        public int PasswordAgeDays { get { return PasswordLastChangeUtc != null ? 0 : (DateTime.UtcNow - CreatedUtc).Days; } }
+        public bool HasLocalCredentials { get; set; }
+        public string LocalCredentialState { get; set; }
+        public DateTime? EmailAddressLastChangeUtc { get; set; }
+        public DateTime? PasswordLastChangeUtc { get; set; }
         #endregion
 
         #region External Credentials
-        public string ExternalCredentialState { get; set; } // Read only
-        public bool HasExternalCredentials { get; set; } // Read only
-        public IList<ExternalCredential> ExternalCredentials { get; set; } // Read only
+        public bool HasExternalCredentials { get; set; }
+        public string ExternalCredentialState { get; set; }
+        public IList<ExternalCredential> ExternalCredentials { get; set; }
         #endregion
     }
 }

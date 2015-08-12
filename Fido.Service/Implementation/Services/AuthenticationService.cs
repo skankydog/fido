@@ -178,7 +178,7 @@ namespace Fido.Service.Implementation
                 if (EmailAddressPassesValidation(EmailAddress) == false)
                     throw new EmailAddressValidationException(EmailAddress);
 
-                if (PasswordAdvisor.WeakOrInvalid(Password))
+                if (PasswordPassesValidation(Password) == false)
                     throw new PasswordValidationException();
 
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
@@ -192,8 +192,8 @@ namespace Fido.Service.Implementation
                     };
 
                     Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Register Local Account", UserEntity.Id, EmailAddress);
-
                     UserEntity.CurrentLocalCredentialState.InitiateRegistration(EmailAddress, Password, Firstname, Surname);
+
                     UserRepository.Insert(UserEntity);
                     UnitOfWork.Commit();
 
@@ -290,11 +290,13 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(e => e.EmailAddress == EmailAddress);
 
+                    if (UserEntity == null)
+                        throw new Exception(string.Format("User with an email address of {0} not found", EmailAddress));
+
                     Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Forgotten Password", UserEntity.Id, UserEntity.EmailAddress);
-
                     UserEntity.CurrentLocalCredentialState.InitiateForgottenPassword();
-                    UnitOfWork.Commit();
 
+                    UnitOfWork.Commit();
                     return ConfirmationId;
                 }
             }

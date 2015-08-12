@@ -15,6 +15,7 @@ namespace Fido.Service.Implementation
         private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>();
 
         #region Pages
+        // NOTE: Really only thinking about this as an idea
         public IList<User> GetPageInSurnameOrder(int PageNo, int PageSize)
         {
             using (new FunctionLogger(Log))
@@ -32,7 +33,7 @@ namespace Fido.Service.Implementation
 
         // ... more as needed ...
 
-        #endregion
+        #endregion // only really thinking about this
 
         #region Change Email Address
         public Guid InitiateChangeEmailAddress(Guid UserId, string NewEmailAddress)
@@ -56,10 +57,9 @@ namespace Fido.Service.Implementation
                         throw new ServiceException("Failed to retrieve user details");
 
                     Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Change Email Address", UserId, NewEmailAddress);
-
                     UserEntity.CurrentLocalCredentialState.InitiateChangeEmailAddress();
-                    UnitOfWork.Commit();
 
+                    UnitOfWork.Commit();
                     return ConfirmationId;
                 }
             }
@@ -80,6 +80,7 @@ namespace Fido.Service.Implementation
                     var UserEntity = UserRepository.Get(Confirmation.UserId);
 
                     UserEntity.CurrentLocalCredentialState.CompleteChangeEmailAddress(Confirmation.EmailAddress);
+
                     UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
@@ -201,6 +202,26 @@ namespace Fido.Service.Implementation
                     }
 
                     UnitOfWork.Commit();
+                }
+            }
+        }
+        #endregion
+
+        #region Settings
+        public Settings GetSettings(Guid UserId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+
+                    var ConfigurationRepository = DataAccessFactory.CreateRepository<IConfigurationRepository>(UnitOfWork);
+                    var ConfigurationEntity = ConfigurationRepository.Get(e => e.Id != null);
+
+                    Settings Settings = AutoMapper.Mapper.Map<Entities.User, Settings>(UserEntity);
+                    return AutoMapper.Mapper.Map<Entities.Configuration, Settings>(ConfigurationEntity, Settings);
                 }
             }
         }

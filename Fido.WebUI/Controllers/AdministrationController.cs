@@ -15,10 +15,6 @@ namespace Fido.WebUI.Controllers
         #region Users
         public ActionResult Users(int Page = 0)
         {
-            //return Dispatcher.Read<UsersModel>(
-            //    Id: AuthenticatedId,
-            //    Page: Page,
-            //    SuccessUI: m => View(m));
             return Dispatcher.Read<UsersModel>(
                 Id: AuthenticatedId,
                 Page: Page,

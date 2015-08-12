@@ -73,15 +73,15 @@ namespace Fido.Action.Models
                 var ConfirmationId = AuthenticationService.InitiateRegistration(Model.EmailAddress, Model.Password, Model.Firstname, Model.Surname);
 
                 //PresentIL.SendConfirmation(Yikes.CompleteForgottenLocalPassword, UserInterface.UserId, ConfirmationId);
-
                 //if (UserInterface.Mode != Mode.Production)
                 //{
                 //    var ConfirmationLink = Url.Action("CompleteForgottenLocalPassword") + "?" + ConfirmationId.ToString();
                 //    UserInterface.DisplayInfo("For development use only, click the below link to simulate response to the email.",
                 //        new FlashLinks { Links = new List<string> { ConfirmationLink } });
                 //}
-
+                //else
                 FeedbackAPI.DisplaySuccess("An email will shortly be sent to your nominated email address for confirmation - once confirmed, you will be able to login.");
+
                 return true;
             }
         }

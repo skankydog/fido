@@ -31,18 +31,15 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var UserService = ServiceFactory.CreateService<IUserService>();
                 var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-                var User = UserService.GetByEmailAddress(Model.EmailAddress);
-
-                if (User == null || User.LocalCredentialState != "Active")
+                if (!AuthenticationService.EmailAddressPassesValidation(Model.EmailAddress))
                 {
-                    ModelAPI.ModelError("The user account either does not exist or the email address is not yet confirmed.");
+                    ModelAPI.PropertyError("EmailAddress", "The email address is not of a valid format");
                     return false;
                 }
 
-                var ConfirmationId = AuthenticationService.InitiateForgottenPassword(User.EmailAddress);
+                var ConfirmationId = AuthenticationService.InitiateForgottenPassword(Model.EmailAddress);
 
                 //if (System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Development" ||
                 //    System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Test")
@@ -52,8 +49,8 @@ namespace Fido.Action.Models
                 //        new FlashLinks { Links = new List<string> { ConfirmationLink } });
                 //}
                 //else
-
                 FeedbackAPI.DisplaySuccess("An email will shortly be sent to your nominated email address for confirmation - follow the link within to reset your password");
+
                 return true;
             }
         }

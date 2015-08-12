@@ -44,9 +44,7 @@ namespace Fido.Action.Models
                 var UsersModel = new UsersModel();
 
                 foreach (var U in UserDtos)
-                {
                     UsersModel.Users.Add(new VMUser { Id = U.Id, Firstname = U.Fullname.Firstname, Surname = U.Fullname.Surname });
-                }
 
                 return UsersModel;
             }

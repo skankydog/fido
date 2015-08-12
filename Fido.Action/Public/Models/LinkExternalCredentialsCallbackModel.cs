@@ -6,8 +6,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class LinkExternalCredentialsCallbackModel : Model<LinkExternalCredentialsCallbackModel
-        >
+    public class LinkExternalCredentialsCallbackModel : Model<LinkExternalCredentialsCallbackModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

@@ -4,28 +4,27 @@ using Fido.Core;
 namespace Fido.Action.Implementation
 {
     internal class Processor<TMODEL, TRETURN>
-        where TMODEL : IModel
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         protected IFeedbackAPI FeedbackAPI { get; set; }
         protected IAuthenticationAPI AuthenticationAPI { get; set; }
         protected IModelAPI ModelAPI { get; set; }
-        IHandler<TMODEL> ModelHandler { get; set; }
+        IModel<TMODEL> ModelLogic { get; set; }
 
         internal Processor(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
-            IHandler<TMODEL> ModelHandler)
+            IModel<TMODEL> ModelLogic)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
-            this.ModelHandler = ModelHandler;
+            this.ModelLogic = ModelLogic;
         }
 
-        public TRETURN ExecuteRead(Guid Id, Func<TMODEL, TRETURN> SuccessUI, int? Page)
+        public TRETURN ExecuteRead(Guid Id, int? Page, Func<TMODEL, TRETURN> SuccessUI)
         {
             using (new FunctionLogger(Log))
             {
@@ -35,11 +34,11 @@ namespace Fido.Action.Implementation
                 {
                     if (Page == null)
                     {
-                        Model = ModelHandler.Read(Id);
+                        Model = ModelLogic.Read(Id);
                     }
                     else
                     {
-                        Model = ModelHandler.Read(Id, (int)Page);
+                        Model = ModelLogic.Read(Id, (int)Page);
                     }
                 }
                 catch (Exception Ex)
@@ -60,10 +59,10 @@ namespace Fido.Action.Implementation
                 {
                     try
                     {
-                        if (ModelHandler.Write(Model) == true)
+                        if (ModelLogic.Write(Model) == true)
                         {
                             Log.Info("Success returned from OnValidModel");
-                            Model.FormState = "Success";
+                            if (Model is IModelUI) ((IModelUI)Model).InputState = "Success";
                             return SuccessUI(Model);
                         }
                     }
@@ -73,13 +72,13 @@ namespace Fido.Action.Implementation
                         Log.Info("Exception from OnValidModel: " + Ex.ToString());
                     }
 
-                    ModelHandler.OnFailedWrite(Model);
-                    Model.FormState = "Failure";
+                    ModelLogic.OnFailedWrite(Model);
+                    if (Model is IModelUI) ((IModelUI)Model).InputState = "Failure";
                     return FailureUI(Model);
                 }
 
-                ModelHandler.OnInvalidWrite(Model);
-                Model.FormState = "Invalid";
+                ModelLogic.OnInvalidWrite(Model);
+                if (Model is IModelUI) ((IModelUI)Model).InputState = "Invalid";
                 return InvalidUI(Model);
             }
         }

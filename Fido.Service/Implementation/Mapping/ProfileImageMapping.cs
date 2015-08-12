@@ -27,7 +27,9 @@ namespace Fido.Service.Mapping
       //              .ForMember(Dest => Dest., Options => Options.Ignore()
       //              .ForMember(Dest => Dest, Options => Options.Ignore());
 
-                Mapper.CreateMap<Dtos.ProfileImage, Entities.ProfileImage>();
+                Mapper.CreateMap<Dtos.ProfileImage, Entities.ProfileImage>()
+                    .ForMember(Dest => Dest.User, Options => Options.Ignore())    // not sure this is right?
+                    .ForMember(Dest => Dest.UserId, Options => Options.Ignore()); // not sure this is right?
             }
         }
     }

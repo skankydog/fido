@@ -60,6 +60,7 @@ namespace Fido.Action.Models
                     AuthenticationAPI.SignOut();
                     AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
                     AuthenticationAPI.LoggedInCredentialState = User.LocalCredentialState;
+                    FeedbackAPI.DisplaySuccess("Your local credentials have been confirmed.");
 
                     return true;
                 }

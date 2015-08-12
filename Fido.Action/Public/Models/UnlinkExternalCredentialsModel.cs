@@ -6,11 +6,16 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class UnlinkExternalCredentialsModel : Model<UnlinkExternalCredentialsModel>
+    public class UnlinkExternalCredentialsModel : Model<UnlinkExternalCredentialsModel>, IModelCRUD
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
+        public Guid Id { get; set; }
+        public DateTime CreatedUtc { get; set; }
+        public bool IsNew { get; set; }
+        public byte[] RowVersion { get; set; }
+        public string InputState { get; set; }
         #endregion
 
         public UnlinkExternalCredentialsModel() { } // pure model

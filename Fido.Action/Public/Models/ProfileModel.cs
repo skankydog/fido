@@ -7,11 +7,17 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class ProfileModel : Model<ProfileModel>
+    public class ProfileModel : Model<ProfileModel>, IModelCRUD
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
+        public Guid Id { get; set; }
+        public DateTime CreatedUtc { get; set; }
+        public bool IsNew { get; set; }
+        public byte[] RowVersion { get; set; }
+        public string InputState { get; set; }
+
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; } // Read only
 
@@ -59,9 +65,9 @@ namespace Fido.Action.Models
                     CreatedUtc = ProfileDto.CreatedUtc,
                     IsNew = ProfileDto.IsNew,
                     RowVersion = ProfileDto.RowVersion,
-                    Firstname = ProfileDto.Firstname,
-                    Surname = ProfileDto.Surname,
-                    DisplayName = ProfileDto.DisplayName,
+                    Firstname = ProfileDto.Fullname.Firstname,
+                    Surname = ProfileDto.Fullname.Surname,
+                    DisplayName = ProfileDto.Fullname.DisplayName,
                     About = ProfileDto.About,
                     RegisteredDays = int.Parse(Math.Truncate((DateTime.UtcNow - ProfileDto.CreatedUtc).TotalDays).ToString())
                 };
@@ -79,10 +85,14 @@ namespace Fido.Action.Models
                     CreatedUtc = Model.CreatedUtc,
                     IsNew = Model.IsNew,
                     About = Model.About,
-                    Firstname = Model.Firstname,
-                    Surname = Model.Surname,
                     RowVersion = Model.RowVersion,
-                    Image = Model.Image
+                    Image = Model.Image,
+                    Fullname = new Dtos.Fullname
+                    {
+                        Firstname = Model.Firstname,
+                        Surname = Model.Surname,
+                        DisplayName = Model.DisplayName
+                    }
                 };
 
                 UserService.SetProfile(ProfileDto);

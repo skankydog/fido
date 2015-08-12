@@ -7,13 +7,11 @@ namespace Fido.Dtos
 {
     public class Profile : Dto
     {
-        public string EmailAddress { get; set; } // Read only
-        public string Firstname { get; set; }
-        public string Surname { get; set; }
-        public string DisplayName { get; set; } // Read only
+        public string EmailAddress { get; set; }
+        public Fullname Fullname { get; set; }
         public string About { get; set; }
-        public byte[] Image { get; set; } // Write only
+        public byte[] Image { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int RegisteredDays { get; set; } // Read only
+        public int RegisteredDays { get; set; }
     }
 }

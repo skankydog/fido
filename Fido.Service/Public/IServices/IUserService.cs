@@ -23,6 +23,7 @@ namespace Fido.Service
 
         Profile GetProfile(Guid UserId);
         void SetProfile(Profile Profile);
+        Settings GetSettings(Guid UserId);
 
         IList<Role> GetRoles(Guid UserId);
         void SetRoles(Guid UserId, IList<Role> Roles);

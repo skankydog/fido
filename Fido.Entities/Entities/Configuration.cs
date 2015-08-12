@@ -8,5 +8,6 @@ namespace Fido.Entities
     public class Configuration : Entity
     {
         public int PasswordChangePolicyDays { get; set; }
+        public bool PasswordChangePolicy { get { return PasswordChangePolicyDays > 0; } }
     }
 }
