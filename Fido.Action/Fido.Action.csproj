@@ -71,7 +71,6 @@
     <Compile Include="Implementation\Dispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public\APIs\IAuthenticationAPI.cs" />
-    <Compile Include="Implementation\__IModelData.cs" />
     <Compile Include="Public\APIs\IModelAPI.cs" />
     <Compile Include="Public\APIs\IFeedbackAPI.cs" />
   </ItemGroup>
