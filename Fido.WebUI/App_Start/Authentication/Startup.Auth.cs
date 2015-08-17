@@ -9,7 +9,6 @@ using Microsoft.Owin.Security.Facebook;
 using Owin.Security.Providers.LinkedIn;
 using Owin;
 using System;
-using Fido.WebUI.Models;
 
 namespace Fido.WebUI
 {
@@ -33,7 +32,7 @@ namespace Fido.WebUI
                     LoginPath = new PathString("/Authentication/LocalLogin"), // Should put this in the web.config
                     Provider = new CookieAuthenticationProvider
                     {
-                        OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<OOTBUserManager, OOTBUser>(
+                        OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
                             validateInterval: TimeSpan.FromMinutes(30),
                             regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                     }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Fido.WebUI.Models
+namespace Fido.WebUI
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {

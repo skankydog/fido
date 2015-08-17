@@ -19,5 +19,6 @@ namespace Fido.Action
         TRETURN Write<TMODEL>(
             TMODEL Model,
             Func<TMODEL, TRETURN> UI);
+        TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> UI);
     }
 }

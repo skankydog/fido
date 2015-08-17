@@ -7,7 +7,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class UsersModel : Model<UsersModel>
+    public class UserModel : Model<UserModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -22,8 +22,8 @@ namespace Fido.Action.Models
         }
         #endregion
 
-        public UsersModel() { } // pure model
-        public UsersModel(
+        public UserModel() { } // pure model
+        public UserModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,
             IModelAPI ModelAPI)
@@ -31,25 +31,24 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
-        public override UsersModel Read(Guid Id, int Page)
+        public override UserModel Read(Guid Id, int Page)
         {
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var UserDtos = UserService.GetAll();
 
-                // Jamie: The model will be wrapped in json, so the properties need to match what it is expecting. Here is
-                // the reference to use: http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part
-
-                foreach (var UserDto in UserDtos)
-                    Users.Add(new User
-                        { 
-                            Id = UserDto.Id, 
-                            Firstname = UserDto.Fullname.Firstname, 
-                            Surname = UserDto.Fullname.Surname 
-                        });
+                // TO DO
 
                 return this;
+            }
+        }
+
+        public override bool Write(UserModel Model)
+        {
+            using (new FunctionLogger(Log))
+            {
+                // TO DO
+                return base.Write(Model); // TO DO
             }
         }
     }

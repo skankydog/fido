@@ -14,7 +14,7 @@ using Fido.WebUI.Filters;
 using Fido.WebUI.Flash;
 using Fido.Action;
 
-namespace Fido.WebUI.Controllers
+namespace Fido.WebUI.Common
 {
     [AntiForgeryTokenFilter]
     public abstract class BaseController : Controller, IFeedbackAPI, IAuthenticationAPI, IModelAPI

@@ -48,7 +48,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public Guid Save(TDTO Dto, string IncludeProperties = "")
+        public TDTO Save(TDTO Dto, string IncludeProperties = "")
         {
             using (new FunctionLogger(Log))
             {
@@ -84,12 +84,12 @@ namespace Fido.Service.Implementation
                     }
 
                     UnitOfWork.Commit();
-                    return Dto.Id;
+                    return Dto;
                 }
             }
         }
 
-        public virtual void Delete(Guid Id)
+        public virtual bool Delete(Guid Id)
         {
             using (new FunctionLogger(Log))
             {
@@ -99,6 +99,7 @@ namespace Fido.Service.Implementation
                     Repository.Delete(Id);
 
                     UnitOfWork.Commit();
+                    return true;
                 }
             }
         }

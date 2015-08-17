@@ -59,18 +59,17 @@ namespace Fido.Action.Models
                 var UserService = ServiceFactory.CreateService<IUserService>();
                 var ProfileDto = UserService.GetProfile(Id);
 
-                return new ProfileModel()
-                {
-                    Id = ProfileDto.Id,
-                    CreatedUtc = ProfileDto.CreatedUtc,
-                    IsNew = ProfileDto.IsNew,
-                    RowVersion = ProfileDto.RowVersion,
-                    Firstname = ProfileDto.Fullname.Firstname,
-                    Surname = ProfileDto.Fullname.Surname,
-                    DisplayName = ProfileDto.Fullname.DisplayName,
-                    About = ProfileDto.About,
-                    RegisteredDays = int.Parse(Math.Truncate((DateTime.UtcNow - ProfileDto.CreatedUtc).TotalDays).ToString())
-                };
+                Id = ProfileDto.Id;
+                CreatedUtc = ProfileDto.CreatedUtc;
+                IsNew = ProfileDto.IsNew;
+                RowVersion = ProfileDto.RowVersion;
+                Firstname = ProfileDto.Fullname.Firstname;
+                Surname = ProfileDto.Fullname.Surname;
+                DisplayName = ProfileDto.Fullname.DisplayName;
+                About = ProfileDto.About;
+                RegisteredDays = int.Parse(Math.Truncate((DateTime.UtcNow - ProfileDto.CreatedUtc).TotalDays).ToString());
+
+                return this;
             }
         }
 

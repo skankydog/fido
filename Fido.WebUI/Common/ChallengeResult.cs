@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 
-namespace Fido.WebUI.Controllers
+namespace Fido.WebUI.Common
 {
     internal class ChallengeResult : HttpUnauthorizedResult
     {

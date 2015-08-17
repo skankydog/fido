@@ -164,20 +164,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\Authentication\MyUserManager.cs" />
-    <Compile Include="App_Start\Authentication\MyUserStore.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\Authentication\EmailService.cs" />
+    <Compile Include="App_Start\Authentication\Services\EmailService.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\Authentication\SmsService.cs" />
-    <Compile Include="App_Start\Authentication\OOTBUserManager.cs" />
+    <Compile Include="App_Start\Authentication\Services\SmsService.cs" />
+    <Compile Include="App_Start\Authentication\ApplicationUserManager.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Authentication\Startup.Auth.cs" />
+    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Binders\CustomByteArrayModelBinder.cs" />
-    <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
-    <Compile Include="Controllers\ChallengeResult.cs" />
-    <Compile Include="Controllers\_BaseController.cs" />
+    <Compile Include="Common\ChallengeResult.cs" />
+    <Compile Include="Common\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
@@ -191,9 +190,8 @@
     <Compile Include="Flash\Messages\FlashImage.cs" />
     <Compile Include="Flash\Messages\FlashLinks.cs" />
     <Compile Include="Flash\Messages\FlashMessage.cs" />
-    <Compile Include="Models\MyUser.cs" />
-    <Compile Include="Models\OOTBUser.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="App_Start\Authentication\ApplicationUser.cs" />
+    <Compile Include="App_Start\Authentication\ApplicationDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -261,6 +259,7 @@
     <Content Include="Content\less\variables.less" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Administration\Views\web.config" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
@@ -338,6 +337,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Administration\Views\Shared\" />
+    <Folder Include="Areas\Administration\Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

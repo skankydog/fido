@@ -9,6 +9,7 @@ namespace Fido.Action.Implementation
         TMODEL Read(Guid Id);
         TMODEL Read(Guid Id, int Page);
         bool Write(TMODEL Model);
+        bool Delete(Guid Id);
         void OnInvalidWrite(TMODEL Model);
         void OnFailedWrite(TMODEL Model);
     }

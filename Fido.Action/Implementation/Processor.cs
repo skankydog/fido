@@ -10,18 +10,18 @@ namespace Fido.Action.Implementation
         protected IFeedbackAPI FeedbackAPI { get; set; }
         protected IAuthenticationAPI AuthenticationAPI { get; set; }
         protected IModelAPI ModelAPI { get; set; }
-        IModel<TMODEL> ModelLogic { get; set; }
+        IModel<TMODEL> ModelImplementation { get; set; }
 
         internal Processor(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
-            IModel<TMODEL> ModelLogic)
+            IModel<TMODEL> Model)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
-            this.ModelLogic = ModelLogic;
+            this.ModelImplementation = Model;
         }
 
         public TRETURN ExecuteRead(Guid Id, int? Page, Func<TMODEL, TRETURN> SuccessUI)
@@ -34,11 +34,11 @@ namespace Fido.Action.Implementation
                 {
                     if (Page == null)
                     {
-                        Model = ModelLogic.Read(Id);
+                        Model = ModelImplementation.Read(Id);
                     }
                     else
                     {
-                        Model = ModelLogic.Read(Id, (int)Page);
+                        Model = ModelImplementation.Read(Id, (int)Page);
                     }
                 }
                 catch (Exception Ex)
@@ -59,7 +59,7 @@ namespace Fido.Action.Implementation
                 {
                     try
                     {
-                        if (ModelLogic.Write(Model) == true)
+                        if (ModelImplementation.Write(Model) == true)
                         {
                             Log.Info("Success returned from OnValidModel");
                             if (Model is IModelUI) ((IModelUI)Model).InputState = "Success";
@@ -72,14 +72,23 @@ namespace Fido.Action.Implementation
                         Log.Info("Exception from OnValidModel: " + Ex.ToString());
                     }
 
-                    ModelLogic.OnFailedWrite(Model);
+                    ModelImplementation.OnFailedWrite(Model);
                     if (Model is IModelUI) ((IModelUI)Model).InputState = "Failure";
                     return FailureUI(Model);
                 }
 
-                ModelLogic.OnInvalidWrite(Model);
+                ModelImplementation.OnInvalidWrite(Model);
                 if (Model is IModelUI) ((IModelUI)Model).InputState = "Invalid";
                 return InvalidUI(Model);
+            }
+        }
+
+        public TRETURN ExecuteDelete(Guid Id, Func<TRETURN> UI)
+        {
+            using (new FunctionLogger(Log))
+            {
+                ModelImplementation.Delete(Id);
+                return UI();
             }
         }
     }

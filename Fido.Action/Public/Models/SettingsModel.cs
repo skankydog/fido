@@ -12,20 +12,23 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        // Local Credentials...
-        public bool HasLocalCredentials { get; set; } // Read only
-        [Display(Name = "email address")]
-        public string EmailAddress { get; set; } // Read only
-        [Display(Name = "local credential state")]
-        public string LocalCredentialState { get; set; } // Read only   
-        public int DaysUntilPasswordExpires { get; set; } // Read only
-        public bool PasswordChangePolicy { get; set; } // Read only
+        public bool HasLocalCredentials { get; set; }
 
-        // External Credentials...
-        public bool HasExternalCredentials { get; set; } // Read only
+        [Display(Name = "email address")]
+        public string EmailAddress { get; set; }
+        
+        [Display(Name = "local credential state")]
+        public string LocalCredentialState { get; set; }   
+        
+        public int DaysUntilPasswordExpires { get; set; }
+        public bool PasswordChangePolicy { get; set; }
+
+        public bool HasExternalCredentials { get; set; }
+        
         [Display(Name = "external credential state")]
-        public string ExternalCredentialState { get; set; } // Read only
-        public IList<ExternalCredential> ExternalCredentials { get; set; } // Read only
+        public string ExternalCredentialState { get; set; }
+        
+        public IList<ExternalCredential> ExternalCredentials { get; set; }
 
         public class ExternalCredential
         {
@@ -49,25 +52,26 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var Settings = UserService.GetSettings(Id);
+                var SettingsDto = UserService.GetSettings(Id);
 
-                var Model = new SettingsModel()
-                {
-                    HasLocalCredentials = Settings.HasLocalCredentials,
-                    LocalCredentialState = Settings.LocalCredentialState,
-                    EmailAddress = Settings.EmailAddress,
-                    PasswordChangePolicy = Settings.PasswordChangePolicy,
-                    DaysUntilPasswordExpires = Settings.PasswordChangePolicyDays - Settings.PasswordAgeDays,
+                HasLocalCredentials = SettingsDto.HasLocalCredentials;
+                LocalCredentialState = SettingsDto.LocalCredentialState;
+                EmailAddress = SettingsDto.EmailAddress;
+                PasswordChangePolicy = SettingsDto.PasswordChangePolicy;
+                DaysUntilPasswordExpires = SettingsDto.PasswordChangePolicyDays - SettingsDto.PasswordAgeDays;
+                HasExternalCredentials = SettingsDto.HasExternalCredentials;
+                ExternalCredentialState = SettingsDto.ExternalCredentialState;
+                ExternalCredentials = new List<ExternalCredential>();
 
-                    HasExternalCredentials = Settings.HasExternalCredentials,
-                    ExternalCredentialState = Settings.ExternalCredentialState,
-                    ExternalCredentials = new List<ExternalCredential>()
-                };
+                foreach (var ExternalCredential in SettingsDto.ExternalCredentials)
+                    ExternalCredentials.Add(new ExternalCredential 
+                        { 
+                            Id = ExternalCredential.Id, 
+                            LoginProvider = ExternalCredential.LoginProvider, 
+                            EmailAddress = ExternalCredential.EmailAddress 
+                        });
 
-                foreach (var Credential in Settings.ExternalCredentials)
-                    Model.ExternalCredentials.Add(new ExternalCredential { Id = Credential.Id, LoginProvider = Credential.LoginProvider, EmailAddress = Credential.EmailAddress });
-
-                return Model;
+                return this;
             }
         }
     }

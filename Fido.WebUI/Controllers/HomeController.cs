@@ -7,6 +7,7 @@ using Fido.Core;
 using Fido.Action;
 using Fido.WebUI.Extensions;
 using Fido.WebUI.Flash.Messages;
+using Fido.WebUI.Common;
 
 namespace Fido.WebUI.Controllers
 {

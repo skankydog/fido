@@ -31,10 +31,9 @@ namespace Fido.Action.Models
                 var UserImageService = ServiceFactory.CreateService<IProfileImageService>();
                 var UserImageDto = UserImageService.Download(Id);
 
-                return new ProfileImageModel()
-                {
-                    Image = UserImageDto.Image
-                };
+                Image = UserImageDto.Image;
+
+                return this;
             }
         }
     }

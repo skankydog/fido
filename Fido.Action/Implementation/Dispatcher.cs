@@ -33,8 +33,8 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var ModelHandler = GetHandler<TMODEL>();
-                var RedirectUI = Check(ModelHandler);
+                var ModelInstance = GetModel<TMODEL>();
+                var RedirectUI = CheckPermission(ModelInstance);
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -57,9 +57,9 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var ModelHandler = GetHandler<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelHandler);
-                var RedirectUI = Check(ModelHandler);
+                var ModelInstance = GetModel<TMODEL>();
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance);
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -76,9 +76,9 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var ModelHandler = GetHandler<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelHandler);
-                var RedirectUI = Check(ModelHandler);
+                var ModelInstance = GetModel<TMODEL>();
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance);
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -94,7 +94,22 @@ namespace Fido.Action.Implementation
             return Write(Model, UI, UI, UI);
         }
 
-        private IModel<TMODEL> GetHandler<TMODEL>()
+        public TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> UI)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var ModelInstance = GetModel<TMODEL>();
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance);
+
+                if (RedirectUI != null)
+                    return RedirectUI;
+
+                return Processor.ExecuteDelete(Id, UI);
+            }
+        }
+
+        private IModel<TMODEL> GetModel<TMODEL>()
         {
             using (new FunctionLogger(Log))
             {
@@ -109,9 +124,9 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private TRETURN Check<TMODEL>(IModel<TMODEL> Handler)
+        private TRETURN CheckPermission<TMODEL>(IModel<TMODEL> Model)
         {
-            if (Handler.RequiresAuthentication)
+            if (Model.RequiresAuthentication)
             {
                 if (!AuthenticationAPI.Authenticated)
                     return AuthenticateUI();

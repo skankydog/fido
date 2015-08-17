@@ -11,7 +11,7 @@ namespace Fido.Service
     {
         TDTO Get(Guid Id, string IncludeProperties = "");
         IList<TDTO> GetAll();
-        Guid Save(TDTO DTO, string IncludeProperties = "");
-        void Delete(Guid Id);
+        TDTO Save(TDTO DTO, string IncludeProperties = "");
+        bool Delete(Guid Id);
     }
 }
