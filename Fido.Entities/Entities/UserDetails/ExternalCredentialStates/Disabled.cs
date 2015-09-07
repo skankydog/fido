@@ -10,7 +10,8 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
         #region Properties & Constructor
         private User Parent;
 
-        public string StateName { get { return "Disabled"; } }
+        public const string Name_ = "Disabled";
+        public string Name { get { return Name_; } }
         public bool HasCredentials { get { return true; } }
 
         public Disabled(User Parent) { this.Parent = Parent; }
@@ -36,17 +37,16 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             throw new Exception("External login disabled");
         }
 
+        #region Administration
         public void Enable()
         {
-            if (Parent.ExternalCredentials.Count == 0)
-                Parent.CurrentExternalCredentialState = new None(Parent);
-            else
-                Parent.CurrentExternalCredentialState = new Active(Parent);
+            Parent.CurrentExternalCredentialState = new Enabled(Parent);
         }
 
         public void Disable()
         {
             // Do nothing
         }
+        #endregion
     }
 }

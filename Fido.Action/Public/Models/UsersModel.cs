@@ -31,7 +31,7 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
-        public override UsersModel Read(Guid Id, int Page)
+        public override UsersModel Read(Guid Id)
         {
             using (new FunctionLogger(Log))
             {

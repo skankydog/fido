@@ -123,7 +123,7 @@ namespace Fido.Service.Tests
 
             AuthenticationService.CompleteSetLocalCredentials(ConfirmationId);
             UserDTO = UserService.Get(UserDTO.Id);
-            Assert.AreEqual("Active", UserDTO.LocalCredentialState);
+            Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
 
             Assert.IsNotNull(AuthenticationService.LoginByLocalCredentials("waylan.smithers@skankydog.com", "28*8sdjhhjdjssd"));
         }
@@ -172,7 +172,7 @@ namespace Fido.Service.Tests
 
             AuthenticationService.CompleteRegistration(ConfirmationId);
             UserDTO = UserService.GetByEmailAddress("santas.little.helper@skankydog.com");
-            Assert.AreEqual("Active", UserDTO.LocalCredentialState);
+            Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
         }
 
         [TestMethod]
@@ -214,7 +214,7 @@ namespace Fido.Service.Tests
 
             var UserService = ServiceFactory.CreateService<IUserService>();
             var UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
-            Assert.AreEqual("Active", UserDTO.LocalCredentialState);
+            Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
         }
 
         [TestMethod]

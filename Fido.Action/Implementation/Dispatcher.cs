@@ -29,7 +29,7 @@ namespace Fido.Action.Implementation
             this.PasswordResetUI = PasswordResetUI;
         }
 
-        public TRETURN View<TMODEL>(Func<TRETURN> UI)
+        public TRETURN View<TMODEL>(Func<TRETURN> Any)
         {
             using (new FunctionLogger(Log))
             {
@@ -39,21 +39,21 @@ namespace Fido.Action.Implementation
                 if (RedirectUI != null)
                     return RedirectUI;
 
-                return UI();
+                return Any();
             }
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> SuccessUI)
+        public TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> Success)
         {
-            return DoRead<TMODEL>(Id, Page, SuccessUI);
+            return DoRead<TMODEL>(Id, Page, Success);
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> SuccessUI)
+        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Success)
         {
-            return DoRead<TMODEL>(Id, null, SuccessUI);
+            return DoRead<TMODEL>(Id, null, Success);
         }
 
-        private TRETURN DoRead<TMODEL>(Guid Id, int? Page, Func<TMODEL, TRETURN> SuccessUI)
+        private TRETURN DoRead<TMODEL>(Guid Id, int? Page, Func<TMODEL, TRETURN> Success)
         {
             using (new FunctionLogger(Log))
             {
@@ -64,37 +64,15 @@ namespace Fido.Action.Implementation
                 if (RedirectUI != null)
                     return RedirectUI;
 
-                return Processor.ExecuteRead(Id, Page, SuccessUI);
-            }
-        }
-
-        public TRETURN Write<TMODEL>(
-            TMODEL Model,
-            Func<TMODEL, TRETURN> SuccessUI,
-            Func<TMODEL, TRETURN> FailureUI,
-            Func<TMODEL, TRETURN> InvalidUI)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var ModelInstance = GetModel<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var RedirectUI = CheckPermission(ModelInstance);
-
-                if (RedirectUI != null)
-                    return RedirectUI;
-
-                return Processor.ExecuteWrite(Model, SuccessUI, FailureUI, InvalidUI);
+                return Processor.ExecuteRead(Id, Page, Success);
             }
         }
 
         public TRETURN Write<TMODEL>(
             TMODEL Model,
-            Func<TMODEL, TRETURN> UI)
-        {
-            return Write(Model, UI, UI, UI);
-        }
-
-        public TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> UI)
+            Func<TMODEL, TRETURN> Success,
+            Func<TMODEL, TRETURN> Failure,
+            Func<TMODEL, TRETURN> Invalid)
         {
             using (new FunctionLogger(Log))
             {
@@ -105,7 +83,29 @@ namespace Fido.Action.Implementation
                 if (RedirectUI != null)
                     return RedirectUI;
 
-                return Processor.ExecuteDelete(Id, UI);
+                return Processor.ExecuteWrite(Model, Success, Failure, Invalid);
+            }
+        }
+
+        public TRETURN Write<TMODEL>(
+            TMODEL Model,
+            Func<TMODEL, TRETURN> Any)
+        {
+            return Write(Model, Any, Any, Any);
+        }
+
+        public TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> Success)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var ModelInstance = GetModel<TMODEL>();
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
+                var Redirect = CheckPermission(ModelInstance);
+
+                if (Redirect != null)
+                    return Redirect;
+
+                return Processor.ExecuteDelete(Id, Success);
             }
         }
 

@@ -18,7 +18,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<ProfileModel>(
                 Id: AuthenticatedId,
-                SuccessUI: m => View(m));
+                Success: m => View(m));
         }
 
         [HttpPost]
@@ -26,14 +26,14 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write<ProfileModel>(
                 Model: Model,
-                UI: m => View(m));
+                Any: m => View(m));
         }
 
         public ActionResult ProfileImage(Guid UserId)
         {
             return Dispatcher.Read<ProfileImageModel>(
                 Id: UserId,
-                SuccessUI:
+                Success:
                     m => m != null && m.Image != null
                         ? new FileContentResult(m.Image, "image/jpeg")
                         : null);
@@ -45,7 +45,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<SettingsModel>(
                 Id: AuthenticatedId,
-                SuccessUI: m => View(m));
+                Success: m => View(m));
         }
         #endregion
 
@@ -53,7 +53,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangePassword()
         {
             return Dispatcher.View<ChangePasswordModel>(
-                UI: PartialView);
+                Any: PartialView);
         }
 
         [HttpPost]
@@ -61,7 +61,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => PartialView(m));
+                Any: m => PartialView(m));
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangeEmailAddress()
         {
             return Dispatcher.View<ChangeEmailAddressModel>(
-                UI: PartialView); // was returning "View"
+                Any: PartialView); // was returning "View"
         }
 
         [HttpPost]
@@ -77,7 +77,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => PartialView(m));
+                Any: m => PartialView(m));
         }
         #endregion
 
@@ -85,7 +85,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult SetCredentials()
         {
             return Dispatcher.View<SetCredentialsModel>(
-                UI: PartialView); // was "View"
+                Any: PartialView); // was "View"
         }
 
         [HttpPost]
@@ -93,7 +93,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => PartialView(m));
+                Any: m => PartialView(m));
         }
         #endregion
 
@@ -121,14 +121,14 @@ namespace Fido.WebUI.Controllers
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
                         EmailAddress = ExternalLoginInfo.Email
                     },
-                    UI: m => RedirectToAction("Settings"));
+                    Any: m => RedirectToAction("Settings"));
         }
 
         public ActionResult UnlinkExternalCredentials(UnlinkExternalCredentialsModel Model)
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => RedirectToAction("Settings"));
+                Any: m => RedirectToAction("Settings"));
         }
         #endregion
 
@@ -136,7 +136,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => RedirectToAction("LocalLogin", "Authentication"));
+                Any: m => RedirectToAction("LocalLogin", "Authentication"));
         }
     }
 }

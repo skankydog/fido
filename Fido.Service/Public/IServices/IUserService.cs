@@ -17,7 +17,10 @@ namespace Fido.Service
         User CompleteChangeEmailAddress(Guid ConfirmationId);
 
         User ChangeLocalPassword(Guid UserId, string OldPassword, string NewPassword);
-        User ExpireLocalPassword(Guid UserId);
+
+        #region Administration
+        User Update(User User);
+        #endregion
 
         User GetByEmailAddress(string EmailAddress);
 

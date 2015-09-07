@@ -53,6 +53,7 @@
     <Compile Include="Public\Models\ConfirmationModel.cs" />
     <Compile Include="Public\Models\ExternalLoginCallbackModel.cs" />
     <Compile Include="Public\Models\ForgottenPasswordModel.cs" />
+    <Compile Include="Public\Models\LocalCredentialModel.cs" />
     <Compile Include="Public\Models\UserModel.cs" />
     <Compile Include="Public\Models\UsersModel.cs" />
     <Compile Include="Public\Models\UnlinkExternalCredentialsModel.cs" />

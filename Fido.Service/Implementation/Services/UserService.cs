@@ -115,7 +115,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User ExpireLocalPassword(Guid UserId)
+        public User ExpireLocalCredentials(Guid UserId)
         {
             using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -125,7 +125,7 @@ namespace Fido.Service.Implementation
                 if (UserEntity == null)
                     throw new ServiceException(string.Format("User id, {0}, does not exist", UserId));
 
-                UserEntity.CurrentLocalCredentialState.ExpirePassword();
+                UserEntity.CurrentLocalCredentialState.Expire();
                 UserRepository.Update(UserEntity);
                 UnitOfWork.Commit();
 
@@ -222,6 +222,33 @@ namespace Fido.Service.Implementation
 
                     Settings Settings = AutoMapper.Mapper.Map<Entities.User, Settings>(UserEntity);
                     return AutoMapper.Mapper.Map<Entities.Configuration, Settings>(ConfigurationEntity, Settings);
+                }
+            }
+        }
+        #endregion
+
+        #region Administration
+        public User Update(User User)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = UserRepository.Get(User.Id);
+
+                    UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
+
+                    if (User.LocalCredentialState != UserEntity.LocalCredentialState)
+                        UserEntity.SetLocalCredentialState(User.LocalCredentialState);
+
+                    if (User.ExternalCredentialState != UserEntity.ExternalCredentialState)
+                        UserEntity.SetExternalCredentialState(User.ExternalCredentialState);
+
+                    UserEntity = UserRepository.Update(UserEntity);
+                    UnitOfWork.Commit();
+
+                    return AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
                 }
             }
         }

@@ -27,6 +27,9 @@ namespace Fido.Service.Mapping
                 Mapper.CreateMap<Entities.User, Dtos.User>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
                     .ForMember(Dest => Dest.HasLocalCredentials, Options => Options.MapFrom(Src => Src.CurrentLocalCredentialState.HasCredentials))
+                    .ForMember(Dest => Dest.PasswordAgeDays, Options => Options.MapFrom(Src => Src.PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.PasswordLastChangeUtc).TotalDays)))
+                    .ForMember(Dest => Dest.EmailAddressAgeDays, Options => Options.MapFrom(Src => Src.EmailAddressLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.EmailAddressLastChangeUtc).TotalDays)))
+                    .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.MapFrom(Src => Src.CreatedUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.CreatedUtc).TotalDays)))
                     .ForMember(Dest => Dest.HasExternalCredentials, Options => Options.MapFrom(Src => Src.CurrentExternalCredentialState.HasCredentials));
 
                 Mapper.CreateMap<Dtos.Fullname, Entities.UserDetails.Fullname>();

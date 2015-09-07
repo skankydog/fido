@@ -73,9 +73,9 @@ namespace Fido.WebUI.Controllers
 
             return Dispatcher.Write(
                 Model: Model,
-                SuccessUI: m => RedirectToLocal(ReturnUrl),
-                FailureUI: m => View(),
-                InvalidUI: m => View(m));
+                Success: m => RedirectToLocal(ReturnUrl),
+                Failure: m => View(),
+                Invalid: m => View(m));
         }
         #endregion
 
@@ -105,9 +105,9 @@ namespace Fido.WebUI.Controllers
                         EmailAddress = ExternalLoginInfo.Email,
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
-                SuccessUI: m => RedirectToLocal(ReturnUrl),
-                FailureUI: m => RedirectToAction("LocalLogin"),
-                InvalidUI: m => RedirectToAction("LocalLogin"));
+                Success: m => RedirectToLocal(ReturnUrl),
+                Failure: m => RedirectToAction("LocalLogin"),
+                Invalid: m => RedirectToAction("LocalLogin"));
         }
         #endregion
 
@@ -137,9 +137,9 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                SuccessUI: m => RedirectToAction("LocalLogin"),
-                FailureUI: m => View(m),
-                InvalidUI: m => View(m));
+                Success: m => RedirectToAction("LocalLogin"),
+                Failure: m => View(m),
+                Invalid: m => View(m));
         }
         #endregion
 
@@ -154,9 +154,9 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                SuccessUI: m => RedirectToAction("LocalLogin"),
-                FailureUI: m => View(m),
-                InvalidUI: m => View(m));
+                Success: m => RedirectToAction("LocalLogin"),
+                Failure: m => View(m),
+                Invalid: m => View(m));
         }
 
         public ActionResult ResetPassword(Guid ConfirmationId)
@@ -169,9 +169,9 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                SuccessUI: m => RedirectToAction("Index", "Home"),
-                FailureUI: m => View(m),
-                InvalidUI: m => View(m));
+                Success: m => RedirectToAction("Index", "Home"),
+                Failure: m => View(m),
+                Invalid: m => View(m));
         }
         #endregion
     }

@@ -5,20 +5,21 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.ExternalCredentialStates
 {
-    internal class Active : IExternalCredentialState
+    internal class Enabled : IExternalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
 
-        public string StateName { get { return "Active"; } }
+        public const string Name_ = "Enabled";
+        public string Name { get { return Name_; } }
         public bool HasCredentials { get { return true; } }
 
-        public Active(User Parent) { this.Parent = Parent; }
+        public Enabled(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
         {
-            // Do nothing
+            // Allow
         }
 
         public void Register(string EmailAddress, string Name)
@@ -26,11 +27,11 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
              // Do nothing - already registered
         }
 
-        public void Deactivate()
-        {
-            if (Parent.ExternalCredentials.Count == 0)
-                Parent.CurrentExternalCredentialState = new None(Parent);
-        }
+        //public void Deactivate()
+        //{
+        //    if (Parent.ExternalCredentials.Count == 0)
+        //        Parent.CurrentExternalCredentialState = new None(Parent);
+        //}
 
         public void Link(string LoginProvider, string ProviderKey, string EmailAddress)
         {
@@ -67,14 +68,16 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
                 Parent.CurrentExternalCredentialState = new None(Parent);
         }
 
+        #region Administration
         public void Enable()
         {
-            throw new Exception("The external credentials are not currently disabled");
+            // Do nothing
         }
 
         public void Disable()
         {
             Parent.CurrentExternalCredentialState = new Disabled(Parent);
         }
+        #endregion
     }
 }

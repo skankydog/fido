@@ -48,11 +48,11 @@
     <Compile Include="Entities\ExternalCredential.cs" />
     <Compile Include="Entities\ProfileImage.cs" />
     <Compile Include="Entities\UserDetails\IExternalCredentialState.cs" />
-    <Compile Include="Entities\UserDetails\ExternalCredentialStates\Active.cs" />
+    <Compile Include="Entities\UserDetails\ExternalCredentialStates\Enabled.cs" />
     <Compile Include="Entities\UserDetails\ExternalCredentialStates\Disabled.cs" />
     <Compile Include="Entities\UserDetails\ExternalCredentialStates\None.cs" />
     <Compile Include="Entities\UserDetails\LocalCredentialStates\None.cs" />
-    <Compile Include="Entities\UserDetails\LocalCredentialStates\Active.cs" />
+    <Compile Include="Entities\UserDetails\LocalCredentialStates\Enabled.cs" />
     <Compile Include="Entities\UserDetails\LocalCredentialStates\Disabled.cs" />
     <Compile Include="Entities\UserDetails\LocalCredentialStates\Expired.cs" />
     <Compile Include="Entities\UserDetails\LocalCredentialStates\Registered.cs" />

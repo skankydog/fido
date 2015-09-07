@@ -13,7 +13,7 @@ namespace Fido.Entities
         public ProfileImage ProfileImage { get; set; }
         public string About { get; set; }
 
-        #region Local Credentials
+        #region Local Credential Properties
         public bool HasLocalCredentials { get { return CurrentLocalCredentialState.HasCredentials; } }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
@@ -22,28 +22,33 @@ namespace Fido.Entities
 
         public string LocalCredentialState
         {
-            get { return CurrentLocalCredentialState.StateName; }
+            get { return CurrentLocalCredentialState.Name; }
             set
             {
                 switch (value)
                 {
-                    case "None":
+                    case UserDetails.LocalCredentialStates.None.Name_:
+                    //case "None":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.None(this);
                         break;
 
-                    case "Registered":
+                    case UserDetails.LocalCredentialStates.Registered.Name_:
+                    //case "Registered":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Registered(this);
                         break;
 
-                    case "Expired":
+                    case UserDetails.LocalCredentialStates.Expired.Name_:
+                    //case "Expired":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Expired(this);
                         break;
 
-                    case "Active":
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Active(this);
+                    case UserDetails.LocalCredentialStates.Enabled.Name_:
+                    //case "Enabled":
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Enabled(this);
                         break;
 
-                    case "Disabled":
+                    case UserDetails.LocalCredentialStates.Disabled.Name_:
+                    //case "Disabled":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Disabled(this);
                         break;
 
@@ -54,36 +59,85 @@ namespace Fido.Entities
         }
 
         public DateTime? EmailAddressLastChangeUtc { get; set; } // NULL if no local credentials
+        public int? EmailAddressAgeDays { get { return EmailAddressLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)EmailAddressLastChangeUtc).TotalDays); } }
         public DateTime? PasswordLastChangeUtc { get; set; } // NULL if no local credentials
         #endregion
 
-        #region External Credentials
+        #region External Credential Properties
         public bool HasExternalCredentials { get { return CurrentExternalCredentialState.HasCredentials; } }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
         public IExternalCredentialState CurrentExternalCredentialState { get; internal set; }
 
         public string ExternalCredentialState
         {
-            get { return CurrentExternalCredentialState.StateName; }
+            get { return CurrentExternalCredentialState.Name; }
             set
             {
                 switch (value)
                 {
-                    case "None":
+                    case UserDetails.ExternalCredentialStates.None.Name_:
+                    //case "None":
                         CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.None(this);
                         break;
 
-                    case "Active":
-                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Active(this);
+                    case UserDetails.ExternalCredentialStates.Enabled.Name_:
+                    //case "Enabled":
+                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Enabled(this);
                         break;
 
-                    case "Disabled":
+                    case UserDetails.ExternalCredentialStates.Disabled.Name_:
+                    //case "Disabled":
                         CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Disabled(this);
                         break;
 
                     default:
                         throw new NotImplementedException(string.Format("Exteral state type {0} not implemented", value));
                 }
+            }
+        }
+        #endregion
+
+        #region Administration
+        public void SetLocalCredentialState(string State)
+        {
+            switch (State)
+            {
+                case UserDetails.LocalCredentialStates.Expired.Name_:
+                //case "Expired":
+                    CurrentLocalCredentialState.Expire();
+                    break;
+
+                case UserDetails.LocalCredentialStates.Enabled.Name_:
+                //case "Enabled":
+                    CurrentLocalCredentialState.Enable();
+                    break;
+
+                case UserDetails.LocalCredentialStates.Disabled.Name_:
+                //case "Disabled":
+                    CurrentLocalCredentialState.Disable();
+                    break;
+
+                default:
+                    throw new Exception(string.Format("Local credential state, {0}, not valid", State));
+            }
+        }
+
+        public void SetExternalCredentialState(string State)
+        {
+            switch (State)
+            {
+                case UserDetails.ExternalCredentialStates.Enabled.Name_:
+                //case "Enabled":
+                    CurrentExternalCredentialState.Enable();
+                    break;
+
+                case UserDetails.ExternalCredentialStates.Disabled.Name_:
+                //case "Disabled":
+                    CurrentExternalCredentialState.Disable();
+                    break;
+
+                default:
+                    throw new Exception(string.Format("External credential state, {0}, not valid", ExternalCredentialState));
             }
         }
         #endregion

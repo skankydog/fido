@@ -5,20 +5,21 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.LocalCredentialStates
 {
-    internal class Active : ILocalCredentialState
+    internal class Enabled : ILocalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
 
-        public string StateName { get { return "Active"; } }
+        public const string Name_ = "Enabled";
+        public string Name { get { return Name_; } }
         public bool HasCredentials { get { return true; } }
 
-        public Active(User Parent) { this.Parent = Parent; }
+        public Enabled(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
         {
-            // Do nothing
+            // Allow
         }
 
         public void InitiateRegistration(string EmailAddress, string Password, string Firstname, string Surname)
@@ -33,7 +34,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void InitiateSetLocalCredentials(string EmailAddress, string Password)
         {
-            throw new Exception("The account already exists - registration can not be performed more than once for an account on this account");
+            throw new Exception("Local credentials already set");
         }
 
         public void CompleteSetLocalCredentials()
@@ -43,7 +44,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void InitiateForgottenPassword()
         {
-            // Do nothing
+            // Allow
         }
 
         public void CompleteForgottenPassword(string Password)
@@ -54,7 +55,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void InitiateChangeEmailAddress()
         {
-            // Do nothing
+            // Allow
         }
 
         public void CompleteChangeEmailAddress(string EmailAddress)
@@ -69,7 +70,8 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.PasswordLastChangeUtc = DateTime.UtcNow;
         }
 
-        public void ExpirePassword()
+        #region Administration
+        public void Expire()
         {
             Parent.CurrentLocalCredentialState = new Expired(Parent);
         }
@@ -83,5 +85,29 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
         {
             Parent.CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Disabled(Parent);
         }
+
+        public void SetEmailAddress(string EmailAddress)
+        {
+            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
+            Parent.EmailAddress = EmailAddress;
+        }
+
+        public void SetPassword(string Password)
+        {
+            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
+            Parent.Password = Password;
+        }
+
+        public void Clear()
+        {
+            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
+            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
+
+            Parent.EmailAddress = null;
+            Parent.Password = null;
+
+            Parent.CurrentLocalCredentialState = new None(Parent);
+        }
+        #endregion
     }
 }

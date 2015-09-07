@@ -32,13 +32,13 @@ namespace Fido.DataAccess
             Expression<Func<TENTITY, bool>> Predicate = null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null,
             string IncludeProperties = "");
-        void Insert(TENTITY Entity);
-        void Update(TENTITY Entity);
+        TENTITY Insert(TENTITY Entity);
+        TENTITY Update(TENTITY Entity);
         void Delete(Guid Id);
         void Delete(TENTITY Entity);
         void Delete(Expression<Func<TENTITY, bool>> Predicate);
 
         void SetUnique(string FieldName);
-        void Index(string FeidlName);
+        void Index(string FieldName);
     }
 }

@@ -172,6 +172,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Authentication\Startup.Auth.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\LocalCredentialController.cs" />
     <Compile Include="Binders\CustomByteArrayModelBinder.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
@@ -260,6 +261,12 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Administration\Views\web.config" />
+    <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Update.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Create.cshtml" />
+    <Content Include="Areas\Administration\Views\User\DeleteConfirmation.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Delete.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
@@ -333,12 +340,10 @@
     <Content Include="Views\Account\ManageExternalCredentials.cshtml" />
     <Content Include="Views\Account\SettingsLocal.cshtml" />
     <Content Include="Views\Account\SettingsExternal.cshtml" />
-    <Content Include="Views\Administration\Users.cshtml" />
+    <Content Include="Areas\Administration\Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Administration\Views\Shared\" />
-    <Folder Include="Areas\Administration\Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

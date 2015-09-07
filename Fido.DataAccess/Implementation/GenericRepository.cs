@@ -94,7 +94,7 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual void Insert(TENTITY Entity)
+        public virtual TENTITY Insert(TENTITY Entity)
         {
             using (new FunctionLogger(Log))
             {
@@ -107,15 +107,19 @@ namespace Fido.DataAccess.Implementation
 
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
                 Context.Set<TENTITY>().Add(Entity);
+
+                return Entity;
             }
         }
 
-        public virtual void Update(TENTITY Entity)
+        public virtual TENTITY Update(TENTITY Entity)
         {
             using (new FunctionLogger(Log))
             {
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
                 Context.Entry(Entity).State = EntityState.Modified;
+
+                return Entity;
             }
         }
 

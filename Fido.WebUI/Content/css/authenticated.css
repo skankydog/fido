@@ -504,10 +504,15 @@ h3 a:hover, a:focus {
     text-align: center;
 }
 
+.skd-padding {
+    margin-top: 5px;
+    /*margin-bottom: 3px;*/
+}
+
 .skd-fake-button {
     opacity: 0.9;
-    padding: 10px 16px;
-    font-size: 18px;
+    padding: 5px 12px;   10px 16px;
+    font-size: 14px; /* 18px; */
     line-height: 1.33;
     border-radius: 6px;
     display: block;

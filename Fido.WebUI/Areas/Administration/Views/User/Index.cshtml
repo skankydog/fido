@@ -1,0 +1,12 @@
+﻿@model Fido.Action.Models.UsersModel
+
+@{
+    ViewBag.Title = "Users";
+}
+
+@foreach(var Usr in Model.Users)
+{
+    <span>@Usr.Surname, @Usr.Firstname</span><hr />
+}
+
+<div class="row skd-spacing"></div>

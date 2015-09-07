@@ -7,7 +7,7 @@ namespace Fido.Entities.UserDetails
 {
     public interface ILocalCredentialState
     {
-        string StateName { get; }
+        string Name { get; }
         bool HasCredentials { get; }
 
         void Login();
@@ -25,9 +25,14 @@ namespace Fido.Entities.UserDetails
         void CompleteChangeEmailAddress(string EmailAddress);
 
         void ChangePassword(string Password);
-        void ExpirePassword();
 
+        #region Administration
+        void Expire();
         void Enable();
         void Disable();
+        void SetEmailAddress(string EmailAddress);
+        void SetPassword(string Password);
+        void Clear();
+        #endregion
     }
 }

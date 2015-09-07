@@ -8,17 +8,17 @@ namespace Fido.Action
 {
     public interface IDispatcher<TRETURN>
     {
-        TRETURN View<TMODEL>(Func<TRETURN> UI);
-        TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> SuccessUI);
-        TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> SuccessUI);
+        TRETURN View<TMODEL>(Func<TRETURN> Any);
+        TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> Success);
+        TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Success);
         TRETURN Write<TMODEL>(
             TMODEL Model,
-            Func<TMODEL, TRETURN> SuccessUI,
-            Func<TMODEL, TRETURN> FailureUI,
-            Func<TMODEL, TRETURN> InvalidUI);
+            Func<TMODEL, TRETURN> Success,
+            Func<TMODEL, TRETURN> Failure,
+            Func<TMODEL, TRETURN> Invalid);
         TRETURN Write<TMODEL>(
             TMODEL Model,
-            Func<TMODEL, TRETURN> UI);
-        TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> UI);
+            Func<TMODEL, TRETURN> Any);
+        TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> Any);
     }
 }

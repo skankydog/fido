@@ -7,7 +7,7 @@ namespace Fido.Entities.UserDetails
 {
     public interface IExternalCredentialState
     {
-        string StateName { get; }
+        string Name { get; }
         bool HasCredentials { get; }
 
         void Login();
@@ -15,8 +15,10 @@ namespace Fido.Entities.UserDetails
 
         void Link(string LoginProvider, string ProviderKey, string EmailAddress);
         void Unlink(Guid Id);
-        
+
+        #region Administration
         void Enable();
         void Disable();
+        #endregion
     }
 }

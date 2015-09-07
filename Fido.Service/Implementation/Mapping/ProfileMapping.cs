@@ -30,12 +30,12 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore())
                     .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore())
                     .ForMember(Dest => Dest.IsNew, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.RegisteredDays, Options => Options.Ignore())
+                 //   .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Fullname, Options => Options.Ignore());
                 Mapper.CreateMap<Entities.User, Dtos.Profile>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
                     .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.RegisteredDays, Options => Options.MapFrom(Src => int.Parse(Math.Truncate((DateTime.UtcNow - Src.CreatedUtc).TotalDays).ToString())))
+                 //   .ForMember(Dest => Dest.RegisteredDays, Options => Options.MapFrom(Src => int.Parse(Math.Truncate((DateTime.UtcNow - Src.CreatedUtc).TotalDays).ToString())))
                     .ForMember(Dest => Dest.Image, Options => Options.Ignore());
 
                 Mapper.CreateMap<Dtos.Profile, Entities.ProfileImage>()
@@ -55,6 +55,9 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ProfileImage, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.EmailAddressAgeDays, Options => Options.Ignore())
+              //      .ForMember(Dest => Dest.PasswordAgeDays, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<Dtos.Profile, Entities.UserDetails.Fullname>(Src)));
             }
         }

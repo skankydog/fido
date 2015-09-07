@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fido.Core
 {
@@ -9,6 +10,12 @@ namespace Fido.Core
         public static Guid ToGuid(this string GuidAsString)
         {
             return Guid.Parse(GuidAsString);
+        }
+
+        public static void SmartAdd<T>(this List<T> List, T Item)
+        {
+            if (List.Contains(Item) == false)
+                List.Add(Item);
         }
     }
 }

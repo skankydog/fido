@@ -55,14 +55,14 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     // Hook to allow modification in derived implementations
-                    BeforeSave(ref Dto, UnitOfWork);
+                    Dto = BeforeSave(Dto, UnitOfWork);
 
                     TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
 
                     if (Dto.IsNew)
                     {
                         // Hook to allow modification in derived implementations
-                        BeforeInsert(ref Dto, UnitOfWork);
+                        Dto = BeforeInsert(Dto, UnitOfWork);
                         Dto.IsNew = true;
 
                         TENTITY Entity = Mapper.Map<TDTO, TENTITY>(Dto);
@@ -71,7 +71,7 @@ namespace Fido.Service.Implementation
                     else
                     {
                         // Hook to allow modification in derived implementations
-                        BeforeUpdate(ref Dto, UnitOfWork);
+                        Dto = BeforeUpdate(Dto, UnitOfWork);
                         Dto.IsNew = false;
 
                         TENTITY Entity = Repository.Get(Dto.Id, IncludeProperties);
@@ -104,8 +104,8 @@ namespace Fido.Service.Implementation
             }
         }
 
-        virtual protected void BeforeSave(ref TDTO Dto, IUnitOfWork UnitOfWork) { ;  }
-        virtual protected void BeforeInsert(ref TDTO Dto, IUnitOfWork UnitOfWork) { ; }
-        virtual protected void BeforeUpdate(ref TDTO Dto, IUnitOfWork UnitOfWork) { ; }
+        virtual protected TDTO BeforeSave(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
+        virtual protected TDTO BeforeInsert(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
+        virtual protected TDTO BeforeUpdate(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
     }
 }

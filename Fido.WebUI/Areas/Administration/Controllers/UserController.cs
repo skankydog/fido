@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Read<UsersModel>(
                 Id: AuthenticatedId,
-                SuccessUI: m => Json(m, JsonRequestBehavior.AllowGet));
+                Success: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Create()
@@ -30,21 +30,14 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => RedirectToAction("Users"));
-        }
-
-        public ActionResult Read(Guid Id)       // Needed? Does the same as the Update get request - just presents
-        {                                       // without the submit button. Can just check permissons from the
-            return Dispatcher.Read<UserModel>(  // view to display submit button or not?
-                Id: Id,
-                SuccessUI: m => View(m));
+                Any: m => RedirectToAction("Users"));
         }
 
         public ActionResult Update(Guid Id)
         {
             return Dispatcher.Read<UserModel>(
                 Id: Id,
-                SuccessUI: m => View(m));
+                Success: m => View(m));
         }
 
         [HttpPost]
@@ -52,22 +45,24 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Write(
                 Model: Model,
-                UI: m => RedirectToAction("Users"));
+                Success: m => RedirectToAction("Users"),
+                Invalid: m => View(m),
+                Failure: m => View(m));
         }
 
-        public ActionResult Delete(Guid Id)
+        public ActionResult DeleteConfirmation(Guid Id)
         {
             return Dispatcher.Read<UserModel>(
                 Id: Id,
-                SuccessUI: m => View(m));
+                Success: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult DeleteConfirmed(Guid Id)
+        public ActionResult Delete(Guid Id)
         {
             return Dispatcher.Delete_<UserModel>(
                 Id: Id,
-                UI: () => RedirectToAction("Users"));
+                Any: () => RedirectToAction("Users"));
         }
     }
 }

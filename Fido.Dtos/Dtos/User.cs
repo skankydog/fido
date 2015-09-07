@@ -15,13 +15,24 @@ namespace Fido.Dtos
         public bool HasLocalCredentials { get; set; }
         public string LocalCredentialState { get; set; }
         public DateTime? EmailAddressLastChangeUtc { get; set; }
+        public int EmailAddressAgeDays { get; set; }
         public DateTime? PasswordLastChangeUtc { get; set; }
+        public int PasswordAgeDays { get; set; }
         #endregion
 
         #region External Credentials
         public bool HasExternalCredentials { get; set; }
         public string ExternalCredentialState { get; set; }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
+
+        public bool HasLoginProvider(string LoginProvider)
+        {
+            var Matches = from e in ExternalCredentials
+                          where e.LoginProvider.ToLower() == LoginProvider.ToLower()
+                          select e;
+
+            return Matches.Count() > 0;
+        }
         #endregion
     }
 }

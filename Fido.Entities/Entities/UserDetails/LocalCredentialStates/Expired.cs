@@ -10,7 +10,8 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
         #region Properties & Constructor
         private User Parent;
 
-        public string StateName { get { return "Expired"; } }
+        public const string Name_ = "Expired";
+        public string Name { get { return Name_; } }
         public bool HasCredentials { get { return true; } }
 
         public Expired(User Parent) { this.Parent = Parent; }
@@ -18,7 +19,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void Login()
         {
-            // Does nothing - user will be forced to change their password after login
+            // Allow - user will be forced to change their password after login
         }
 
         public void InitiateRegistration(string EmailAddress, string Password, string Firstname, string Surname)
@@ -43,7 +44,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void InitiateForgottenPassword()
         {
-            // Do nothing
+            // Allow
         }
 
         public void CompleteForgottenPassword(string Password)
@@ -51,7 +52,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.Password = Password;
             Parent.PasswordLastChangeUtc = DateTime.UtcNow;
 
-            Parent.CurrentLocalCredentialState = new Active(Parent);
+            Parent.CurrentLocalCredentialState = new Enabled(Parent);
         }
 
         public void InitiateChangeEmailAddress()
@@ -69,22 +70,49 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.Password = Password;
             Parent.PasswordLastChangeUtc = DateTime.UtcNow;
 
-            Parent.CurrentLocalCredentialState = new Active(Parent);
+            Parent.CurrentLocalCredentialState = new Enabled(Parent);
         }
 
-        public void ExpirePassword()
+        #region Administration
+        public void Expire()
         {
             // Does nothing
         }
 
         public void Enable()
         {
-            throw new Exception("The local credentials are not currently disabled");
+            Parent.CurrentLocalCredentialState = new Enabled(Parent);
         }
 
         public void Disable()
         {
             Parent.CurrentLocalCredentialState = new Disabled(Parent);
         }
+
+        public void SetEmailAddress(string EmailAddress)
+        {
+            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
+            Parent.EmailAddress = EmailAddress;
+        }
+
+        public void SetPassword(string Password)
+        {
+            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
+            Parent.Password = Password;
+
+            Parent.CurrentLocalCredentialState = new Enabled(Parent);
+        }
+
+        public void Clear()
+        {
+            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
+            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
+
+            Parent.EmailAddress = null;
+            Parent.Password = null;
+
+            Parent.CurrentLocalCredentialState = new None(Parent);
+        }
+        #endregion
     }
 }

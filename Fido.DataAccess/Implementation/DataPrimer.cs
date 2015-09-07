@@ -43,9 +43,11 @@ namespace Fido.DataAccess.Implementation
             User HomerSimpson = new User
             {
                 Id = Guid.NewGuid(),
-                LocalCredentialState = "Active",
+                LocalCredentialState = "Enabled",
                 Password = "Jjdjsj^^77d8sJHJHDjjh",
+                PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "homer.simpson@skankydog.com",
+                EmailAddressLastChangeUtc = DateTime.UtcNow,
                 Fullname = new Fullname { Firstname = "Homer", Surname = "Simpson" },
                 About = string.Concat("This is really just a sentence or two about the user that this account applies ",
                           "to - in this case it is Homer Simpson. I would assume Homer would enter this ",
@@ -55,7 +57,7 @@ namespace Fido.DataAccess.Implementation
             HomerSimpson.Roles.Add(AllActivitiesRole);
             HomerSimpson.Roles.Add(Role02);
             HomerSimpson.Roles.Add(Role03);
-            HomerSimpson.ExternalCredentialState = "Active";
+            HomerSimpson.ExternalCredentialState = "Enabled";
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook1", EmailAddress = "homer@gmail.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook2", EmailAddress = "homie@hotmail.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook3", EmailAddress = "hjs@hotmail.com" });
@@ -66,15 +68,17 @@ namespace Fido.DataAccess.Implementation
             User MargeSimpson = new User
             {
                 Id = Guid.NewGuid(),
-                LocalCredentialState = "Active",
+                LocalCredentialState = "Enabled",
                 Password = "Jjdjsj^^77d8sJHJHDjjh",
+                PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "marge.simpson@skankydog.com",
+                EmailAddressLastChangeUtc = DateTime.UtcNow,
                 Fullname = new Fullname { Firstname = "Marge", Surname = "Simpson" },
                 About = "This is something about Marge"
             };
             MargeSimpson.Roles.Add(Role02);
             MargeSimpson.Roles.Add(Role03);
-            MargeSimpson.ExternalCredentialState = "Active";
+            MargeSimpson.ExternalCredentialState = "Enabled";
             MargeSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "MargeFacebook1", EmailAddress = "marge.simpson@skankydog.com" });
             MargeSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "MargeFacebook3", EmailAddress = "simpsons@skankydog.com" });
             MargeSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Google", ProviderKey = "MargeGoogle1", EmailAddress = "marge@gmail.com" });
@@ -82,14 +86,16 @@ namespace Fido.DataAccess.Implementation
             User BartSimpson = new User
             {
                 Id = Guid.NewGuid(),
-                LocalCredentialState = "Active",
+                LocalCredentialState = "Enabled",
                 Password = "Jjdjsj^^77d8sJHJHDjjh",
+                PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "bart.simpson@skankydog.com",
+                EmailAddressLastChangeUtc = DateTime.UtcNow,
                 Fullname = new Fullname { Firstname = "Bart", Surname = "Simpson" },
                 About = "This is something about Bart"
             };
             // Bart Simpson has no roles
-            BartSimpson.ExternalCredentialState = "Active";
+            BartSimpson.ExternalCredentialState = "Enabled";
             BartSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "BartFacebook1", EmailAddress = "bart.simpson@skankydog.com" });
 
             User WaylanSmithers = new User
@@ -100,7 +106,7 @@ namespace Fido.DataAccess.Implementation
                 About = "This is something about Waylan"
             };
             // Waylan Smithers has no roles
-            WaylanSmithers.ExternalCredentialState = "Active";
+            WaylanSmithers.ExternalCredentialState = "Enabled";
             WaylanSmithers.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "WaylanFacebook1", EmailAddress = "waylan@hotmail.com" });
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())

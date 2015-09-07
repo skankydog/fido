@@ -31,7 +31,7 @@ namespace Fido.Service.Tests
             UserService.CompleteChangeEmailAddress(ChangeEmailAddressConfirmationId);
 
             UserDTO = UserService.GetByEmailAddress("moe.szyslak@skankydog.com");
-            Assert.AreEqual("Active", UserDTO.LocalCredentialState);
+            Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Fido.Service.Tests
             var UserService = ServiceFactory.CreateService<IUserService>();
 
             User UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
-            UserService.ExpireLocalPassword(UserDTO.Id);
+            UserService.ExpireLocalCredentials(UserDTO.Id);
 
             UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
             Assert.AreEqual("Expired", UserDTO.LocalCredentialState);

@@ -10,7 +10,8 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
         #region Properties & Constructor
         private User Parent;
 
-        public string StateName { get { return "None"; } }
+        public const string Name_ = "None";
+        public string Name { get { return Name_; } }
         public bool HasCredentials { get { return false; } }
 
         public None(User Parent) { this.Parent = Parent; }
@@ -30,7 +31,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             };
 
             Parent.EmailAddress = EmailAddress;
-            Parent.CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Active(Parent);
+            Parent.CurrentExternalCredentialState = new Enabled(Parent);
         }
 
         public void Link(string LoginProvider, string ProviderKey, string EmailAddress)
@@ -45,7 +46,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             };
 
             Parent.ExternalCredentials.Add(ExternalCredentialEntity);
-            Parent.CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Active(Parent);
+            Parent.CurrentExternalCredentialState = new Enabled(Parent);
         }
 
         public void Unlink(Guid Id)
@@ -53,14 +54,16 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             throw new Exception("No external credentials for this account");
         }
 
+        #region Administration
         public void Enable()
         {
-            throw new Exception("The external credentials are not currently disabled");
+            throw new Exception("There are no external credentials to enable");
         }
 
         public void Disable()
         {
-            Parent.CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Disabled(Parent);
+            Parent.CurrentExternalCredentialState = new Disabled(Parent);
         }
+        #endregion
     }
 }

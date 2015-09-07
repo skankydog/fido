@@ -12,6 +12,5 @@ namespace Fido.Dtos
         public string About { get; set; }
         public byte[] Image { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int RegisteredDays { get; set; }
     }
 }
