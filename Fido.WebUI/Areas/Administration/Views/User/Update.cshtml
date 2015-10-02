@@ -4,7 +4,7 @@
     ViewBag.Title = "Update User";
 }
 
-@using (Html.BeginForm("Update", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
 
@@ -130,7 +130,7 @@
             </button>
         </div>
         <div class="col-xs-6 col-centered">
-            <a href="@Url.Action("Update", "User")">
+            <a href="@Url.Action("Index", "User")">
                 <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
             </a>
         </div>

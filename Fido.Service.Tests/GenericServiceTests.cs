@@ -19,32 +19,41 @@ namespace Fido.Service.Tests
         public void CanGetAll()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
-            var AllDTOs = Service.GetAll();
+            var AllDtos = Service.GetAll();
 
-            Assert.AreNotEqual(0, AllDTOs.Count);
+            Assert.AreNotEqual(0, AllDtos.Count);
+        }
+
+        [TestMethod]
+        public void CanCountAll()
+        {
+            IUserService Service = ServiceFactory.CreateService<IUserService>();
+            var AllDtoCount = Service.CountAll();
+
+            Assert.AreEqual(11, AllDtoCount);
         }
 
         [TestMethod]
         public void CanGetEntityById()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
-            User UserDTO = Service.GetByEmailAddress("bart.simpson@skankydog.com");
+            User UserDto = Service.GetByEmailAddress("bart.simpson@skankydog.com");
 
-            Assert.IsNotNull(Service.Get(UserDTO.Id));
+            Assert.IsNotNull(Service.Get(UserDto.Id));
         }
 
         [TestMethod]
         public void CanInsertEntity()
         {
-            Activity ActivityDTO = new Activity
+            Activity ActivityDto = new Activity
             {
                 Name = "BrandNewEntity"
             };
 
             IActivityService Service = ServiceFactory.CreateService<IActivityService>();
-            Service.Save(ActivityDTO);
+            Service.Save(ActivityDto);
 
-            Assert.IsNotNull(Service.Get(ActivityDTO.Id));
+            Assert.IsNotNull(Service.Get(ActivityDto.Id));
         }
 
         [TestMethod]
@@ -52,14 +61,14 @@ namespace Fido.Service.Tests
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
 
-            User UserDTO = Service.GetByEmailAddress("homer.simpson@skankydog.com");
-            Assert.AreEqual("Homer", UserDTO.Fullname.Firstname);
+            User UserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
+            Assert.AreEqual("Homer", UserDto.Fullname.Firstname);
 
-            UserDTO.Fullname.Firstname = "Test";
-            Service.Save(UserDTO);
+            UserDto.Fullname.Firstname = "Test";
+            Service.Save(UserDto);
 
-            UserDTO = Service.GetByEmailAddress("homer.simpson@skankydog.com");
-            Assert.AreEqual("Test", UserDTO.Fullname.Firstname);
+            UserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
+            Assert.AreEqual("Test", UserDto.Fullname.Firstname);
         }
 
         [TestMethod]
@@ -67,8 +76,8 @@ namespace Fido.Service.Tests
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
 
-            User UserDTO = Service.GetByEmailAddress("homer.simpson@skankydog.com");
-            Service.Delete(UserDTO.Id);
+            User UserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
+            Service.Delete(UserDto.Id);
 
             Assert.IsNull(Service.GetByEmailAddress("homer.simpson@skankydog.com"));
         }
@@ -80,17 +89,17 @@ namespace Fido.Service.Tests
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             
             // Something reads the entity
-            var OuterUserDTO = Service.GetByEmailAddress("homer.simpson@skankydog.com");
+            var OuterUserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
 
             // Something else reads the entity and edits a field and saves the record. The
             // database now contains a different RowVersion value than OuterUserDTO
-            var InnerUserDTO = Service.GetByEmailAddress("homer.simpson@skankydog.com");
-            InnerUserDTO.Fullname.Firstname = "New";
-            Service.Save(InnerUserDTO);
+            var InnerUserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
+            InnerUserDto.Fullname.Firstname = "New";
+            Service.Save(InnerUserDto);
 
             // OuterUserDTO is now saved. The framework should see that the RowVersion field
             // is different and throw an exception
-            Service.Save(OuterUserDTO);
+            Service.Save(OuterUserDto);
         }
 
         [TestInitialize]
@@ -102,7 +111,7 @@ namespace Fido.Service.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            DataAccess.DataAccessFactory.CreateDataPrimer().Delete();
+            DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
 
         [ClassInitialize]

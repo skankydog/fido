@@ -17,5 +17,20 @@ namespace Fido.Core
             if (List.Contains(Item) == false)
                 List.Add(Item);
         }
+
+        public static bool IsNullOrEmpty(this string Param)
+        {
+            return (string.IsNullOrEmpty(Param));
+        }
+
+        public static bool IsNotNullOrEmpty(this string Param)
+        {
+            return (!string.IsNullOrEmpty(Param));
+        }
+
+        public static string Nvl(this string Param)
+        {
+            return Param == null ? "" : Param;
+        }
     }
 }

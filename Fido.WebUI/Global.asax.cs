@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Fido.Action;
 using Fido.WebUI.Binders;
 
 namespace Fido.WebUI
@@ -23,6 +24,7 @@ namespace Fido.WebUI
 
             ModelBinders.Binders.Remove(typeof(byte[]));
             ModelBinders.Binders.Add(typeof(byte[]), new CustomByteArrayModelBinder());
+            ModelBinders.Binders.Add(typeof(IndexParams), new IndexParamsModelBinder());
         }
     }
 }

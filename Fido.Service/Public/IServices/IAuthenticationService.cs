@@ -33,7 +33,7 @@ namespace Fido.Service
         bool EmailAddressIsFree(string EmailAddress);           // Email addresses must be unique
         
         IList<ExternalCredential> GetExternalCredentials(Guid UserId);
-        ExternalCredential LinkExternalCredentials(Guid UserId, string LoginProvider, string ProviderKey, string EmailAddress);
+        void LinkExternalCredentials(Guid UserId, string LoginProvider, string ProviderKey, string EmailAddress);
         void UnlinkExternalCredentials(Guid UserId, Guid Id);
     }
 }

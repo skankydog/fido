@@ -119,7 +119,7 @@ namespace Fido.Service.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            DataAccess.DataAccessFactory.CreateDataPrimer().Delete();
+            DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
 
         [ClassInitialize]

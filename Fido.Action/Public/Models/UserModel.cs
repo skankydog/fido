@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
@@ -25,29 +26,32 @@ namespace Fido.Action.Models
         [Required(ErrorMessage = "The surname field cannot be left blank")]
         public string Surname { get; set; }
 
+        [Display(Name = "name")]
+        public string DisplayName { get; set; }
+
         public string About { get; set; }
 
         public bool HasLocalCredentials { get; set; }
 
-        [Display(Name = "Email Address")]
+        [Display(Name = "email address")]
         public string EmailAddress { get; set; }
 
-        [Display(Name = "Local Credential State")]
+        [Display(Name = "local credential state")]
         public string LocalCredentialState { get; set; }
 
-        [Display(Name = "Email Address Change Date")]
+        [Display(Name = "email address change date")]
         public DateTime? EmailAddressLastChangeUtc { get; set; }
 
         public int? EmailAddressAgeDays { get; set; }
 
-        [Display(Name = "Password Change Date")]
+        [Display(Name = "password change date")]
         public DateTime? PasswordLastChangeUtc { get; set; }
 
-        [Display(Name = "Password Age (Days)")]
+        [Display(Name = "password age (days)")]
         public int? PasswordAgeDays { get; set; }
 
         public bool HasExternalCredentials { get; set; }
-        [Display(Name = "External Credential State")]
+        [Display(Name = "external credential state")]
         public string ExternalCredentialState { get; set; }
 
         public bool HasFacebook = false;
@@ -55,11 +59,9 @@ namespace Fido.Action.Models
         public bool HasLinkedIn = false;
         public bool HasGoogle = false;
 
-   //     public IList<ExternalCredential> ExternalCredentials { get; set; } // Not sure if we want this or not yet
-
-        [Display(Name = "Created Date")]
+        [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
-        [Display(Name = "Record Age")]
+        [Display(Name = "record age")]
         public int? CreatedAgeDays { get; set; }
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
@@ -105,7 +107,9 @@ namespace Fido.Action.Models
                     HasGoogle = UserDto.HasLoginProvider("google")
                 };
 
-                // Cater for allowing the state of the user to be changed from non-selectable
+                // Just in case the current state is not one of the ones we want to allow
+                // the user to set, we use the below extention methods to ensure that if
+                // this is the case, the current state is added to the list...
                 Model.LocalCredentialStates.SmartAdd(UserDto.LocalCredentialState);
                 Model.ExternalCredentialStates.SmartAdd(UserDto.ExternalCredentialState);
 
@@ -118,25 +122,37 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var UserDto = new Dtos.User
-                    {
-                        Id = Model.Id,
-                        IsNew = Model.IsNew,
-                        CreatedUtc = Model.CreatedUtc,
-                        RowVersion = Model.RowVersion,
-                        EmailAddress = Model.EmailAddress,
-                        EmailAddressLastChangeUtc = Model.EmailAddressLastChangeUtc,
-                        Fullname = new Dtos.Fullname
-                            {
-                                Firstname = Model.Firstname,
-                                Surname = Model.Surname
-                            },
-                        About = Model.About,
-                        LocalCredentialState = Model.LocalCredentialState,
-                        ExternalCredentialState = Model.ExternalCredentialState
-                    };
+                //var UserDto = new Dtos.User
+                    //{
+                    //    Id = Model.Id,
+                    //    IsNew = Model.IsNew,
+                    //    CreatedUtc = Model.CreatedUtc,
+                    //    RowVersion = Model.RowVersion,
+                    //    EmailAddress = Model.EmailAddress,
+                    //    EmailAddressLastChangeUtc = Model.EmailAddressLastChangeUtc,
+                    //    Fullname = new Dtos.Fullname
+                    //        {
+                    //            Firstname = Model.Firstname,
+                    //            Surname = Model.Surname
+                    //        },
+                    //    About = Model.About,
 
-                UserService.Update(UserDto);
+                    //    // Only if is not new????????
+                    //    LocalCredentialState = Model.LocalCredentialState == null ? "None" : Model.LocalCredentialState,
+                    //    ExternalCredentialState = Model.ExternalCredentialState == null ? "None" : Model.ExternalCredentialState
+                    //};
+
+                //UserService.Update(UserDto);
+                var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
+                UserService.Save(UserDto);
+                //
+                // Additionally, update the email address and credential states from the view model via
+                // service calls...
+           //     UserService.SetEmailAddress(Model.EmailAddress);
+           //     UserService.SetPassword(Model.Password);
+           //     UserService.SetLocalCredentialState(Model.LocalCredentialState);
+           //     UserService.SetExternalCredentialState(Model.ExternalCredentialState);
+
                 FeedbackAPI.DisplaySuccess("The user details have been updated");
 
                 return true;

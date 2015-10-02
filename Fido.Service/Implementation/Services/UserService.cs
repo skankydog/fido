@@ -12,28 +12,80 @@ namespace Fido.Service.Implementation
     internal class UserService : CRUDService<User, Entities.User, DataAccess.IUserRepository>, IUserService
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>();
+        private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>(); // TO DO: not necessary
 
         #region Pages
-        // NOTE: Really only thinking about this as an idea
-        public IList<User> GetPageInSurnameOrder(int PageNo, int PageSize)
+        public IList<User> GetPageInDefaultOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Id),
+                OrderByDescending: q => q.OrderByDescending(s => s.Id));
+        }
+
+        public IList<User> GetPageInFirstnameOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Fullname.Firstname),
+                OrderByDescending: q => q.OrderByDescending(s => s.Fullname.Firstname));
+        }
+
+        public IList<User> GetPageInSurnameOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Fullname.Surname),
+                OrderByDescending: q => q.OrderByDescending(s => s.Fullname.Surname));
+        }
+
+        public IList<User> GetPageInEmailAddressOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.EmailAddress),
+                OrderByDescending: q => q.OrderByDescending(s => s.EmailAddress));
+        }
+
+        public IList<User> GetPageInLocalCredentialOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.LocalCredentialState),
+                OrderByDescending: q => q.OrderByDescending(s => s.LocalCredentialState));
+        }
+
+        public IList<User> GetPageInExternalCredentialOrder(int Skip, int Take, char SortDirection, string Filter)
+        {
+            return GetPage(Skip, Take, SortDirection, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.ExternalCredentialState),
+                OrderByDescending: q => q.OrderByDescending(s => s.ExternalCredentialState));
+        }
+
+        private IList<User> GetPage(int Skip, int Take, char SortDirection, string Filter,
+            Func<IQueryable<Entities.User>, IOrderedQueryable<Entities.User>> OrderByAscending,
+            Func<IQueryable<Entities.User>, IOrderedQueryable<Entities.User>> OrderByDescending)
         {
             using (new FunctionLogger(Log))
             {
-                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var EntityList = Repository.GetAsIEnumerable(e => e.Id != null, q => q.OrderBy(s => s.Fullname.Surname)).Skip(PageNo * PageSize).Take(PageSize).ToList();
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var OrderBy = SortDirection == 'a' ? OrderByAscending : OrderByDescending;
+                    var Query = UserRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
+
+                    if (Filter.IsNotNullOrEmpty())
+                    {
+                        Query = Query.Where(e => e.Fullname.Firstname.ToLower().Contains(Filter.ToLower())
+                                              || e.Fullname.Surname.ToLower().Contains(Filter.ToLower())
+                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower()));
+                    }
+
+                    Query = Query.Skip(Skip/* * Take*/).Take(Take);
+                    
+                    var EntityList = Query.ToList(); // Hit the database
 
                     IList<User> DtoList = AutoMapper.Mapper.Map<IList<Entities.User>, IList<User>>(EntityList);
                     return DtoList;
                 }
             }
         }
-
-        // ... more as needed ...
-
-        #endregion // only really thinking about this
+        #endregion
 
         #region Change Email Address
         public Guid InitiateChangeEmailAddress(Guid UserId, string NewEmailAddress)
@@ -90,7 +142,7 @@ namespace Fido.Service.Implementation
         }
         #endregion
 
-        #region Change/Expire Password
+        #region Change Password/Expire Credentials
         public User ChangeLocalPassword(Guid UserId, string OldPassword, string NewPassword)
         {
             using (new FunctionLogger(Log))
@@ -228,6 +280,13 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Administration
+        //public User Insert(User User)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //    }
+        //}
+
         public User Update(User User)
         {
             using (new FunctionLogger(Log))

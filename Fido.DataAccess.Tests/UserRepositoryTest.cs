@@ -55,7 +55,7 @@ namespace Fido.DataAccess.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            DataAccess.DataAccessFactory.CreateDataPrimer().Delete();
+            DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
     }
 }

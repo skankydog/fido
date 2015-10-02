@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Fido.Core;
+using Fido.Action.Models;
 
 namespace Fido.Action.Implementation
 {
@@ -43,9 +44,9 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> Success)
+        public TRETURN Read<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success)
         {
-            return DoRead<TMODEL>(Id, Page, Success);
+            return DoRead(Id, Params, Success);
         }
 
         public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Success)
@@ -53,7 +54,7 @@ namespace Fido.Action.Implementation
             return DoRead<TMODEL>(Id, null, Success);
         }
 
-        private TRETURN DoRead<TMODEL>(Guid Id, int? Page, Func<TMODEL, TRETURN> Success)
+        private TRETURN DoRead<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success)
         {
             using (new FunctionLogger(Log))
             {
@@ -64,7 +65,7 @@ namespace Fido.Action.Implementation
                 if (RedirectUI != null)
                     return RedirectUI;
 
-                return Processor.ExecuteRead(Id, Page, Success);
+                return Processor.ExecuteRead(Id, Params, Success);
             }
         }
 

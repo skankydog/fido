@@ -1,6 +1,8 @@
-﻿using System;
+﻿// http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
@@ -12,14 +14,10 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public IList<User> Users = new List<User>();
-
-        public class User
-        {
-            public Guid Id { get; set; }
-            public string Firstname { get; set; }
-            public string Surname { get; set; }
-        }
+        public string sEcho;
+        public int iTotalRecords;
+        public int iTotalDisplayRecords;
+        public IList<string[]> aaData = new List<string[]>();
         #endregion
 
         public UsersModel() { } // pure model
@@ -31,25 +29,39 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
-        public override UsersModel Read(Guid Id)
+        public override UsersModel Read(Guid Id, IndexParams Params)
         {
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var UserDtos = UserService.GetAll();
+                var Delegates = new Dictionary<int, Func<int, int, char, string, IList<Dtos.User>>>()
+                    {{ 0, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) },
+                     { 1, (s, t, o, f) => UserService.GetPageInFirstnameOrder(s, t, o, f) },
+                     { 2, (s, t, o, f) => UserService.GetPageInSurnameOrder(s, t, o, f) },
+                     { 3, (s, t, o, f) => UserService.GetPageInEmailAddressOrder(s, t, o, f) },
+                     { 4, (s, t, o, f) => UserService.GetPageInLocalCredentialOrder(s, t, o, f) },
+                     { 5, (s, t, o, f) => UserService.GetPageInExternalCredentialOrder(s, t, o, f) }};
 
-                // Jamie: The model will be wrapped in json, so the properties need to match what it is expecting. Here is
-                // the reference to use: http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part
+                var Users = Delegates[Params.SortColumn](Params.Skip, Params.Take, Params.SortOrder, Params.Filter);
+                var CountAll = UserService.CountAll();
+                var CountDisplay = Params.Filter.IsNullOrEmpty() ? CountAll : Users.Count();
 
-                foreach (var UserDto in UserDtos)
-                    Users.Add(new User
-                        { 
-                            Id = UserDto.Id, 
-                            Firstname = UserDto.Fullname.Firstname, 
-                            Surname = UserDto.Fullname.Surname 
-                        });
-
-                return this;
+                return new UsersModel
+                {
+                    sEcho = Params.Echo,
+                    iTotalRecords = CountAll,
+                    iTotalDisplayRecords = CountDisplay,
+                    aaData = (
+                        from Dto in Users
+                        select new[] {
+                            Dto.Id.ToString(),
+                            Dto.Fullname.Firstname,
+                            Dto.Fullname.Surname,
+                            Dto.EmailAddress.Nvl(),
+                            Dto.LocalCredentialState,
+                            Dto.ExternalCredentialState
+                          }).ToArray()
+                };
             }
         }
     }

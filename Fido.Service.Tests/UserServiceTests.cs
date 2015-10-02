@@ -117,18 +117,6 @@ namespace Fido.Service.Tests
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "weak");
         }
-
-        [TestMethod]
-        public void CanExpirePassword()
-        {
-            var UserService = ServiceFactory.CreateService<IUserService>();
-
-            User UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
-            UserService.ExpireLocalCredentials(UserDTO.Id);
-
-            UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
-            Assert.AreEqual("Expired", UserDTO.LocalCredentialState);
-        }
         #endregion
 
         #region Email Address Tests
@@ -194,6 +182,17 @@ namespace Fido.Service.Tests
             Assert.AreEqual("John", RetrievedUser.Fullname.Firstname);
             Assert.AreEqual("Citizen", RetrievedUser.Fullname.Surname);
         }
+        #endregion
+
+        #region Select Tests
+        //[TestMethod]
+        //public void CanGetPageInSurnameOrder()
+        //{
+        //    var UserService = ServiceFactory.CreateService<IUserService>();
+        //    var UserDTOs = UserService.GetPageInSurnameOrder();
+
+        //    Assert.AreEqual(1, UserDTOs.Count);
+        //}
         #endregion
 
         #region Role and Activity Tests
@@ -278,7 +277,7 @@ namespace Fido.Service.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            DataAccess.DataAccessFactory.CreateDataPrimer().Delete();
+            DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
 
         [ClassInitialize]

@@ -33,6 +33,18 @@ namespace Fido.Service.Implementation
             }
         }
 
+        public int CountAll()
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
+                    return Repository.GetAsIEnumerable(e => e.Id != null).Count();
+                }
+            }
+        }
+
         public IList<TDTO> GetAll()
         {
             using (new FunctionLogger(Log))

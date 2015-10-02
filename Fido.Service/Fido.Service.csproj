@@ -60,6 +60,7 @@
     <Compile Include="Implementation\Mapping\ProfileImageMapping.cs" />
     <Compile Include="Implementation\Mapping\ProfileMapping.cs" />
     <Compile Include="Implementation\Mapping\SettingsMapping.cs" />
+    <Compile Include="Implementation\Mapping\FullnameMapping.cs" />
     <Compile Include="Implementation\Services\AdministrationService.cs" />
     <Compile Include="Implementation\Services\ConfirmationService.cs" />
     <Compile Include="Implementation\Services\ProfileImageService.cs" />

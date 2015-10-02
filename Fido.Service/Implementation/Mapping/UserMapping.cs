@@ -22,8 +22,6 @@ namespace Fido.Service.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Entities.UserDetails.Fullname, Dtos.Fullname>()
-                    .ForMember(Dest => Dest.DisplayName, Options => Options.MapFrom(Src => string.Concat(Src.Firstname, " ", Src.Surname)));
                 Mapper.CreateMap<Entities.User, Dtos.User>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
                     .ForMember(Dest => Dest.HasLocalCredentials, Options => Options.MapFrom(Src => Src.CurrentLocalCredentialState.HasCredentials))
@@ -32,7 +30,6 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.MapFrom(Src => Src.CreatedUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.CreatedUtc).TotalDays)))
                     .ForMember(Dest => Dest.HasExternalCredentials, Options => Options.MapFrom(Src => Src.CurrentExternalCredentialState.HasCredentials));
 
-                Mapper.CreateMap<Dtos.Fullname, Entities.UserDetails.Fullname>();
                 Mapper.CreateMap<Dtos.User, Entities.User>()
                     .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore()) // Changes to EmailAddress must be done via service call
                     .ForMember(Dest => Dest.Password, Options => Options.Ignore()) // Not available to the DTO

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Script.Serialization;
+using Fido.Action.Models;
 
 namespace Fido.Action.Implementation
 {
@@ -24,6 +25,7 @@ namespace Fido.Action.Implementation
         }
 
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
+        public virtual TMODEL Read(Guid Id, IndexParams Params) { throw new NotImplementedException("Read not implemented"); }
         public virtual TMODEL Read(Guid Id, int Page) { throw new NotImplementedException("Read not implemented"); }
         public virtual bool Write(TMODEL Model) { throw new NotImplementedException("Write not implemented");  }
         public virtual bool Delete(Guid Id) { throw new NotImplementedException("Delete not implemented"); }

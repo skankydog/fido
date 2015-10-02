@@ -341,10 +341,14 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
             var UserDto = AuthenticationService.CreateByExternalCredentials("<provider1>", "<key1>", "ralph.wiggum@skankydog.com", "Ralph Wiggum");
-            var Credential = AuthenticationService.LinkExternalCredentials(UserDto.Id, "<provider1>", "<key2>", "ralph.wiggum@skankydog.com");
+            AuthenticationService.LinkExternalCredentials(UserDto.Id, "<provider1>", "<key2>", "ralph.wiggum@skankydog.com");
             Assert.AreEqual(2, AuthenticationService.GetExternalCredentials(UserDto.Id).Count);
 
-            AuthenticationService.UnlinkExternalCredentials(UserDto.Id, Credential.Id);
+            var CredentialId = (from c in AuthenticationService.GetExternalCredentials(UserDto.Id)
+                                where (c.LoginProvider == "<provider1>" && c.ProviderKey == "<key1>")
+                                select c.Id).FirstOrDefault();
+
+            AuthenticationService.UnlinkExternalCredentials(UserDto.Id, CredentialId);
             Assert.AreEqual(1, AuthenticationService.GetExternalCredentials(UserDto.Id).Count);
 
             Assert.IsNull(AuthenticationService.LoginByExternalCredentials("<provider1>", "<key1>"));
@@ -362,7 +366,7 @@ namespace Fido.Service.Tests
         [TestCleanup]
         public void TestCleanup()
         {
-            DataAccess.DataAccessFactory.CreateDataPrimer().Delete();
+            DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
 
         [ClassInitialize]

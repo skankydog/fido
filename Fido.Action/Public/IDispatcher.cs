@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using Fido.Core;
 using Fido.Action.Implementation;
+using Fido.Action.Models;
 
 namespace Fido.Action
 {
     public interface IDispatcher<TRETURN>
     {
         TRETURN View<TMODEL>(Func<TRETURN> Any);
-        TRETURN Read<TMODEL>(Guid Id, int Page, Func<TMODEL, TRETURN> Success);
+        TRETURN Read<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success);
         TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Success);
         TRETURN Write<TMODEL>(
             TMODEL Model,

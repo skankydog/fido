@@ -13,7 +13,7 @@ namespace Fido.Service.Implementation
     internal class AuthenticationService : IAuthenticationService
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>();
+        private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>(); // TO DO: not necessary
 
         #region Has Local/External Credentials
         public bool HasLocalCredentials(Guid UserId)
@@ -263,7 +263,7 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Set LCredentials");
+                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Register Local Credentials");
 
                     if (Confirmation == null)
                         throw new ServiceException(string.Format("Unable to complete setting of credentials - {0} not found or expired", ConfirmationId));
@@ -395,7 +395,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public ExternalCredential LinkExternalCredentials(Guid UserId, string LoginProvider, string ProviderKey, string EmailAddress)
+        public void LinkExternalCredentials(Guid UserId, string LoginProvider, string ProviderKey, string EmailAddress)
         {
             using (new FunctionLogger(Log))
             {
@@ -421,8 +421,6 @@ namespace Fido.Service.Implementation
                     UserEntity.CurrentExternalCredentialState.Link(LoginProvider, ProviderKey, EmailAddress);
                     UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
-
-                    return AutoMapper.Mapper.Map<Entities.ExternalCredential, Dtos.ExternalCredential>(ExternalCredentialEntity);
                 }
             }
         }

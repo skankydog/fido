@@ -1,5 +1,6 @@
 ﻿using System;
 using Fido.Core;
+using Fido.Action.Models;
 
 namespace Fido.Action.Implementation
 {
@@ -24,7 +25,7 @@ namespace Fido.Action.Implementation
             this.ModelImplementation = Model;
         }
 
-        public TRETURN ExecuteRead(Guid Id, int? Page, Func<TMODEL, TRETURN> SuccessUI)
+        public TRETURN ExecuteRead(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> SuccessUI)
         {
             using (new FunctionLogger(Log))
             {
@@ -32,13 +33,13 @@ namespace Fido.Action.Implementation
 
                 try
                 {
-                    if (Page == null)
+                    if (Params == null)
                     {
                         Model = ModelImplementation.Read(Id);
                     }
                     else
                     {
-                        Model = ModelImplementation.Read(Id, (int)Page);
+                        Model = ModelImplementation.Read(Id, (IndexParams)Params);
                     }
                 }
                 catch (Exception Ex)
