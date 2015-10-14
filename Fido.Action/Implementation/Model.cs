@@ -12,6 +12,8 @@ namespace Fido.Action.Implementation
 
         [ScriptIgnore]
         public bool RequiresAuthentication { get; private set; }
+        [ScriptIgnore]
+        public string InputState { get; private set; }
 
         public Model() { }
         internal Model(
@@ -26,9 +28,9 @@ namespace Fido.Action.Implementation
 
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
         public virtual TMODEL Read(Guid Id, IndexParams Params) { throw new NotImplementedException("Read not implemented"); }
-        public virtual TMODEL Read(Guid Id, int Page) { throw new NotImplementedException("Read not implemented"); }
+      //  public virtual TMODEL Read(Guid Id, int Page) { throw new NotImplementedException("Read not implemented"); }
         public virtual bool Write(TMODEL Model) { throw new NotImplementedException("Write not implemented");  }
-        public virtual bool Delete(Guid Id) { throw new NotImplementedException("Delete not implemented"); }
+        public virtual bool Delete(TMODEL Model) { throw new NotImplementedException("Delete not implemented"); }
         public virtual void OnInvalidWrite(TMODEL Model) { }
         public virtual void OnFailedWrite(TMODEL Model) { }
     }

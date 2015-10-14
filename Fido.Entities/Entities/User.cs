@@ -103,19 +103,20 @@ namespace Fido.Entities
             switch (State)
             {
                 case UserDetails.LocalCredentialStates.Expired.Name_:
-                //case "Expired":
                     CurrentLocalCredentialState.Expire();
                     break;
 
                 case UserDetails.LocalCredentialStates.Enabled.Name_:
-                //case "Enabled":
                     CurrentLocalCredentialState.Enable();
                     break;
 
                 case UserDetails.LocalCredentialStates.Disabled.Name_:
-                //case "Disabled":
                     CurrentLocalCredentialState.Disable();
                     break;
+
+                case UserDetails.LocalCredentialStates.None.Name_:
+                case null:
+                    break; // Do nothing - can't set to None
 
                 default:
                     throw new Exception(string.Format("Local credential state, {0}, not valid", State));
@@ -127,14 +128,16 @@ namespace Fido.Entities
             switch (State)
             {
                 case UserDetails.ExternalCredentialStates.Enabled.Name_:
-                //case "Enabled":
                     CurrentExternalCredentialState.Enable();
                     break;
 
                 case UserDetails.ExternalCredentialStates.Disabled.Name_:
-                //case "Disabled":
                     CurrentExternalCredentialState.Disable();
                     break;
+
+                case UserDetails.ExternalCredentialStates.None.Name_:
+                case null:
+                    break; // Do nothing - can't set to None
 
                 default:
                     throw new Exception(string.Format("External credential state, {0}, not valid", ExternalCredentialState));

@@ -21,7 +21,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
             return Dispatcher.Read<UsersModel>(
                 Id: AuthenticatedId,
                 Params: Params,
-                Success: m => Json(m, JsonRequestBehavior.AllowGet));
+                Any: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Index()
@@ -46,7 +46,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Read<UserModel>(
                 Id: Id,
-                Success: m => View(m));
+                Any: m => View(m));
         }
 
         [HttpPost]
@@ -59,19 +59,19 @@ namespace Fido.WebUI.Areas.Administration.Controllers
                 Failure: m => View(m));
         }
 
-        public ActionResult DeleteConfirmation(Guid Id)
+        public ActionResult Delete(Guid Id)
         {
             return Dispatcher.Read<UserModel>(
                 Id: Id,
-                Success: m => View(m));
+                Any: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid Id)
+        public ActionResult Delete(UserModel Model)
         {
             return Dispatcher.Delete_<UserModel>(
-                Id: Id,
-                Any: () => RedirectToAction("Users"));
+                Model: Model,
+                Any: () => PartialView()); // Modal - redirect happens from client side... thinking, thinking, thinking.
         }
     }
 }

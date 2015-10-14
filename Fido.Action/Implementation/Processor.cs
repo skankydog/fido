@@ -84,11 +84,11 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN ExecuteDelete(Guid Id, Func<TRETURN> UI)
+        public TRETURN ExecuteDelete(TMODEL Model, Func<TRETURN> UI)
         {
             using (new FunctionLogger(Log))
             {
-                ModelImplementation.Delete(Id);
+                ModelImplementation.Delete(Model);
                 return UI();
             }
         }

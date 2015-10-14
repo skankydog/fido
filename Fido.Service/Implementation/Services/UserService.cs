@@ -280,37 +280,66 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Administration
-        //public User Insert(User User)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //    }
-        //}
-
-        public User Update(User User)
+        public User SetLocalCredentialState(Guid UserId, string State)
         {
             using (new FunctionLogger(Log))
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(User.Id);
+                    var UserEntity = UserRepository.Get(UserId);
 
-                    UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
-
-                    if (User.LocalCredentialState != UserEntity.LocalCredentialState)
-                        UserEntity.SetLocalCredentialState(User.LocalCredentialState);
-
-                    if (User.ExternalCredentialState != UserEntity.ExternalCredentialState)
-                        UserEntity.SetExternalCredentialState(User.ExternalCredentialState);
-
-                    UserEntity = UserRepository.Update(UserEntity);
+                    UserEntity.SetLocalCredentialState(State);
+                    var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
-                    return AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
+                    return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
                 }
             }
         }
+
+        public User SetExternalCredentialState(Guid UserId, string State)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = UserRepository.Get(UserId);
+
+                    UserEntity.SetExternalCredentialState(State);
+                    var SavedUser = UserRepository.Update(UserEntity);
+                    UnitOfWork.Commit();
+
+                    return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                }
+            }
+        }
+
+        //public User Update(User User)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //        {
+        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+        //            var UserEntity = UserRepository.Get(User.Id);
+
+        //            UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
+
+        //            if (User.LocalCredentialState != UserEntity.LocalCredentialState)
+        //                UserEntity.SetLocalCredentialState(User.LocalCredentialState);
+
+        //            if (User.ExternalCredentialState != UserEntity.ExternalCredentialState)
+        //                UserEntity.SetExternalCredentialState(User.ExternalCredentialState);
+
+        //            UserEntity = UserRepository.Update(UserEntity);
+        //            UnitOfWork.Commit();
+
+        //            return AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
+        //        }
+        //    }
+        //}
         #endregion
 
         #region Roles and Activities

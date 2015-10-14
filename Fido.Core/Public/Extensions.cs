@@ -12,12 +12,6 @@ namespace Fido.Core
             return Guid.Parse(GuidAsString);
         }
 
-        public static void SmartAdd<T>(this List<T> List, T Item)
-        {
-            if (List.Contains(Item) == false)
-                List.Add(Item);
-        }
-
         public static bool IsNullOrEmpty(this string Param)
         {
             return (string.IsNullOrEmpty(Param));

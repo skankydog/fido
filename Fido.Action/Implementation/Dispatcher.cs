@@ -35,7 +35,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var ModelInstance = GetModel<TMODEL>();
-                var RedirectUI = CheckPermission(ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance); // Write
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -44,14 +44,14 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success)
+        public TRETURN Read<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Any)
         {
-            return DoRead(Id, Params, Success);
+            return DoRead(Id, Params, Any);
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Success)
+        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Any)
         {
-            return DoRead<TMODEL>(Id, null, Success);
+            return DoRead<TMODEL>(Id, null, Any);
         }
 
         private TRETURN DoRead<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success)
@@ -60,7 +60,7 @@ namespace Fido.Action.Implementation
             {
                 var ModelInstance = GetModel<TMODEL>();
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var RedirectUI = CheckPermission(ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance); // Read
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -79,7 +79,7 @@ namespace Fido.Action.Implementation
             {
                 var ModelInstance = GetModel<TMODEL>();
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var RedirectUI = CheckPermission(ModelInstance);
+                var RedirectUI = CheckPermission(ModelInstance); // Write
 
                 if (RedirectUI != null)
                     return RedirectUI;
@@ -95,18 +95,18 @@ namespace Fido.Action.Implementation
             return Write(Model, Any, Any, Any);
         }
 
-        public TRETURN Delete_<TMODEL>(Guid Id, Func<TRETURN> Success)
+        public TRETURN Delete_<TMODEL>(TMODEL Model, Func<TRETURN> Success)
         {
             using (new FunctionLogger(Log))
             {
                 var ModelInstance = GetModel<TMODEL>();
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var Redirect = CheckPermission(ModelInstance);
+                var Redirect = CheckPermission(ModelInstance); // Delete
 
                 if (Redirect != null)
                     return Redirect;
 
-                return Processor.ExecuteDelete(Id, Success);
+                return Processor.ExecuteDelete(Model, Success);
             }
         }
 

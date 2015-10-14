@@ -18,7 +18,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<ProfileModel>(
                 Id: AuthenticatedId,
-                Success: m => View(m));
+                Any: m => View(m));
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<ProfileImageModel>(
                 Id: UserId,
-                Success:
+                Any:
                     m => m != null && m.Image != null
                         ? new FileContentResult(m.Image, "image/jpeg")
                         : null);
@@ -45,7 +45,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<SettingsModel>(
                 Id: AuthenticatedId,
-                Success: m => View(m));
+                Any: m => View(m));
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangeEmailAddress()
         {
             return Dispatcher.View<ChangeEmailAddressModel>(
-                Any: PartialView); // was returning "View"
+                Any: PartialView);
         }
 
         [HttpPost]

@@ -23,13 +23,22 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Dtos.Fullname, UserModel>();
                 Mapper.CreateMap<Dtos.User, UserModel>()
-                    .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)); // Viewmodel created from a read
+                    .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
+                    .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
+                    .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
+                    .ForMember(Dest => Dest.LocalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Expired", "Enabled", "Disabled", Src.LocalCredentialState }))
+                    .ForMember(Dest => Dest.ExternalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Enabled", "Disabled", Src.ExternalCredentialState }))
+                    .ForMember(Dest => Dest.HasFacebook, Options => Options.MapFrom(Src => Src.HasLoginProvider("facebook")))
+                    .ForMember(Dest => Dest.HasTwitter, Options => Options.MapFrom(Src => Src.HasLoginProvider("twitter")))
+                    .ForMember(Dest => Dest.HasLinkedIn, Options => Options.MapFrom(Src => Src.HasLoginProvider("linkedin")))
+                    .ForMember(Dest => Dest.HasGoogle, Options => Options.MapFrom(Src => Src.HasLoginProvider("google")));
 
                 Mapper.CreateMap<UserModel, Dtos.Fullname>()
                     .ForMember(Dest => Dest.DisplayName, Options => Options.Ignore());
-                Mapper.CreateMap<UserModel, Dtos.User>();
+                Mapper.CreateMap<UserModel, Dtos.User>()
+                    .ForMember(Dest => Dest.LocalCredentialState, Options => Options.MapFrom(m => m.ExternalCredentialState == null ? "None" : m.ExternalCredentialState))
+                    .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<UserModel, Dtos.Fullname>(Src)));
             }
         }
     }
