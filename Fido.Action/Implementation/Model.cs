@@ -14,8 +14,6 @@ namespace Fido.Action.Implementation
         public bool RequiresAuthentication { get; private set; }
         [ScriptIgnore]
         public string State { get; set; }
-    //    [ScriptIgnore]
-    //    public string InputState { get; private set; }
 
         public Model() { }
         internal Model(
