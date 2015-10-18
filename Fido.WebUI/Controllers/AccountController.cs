@@ -18,22 +18,22 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<ProfileModel>(
                 Id: AuthenticatedId,
-                Any: m => View(m));
+                Result: m => View(m));
         }
 
         [HttpPost]
         public ActionResult Profile_(ProfileModel Model)
         {
             return Dispatcher.Write<ProfileModel>(
-                Model: Model,
-                Any: m => View(m));
+                DataModel: Model,
+                AnyResult: m => View(m));
         }
 
         public ActionResult ProfileImage(Guid UserId)
         {
             return Dispatcher.Read<ProfileImageModel>(
                 Id: UserId,
-                Any:
+                Result:
                     m => m != null && m.Image != null
                         ? new FileContentResult(m.Image, "image/jpeg")
                         : null);
@@ -45,7 +45,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Read<SettingsModel>(
                 Id: AuthenticatedId,
-                Any: m => View(m));
+                Result: m => View(m));
         }
         #endregion
 
@@ -53,15 +53,15 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangePassword()
         {
             return Dispatcher.View<ChangePasswordModel>(
-                Any: PartialView);
+                Result: PartialView);
         }
 
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Any: m => PartialView(m));
+                DataModel: Model,
+                AnyResult: m => PartialView(m));
         }
         #endregion
 
@@ -69,15 +69,15 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangeEmailAddress()
         {
             return Dispatcher.View<ChangeEmailAddressModel>(
-                Any: PartialView);
+                Result: PartialView);
         }
 
         [HttpPost]
         public ActionResult ChangeEmailAddress(ChangeEmailAddressModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Any: m => PartialView(m));
+                DataModel: Model,
+                AnyResult: m => PartialView(m));
         }
         #endregion
 
@@ -85,15 +85,15 @@ namespace Fido.WebUI.Controllers
         public ActionResult SetCredentials()
         {
             return Dispatcher.View<SetCredentialsModel>(
-                Any: PartialView); // was "View"
+                Result: PartialView); // was "View"
         }
 
         [HttpPost]
         public ActionResult SetCredentials(SetCredentialsModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Any: m => PartialView(m));
+                DataModel: Model,
+                AnyResult: m => PartialView(m));
         }
         #endregion
 
@@ -115,28 +115,28 @@ namespace Fido.WebUI.Controllers
             }
 
             return Dispatcher.Write(
-                Model: new LinkExternalCredentialsCallbackModel
+                DataModel: new LinkExternalCredentialsCallbackModel
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
                         EmailAddress = ExternalLoginInfo.Email
                     },
-                    Any: m => RedirectToAction("Settings"));
+                    AnyResult: m => RedirectToAction("Settings"));
         }
 
         public ActionResult UnlinkExternalCredentials(UnlinkExternalCredentialsModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Any: m => RedirectToAction("Settings"));
+                DataModel: Model,
+                AnyResult: m => RedirectToAction("Settings"));
         }
         #endregion
 
         public ActionResult Confirmation(ConfirmationModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Any: m => RedirectToAction("LocalLogin", "Authentication"));
+                DataModel: Model,
+                AnyResult: m => RedirectToAction("LocalLogin", "Authentication"));
         }
     }
 }

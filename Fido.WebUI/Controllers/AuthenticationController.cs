@@ -72,10 +72,10 @@ namespace Fido.WebUI.Controllers
             ViewBag.ReturnUrl = ReturnUrl;
 
             return Dispatcher.Write(
-                Model: Model,
-                Success: m => RedirectToLocal(ReturnUrl),
-                Failure: m => View(),
-                Invalid: m => View(m));
+                DataModel: Model,
+                SuccessResult: m => RedirectToLocal(ReturnUrl),
+                FailureResult: m => View(),
+                InvalidResult: m => View(m));
         }
         #endregion
 
@@ -98,16 +98,16 @@ namespace Fido.WebUI.Controllers
             }
 
             return Dispatcher.Write(
-                Model: new ExternalLoginCallbackModel
+                DataModel: new ExternalLoginCallbackModel
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
                         EmailAddress = ExternalLoginInfo.Email,
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
-                Success: m => RedirectToLocal(ReturnUrl),
-                Failure: m => RedirectToAction("LocalLogin"),
-                Invalid: m => RedirectToAction("LocalLogin"));
+                SuccessResult: m => RedirectToLocal(ReturnUrl),
+                FailureResult: m => RedirectToAction("LocalLogin"),
+                InvalidResult: m => RedirectToAction("LocalLogin"));
         }
         #endregion
 
@@ -136,10 +136,10 @@ namespace Fido.WebUI.Controllers
         public ActionResult Registration(RegistrationModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Success: m => RedirectToAction("LocalLogin"),
-                Failure: m => View(m),
-                Invalid: m => View(m));
+                DataModel: Model,
+                SuccessResult: m => RedirectToAction("LocalLogin"),
+                FailureResult: m => View(m),
+                InvalidResult: m => View(m));
         }
         #endregion
 
@@ -153,10 +153,10 @@ namespace Fido.WebUI.Controllers
         public ActionResult ForgottenPassword(ForgottenPasswordModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Success: m => RedirectToAction("LocalLogin"),
-                Failure: m => View(m),
-                Invalid: m => View(m));
+                DataModel: Model,
+                SuccessResult: m => RedirectToAction("LocalLogin"),
+                FailureResult: m => View(m),
+                InvalidResult: m => View(m));
         }
 
         public ActionResult ResetPassword(Guid ConfirmationId)
@@ -168,10 +168,10 @@ namespace Fido.WebUI.Controllers
         public ActionResult ResetPassword(ResetPasswordModel Model)
         {
             return Dispatcher.Write(
-                Model: Model,
-                Success: m => RedirectToAction("Index", "Home"),
-                Failure: m => View(m),
-                Invalid: m => View(m));
+                DataModel: Model,
+                SuccessResult: m => RedirectToAction("Index", "Home"),
+                FailureResult: m => View(m),
+                InvalidResult: m => View(m));
         }
         #endregion
     }

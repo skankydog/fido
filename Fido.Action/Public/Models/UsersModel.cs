@@ -29,7 +29,7 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
-        public override UsersModel Read(Guid Id, IndexParams Params)
+        public override UsersModel Read(Guid Id, IndexOptions Params)
         {
             using (new FunctionLogger(Log))
             {

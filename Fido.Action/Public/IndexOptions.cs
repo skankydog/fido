@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fido.Action
 {
-    public class IndexParams
+    public class IndexOptions
     {
         public string Echo { get; set; } // Sequence number
         public string Filter { get; set; } // Typed into the search textbox

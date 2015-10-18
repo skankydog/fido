@@ -11,35 +11,35 @@ namespace Fido.Action.Implementation
         protected IFeedbackAPI FeedbackAPI { get; set; }
         protected IAuthenticationAPI AuthenticationAPI { get; set; }
         protected IModelAPI ModelAPI { get; set; }
-        IModel<TMODEL> ModelImplementation { get; set; }
+        IModel<TMODEL> LogicModel { get; set; }
 
         internal Processor(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
-            IModel<TMODEL> Model)
+            IModel<TMODEL> LogicModel)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
-            this.ModelImplementation = Model;
+            this.LogicModel = LogicModel;
         }
 
-        public TRETURN ExecuteRead(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> SuccessUI)
+        public TRETURN ExecuteRead(Guid Id, IndexOptions StateOptions, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
-                TMODEL Model = default(TMODEL);
+                TMODEL DataModel = default(TMODEL);
 
                 try
                 {
-                    if (Params == null)
+                    if (StateOptions == null)
                     {
-                        Model = ModelImplementation.Read(Id);
+                        DataModel = LogicModel.Read(Id);
                     }
                     else
                     {
-                        Model = ModelImplementation.Read(Id, (IndexParams)Params);
+                        DataModel = LogicModel.Read(Id, StateOptions);
                     }
                 }
                 catch (Exception Ex)
@@ -48,11 +48,11 @@ namespace Fido.Action.Implementation
                     Log.Fatal(Ex.ToString());
                 }
 
-                return SuccessUI(Model);
+                return Result(DataModel);
             }
         }
 
-        public TRETURN ExecuteWrite(TMODEL Model, Func<TMODEL, TRETURN> SuccessUI, Func<TMODEL, TRETURN> FailureUI, Func<TMODEL, TRETURN> InvalidUI)
+        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -60,36 +60,37 @@ namespace Fido.Action.Implementation
                 {
                     try
                     {
-                        if (ModelImplementation.Write(Model) == true)
+                        if (LogicModel.Write(DataModel) == true)
                         {
-                            Log.Info("Success returned from OnValidModel");
-                            if (Model is IModelUI) ((IModelUI)Model).InputState = "Success";
-                            return SuccessUI(Model);
+                            Log.Info("Successful write");
+                            if (DataModel is IModel) { ((IModel)DataModel).State = "Valid"; }
+                            return SuccessResult(DataModel);
                         }
                     }
                     catch (Exception Ex)
                     {
                         FeedbackAPI.DisplayError(Ex.Message);
-                        Log.Info("Exception from OnValidModel: " + Ex.ToString());
+                        Log.Info("Exception thrown in write: " + Ex.ToString());
                     }
 
-                    ModelImplementation.OnFailedWrite(Model);
-                    if (Model is IModelUI) ((IModelUI)Model).InputState = "Failure";
-                    return FailureUI(Model);
+                    LogicModel.OnFailedWrite(DataModel);
+                    if (DataModel is IModel) { ((IModel)DataModel).State = "Failed"; }
+                    return FailureResult(DataModel);
                 }
 
-                ModelImplementation.OnInvalidWrite(Model);
-                if (Model is IModelUI) ((IModelUI)Model).InputState = "Invalid";
-                return InvalidUI(Model);
+                Log.Info("Invalid model");
+                LogicModel.OnInvalidWrite(DataModel);
+                if (DataModel is IModel) { ((IModel)DataModel).State = "Invalid"; }
+                return InvalidResult(DataModel);
             }
         }
 
-        public TRETURN ExecuteDelete(TMODEL Model, Func<TRETURN> UI)
+        public TRETURN ExecuteDelete(TMODEL DataModel, Func<TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
-                ModelImplementation.Delete(Model);
-                return UI();
+                LogicModel.Delete(DataModel);
+                return Result();
             }
         }
     }

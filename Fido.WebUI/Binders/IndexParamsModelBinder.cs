@@ -13,10 +13,10 @@ namespace Fido.WebUI.Binders
 
         public override object BindModel(ControllerContext ControllerContext, ModelBindingContext BindingContext)
         {
-            if (BindingContext.ModelType == typeof(IndexParams))
+            if (BindingContext.ModelType == typeof(IndexOptions))
             {
                 Request = ControllerContext.HttpContext.Request;
-                IndexParams Model = new IndexParams();
+                IndexOptions Model = new IndexOptions();
 
                 Model.Echo = Request["sEcho"];
                 Model.Filter = Request["sSearch"];

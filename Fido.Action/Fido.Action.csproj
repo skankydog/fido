@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\IModelCRUD.cs" />
-    <Compile Include="Implementation\IModelUI.cs" />
     <Compile Include="Implementation\Mapping\UserMapping.cs" />
     <Compile Include="Public\IDispatcher.cs" />
     <Compile Include="Public\Models\ChangeEmailAddressModel.cs" />
@@ -80,7 +79,7 @@
     <Compile Include="Public\APIs\IAuthenticationAPI.cs" />
     <Compile Include="Public\APIs\IModelAPI.cs" />
     <Compile Include="Public\APIs\IFeedbackAPI.cs" />
-    <Compile Include="Public\IndexParams.cs" />
+    <Compile Include="Public\IndexOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fido.Core\Fido.Core.csproj">

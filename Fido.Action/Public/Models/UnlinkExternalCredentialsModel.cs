@@ -15,7 +15,7 @@ namespace Fido.Action.Models
         public DateTime CreatedUtc { get; set; }
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
-        public string InputState { get; set; }
+  //      public string InputState { get; set; }
         #endregion
 
         public UnlinkExternalCredentialsModel() { } // pure model

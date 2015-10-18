@@ -11,7 +11,7 @@
             {
                 HttpMethod = "POST",
                 UpdateTargetId = "skd-modal-ajax-wrapper",
-                OnSuccess = "CheckInputState"
+                OnSuccess = "CheckState"
             }))
         {
             @Html.AntiForgeryToken()
@@ -41,7 +41,8 @@
 
                     @Html.HiddenFor(m => m.Id)
 
-                    @if (Model != null) { <input type="hidden" id="InputState" name="InputState" value="@Model.InputState" /> }
+                    @*if (Model != null) { <input type="hidden" id="InputState" name="InputState" value="@Model.InputState" /> }*@ 
+                    @if (Model != null) { <input type="hidden" id="State" name="State" value="@Model.State" /> }
 
                     <span class="skd-spacing-large"></span>
                     <div class="col-xs-6 col-centered">
@@ -65,7 +66,7 @@
 </div>
 
 <script type="text/javascript">
-    function CheckInputState() {
+    function CheckState() {
         var SuccessPath = '@(Url.Action("Index", "User"))';
         document.location = SuccessPath;
     }

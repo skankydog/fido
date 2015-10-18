@@ -7,7 +7,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class LocalCredentialModel : Model<LocalCredentialModel>, IModelCRUD, IModelUI
+    public class LocalCredentialModel : Model<LocalCredentialModel>, IModelCRUD
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -35,7 +35,7 @@ namespace Fido.Action.Models
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
 
-        public string InputState { get; set; }
+     //   public string InputState { get; set; }
         #endregion
 
         public LocalCredentialModel() { } // pure model

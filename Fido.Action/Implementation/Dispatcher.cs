@@ -13,127 +13,127 @@ namespace Fido.Action.Implementation
         IFeedbackAPI FeedbackAPI;
         IAuthenticationAPI AuthenticationAPI;
         IModelAPI ModelAPI;
-        Func<TRETURN> AuthenticateUI;
-        Func<TRETURN> PasswordResetUI;
+        Func<TRETURN> AuthenticateResult;
+        Func<TRETURN> PasswordResetResult;
 
         public Dispatcher(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
-            Func<TRETURN> AuthoriseUI,
-            Func<TRETURN> PasswordResetUI)
+            Func<TRETURN> AuthenticateResult,
+            Func<TRETURN> PasswordResetResult)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
-            this.AuthenticateUI = AuthoriseUI;
-            this.PasswordResetUI = PasswordResetUI;
+            this.AuthenticateResult = AuthenticateResult;
+            this.PasswordResetResult = PasswordResetResult;
         }
 
-        public TRETURN View<TMODEL>(Func<TRETURN> Any)
+        public TRETURN View<TMODEL>(Func<TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
-                var ModelInstance = GetModel<TMODEL>();
-                var RedirectUI = CheckPermission(ModelInstance); // Write
-
-                if (RedirectUI != null)
-                    return RedirectUI;
-
-                return Any();
-            }
-        }
-
-        public TRETURN Read<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Any)
-        {
-            return DoRead(Id, Params, Any);
-        }
-
-        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Any)
-        {
-            return DoRead<TMODEL>(Id, null, Any);
-        }
-
-        private TRETURN DoRead<TMODEL>(Guid Id, IndexParams Params, Func<TMODEL, TRETURN> Success)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var ModelInstance = GetModel<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var RedirectUI = CheckPermission(ModelInstance); // Read
-
-                if (RedirectUI != null)
-                    return RedirectUI;
-
-                return Processor.ExecuteRead(Id, Params, Success);
-            }
-        }
-
-        public TRETURN Write<TMODEL>(
-            TMODEL Model,
-            Func<TMODEL, TRETURN> Success,
-            Func<TMODEL, TRETURN> Failure,
-            Func<TMODEL, TRETURN> Invalid)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var ModelInstance = GetModel<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var RedirectUI = CheckPermission(ModelInstance); // Write
-
-                if (RedirectUI != null)
-                    return RedirectUI;
-
-                return Processor.ExecuteWrite(Model, Success, Failure, Invalid);
-            }
-        }
-
-        public TRETURN Write<TMODEL>(
-            TMODEL Model,
-            Func<TMODEL, TRETURN> Any)
-        {
-            return Write(Model, Any, Any, Any);
-        }
-
-        public TRETURN Delete_<TMODEL>(TMODEL Model, Func<TRETURN> Success)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var ModelInstance = GetModel<TMODEL>();
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, ModelInstance);
-                var Redirect = CheckPermission(ModelInstance); // Delete
+                var LogicModel = GetLogicModel<TMODEL>();
+                var Redirect = CheckPermission(LogicModel); // Write
 
                 if (Redirect != null)
                     return Redirect;
 
-                return Processor.ExecuteDelete(Model, Success);
+                return Result();
             }
         }
 
-        private IModel<TMODEL> GetModel<TMODEL>()
+        public TRETURN Read<TMODEL>(Guid Id, IndexOptions StateOptions, Func<TMODEL, TRETURN> Result)
+        {
+            return DoRead(Id, StateOptions, Result);
+        }
+
+        public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
+        {
+            return DoRead<TMODEL>(Id, null, Result);
+        }
+
+        private TRETURN DoRead<TMODEL>(Guid Id, IndexOptions StateOptions, Func<TMODEL, TRETURN> Result)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var LogicModel = GetLogicModel<TMODEL>();
+                var Redirect = CheckPermission(LogicModel); // Read
+
+                if (Redirect != null)
+                    return Redirect;
+
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                return Processor.ExecuteRead(Id, StateOptions, Result);
+            }
+        }
+
+        public TRETURN Write<TMODEL>(
+            TMODEL DataModel,
+            Func<TMODEL, TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> FailureResult,
+            Func<TMODEL, TRETURN> InvalidResult)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var LogicModel = GetLogicModel<TMODEL>();
+                var Redirect = CheckPermission(LogicModel); // Write
+
+                if (Redirect != null)
+                    return Redirect;
+
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                return Processor.ExecuteWrite(DataModel, SuccessResult, FailureResult, InvalidResult);
+            }
+        }
+
+        public TRETURN Write<TMODEL>(
+            TMODEL DataModel,
+            Func<TMODEL, TRETURN> AnyResult)
+        {
+            return Write(DataModel, AnyResult, AnyResult, AnyResult);
+        }
+
+        public TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var LogicModel = GetLogicModel<TMODEL>();
+                var Redirect = CheckPermission(LogicModel); // Delete
+
+                if (Redirect != null)
+                    return Redirect;
+
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                return Processor.ExecuteDelete(DataModel, Result);
+            }
+        }
+
+        private IModel<TMODEL> GetLogicModel<TMODEL>()
         {
             using (new FunctionLogger(Log))
             {
                 var SourceAssembly = Assembly.GetAssembly(this.GetType());
-                var HandlerPath = string.Concat(SourceAssembly.GetName().Name, ".Models.", typeof(TMODEL).Name);
-                var HandlerType = SourceAssembly.GetType(HandlerPath);
+                var ModelPath = string.Concat(SourceAssembly.GetName().Name, ".Models.", typeof(TMODEL).Name);
+                var ModelType = SourceAssembly.GetType(ModelPath);
 
-                if (HandlerType == null)
-                    throw new Exception(string.Format("{0} <T> not found", HandlerPath));
+                if (ModelType == null)
+                    throw new Exception(string.Format("{0} <T> not found", ModelPath));
 
-                return (IModel<TMODEL>)Activator.CreateInstance(HandlerType, FeedbackAPI, AuthenticationAPI, ModelAPI);
+                return (IModel<TMODEL>)Activator.CreateInstance(ModelType, FeedbackAPI, AuthenticationAPI, ModelAPI);
             }
         }
 
-        private TRETURN CheckPermission<TMODEL>(IModel<TMODEL> Model)
+        private TRETURN CheckPermission<TMODEL>(IModel<TMODEL> LogicModel)
         {
-            if (Model.RequiresAuthentication)
+            if (LogicModel.RequiresAuthentication)
             {
                 if (!AuthenticationAPI.Authenticated)
-                    return AuthenticateUI();
+                    return AuthenticateResult();
 
                 if (AuthenticationAPI.LoggedInCredentialState == "Expired")
-                    return PasswordResetUI();
+                    return PasswordResetResult();
 
                 // PermissionCheck(UserInterface.UserId, ReadHandler.Name, Write) // throw if missing required permission
             }

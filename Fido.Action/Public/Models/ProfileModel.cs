@@ -16,7 +16,7 @@ namespace Fido.Action.Models
         public DateTime CreatedUtc { get; set; }
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
-        public string InputState { get; set; }
+   //     public string InputState { get; set; }
 
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; } // Read only
