@@ -20,7 +20,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Read<UsersModel>(
                 Id: AuthenticatedId,
-                StateOptions: Params,
+                IndexOptions: Params,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 

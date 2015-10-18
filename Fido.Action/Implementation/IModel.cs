@@ -13,7 +13,7 @@ namespace Fido.Action.Implementation
         bool RequiresAuthentication { get; }
         
         TMODEL Read(Guid Id);
-        TMODEL Read(Guid Id, IndexOptions StateOptions);
+        TMODEL Read(Guid Id, IndexOptions IndexOptions);
         bool Write(TMODEL DataModel);
         bool Delete(TMODEL DataModel);
         void OnInvalidWrite(TMODEL DataModel);

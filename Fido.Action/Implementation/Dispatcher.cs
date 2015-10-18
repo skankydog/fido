@@ -44,9 +44,9 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN Read<TMODEL>(Guid Id, IndexOptions StateOptions, Func<TMODEL, TRETURN> Result)
+        public TRETURN Read<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
-            return DoRead(Id, StateOptions, Result);
+            return DoRead(Id, IndexOptions, Result);
         }
 
         public TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
@@ -54,7 +54,7 @@ namespace Fido.Action.Implementation
             return DoRead<TMODEL>(Id, null, Result);
         }
 
-        private TRETURN DoRead<TMODEL>(Guid Id, IndexOptions StateOptions, Func<TMODEL, TRETURN> Result)
+        private TRETURN DoRead<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
@@ -65,7 +65,7 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteRead(Id, StateOptions, Result);
+                return Processor.ExecuteRead(Id, IndexOptions, Result);
             }
         }
 
