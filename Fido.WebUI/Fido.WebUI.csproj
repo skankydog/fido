@@ -176,6 +176,7 @@
     <Compile Include="Binders\CustomByteArrayModelBinder.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Binders\IndexParamsModelBinder.cs" />
+    <Compile Include="Common\ModalRedirectToLocalModel.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Common\ChallengeResult.cs" />
     <Compile Include="Common\BaseController.cs" />
@@ -267,7 +268,6 @@
     <Content Include="Areas\Administration\Views\User\Update.cshtml" />
     <Content Include="Areas\Administration\Views\User\Create.cshtml" />
     <Content Include="Areas\Administration\Views\User\Delete.cshtml" />
-    <Content Include="Areas\Administration\Views\User\Delete-old.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
@@ -342,6 +342,7 @@
     <Content Include="Views\Account\SettingsLocal.cshtml" />
     <Content Include="Views\Account\SettingsExternal.cshtml" />
     <Content Include="Areas\Administration\Views\User\Index.cshtml" />
+    <Content Include="Views\Home\ModalRedirectToLocal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

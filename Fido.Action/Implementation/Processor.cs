@@ -52,7 +52,7 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
+        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -64,7 +64,7 @@ namespace Fido.Action.Implementation
                         {
                             Log.Info("Successful write");
                             if (DataModel is IModel) { ((IModel)DataModel).State = "Valid"; }
-                            return SuccessResult(DataModel);
+                            return SuccessResult();
                         }
                     }
                     catch (Exception Ex)

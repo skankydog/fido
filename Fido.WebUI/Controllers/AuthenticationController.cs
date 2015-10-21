@@ -73,9 +73,8 @@ namespace Fido.WebUI.Controllers
 
             return Dispatcher.Write(
                 DataModel: Model,
-                SuccessResult: m => RedirectToLocal(ReturnUrl),
-                FailureResult: m => View(),
-                InvalidResult: m => View(m));
+                SuccessResult: () => RedirectToLocal(ReturnUrl),
+                NonsuccessResult: m => View());
         }
         #endregion
 
@@ -105,9 +104,8 @@ namespace Fido.WebUI.Controllers
                         EmailAddress = ExternalLoginInfo.Email,
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
-                SuccessResult: m => RedirectToLocal(ReturnUrl),
-                FailureResult: m => RedirectToAction("LocalLogin"),
-                InvalidResult: m => RedirectToAction("LocalLogin"));
+                SuccessResult: () => RedirectToLocal(ReturnUrl),
+                NonsuccessResult: m => RedirectToAction("LocalLogin"));
         }
         #endregion
 
@@ -137,9 +135,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("LocalLogin"),
-                FailureResult: m => View(m),
-                InvalidResult: m => View(m));
+                SuccessResult: () => RedirectToAction("LocalLogin"),
+                NonsuccessResult: m => View(m));
         }
         #endregion
 
@@ -154,9 +151,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("LocalLogin"),
-                FailureResult: m => View(m),
-                InvalidResult: m => View(m));
+                SuccessResult: () => RedirectToAction("LocalLogin"),
+                NonsuccessResult: m => View(m));
         }
 
         public ActionResult ResetPassword(Guid ConfirmationId)
@@ -169,9 +165,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "Home"),
-                FailureResult: m => View(m),
-                InvalidResult: m => View(m));
+                SuccessResult: () => RedirectToAction("Index", "Home"),
+                NonsuccessResult: m => PartialView(m));
         }
         #endregion
     }

@@ -14,12 +14,16 @@ namespace Fido.Action
         TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
         TRETURN Write<TMODEL>(
             TMODEL DataModel,
-            Func<TMODEL, TRETURN> SuccessResult,
+            Func<TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> FailureResult,
             Func<TMODEL, TRETURN> InvalidResult);
         TRETURN Write<TMODEL>(
             TMODEL DataModel,
-            Func<TMODEL, TRETURN> AnyResult);
+            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> NonsuccessResult);
+        //TRETURN Write<TMODEL>(
+        //    TMODEL DataModel,
+        //    Func<TMODEL, TRETURN> AnyResult);
         TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result);
     }
 }

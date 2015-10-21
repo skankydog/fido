@@ -26,7 +26,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write<ProfileModel>(
                 DataModel: Model,
-                AnyResult: m => View(m));
+                SuccessResult: () => View(),
+                NonsuccessResult: m => View(m));
         }
 
         public ActionResult ProfileImage(Guid UserId)
@@ -61,7 +62,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => PartialView(m));
+                SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
+                NonsuccessResult: m => PartialView(m));
         }
         #endregion
 
@@ -77,7 +79,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => PartialView(m));
+                SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
+                NonsuccessResult: m => PartialView(m));
         }
         #endregion
 
@@ -85,7 +88,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult SetCredentials()
         {
             return Dispatcher.View<SetCredentialsModel>(
-                Result: PartialView); // was "View"
+                Result: PartialView);
         }
 
         [HttpPost]
@@ -93,7 +96,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => PartialView(m));
+                SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
+                NonsuccessResult: m => PartialView(m));
         }
         #endregion
 
@@ -121,14 +125,16 @@ namespace Fido.WebUI.Controllers
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
                         EmailAddress = ExternalLoginInfo.Email
                     },
-                    AnyResult: m => RedirectToAction("Settings"));
+                    SuccessResult: () => RedirectToAction("Settings"),
+                    NonsuccessResult: m => RedirectToAction("Settings"));
         }
 
         public ActionResult UnlinkExternalCredentials(UnlinkExternalCredentialsModel Model)
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => RedirectToAction("Settings"));
+                SuccessResult: () => RedirectToAction("Settings"),
+                NonsuccessResult: m => RedirectToAction("Settings"));
         }
         #endregion
 
@@ -136,7 +142,8 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => RedirectToAction("LocalLogin", "Authentication"));
+                SuccessResult: () => RedirectToAction("LocalLogin", "Authentication"),
+                NonsuccessResult: m => RedirectToAction("LocalLogin", "Authentication"));
         }
     }
 }

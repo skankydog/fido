@@ -27,5 +27,25 @@ namespace Fido.WebUI.Controllers
         {
             return View();
         }
+
+        public ActionResult ModalRedirectToLocal(ModalRedirectToLocalModel Model)
+        {
+            using (new FunctionLogger(Log))
+            {
+                if (!Url.IsLocalUrl(Model.Location))
+                {
+                    Log.WarnFormat("Attempt to redirect to non-local location: {0}", Model.Location);
+                    Model.Location = Url.Action("Index", "Home");
+                }
+
+                Log.InfoFormat("RedirectorModel.Location={0}", Model.Location);
+                return View(Model);
+            }
+        }
     }
+
+    //public class RedirectorModel
+    //{
+    //    public string Location { get; set; }
+    //}
 }

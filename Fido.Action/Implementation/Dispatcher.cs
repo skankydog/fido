@@ -71,7 +71,7 @@ namespace Fido.Action.Implementation
 
         public TRETURN Write<TMODEL>(
             TMODEL DataModel,
-            Func<TMODEL, TRETURN> SuccessResult,
+            Func<TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> FailureResult,
             Func<TMODEL, TRETURN> InvalidResult)
         {
@@ -90,10 +90,18 @@ namespace Fido.Action.Implementation
 
         public TRETURN Write<TMODEL>(
             TMODEL DataModel,
-            Func<TMODEL, TRETURN> AnyResult)
+            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> NonsuccessResult)
         {
-            return Write(DataModel, AnyResult, AnyResult, AnyResult);
+            return Write(DataModel, SuccessResult, NonsuccessResult, NonsuccessResult);
         }
+
+        //public TRETURN Write<TMODEL>(
+        //    TMODEL DataModel,
+        //    Func<TMODEL, TRETURN> AnyResult)
+        //{
+        //    return Write(DataModel, AnyResult, AnyResult, AnyResult);
+        //}
 
         public TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result)
         {

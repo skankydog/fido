@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Fido.Core;
+using Fido.WebUI.Common;
 using Fido.WebUI.Filters;
 using Fido.WebUI.Flash;
 using Fido.Action;
@@ -27,8 +28,8 @@ namespace Fido.WebUI.Common
         {
             Dispatcher = ActionFactory.CreateDispatcher<ActionResult>(
                 this, this, this,
-                AuthoriseUI: () => new HttpUnauthorizedResult(),
-                PasswordResetUI: () => RedirectToAction("Settings", "Account"));
+                AuthoriseResult: () => new HttpUnauthorizedResult(),
+                PasswordResetResult: () => RedirectToAction("Settings", "Account"));
             Flash = new Flasher();
         }
 
@@ -68,6 +69,24 @@ namespace Fido.WebUI.Common
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        protected ActionResult ModalRedirectToLocal(string ReturnUrl)
+        {
+            if (!Url.IsLocalUrl(ReturnUrl))
+            {
+                Log.WarnFormat("Attempt to redirect to non-local location: {0}", ReturnUrl);
+                return RedirectToAction("Index", "Home");
+            }
+
+            Log.InfoFormat("RedirectorModel.Location={0}", ReturnUrl);
+
+            return RedirectToAction("ModalRedirectToLocal", "Home",
+                        new
+                        {
+                            Area = string.Empty, // The redirector is in the base area
+                            Location = ReturnUrl // The URL to redirect to
+                        });
         }
 
         #region IFeedbackAPI Implementation

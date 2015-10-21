@@ -39,7 +39,8 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                AnyResult: m => RedirectToAction("Index"));
+                SuccessResult: () => RedirectToAction("Index"),
+                NonsuccessResult: m => RedirectToAction("Index"));
         }
 
         public ActionResult Update(Guid Id)
@@ -54,9 +55,8 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Write(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "User"),
-                InvalidResult: m => View(m),
-                FailureResult: m => View(m));
+                SuccessResult: () => RedirectToAction("Index", "User"),
+                NonsuccessResult: m => View(m));
         }
 
         public ActionResult Delete(Guid Id)
@@ -71,7 +71,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         {
             return Dispatcher.Delete_<UserModel>(
                 DataModel: Model,
-                Result: () => PartialView()); // Modal - redirect happens from client side... thinking, thinking, thinking.
+                Result: () => ModalRedirectToLocal(Url.Action("Index", "User")));
         }
     }
 }

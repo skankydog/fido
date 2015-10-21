@@ -1,11 +1,13 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
 @model Fido.Action.Models.UsersModel
 
+@using Fido.WebUI.Controllers
+
 @{
     ViewBag.Title = "Users";
 }
 
-@Html.ActionLink("NEW", "Create", "User")  @*TEMP*@ 
+@Html.ActionLink("Create User", "Create", "User")<br/>
 
 <table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
     <thead>
@@ -28,7 +30,6 @@
     var AjaxPath = '@(Url.Action("IndexRead", "User"))';
 
     $(document).ready(function () {
-
         $('#IndexTable').dataTable({
             "bServerSide": true,
             "sAjaxSource": AjaxPath,
