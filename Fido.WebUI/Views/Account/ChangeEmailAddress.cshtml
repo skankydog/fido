@@ -36,8 +36,6 @@
                         @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "email address", @value = "" })
                     </div>
                     @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
-
-                    @if (Model != null) { <input type="hidden" id="State" name="State" value="@Model.State" /> }
                                                                                            
                     <span class="skd-spacing-large"></span>
                     <div class="col-xs-6 col-centered">

@@ -63,7 +63,7 @@ namespace Fido.Action.Implementation
                         if (LogicModel.Write(DataModel) == true)
                         {
                             Log.Info("Successful write");
-                            if (DataModel is IModel) { ((IModel)DataModel).State = "Valid"; }
+
                             return SuccessResult();
                         }
                     }
@@ -74,13 +74,13 @@ namespace Fido.Action.Implementation
                     }
 
                     LogicModel.OnFailedWrite(DataModel);
-                    if (DataModel is IModel) { ((IModel)DataModel).State = "Failed"; }
+
                     return FailureResult(DataModel);
                 }
 
                 Log.Info("Invalid model");
                 LogicModel.OnInvalidWrite(DataModel);
-                if (DataModel is IModel) { ((IModel)DataModel).State = "Invalid"; }
+
                 return InvalidResult(DataModel);
             }
         }

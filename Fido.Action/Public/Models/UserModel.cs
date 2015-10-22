@@ -107,10 +107,15 @@ namespace Fido.Action.Models
 
         public override bool Delete(UserModel Model)
         {
-            // TO DO: Call UserModel.Delete(Model);
+            using (new FunctionLogger(Log))
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
 
-            FeedbackAPI.DisplaySuccess("The user record has been deleted");
-            return true;
+                UserService.Delete(Model.Id);
+
+                FeedbackAPI.DisplaySuccess("The user record has been deleted");
+                return true;
+            }
         }
     }
 }

@@ -5,13 +5,11 @@ namespace Fido.Action.Implementation
 {
     internal interface IModel
     {
-        string State { get; set; }
+        bool RequiresAuthentication { get; }
     }
 
     internal interface IModel<TMODEL> : IModel
     {
-        bool RequiresAuthentication { get; }
-        
         TMODEL Read(Guid Id);
         TMODEL Read(Guid Id, IndexOptions IndexOptions);
         bool Write(TMODEL DataModel);

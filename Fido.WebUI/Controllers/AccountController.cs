@@ -71,7 +71,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangeEmailAddress()
         {
             return Dispatcher.View<ChangeEmailAddressModel>(
-                Result: PartialView);
+                Result: () => PartialView());
         }
 
         [HttpPost]

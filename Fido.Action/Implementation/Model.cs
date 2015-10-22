@@ -12,8 +12,6 @@ namespace Fido.Action.Implementation
 
         [ScriptIgnore]
         public bool RequiresAuthentication { get; private set; }
-        [ScriptIgnore]
-        public string State { get; set; }
 
         public Model() { }
         internal Model(
@@ -24,7 +22,7 @@ namespace Fido.Action.Implementation
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
             this.RequiresAuthentication = RequiresAuthentication;
-            this.State = "Unknown";
+         //   this.State = "Unknown";
         }
 
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
