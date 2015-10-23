@@ -15,7 +15,6 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 {
     public class UserController : BaseController
     {
-        //[ModelBinder(typeof(IndexParamsModelBinder))]
         public ActionResult IndexRead(IndexOptions Params)
         {
             return Dispatcher.Read<UsersModel>(
