@@ -343,6 +343,7 @@
     <Content Include="Views\Account\SettingsExternal.cshtml" />
     <Content Include="Areas\Administration\Views\User\Index.cshtml" />
     <Content Include="Views\Home\ModalRedirectToLocal.cshtml" />
+    <Content Include="Views\Home\About - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
