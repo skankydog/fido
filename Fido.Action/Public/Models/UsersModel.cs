@@ -35,12 +35,13 @@ namespace Fido.Action.Models
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
                 var Delegates = new Dictionary<int, Func<int, int, char, string, IList<Dtos.User>>>()
-                    {{ 0, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) },
-                     { 1, (s, t, o, f) => UserService.GetPageInFirstnameOrder(s, t, o, f) },
-                     { 2, (s, t, o, f) => UserService.GetPageInSurnameOrder(s, t, o, f) },
-                     { 3, (s, t, o, f) => UserService.GetPageInEmailAddressOrder(s, t, o, f) },
-                     { 4, (s, t, o, f) => UserService.GetPageInLocalCredentialOrder(s, t, o, f) },
-                     { 5, (s, t, o, f) => UserService.GetPageInExternalCredentialOrder(s, t, o, f) }};
+                    { { 0, (s, t, o, f) => UserService.GetPageInFirstnameOrder(s, t, o, f) },
+                      { 1, (s, t, o, f) => UserService.GetPageInSurnameOrder(s, t, o, f) },
+                      { 2, (s, t, o, f) => UserService.GetPageInEmailAddressOrder(s, t, o, f) },
+                      { 3, (s, t, o, f) => UserService.GetPageInLocalCredentialOrder(s, t, o, f) },
+                      { 4, (s, t, o, f) => UserService.GetPageInExternalCredentialOrder(s, t, o, f) },
+                      { 5, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) },   // Edit - not sortable
+                      { 6, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) } }; // Delete - not sortable
 
                 var Users = Delegates[Params.SortColumn](Params.Skip, Params.Take, Params.SortOrder, Params.Filter);
                 var CountAll = UserService.CountAll();
@@ -54,12 +55,13 @@ namespace Fido.Action.Models
                     aaData = (
                         from Dto in Users
                         select new[] {
-                            Dto.Id.ToString(),
                             Dto.Fullname.Firstname,
                             Dto.Fullname.Surname,
                             Dto.EmailAddress.Nvl(),
                             Dto.LocalCredentialState,
-                            Dto.ExternalCredentialState
+                            Dto.ExternalCredentialState,
+                            Dto.Id.ToString(), // Edit
+                            Dto.Id.ToString()  // Delete
                           }).ToArray()
                 };
             }
