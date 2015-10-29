@@ -25,7 +25,17 @@ namespace Fido.Action.Implementation
             this.LogicModel = LogicModel;
         }
 
-        public TRETURN ExecuteRead(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        public TRETURN ExecuteRead(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        {
+            return DoExecuteRead(Guid.Empty, IndexOptions, Result);
+        }
+
+        public TRETURN ExecuteRead(Guid Id, Func<TMODEL, TRETURN> Result)
+        {
+            return DoExecuteRead(Id, null, Result);
+        }
+
+        private TRETURN DoExecuteRead(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
@@ -39,7 +49,7 @@ namespace Fido.Action.Implementation
                     }
                     else
                     {
-                        DataModel = LogicModel.Read(Id, IndexOptions);
+                        DataModel = LogicModel.Read(IndexOptions);
                     }
                 }
                 catch (Exception Ex)

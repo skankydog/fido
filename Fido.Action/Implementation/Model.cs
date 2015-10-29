@@ -22,11 +22,10 @@ namespace Fido.Action.Implementation
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
             this.RequiresAuthentication = RequiresAuthentication;
-         //   this.State = "Unknown";
         }
 
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
-        public virtual TMODEL Read(Guid Id, IndexOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
+        public virtual TMODEL Read(/*Guid Id, */IndexOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
         public virtual bool Write(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
         public virtual bool Delete(TMODEL DataModel) { throw new NotImplementedException("Delete not implemented"); }
         public virtual void OnInvalidWrite(TMODEL DataModel) { }

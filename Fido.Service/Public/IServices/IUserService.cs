@@ -11,12 +11,12 @@ namespace Fido.Service
 {
     public interface IUserService : ICRUDService<User>
     {
-        IList<User> GetPageInDefaultOrder(int Skip, int Take, char SortDirection, string Filter);
-        IList<User> GetPageInFirstnameOrder(int Skip, int Take, char SortDirection, string Filter);
-        IList<User> GetPageInSurnameOrder(int Skip, int Take, char SortDirection, string Filter);
-        IList<User> GetPageInEmailAddressOrder(int Skip, int Take, char SortDirection, string Filter);
-        IList<User> GetPageInLocalCredentialOrder(int Skip, int Take, char SortDirection, string Filter);
-        IList<User> GetPageInExternalCredentialOrder(int Skip, int Take, char SortDirection, string Filter);
+        IList<User> GetPageInDefaultOrder(char SortOrder,int Skip, int Take, string Filter);
+        IList<User> GetPageInFirstnameOrder(char SortOrder,int Skip, int Take, string Filter);
+        IList<User> GetPageInSurnameOrder(char SortOrder,int Skip, int Take, string Filter);
+        IList<User> GetPageInEmailAddressOrder(char SortOrder,int Skip, int Take, string Filter);
+        IList<User> GetPageInLocalCredentialOrder(char SortOrder,int Skip, int Take, string Filter);
+        IList<User> GetPageInExternalCredentialOrder(char SortOrder, int Skip, int Take, string Filter);
 
         Guid InitiateChangeEmailAddress(Guid UserId, string NewEmailAddress);
         User CompleteChangeEmailAddress(Guid ConfirmationId);

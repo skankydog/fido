@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Fido.Core;
+using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
@@ -29,41 +30,73 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
-        public override UsersModel Read(Guid Id, IndexOptions Params)
+        public override UsersModel Read(IndexOptions IndexOptions)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var PageOfRecords = GetPageOfRecords(IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
+                var CountUnfiltered = CountAll();
+                var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
+
+                return new UsersModel
+                {
+                    sEcho = IndexOptions.Echo,
+                    iTotalRecords = CountUnfiltered,
+                    iTotalDisplayRecords = CountFiltered,
+                    aaData = PageOfRecords
+                };
+            }
+        }
+
+        private IList<string[]> GetPageOfRecords(int SortColumn, char SortOrder, int Skip, int Take, string Filter)
         {
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var Delegates = new Dictionary<int, Func<int, int, char, string, IList<Dtos.User>>>()
-                    { { 0, (s, t, o, f) => UserService.GetPageInFirstnameOrder(s, t, o, f) },
-                      { 1, (s, t, o, f) => UserService.GetPageInSurnameOrder(s, t, o, f) },
-                      { 2, (s, t, o, f) => UserService.GetPageInEmailAddressOrder(s, t, o, f) },
-                      { 3, (s, t, o, f) => UserService.GetPageInLocalCredentialOrder(s, t, o, f) },
-                      { 4, (s, t, o, f) => UserService.GetPageInExternalCredentialOrder(s, t, o, f) },
-                      { 5, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) },   // Edit - not sortable
-                      { 6, (s, t, o, f) => UserService.GetPageInDefaultOrder(s, t, o, f) } }; // Delete - not sortable
+                var UserDtos = UserService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
 
-                var Users = Delegates[Params.SortColumn](Params.Skip, Params.Take, Params.SortOrder, Params.Filter);
-                var CountAll = UserService.CountAll();
-                var CountDisplay = Params.Filter.IsNullOrEmpty() ? CountAll : Users.Count();
-
-                return new UsersModel
+                switch (SortColumn)
                 {
-                    sEcho = Params.Echo,
-                    iTotalRecords = CountAll,
-                    iTotalDisplayRecords = CountDisplay,
-                    aaData = (
-                        from Dto in Users
+                    case 0:
+                        UserDtos = UserService.GetPageInFirstnameOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    case 1:
+                        UserDtos = UserService.GetPageInSurnameOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    case 2:
+                        UserDtos = UserService.GetPageInEmailAddressOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    case 3:
+                        UserDtos = UserService.GetPageInLocalCredentialOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    case 4:
+                        UserDtos = UserService.GetPageInExternalCredentialOrder(SortOrder, Skip, Take, Filter);
+                        break;
+                }
+
+                return (from UserDto in UserDtos
                         select new[] {
-                            Dto.Fullname.Firstname,
-                            Dto.Fullname.Surname,
-                            Dto.EmailAddress.Nvl(),
-                            Dto.LocalCredentialState,
-                            Dto.ExternalCredentialState,
-                            Dto.Id.ToString(), // Edit
-                            Dto.Id.ToString()  // Delete
-                          }).ToArray()
-                };
+                        UserDto.Fullname.Firstname.Nvl(),
+                        UserDto.Fullname.Surname.Nvl(),
+                        UserDto.EmailAddress.Nvl(),
+                        UserDto.LocalCredentialState.Nvl(),
+                        UserDto.ExternalCredentialState.Nvl(),
+                        UserDto.Id.ToString(), // Edit
+                        UserDto.Id.ToString()  // Delete
+                    }).ToArray();
+            }
+        }
+
+        private int CountAll()
+        {
+            using (new FunctionLogger(Log))
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
+                return UserService.CountAll();
             }
         }
     }

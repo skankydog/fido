@@ -15,11 +15,10 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 {
     public class UserController : BaseController
     {
-        public ActionResult IndexRead(IndexOptions Params)
+        public ActionResult IndexRead(IndexOptions IndexOptions)
         {
             return Dispatcher.Read<UsersModel>(
-                Id: AuthenticatedId,
-                IndexOptions: Params,
+                IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 

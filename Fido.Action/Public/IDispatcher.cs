@@ -10,7 +10,7 @@ namespace Fido.Action
     public interface IDispatcher<TRETURN>
     {
         TRETURN View<TMODEL>(Func<TRETURN> Result);
-        TRETURN Read<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result);
+        TRETURN Read<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result);
         TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
         TRETURN Write<TMODEL>(
             TMODEL DataModel,

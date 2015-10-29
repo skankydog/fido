@@ -15,49 +15,49 @@ namespace Fido.Service.Implementation
         private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>(); // TO DO: not necessary
 
         #region Pages
-        public IList<User> GetPageInDefaultOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.Id),
                 OrderByDescending: q => q.OrderByDescending(s => s.Id));
         }
 
-        public IList<User> GetPageInFirstnameOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInFirstnameOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.Fullname.Firstname),
                 OrderByDescending: q => q.OrderByDescending(s => s.Fullname.Firstname));
         }
 
-        public IList<User> GetPageInSurnameOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInSurnameOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.Fullname.Surname),
                 OrderByDescending: q => q.OrderByDescending(s => s.Fullname.Surname));
         }
 
-        public IList<User> GetPageInEmailAddressOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInEmailAddressOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.EmailAddress),
                 OrderByDescending: q => q.OrderByDescending(s => s.EmailAddress));
         }
 
-        public IList<User> GetPageInLocalCredentialOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInLocalCredentialOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.LocalCredentialState),
                 OrderByDescending: q => q.OrderByDescending(s => s.LocalCredentialState));
         }
 
-        public IList<User> GetPageInExternalCredentialOrder(int Skip, int Take, char SortDirection, string Filter)
+        public IList<User> GetPageInExternalCredentialOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(Skip, Take, SortDirection, Filter,
+            return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.ExternalCredentialState),
                 OrderByDescending: q => q.OrderByDescending(s => s.ExternalCredentialState));
         }
 
-        private IList<User> GetPage(int Skip, int Take, char SortDirection, string Filter,
+        private IList<User> GetPage(char SortOrder, int Skip, int Take, string Filter,
             Func<IQueryable<Entities.User>, IOrderedQueryable<Entities.User>> OrderByAscending,
             Func<IQueryable<Entities.User>, IOrderedQueryable<Entities.User>> OrderByDescending)
         {
@@ -66,7 +66,7 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var OrderBy = SortDirection == 'a' ? OrderByAscending : OrderByDescending;
+                    var OrderBy = SortOrder == 'a' ? OrderByAscending : OrderByDescending;
                     var Query = UserRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
 
                     if (Filter.IsNotNullOrEmpty())
@@ -76,7 +76,7 @@ namespace Fido.Service.Implementation
                                               || e.EmailAddress.ToLower().Contains(Filter.ToLower()));
                     }
 
-                    Query = Query.Skip(Skip/* * Take*/).Take(Take);
+                    Query = Query.Skip(Skip).Take(Take);
                     
                     var EntityList = Query.ToList(); // Hit the database
 
