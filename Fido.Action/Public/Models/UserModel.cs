@@ -15,18 +15,21 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public HashSet<string> LocalCredentialStates;
-        public HashSet<string> ExternalCredentialStates;
+        public HashSet<string> AllLocalCredentialStates;
+        public HashSet<string> AllExternalCredentialStates;
+        public IList<RoleModel> AllRoles;
 
         public Guid Id { get; set; }
 
+        [Display(Name = "firstname")]
         [Required(ErrorMessage = "The first name field cannot be left blank")]
         public string Firstname { get; set; }
 
+        [Display(Name = "surname")]
         [Required(ErrorMessage = "The surname field cannot be left blank")]
         public string Surname { get; set; }
 
-        [Display(Name = "name")]
+        [Display(Name = "fullname")]
         public string DisplayName { get; set; }
 
         public string About { get; set; }
@@ -59,6 +62,8 @@ namespace Fido.Action.Models
         public bool HasLinkedIn;
         public bool HasGoogle;
 
+        public IList<Guid> SelectedRoles { get; set; }
+
         [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
         [Display(Name = "record age")]
@@ -81,9 +86,13 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var UserDto = UserService.Get(Id, "ExternalCredentials");
+            
+                var User = UserService.Get(Id, "ExternalCredentials, Roles");
+                var Model = Mapper.Map<Dtos.User, UserModel>(User);
 
-                var Model = Mapper.Map<Dtos.User, UserModel>(UserDto);
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+                //var AllRoles = RoleService.GetAll();
+                Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
 
                 return Model;
             }

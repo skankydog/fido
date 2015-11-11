@@ -34,5 +34,7 @@ namespace Fido.Dtos
             return Matches.Count() > 0;
         }
         #endregion
+
+        public IList<Role> Roles { get; set; }
     }
 }

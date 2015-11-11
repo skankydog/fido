@@ -25,6 +25,8 @@
 </table>
 <span class="skd-spacing-large"></span>
 
+@section scripts
+{
 <script type="text/javascript">
     var EditLink = '@(Html.ActionLink("Edit", "Update", "User", new { Id = -999 }, null))';
     var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "User", new { Id = -999 }, new { @class = "modal-link" }))';
@@ -67,3 +69,4 @@
         });
     });
 </script>
+}

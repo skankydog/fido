@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Service.Exceptions", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Action", "Fido.Action\Fido.Action.csproj", "{C483A8CE-598C-466D-9370-3AF1D98C0374}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Action.Tests", "Fido.Action.Tests\Fido.Action.Tests.csproj", "{1475FE2E-78B5-4E1E-A516-055F447AAB36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,16 @@ Global
 		{C483A8CE-598C-466D-9370-3AF1D98C0374}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C483A8CE-598C-466D-9370-3AF1D98C0374}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C483A8CE-598C-466D-9370-3AF1D98C0374}.Release|x86.ActiveCfg = Release|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1475FE2E-78B5-4E1E-A516-055F447AAB36}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMapper;
 using Fido.Core;
-using Fido.Service;
+using Fido.Action;
 
 namespace Fido.Service.Tests
 {
@@ -34,7 +34,7 @@ namespace Fido.Service.Tests
         [ClassInitialize]
         public static void Initialise(TestContext Context)
         {
-            ServiceFactory.Boot();
+            ActionFactory.Boot();
         }
         #endregion
     }

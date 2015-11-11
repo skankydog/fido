@@ -1,5 +1,8 @@
+// $(function() { ... }); is jquery shorthand for $(document).ready(function() { ... });
+
 $(function()
 {
+    $('.chosen-select').chosen({ width: '100%' });
     $('#side-menu').metisMenu();
 });
 
@@ -51,7 +54,7 @@ $(function()
     $('body').on('click', '.modal-close-btn',
         function ()
         {
-            alert('.modal-close-btn click');
+            //alert('.modal-close-btn click');
             $('#modal-container').modal('hide');
         });
 

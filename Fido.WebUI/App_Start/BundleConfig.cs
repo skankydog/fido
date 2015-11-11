@@ -15,6 +15,7 @@ namespace Fido.WebUI
             Bundles.Add(new StyleBundle("~/authenticated.styles")
                 .Include("~/Content/css/bootstrap.css")
                 .Include("~/Content/css/authenticated.css")
+                .Include("~/Content/bootstrap-chosen.css")
                 .Include("~/Content/css/plugins/metisMenu/metisMenu.min.css")
                 .Include("~/Content/css/plugins/dataTables.bootstrap.css"));
 
@@ -22,6 +23,7 @@ namespace Fido.WebUI
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             Bundles.Add(new ScriptBundle("~/page.top.scripts")
                 .Include("~/Scripts/jquery-{version}.js")
+                .Include("~/Scripts/chosen.jquery.js")
                 .Include("~/Scripts/jquery.unobtrusive-ajax.js")
                 .Include("~/Scripts/plugins/dataTables/jquery.dataTables.js")
                 .Include("~/Scripts/plugins/dataTables/dataTables.bootstrap.js")

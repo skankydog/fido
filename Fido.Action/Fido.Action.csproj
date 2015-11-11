@@ -50,7 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\IModelCRUD.cs" />
-    <Compile Include="Implementation\Mapping\UserMapping.cs" />
+    <Compile Include="Implementation\Mapping\RoleModelMapping .cs" />
+    <Compile Include="Implementation\Mapping\UserModelMapping.cs" />
     <Compile Include="Public\IDispatcher.cs" />
     <Compile Include="Public\Models\ChangeEmailAddressModel.cs" />
     <Compile Include="Public\Models\ChangePasswordModel.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Public\Models\ExternalLoginCallbackModel.cs" />
     <Compile Include="Public\Models\ForgottenPasswordModel.cs" />
     <Compile Include="Public\Models\LocalCredentialModel.cs" />
+    <Compile Include="Public\Models\RoleModel.cs" />
     <Compile Include="Public\Models\UserModel.cs" />
     <Compile Include="Public\Models\UsersModel.cs" />
     <Compile Include="Public\Models\UnlinkExternalCredentialsModel.cs" />

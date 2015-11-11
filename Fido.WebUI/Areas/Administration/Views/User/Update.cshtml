@@ -12,9 +12,9 @@
         <div class="row">
             @if (Model.HasLocalCredentials)
             {
-                <div class="col-xs-12 skd-padding">
-                    <div>Password @Model.PasswordAgeDays day(s) old</div>
-                </div>
+            <div class="col-xs-12 skd-padding">
+                <div>Password @Model.PasswordAgeDays day(s) old</div>
+            </div>
             }
 
             <div class="col-xs-8 col-sm-6 skd-padding">
@@ -28,7 +28,7 @@
                     @if (Model.HasLocalCredentials)
                     {
                         @Html.DropDownListFor(m => m.LocalCredentialState, new SelectList(
-                            Model.LocalCredentialStates,
+                            Model.AllLocalCredentialStates,
                             Model.LocalCredentialState),
                             new { @class = "form-control", @placeholder = "local credential state", @value = "" })
                     }
@@ -73,14 +73,14 @@
                 <div class="input-group">
                     @if (Model.HasExternalCredentials)
                     {
-                        @Html.DropDownListFor(m => m.ExternalCredentialState, new SelectList(
-                            Model.ExternalCredentialStates,
+                    @Html.DropDownListFor(m => m.ExternalCredentialState, new SelectList(
+                            Model.AllExternalCredentialStates,
                             Model.ExternalCredentialState),
                             new { @class = "form-control", @placeholder = "external credential state", @value = "" })
                     }
                     else
                     {
-                        @Html.TextBoxFor(m => m.ExternalCredentialState, new { @class = "form-control", @placeholder = "external credential state", @value = "", @disabled = "true" })
+                    @Html.TextBoxFor(m => m.ExternalCredentialState, new { @class = "form-control", @placeholder = "external credential state", @value = "", @disabled = "true" })
                     }
                 </div>
             </div>
@@ -112,6 +112,16 @@
                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
                     @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 skd-padding">
+                Roles
+            </div>
+
+            <div class="col-xs-12">
+                @Html.ListBoxFor(m => m.SelectedRoles, new SelectList(Model.AllRoles, "Id", "Name"), new { @class = "form-control chosen-select" })
             </div>
         </div>
     </div>

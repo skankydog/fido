@@ -326,7 +326,7 @@
     @Scripts.Render("~/page.bottom.scripts")
     @RenderSection("scripts", false)
 
-    @* Morris Charts JavaScript - only include when using or it fails! *@
+    @* Morris Charts JavaScript - only include when using or it throws/crashes! *@
     @*<script src="~/Scripts/plugins/morris/raphael.min.js"></script>
     <script src="~/Scripts/plugins/morris/morris.min.js"></script>
     <script src="~/Scripts/plugins/morris/morris-data.js"></script>*@
@@ -341,6 +341,3 @@
 
 </body>
 </html>
-
-@*<li><a href="@Url.Action("Settings", "Account", new { @class = "modal-link" })" class="modal-link"><i class="fa fa-gear fa-fw"></i> Settings</a></li>*@
-@*</a>, null, new { @class = "modal-link btn btn-success" })*@
