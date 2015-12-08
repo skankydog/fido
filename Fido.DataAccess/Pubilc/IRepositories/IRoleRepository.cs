@@ -9,5 +9,6 @@ namespace Fido.DataAccess
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
+   //     Role DeepUpdate(Role Entity);
     }
 }

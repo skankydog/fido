@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MoreLinq;
 using Fido.Core;
 using Fido.Dtos;
 using Fido.DataAccess;
@@ -246,7 +247,7 @@ namespace Fido.Service.Implementation
 
                             ProfileImageRepository.Insert(ProfileImageEntity);
                         }
-                        else // Overwrite the image in the database
+                        else // insert image into the database
                         {
                             ProfileImageEntity = AutoMapper.Mapper.Map<Profile, Entities.ProfileImage>(Profile, ProfileImageEntity);
                             ProfileImageRepository.Update(ProfileImageEntity);
@@ -353,44 +354,65 @@ namespace Fido.Service.Implementation
                     var UserEntity = Repository.Get(e => e.Id == UserId, "Roles");
 
                     IList<Role> Roles = new List<Role>();
-                    Roles = AutoMapper.Mapper.Map<IList<Entities.Role>, IList<Dtos.Role>>(UserEntity.Roles, Roles);
+                    Roles = AutoMapper.Mapper.Map<ICollection<Entities.Role>, IList<Dtos.Role>>(UserEntity.Roles, Roles);
 
                     return Roles;
                 }
             }
         }
 
-        public void SetRoles(Guid UserId, IList<Role> Roles)
+        public User SetRoles(Guid UserId, IList<Role> Roles)
         {
             using (new FunctionLogger(Log))
             {
-                var RoleIds =
-                    from Role R in Roles
-                    where R.IsNew == false
-                    select R.Id;
-
-                if (RoleIds.Count() != Roles.Count())
-                    throw new ArgumentException("User.Roles");
+                var RoleEntities = AutoMapper.Mapper.Map<IList<Role>, IList<Entities.Role>>(Roles);
 
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    var RoleRepository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                    var ExistingRoles = RoleRepository.GetAsIQueryable(e => e.Id != Guid.Empty, null, "Activities").Where(e => RoleIds.Contains(e.Id));
-
-                    // Now read, update and save the user entity with the roles. When we read in the user, we need to eagerly
-                    // read the roles as well - otherwise, when we write back to the database, EF will see the roles as inserts
-                    // only, not as a change to the roles the user is in
                     var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles");
 
-                    UserEntity.Roles = ExistingRoles.ToList();
+                    UserEntity.Roles = RoleEntities;
 
                     UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
+
+                    return AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
                 }
             }
         }
+
+        //public void SetRoles(Guid UserId, IList<Role> Roles)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        var RoleIds =
+        //            from Role R in Roles
+        //            where R.IsNew == false
+        //            select R.Id;
+
+        //        if (RoleIds.Count() != Roles.Count())
+        //            throw new ArgumentException("Setting new roles directly to a user is not supported");
+
+        //        using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //        {
+        //            var RoleRepository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
+        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+
+        //            var RolesFromDb = RoleRepository.GetAsIQueryable(e => e.Id != Guid.Empty, null, "Activities").Where(e => RoleIds.Contains(e.Id));
+
+        //            // Now read, update and save the user entity with the roles. When we read in the user, we need to eagerly
+        //            // read the roles as well - otherwise, when we write back to the database, EF will see the roles as inserts
+        //            // only, not as a change to the roles the user is in
+        //            var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles");
+
+        //            UserEntity.Roles = RolesFromDb.ToList();
+
+        //            UserRepository.Update(UserEntity); // DeepUpdate()?!!
+        //            UnitOfWork.Commit();
+        //        }
+        //    }
+        //}
 
         public IList<Activity> GetActivities(Guid UserId)
         {
@@ -400,19 +422,15 @@ namespace Fido.Service.Implementation
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles, Roles.Activities");
+                    var ActivityEntities = new List<Entities.Activity>();
 
-                    IList<Entities.Activity> ActivityEntities = new List<Entities.Activity>();
-
-                    foreach (Entities.Role RoleEntity in UserEntity.Roles)
+                    foreach (var RoleEntity in UserEntity.Roles)
                     {
-                        foreach (Entities.Activity ActivityEntity in RoleEntity.Activities)
-                        {
-                            if (!ActivityEntities.Contains(ActivityEntity))
-                            {
-                                ActivityEntities.Add(ActivityEntity);
-                            }
-                        }
+                        foreach (var ActivityEntity in RoleEntity.Activities)
+                            ActivityEntities.Add(ActivityEntity);           
                     }
+
+                    ActivityEntities = ActivityEntities.DistinctBy(e => e.Id).ToList();
 
                     IList<Dtos.Activity> ActivityDtos = new List<Dtos.Activity>();
                     ActivityDtos = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Dtos.Activity>>(ActivityEntities, ActivityDtos);

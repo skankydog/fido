@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using RefactorThis.GraphDiff; // new
 using Fido.DataAccess;
 using Fido.Entities;
 using Fido.Core;
@@ -16,5 +17,19 @@ namespace Fido.DataAccess.Implementation
         public RoleRepository(IUnitOfWork UnitOfWork)
             : base(UnitOfWork)
         {}
+
+        protected override string DefaultIncludes { get { return "Activities"; } }
+
+        public override Role Update(Role Entity)
+        {
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("Role.Id='{0}'", Entity.Id);
+
+                Context.UpdateGraph(Entity, Map => Map.AssociatedCollection(Role => Role.Activities));
+
+                return Entity;
+            }
+        }
     }
 }

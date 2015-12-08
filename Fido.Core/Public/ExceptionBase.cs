@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Fido.Core.Exceptions
+namespace Fido.Core
 {
     [Serializable]
     public abstract class ExceptionBase : Exception, ISerializable

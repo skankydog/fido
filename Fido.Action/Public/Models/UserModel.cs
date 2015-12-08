@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using Fido.Core;
 using Fido.Service;
@@ -17,7 +18,7 @@ namespace Fido.Action.Models
         #region Data
         public HashSet<string> AllLocalCredentialStates;
         public HashSet<string> AllExternalCredentialStates;
-        public IList<RoleModel> AllRoles;
+        public IList<RoleModel> AllRoles = new List<RoleModel>();
 
         public Guid Id { get; set; }
 
@@ -91,7 +92,6 @@ namespace Fido.Action.Models
                 var Model = Mapper.Map<Dtos.User, UserModel>(User);
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
-                //var AllRoles = RoleService.GetAll();
                 Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
 
                 return Model;
@@ -102,8 +102,15 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var UserService = ServiceFactory.CreateService<IUserService>();
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+                Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
+
                 var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
+                UserDto.Roles = Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>((from r in Model.AllRoles
+                                                                                where (Model.SelectedRoles.Contains(r.Id))
+                                                                                select r).ToList());
+
+                var UserService = ServiceFactory.CreateService<IUserService>();
 
                 UserService.Save(UserDto);
                 UserService.SetLocalCredentialState(UserDto.Id, Model.LocalCredentialState);

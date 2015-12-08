@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fido.Core;
 
-namespace Fido.Core.Exceptions
+namespace Fido.DataAccess.Exceptions
 {
     public class ConcurrencyException : ExceptionBase
     {
@@ -12,7 +13,7 @@ namespace Fido.Core.Exceptions
         { }
 
         public ConcurrencyException(string Message)
-            : base (Message)
+            : base(Message)
         { }
     }
 }

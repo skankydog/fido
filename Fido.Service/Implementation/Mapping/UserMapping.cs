@@ -39,7 +39,8 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.EmailAddressLastChangeUtc, Options => Options.Ignore()) // Read only to the DTO
                     .ForMember(Dest => Dest.ExternalCredentialState, Options => Options.Ignore()) // Read only to the DTO
                     .ForMember(Dest => Dest.CurrentExternalCredentialState, Options => Options.Ignore()) // Read only to the DTO
-                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore())
+                    //.ForMember(Dest => Dest.Roles, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Roles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Entities.Role>>(Src.Roles)))
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ProfileImage, Options => Options.Ignore());
             }

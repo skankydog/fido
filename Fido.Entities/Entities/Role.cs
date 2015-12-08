@@ -14,7 +14,7 @@ namespace Fido.Entities
         }
 
         public string Name { get; set; }
-        public IList<Activity> Activities { get; set; }
-        public IList<User> Users { get; set; }
+        public ICollection<Activity> Activities { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

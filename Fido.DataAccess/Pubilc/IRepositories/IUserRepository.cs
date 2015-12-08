@@ -9,7 +9,7 @@ namespace Fido.DataAccess
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        User GetByExternalCredentials(string LoginProvider, string ProviderKey);
-        User GetByExternalEmailAddress(string EmailAddress);
+        User GetByExternalCredentials(string LoginProvider, string ProviderKey, string IncludeProperties = null);
+        User GetByExternalEmailAddress(string EmailAddress, string IncludeProperties = null);
     }
 }

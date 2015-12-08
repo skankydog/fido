@@ -24,10 +24,10 @@ namespace Fido.Service.Tests
         [TestMethod]
         public void CanGetUsersInRole()
         {
-            IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
+            var RoleService = ServiceFactory.CreateService<IRoleService>();
 
-            Role RoleDTO = RoleService.GetByName("AllActivitiesRole");
-            IList<User> Users = RoleService.GetUsersInRole(RoleDTO.Id);
+            var RoleDTO = RoleService.GetByName("AllActivitiesRole");
+            var Users = RoleService.GetUsersInRole(RoleDTO.Id);
 
             Assert.AreEqual(1, Users.Count);
         }
@@ -44,12 +44,12 @@ namespace Fido.Service.Tests
         [TestMethod]
         public void CanSetActivitiesForRole()
         {
-            IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
-            Guid FirstRoleId = RoleService.GetByName("AllActivitiesRole").Id;
-            Guid SecondRoleId = RoleService.GetByName("Role03").Id;
+            var RoleService = ServiceFactory.CreateService<IRoleService>();
+            var FirstRoleId = RoleService.GetByName("AllActivitiesRole").Id;
+            var SecondRoleId = RoleService.GetByName("Role03").Id;
 
-            IList<Activity> FirstRoleActivities = RoleService.GetActivitiesForRole(FirstRoleId);
-            IList<Activity> SecondRoleActivities = RoleService.GetActivitiesForRole(SecondRoleId);
+            var FirstRoleActivities = RoleService.GetActivitiesForRole(FirstRoleId);
+            var SecondRoleActivities = RoleService.GetActivitiesForRole(SecondRoleId);
 
             Assert.AreEqual(6, FirstRoleActivities.Count);
             Assert.AreEqual(4, SecondRoleActivities.Count);

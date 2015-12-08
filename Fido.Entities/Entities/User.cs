@@ -9,7 +9,7 @@ namespace Fido.Entities
     public class User : Entity
     {
         public Fullname Fullname { get; set; }
-        public IList<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
         public ProfileImage ProfileImage { get; set; }
         public string About { get; set; }
 

@@ -5,7 +5,6 @@ using System.Text;
 using AutoMapper;
 using Fido.Service;
 using Fido.Core;
-using Fido.Core.Exceptions;
 using Fido.Dtos;
 using Fido.DataAccess;
 
@@ -60,7 +59,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public TDTO Save(TDTO Dto, string IncludeProperties = "")
+        public TDTO Save(TDTO Dto)
         {
             using (new FunctionLogger(Log))
             {
@@ -86,10 +85,10 @@ namespace Fido.Service.Implementation
                         Dto = BeforeUpdate(Dto, UnitOfWork);
                         Dto.IsNew = false;
 
-                        TENTITY Entity = Repository.Get(Dto.Id, IncludeProperties);
+                        TENTITY Entity = Repository.Get(Dto.Id); // THIS IS THE ISSUE!!
 
                         if (!Dto.RowVersion.SequenceEqual(Entity.RowVersion))
-                            throw new ConcurrencyException(string.Format("The entity, {0}, was modified between when it was read and when this write was attempted. Please reprocess.", Entity));
+                            throw new Exception(string.Format("The entity, {0}, was modified between when it was read and when this write was attempted. Please reprocess.", Entity));
 
                         Entity = Mapper.Map<TDTO, TENTITY>(Dto, Entity);
                         Repository.Update(Entity);

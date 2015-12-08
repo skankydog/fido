@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Fido.Core;
-using Fido.Core.Exceptions;
-//using Fido.DataAccess.Exceptions;
 using Fido.Dtos;
 using Fido.Service;
 using Fido.Service.Exceptions;
@@ -83,7 +81,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ConcurrencyException))]
+        [ExpectedException(typeof(Exception))]
         public void ChecksForOptimisticConcurrency()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();

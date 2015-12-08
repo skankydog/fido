@@ -36,7 +36,7 @@ namespace Fido.Service
         Settings GetSettings(Guid UserId);
 
         IList<Role> GetRoles(Guid UserId);
-        void SetRoles(Guid UserId, IList<Role> Roles);
+        User SetRoles(Guid UserId, IList<Role> Roles);
 
         IList<Activity> GetActivities(Guid UserId);      // Returns unique activities
         bool UserHasActivity(Guid UserId, string ActivityName);

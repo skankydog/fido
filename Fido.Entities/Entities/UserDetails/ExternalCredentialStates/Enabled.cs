@@ -57,9 +57,9 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             // and writing back the User will trigger the deletion of the ExternalCredential
             // instance as well...
             var MatchingCredentials =
-                from Entities.ExternalCredential E in Parent.ExternalCredentials
-                where E.Id == Id
-                select E;
+                from Entities.ExternalCredential e in Parent.ExternalCredentials
+                where e.Id == Id
+                select e;
             var ExternalCredentialToUnlink = MatchingCredentials.ToList().FirstOrDefault();
 
             Parent.ExternalCredentials.Remove(ExternalCredentialToUnlink);

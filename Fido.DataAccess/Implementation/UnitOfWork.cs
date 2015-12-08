@@ -10,7 +10,6 @@ using System.Text;
 using Fido.DataAccess;
 using Fido.DataAccess.Exceptions;
 using Fido.Core;
-using Fido.Core.Exceptions;
 
 namespace Fido.DataAccess.Implementation
 {

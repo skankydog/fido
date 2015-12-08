@@ -20,12 +20,10 @@ namespace Fido.Service.Implementation
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    IRoleRepository Repository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
-                    Entities.Role RoleEntity = Repository.Get(e => e.Name == Name, "Activities");
+                    var Repository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
+                    var RoleEntity = Repository.Get(e => e.Name == Name);
 
-                    Role RoleDTO = Mapper.Map<Entities.Role, Role>(RoleEntity);
-
-                    return RoleDTO;
+                    return Mapper.Map<Entities.Role, Role>(RoleEntity);
                 }
             }
         }
@@ -36,15 +34,13 @@ namespace Fido.Service.Implementation
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    IRoleRepository RoleRepository = DataAccessFactory.CreateRepository<DataAccess.IRoleRepository>(UnitOfWork);
-                    IUserRepository UserRepository = DataAccessFactory.CreateRepository<DataAccess.IUserRepository>(UnitOfWork);
-
-                    var RoleEntity = RoleRepository.Get(RoleId);
-                    var UserEntities = UserRepository.GetAsIEnumerable(e => e.Id != Guid.Empty, null, "Roles")
-                        .Where(e => e.Roles.Contains(RoleEntity)).ToList();
+                    var UserRepository = DataAccessFactory.CreateRepository<DataAccess.IUserRepository>(UnitOfWork);
+                    var UsersInRole = (from u in UserRepository.GetAsIQueryable(e => e.Id != Guid.Empty)
+                                       from tag in u.Roles where tag.Id == RoleId
+                                       select u).ToList();
 
                     IList<User> UserDTOs = null;
-                    UserDTOs = Mapper.Map<IList<Entities.User>, IList<User>>(UserEntities, UserDTOs);
+                    UserDTOs = Mapper.Map<IList<Entities.User>, IList<User>>(UsersInRole, UserDTOs);
 
                     return UserDTOs;
                 }
@@ -58,10 +54,10 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     IRoleRepository Repository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
-                    Entities.Role RoleEntity = Repository.Get(e => e.Id == RoleId, "Activities");
+                    Entities.Role RoleEntity = Repository.Get(e => e.Id == RoleId);
 
                     IList<Activity> Activities = new List<Activity>();
-                    Activities = Mapper.Map<IList<Entities.Activity>, IList<Dtos.Activity>>(RoleEntity.Activities, Activities);
+                    Activities = Mapper.Map<ICollection<Entities.Activity>, IList<Dtos.Activity>>(RoleEntity.Activities, Activities);
 
                     return Activities;
                 }
@@ -90,7 +86,7 @@ namespace Fido.Service.Implementation
                     // Now read, update and save the role entity with the activities. When we read in the role, we need to eagerly
                     // read the activities as well - otherwise, when we write back to the database, EF will see the activities as
                     // inserts only, not as a change to the activities within the role
-                    var RoleEntity = RoleRepository.Get(e => e.Id == RoleId, "Activities");
+                    var RoleEntity = RoleRepository.Get(e => e.Id == RoleId);
 
                     RoleEntity.Activities = ExistingActivities.ToList();
 

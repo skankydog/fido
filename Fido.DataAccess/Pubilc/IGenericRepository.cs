@@ -20,18 +20,18 @@ namespace Fido.DataAccess
     public interface IGenericRepository<TENTITY>
         where TENTITY : Entity
     {
-        TENTITY Get(Guid Id, string IncludeProperties = "");
+        TENTITY Get(Guid Id, string IncludeProperties = null);
         TENTITY Get(
             Expression<Func<TENTITY, bool>> Predicate,
-            string IncludeProperties = "");
+            string IncludeProperties = null);
         IEnumerable<TENTITY> GetAsIEnumerable(
             Expression<Func<TENTITY, bool>> Predicate = null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null,
-            string IncludeProperties = "");
+            string IncludeProperties = null);
         IQueryable<TENTITY> GetAsIQueryable(
             Expression<Func<TENTITY, bool>> Predicate = null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null,
-            string IncludeProperties = "");
+            string IncludeProperties = null);
         TENTITY Insert(TENTITY Entity);
         TENTITY Update(TENTITY Entity);
         void Delete(Guid Id);

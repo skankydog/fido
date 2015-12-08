@@ -31,19 +31,24 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual TENTITY Get(Guid Id, string IncludeProperties = "")
+        protected virtual string DefaultIncludes { get { return ""; } }
+
+        public virtual TENTITY Get(Guid Id, string IncludeProperties = null)
         {
             using (new FunctionLogger(Log))
             {
+                IncludeProperties = IncludeProperties.IsNullOrEmpty() ? DefaultIncludes : IncludeProperties;
                 return Get(e => e.Id == Id, IncludeProperties);
             }
         }
 
-        public virtual TENTITY Get(Expression<Func<TENTITY, bool>> Predicate, string IncludeProperties = "")
+        public virtual TENTITY Get(Expression<Func<TENTITY, bool>> Predicate, string IncludeProperties = null)
         {
             using (new FunctionLogger(Log))
             {
+                IncludeProperties = IncludeProperties == null ? DefaultIncludes : IncludeProperties;
                 Log.InfoFormat("Predicate='{0}'", Predicate);
+
                 return GetAsIQueryable(Predicate, null, IncludeProperties).FirstOrDefault();
             }
         }
@@ -51,10 +56,12 @@ namespace Fido.DataAccess.Implementation
         public virtual IEnumerable<TENTITY> GetAsIEnumerable(
             Expression<Func<TENTITY, bool>> Predicate= null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null,
-            string IncludeProperties = "")
+            string IncludeProperties = null)
         {
             using (new FunctionLogger(Log))
             {
+                IncludeProperties = IncludeProperties == null ? DefaultIncludes : IncludeProperties;
+
                 return GetAsIQueryable(Predicate, OrderBy, IncludeProperties).ToList();
             }
         }
@@ -62,15 +69,16 @@ namespace Fido.DataAccess.Implementation
         public virtual IQueryable<TENTITY> GetAsIQueryable(
             Expression<Func<TENTITY, bool>> Predicate = null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null, // example: q => q.OrderBy(s => s.Id)
-            string IncludeProperties = "")
+            string IncludeProperties = null)
         {
             using (new FunctionLogger(Log))
             {
+                IncludeProperties = IncludeProperties == null ? DefaultIncludes : IncludeProperties;
                 Log.InfoFormat("Predicate='{0}'", Predicate);
                 Log.InfoFormat("OrderBy='{0}'", OrderBy);
                 Log.InfoFormat("IncludeProperties='{0}'", IncludeProperties);
 
-                IQueryable<TENTITY> l_Query = Context.Set<TENTITY>();
+                IQueryable<TENTITY> l_Query = Context.Set<TENTITY>().AsNoTracking(); // Jamie: change here
 
                 if (Predicate != null)
                 {
@@ -106,6 +114,7 @@ namespace Fido.DataAccess.Implementation
                     Entity.CreatedUtc = DateTime.UtcNow;
 
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
+
                 Context.Set<TENTITY>().Add(Entity);
 
                 return Entity;
@@ -117,6 +126,7 @@ namespace Fido.DataAccess.Implementation
             using (new FunctionLogger(Log))
             {
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
+
                 Context.Entry(Entity).State = EntityState.Modified;
 
                 return Entity;
@@ -128,6 +138,7 @@ namespace Fido.DataAccess.Implementation
             using (new FunctionLogger(Log))
             {
                 Log.InfoFormat("Id='{0}'", Id);
+
                 TENTITY l_Entity = Context.Set<TENTITY>().Find(Id);
                 Context.Set<TENTITY>().Remove(l_Entity);
             }

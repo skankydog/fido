@@ -55,12 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Public\Bootstrapper\BootstrapperEngine.cs" />
-    <Compile Include="Public\Exceptions\ConcurrencyException.cs" />
     <Compile Include="Public\Password\PasswordGenerator.cs" />
     <Compile Include="Public\Password\PasswordAdvisor.cs" />
     <Compile Include="Public\Extensions.cs" />
     <Compile Include="Public\TypeFinder.cs" />
-    <Compile Include="Public\Exceptions\_ExceptionBase.cs" />
+    <Compile Include="Public\ExceptionBase.cs" />
     <Compile Include="Public\Bootstrapper\IBootstrapper.cs" />
     <Compile Include="Public\FunctionLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

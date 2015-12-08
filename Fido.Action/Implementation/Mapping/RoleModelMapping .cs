@@ -25,8 +25,10 @@ namespace Fido.Action.Mapping
             {
                 Mapper.CreateMap<Dtos.Role, Guid>()
                     .ConvertUsing(Src => Src.Id);
+                Mapper.CreateMap<Dtos.Role, RoleModel>()
+                    .ForMember(Dest => Dest.RequiresAuthentication, Options => Options.Ignore());
 
-                Mapper.CreateMap<Dtos.Role, RoleModel>();
+                Mapper.CreateMap<RoleModel, Dtos.Role>();
             }
         }
     }

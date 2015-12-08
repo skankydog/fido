@@ -19,6 +19,6 @@ namespace Fido.Entities
         }
 
         public string Name { get; set; }
-        public IList<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }

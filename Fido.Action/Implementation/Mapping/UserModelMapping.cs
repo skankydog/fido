@@ -27,7 +27,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
                     .ForMember(Dest => Dest.AllLocalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Expired", "Enabled", "Disabled", Src.LocalCredentialState }))
                     .ForMember(Dest => Dest.AllExternalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Enabled", "Disabled", Src.ExternalCredentialState }))
-                    .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore()) // Will need to re-think this
+                    .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore()) // Might need to re-think this
                     .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
                     .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
                     .ForMember(Dest => Dest.DisplayName, Options => Options.MapFrom(Src => Src.Fullname.DisplayName))
@@ -44,7 +44,8 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.LocalCredentialState, Options => Options.MapFrom(m => m.ExternalCredentialState == null ? "None" : m.ExternalCredentialState))
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<UserModel, Dtos.Fullname>(Src)))
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore()) // Can't be updated via this view
-                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore()); // Can't be updated via this view
+                 //   .ForMember(Dest => Dest.Roles, Options => Options.UseValue(Src => (from Src.SelectedRoles select new Dtos.Role { Id=  Src.SelectedRoles })));
+                 .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
             }
         }
     }
