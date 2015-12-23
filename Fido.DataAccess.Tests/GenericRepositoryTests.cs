@@ -30,7 +30,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.Insert(UserEntity);
+                Repository.CascadeInsert(UserEntity);
                 UnitOfWork.Commit();
             }
 
@@ -129,7 +129,6 @@ namespace Fido.DataAccess.Tests
             User UserEntity = new User
             {
                 Id = Guid.NewGuid(),
-                //CreatedUtc = DateTime.UtcNow,
                 EmailAddress = string.Concat(Guid.NewGuid(), "@skankydog.com"),
                 Password = "WEwew66&&3jhjsD",
                 Fullname = new Fullname { Firstname = "John", Surname = "Citizen" }
@@ -139,7 +138,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.Insert(UserEntity);
+                Repository.CascadeInsert(UserEntity);
                 UnitOfWork.Commit();
             }
 

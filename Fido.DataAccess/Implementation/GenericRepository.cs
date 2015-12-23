@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using RefactorThis.GraphDiff; // new
 using Fido.DataAccess;
 using Fido.Entities;
 using Fido.Core;
@@ -78,7 +79,7 @@ namespace Fido.DataAccess.Implementation
                 Log.InfoFormat("OrderBy='{0}'", OrderBy);
                 Log.InfoFormat("IncludeProperties='{0}'", IncludeProperties);
 
-                IQueryable<TENTITY> l_Query = Context.Set<TENTITY>().AsNoTracking(); // Jamie: change here
+                IQueryable<TENTITY> l_Query = Context.Set<TENTITY>().AsNoTracking();
 
                 if (Predicate != null)
                 {
@@ -102,11 +103,11 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual TENTITY Insert(TENTITY Entity)
+        public virtual TENTITY CascadeInsert(TENTITY Entity)
         {
             using (new FunctionLogger(Log))
             {
-                // Added the below to ensure Id and Created Date/Time
+                // Ensure Id and Created Date/Time...
                 if (Entity.Id == null || Entity.Id == Guid.Empty)
                     Entity.Id = Guid.NewGuid();
 
@@ -121,17 +122,8 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual TENTITY Update(TENTITY Entity)
-        {
-            using (new FunctionLogger(Log))
-            {
-                Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
-
-                Context.Entry(Entity).State = EntityState.Modified;
-
-                return Entity;
-            }
-        }
+        public abstract TENTITY Insert(TENTITY Entity);
+        public abstract TENTITY Update(TENTITY Entity);
 
         public virtual void Delete(Guid Id)
         {
@@ -139,8 +131,8 @@ namespace Fido.DataAccess.Implementation
             {
                 Log.InfoFormat("Id='{0}'", Id);
 
-                TENTITY l_Entity = Context.Set<TENTITY>().Find(Id);
-                Context.Set<TENTITY>().Remove(l_Entity);
+                TENTITY Entity = Context.Set<TENTITY>().Find(Id);
+                Context.Set<TENTITY>().Remove(Entity);
             }
         }
 
@@ -164,9 +156,9 @@ namespace Fido.DataAccess.Implementation
                     .Where(Predicate)
                     select e;
 
-                foreach (TENTITY l_Entity in EntitiesToDelete)
+                foreach (TENTITY Entity in EntitiesToDelete)
                 {
-                    Context.Set<TENTITY>().Remove(l_Entity);
+                    Context.Set<TENTITY>().Remove(Entity);
                 }
             }
         }

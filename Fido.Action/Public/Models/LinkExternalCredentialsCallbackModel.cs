@@ -16,7 +16,7 @@ namespace Fido.Action.Models
         public string EmailAddress { get; set; }
         #endregion
 
-        public LinkExternalCredentialsCallbackModel() { } // pure model
+        public LinkExternalCredentialsCallbackModel() { }
         public LinkExternalCredentialsCallbackModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MoreLinq;
 using System.Text;
+using RefactorThis.GraphDiff;
 using Fido.DataAccess;
 using Fido.Entities;
 using Fido.Core;
@@ -18,5 +19,17 @@ namespace Fido.DataAccess.Implementation
         public ProfileImageRepository(IUnitOfWork UnitOfWork)
             : base(UnitOfWork)
         {}
+
+        public override ProfileImage Insert(ProfileImage Entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ProfileImage Update(ProfileImage Entity)
+        {
+            Context.UpdateGraph(Entity);
+
+            return Entity;
+        }
     }
 }

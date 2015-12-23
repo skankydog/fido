@@ -18,7 +18,12 @@ namespace Fido.DataAccess.Implementation
             : base(UnitOfWork)
         {}
 
-        protected override string DefaultIncludes { get { return "Activities"; } }
+        protected override string DefaultIncludes { get { return "Activities, Users"; } }
+
+        public override Role Insert(Role Entity)
+        {
+            throw new NotImplementedException();
+        }
 
         public override Role Update(Role Entity)
         {
@@ -27,6 +32,7 @@ namespace Fido.DataAccess.Implementation
                 Log.InfoFormat("Role.Id='{0}'", Entity.Id);
 
                 Context.UpdateGraph(Entity, Map => Map.AssociatedCollection(Role => Role.Activities));
+                Context.UpdateGraph(Entity, Map => Map.AssociatedCollection(Role => Role.Users));
 
                 return Entity;
             }

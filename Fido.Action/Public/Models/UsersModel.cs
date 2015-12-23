@@ -21,7 +21,7 @@ namespace Fido.Action.Models
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public UsersModel() { } // pure model
+        public UsersModel() { }
         public UsersModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

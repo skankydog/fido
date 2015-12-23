@@ -54,7 +54,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult ChangePassword()
         {
             return Dispatcher.View<ChangePasswordModel>(
-                Result: PartialView);
+                Result: () => PartialView());
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace Fido.WebUI.Controllers
         public ActionResult SetCredentials()
         {
             return Dispatcher.View<SetCredentialsModel>(
-                Result: PartialView);
+                Result: () => PartialView());
         }
 
         [HttpPost]

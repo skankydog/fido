@@ -26,7 +26,7 @@ namespace Fido.Action.Models
         public Guid ConfirmationId { get; set; }
         #endregion
 
-        public ResetPasswordModel() { } // pure model
+        public ResetPasswordModel() { }
         public ResetPasswordModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

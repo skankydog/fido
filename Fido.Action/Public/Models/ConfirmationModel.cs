@@ -15,7 +15,7 @@ namespace Fido.Action.Models
         public Guid ConfirmationId { get; set; }
         #endregion
 
-        public ConfirmationModel() { } // pure model
+        public ConfirmationModel() { }
         public ConfirmationModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

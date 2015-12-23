@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class RoleModel : Model<RoleModel>, IModelCRUD
+    public class RoleModel : Model<RoleModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -29,7 +29,13 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public RoleModel() { } // pure model
+        public RoleModel()
+        {
+            Id = Guid.NewGuid();
+            CreatedUtc = DateTime.UtcNow;
+            IsNew = true;
+        }
+
         public RoleModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

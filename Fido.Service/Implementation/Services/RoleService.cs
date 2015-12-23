@@ -36,7 +36,7 @@ namespace Fido.Service.Implementation
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<DataAccess.IUserRepository>(UnitOfWork);
                     var UsersInRole = (from u in UserRepository.GetAsIQueryable(e => e.Id != Guid.Empty)
-                                       from tag in u.Roles where tag.Id == RoleId
+                                       from r in u.Roles where r.Id == RoleId
                                        select u).ToList();
 
                     IList<User> UserDTOs = null;
@@ -91,6 +91,35 @@ namespace Fido.Service.Implementation
                     RoleEntity.Activities = ExistingActivities.ToList();
 
                     RoleRepository.Update(RoleEntity);
+                    UnitOfWork.Commit();
+                }
+            }
+        }
+
+        public void SetAdministrationRole(string RoleName)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var RoleRepository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
+                    var AdministratorRole = RoleRepository.Get(e => e.Name == RoleName);
+
+                    if (AdministratorRole == null)
+                    {
+                        AdministratorRole = new Entities.Role { Name = RoleName };
+                        AdministratorRole = RoleRepository.CascadeInsert(AdministratorRole);
+                        UnitOfWork.Commit();
+
+                        AdministratorRole = RoleRepository.Get(e => e.Name == RoleName);
+                    }
+
+                    var ActivityRepository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
+                    var AllActivities = ActivityRepository.GetAsIEnumerable(e => e.Id != Guid.Empty).ToList();
+
+                    AdministratorRole.Activities = AllActivities;
+                    RoleRepository.Update(AdministratorRole);
+
                     UnitOfWork.Commit();
                 }
             }

@@ -272,6 +272,9 @@
     <Content Include="Areas\Administration\Views\User\Delete.cshtml" />
     <Content Include="Content\bootstrap-chosen.scss" />
     <Content Include="Content\bootstrap-chosen.less" />
+    <Content Include="Areas\Administration\Views\User\UserForm.cshtml" />
+    <Content Include="Areas\Administration\Views\User\___Update - Copy.cshtml" />
+    <Content Include="Areas\Administration\Views\User\___Create - Copy.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />

@@ -45,11 +45,11 @@ namespace Fido.DataAccess.Implementation
                 {
                     this.Context.SaveChanges();
                 }
-                catch (DbUpdateConcurrencyException Ex)
-                {
-                    Log.WarnFormat("Exception: {0}", Ex);
-                    throw new ConcurrencyException("At least one of the entities was modified between when it was read and when this write was attempted. Please reprocess.", Ex);
-                }
+            //    catch (DbUpdateConcurrencyException Ex)
+            //    {
+            //        Log.WarnFormat("Exception: {0}", Ex);
+            //        throw new ConcurrencyException("At least one of the entities was modified between when it was read and when this write was attempted. Please reprocess.", Ex);
+            //    }
                 catch (DbUpdateException Ex)
                 {
                     Log.WarnFormat("Exception: {0}", Ex);

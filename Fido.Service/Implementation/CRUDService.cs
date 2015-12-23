@@ -17,7 +17,7 @@ namespace Fido.Service.Implementation
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public TDTO Get(Guid Id, string IncludeProperties = "")
+        public TDTO Get(Guid Id, string IncludeProperties = null)
         {
             using (new FunctionLogger(Log))
             {
@@ -32,6 +32,21 @@ namespace Fido.Service.Implementation
             }
         }
 
+        public IList<TDTO> GetAll(string IncludeProperties = null)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
+                    IList<TENTITY> EntityList = Repository.GetAsIEnumerable(e => e.Id != null, null, IncludeProperties).ToList();
+
+                    IList<TDTO> DtoList = Mapper.Map<IList<TENTITY>, IList<TDTO>>(EntityList);
+                    return DtoList;
+                }
+            }
+        }
+
         public int CountAll()
         {
             using (new FunctionLogger(Log))
@@ -40,21 +55,6 @@ namespace Fido.Service.Implementation
                 {
                     TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
                     return Repository.GetAsIEnumerable(e => e.Id != null).Count();
-                }
-            }
-        }
-
-        public IList<TDTO> GetAll()
-        {
-            using (new FunctionLogger(Log))
-            {
-                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-                {
-                    TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
-                    IList<TENTITY> EntityList = Repository.GetAsIEnumerable(e => e.Id != null).ToList();
-
-                    IList<TDTO> DtoList = Mapper.Map<IList<TENTITY>, IList<TDTO>>(EntityList);
-                    return DtoList;
                 }
             }
         }
@@ -77,6 +77,7 @@ namespace Fido.Service.Implementation
                         Dto.IsNew = true;
 
                         TENTITY Entity = Mapper.Map<TDTO, TENTITY>(Dto);
+                //        Repository.CascadeInsert(Entity);
                         Repository.Insert(Entity);
                     }
                     else
@@ -85,7 +86,7 @@ namespace Fido.Service.Implementation
                         Dto = BeforeUpdate(Dto, UnitOfWork);
                         Dto.IsNew = false;
 
-                        TENTITY Entity = Repository.Get(Dto.Id); // THIS IS THE ISSUE!!
+                        TENTITY Entity = Repository.Get(Dto.Id);
 
                         if (!Dto.RowVersion.SequenceEqual(Entity.RowVersion))
                             throw new Exception(string.Format("The entity, {0}, was modified between when it was read and when this write was attempted. Please reprocess.", Entity));

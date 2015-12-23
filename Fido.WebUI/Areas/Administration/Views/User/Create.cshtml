@@ -9,59 +9,6 @@
     @Html.AntiForgeryToken()
 
     <div class="well">
-        <div class="row">
-            <div class="col-md-8">
-
-                <span class="skd-spacing"></span>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "email address", @value = "" })
-                </div>
-                @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
-                
-                <span class="skd-spacing"></span>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
-                </div>
-                @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
-
-                <span class="skd-spacing"></span>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
-                </div>
-                @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
-
-                <span class="skd-spacing"></span>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                    @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    //Html.Hidden("Id", Model.Id)
-    //Html.Hidden("CreatedUtc", Model.CreatedUtc)
-    //Html.Hidden("IsNew", Model.IsNew)
-    //Html.Hidden("RowVersion", Model.RowVersion)
-
-    <span class="skd-spacing-large"></span>
-
-    <div class="row">
-        <div class="col-xs-6 col-centered">
-            <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
-                <span><i class="fa fa-check"></i></span>
-            </button>
-        </div>
-        <div class="col-xs-6 col-centered">
-            <a href="@Url.Action("Index", "User")">
-                <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
-            </a>
-        </div>
-    </div>
-
-    <span class="skd-spacing-large"></span>
+        @Html.Partial("UserForm", Model)
+    </div>    
 }

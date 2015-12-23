@@ -18,7 +18,7 @@ namespace Fido.Action.Models
         public string EmailAddress { get; set; }
         #endregion
 
-        public ForgottenPasswordModel() { } // pure model
+        public ForgottenPasswordModel() { }
         public ForgottenPasswordModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

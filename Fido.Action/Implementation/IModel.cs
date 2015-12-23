@@ -10,6 +10,7 @@ namespace Fido.Action.Implementation
 
     internal interface IModel<TMODEL> : IModel
     {
+        TMODEL Prepare(TMODEL Model);
         TMODEL Read(Guid Id);
         TMODEL Read(IndexOptions IndexOptions);
         bool Write(TMODEL DataModel);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +30,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.Insert(UserEntity);
+                Repository.CascadeInsert(UserEntity);
                 UnitOfWork.Rollback();
             }
 
@@ -85,7 +86,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.Insert(UserEntity);
+                Repository.CascadeInsert(UserEntity);
                 UnitOfWork.Commit();
             }
 
@@ -103,7 +104,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ConcurrencyException))]
+        [ExpectedException(typeof(DbUpdateConcurrencyException))]
         public void ChecksForOptimisticConcurrency()
         {
             using (IUnitOfWork OuterUnitOfWork = DataAccessFactory.CreateUnitOfWork())

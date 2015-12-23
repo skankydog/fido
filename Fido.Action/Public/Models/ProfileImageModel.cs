@@ -15,7 +15,7 @@ namespace Fido.Action.Models
         public byte[] Image;
         #endregion
 
-        public ProfileImageModel() { } // pure model
+        public ProfileImageModel() { }
         public ProfileImageModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

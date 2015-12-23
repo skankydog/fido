@@ -18,7 +18,7 @@ namespace Fido.Action.Models
         public string Name { get; set; }
         #endregion
 
-        public ExternalLoginCallbackModel() { } // pure model
+        public ExternalLoginCallbackModel() { }
         public ExternalLoginCallbackModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

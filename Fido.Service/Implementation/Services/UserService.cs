@@ -245,7 +245,7 @@ namespace Fido.Service.Implementation
                                     Image = Profile.Image
                                 };
 
-                            ProfileImageRepository.Insert(ProfileImageEntity);
+                            ProfileImageRepository.CascadeInsert(ProfileImageEntity);
                         }
                         else // insert image into the database
                         {
@@ -316,31 +316,6 @@ namespace Fido.Service.Implementation
                 }
             }
         }
-
-        //public User Update(User User)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //        {
-        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-        //            var UserEntity = UserRepository.Get(User.Id);
-
-        //            UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
-
-        //            if (User.LocalCredentialState != UserEntity.LocalCredentialState)
-        //                UserEntity.SetLocalCredentialState(User.LocalCredentialState);
-
-        //            if (User.ExternalCredentialState != UserEntity.ExternalCredentialState)
-        //                UserEntity.SetExternalCredentialState(User.ExternalCredentialState);
-
-        //            UserEntity = UserRepository.Update(UserEntity);
-        //            UnitOfWork.Commit();
-
-        //            return AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
-        //        }
-        //    }
-        //}
         #endregion
 
         #region Roles and Activities
@@ -444,16 +419,17 @@ namespace Fido.Service.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                if (PermissionCache.ContainsKey(UserId) == false)
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    var Activities = GetActivities(UserId);
-                    PermissionCache[UserId] = Activities;
+                    var UserRepository = DataAccessFactory.CreateRepository<DataAccess.IUserRepository>(UnitOfWork);
+                    var Activities = (from u in UserRepository.GetAsIQueryable(e => e.Id == UserId)
+                                      from r in u.Roles
+                                      from a in r.Activities
+                                      where a.Name == ActivityName
+                                      select u).DistinctBy(u => u.Id).Count();
+
+                    return Activities == 1;
                 }
-
-                if (PermissionCache[UserId].FirstOrDefault(e => e.Name == ActivityName) == null)
-                    return false;
-
-                return true;
             }
         }
         #endregion

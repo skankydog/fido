@@ -34,7 +34,7 @@ namespace Fido.Service.Tests
         [ClassInitialize]
         public static void Initialise(TestContext Context)
         {
-            ActionFactory.Boot();
+            DataAccess.DataAccessFactory.Boot();
         }
         #endregion
     }

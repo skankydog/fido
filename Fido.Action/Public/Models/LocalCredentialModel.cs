@@ -7,7 +7,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class LocalCredentialModel : Model<LocalCredentialModel>, IModelCRUD
+    public class LocalCredentialModel : Model<LocalCredentialModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -34,11 +34,15 @@ namespace Fido.Action.Models
         public DateTime CreatedUtc { get; set; }
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
-
-     //   public string InputState { get; set; }
         #endregion
 
-        public LocalCredentialModel() { } // pure model
+        public LocalCredentialModel()
+        {
+            Id = Guid.NewGuid();
+            CreatedUtc = DateTime.UtcNow;
+            IsNew = true;
+        }
+
         public LocalCredentialModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

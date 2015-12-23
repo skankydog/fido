@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Fido.Core;
+using Fido.Service;
 using Fido.Action.Models;
 
 namespace Fido.Action.Implementation
@@ -30,11 +31,11 @@ namespace Fido.Action.Implementation
             this.PasswordResetResult = PasswordResetResult;
         }
 
-        public TRETURN View<TMODEL>(Func<TRETURN> Result)
+        public TRETURN View<TMODEL>(Func<TRETURN> Result) // Not sure I should allow for parameterless delegates
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = GetLogicModel<TMODEL>();
+                var LogicModel = CreateLogicModel<TMODEL>();
                 var Redirect = CheckPermission(LogicModel); // Write
 
                 if (Redirect != null)
@@ -44,11 +45,28 @@ namespace Fido.Action.Implementation
             }
         }
 
+        public TRETURN View<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var LogicModel = CreateLogicModel<TMODEL>();
+                var Redirect = CheckPermission(LogicModel); // Write
+
+                if (Redirect != null)
+                    return Redirect;
+
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                return Processor.ExecuteView(
+                    DataModel: DataModel,
+                    Result: Result);
+            }
+        }
+
         public TRETURN Read<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = GetLogicModel<TMODEL>();
+                var LogicModel = CreateLogicModel<TMODEL>();
                 var Redirect = CheckPermission(LogicModel); // Read
 
                 if (Redirect != null)
@@ -63,7 +81,7 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = GetLogicModel<TMODEL>();
+                var LogicModel = CreateLogicModel<TMODEL>();
                 var Redirect = CheckPermission(LogicModel); // Read
 
                 if (Redirect != null)
@@ -82,7 +100,7 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = GetLogicModel<TMODEL>();
+                var LogicModel = CreateLogicModel<TMODEL>();
                 var Redirect = CheckPermission(LogicModel); // Write
 
                 if (Redirect != null)
@@ -101,18 +119,11 @@ namespace Fido.Action.Implementation
             return Write(DataModel, SuccessResult, NonsuccessResult, NonsuccessResult);
         }
 
-        //public TRETURN Write<TMODEL>(
-        //    TMODEL DataModel,
-        //    Func<TMODEL, TRETURN> AnyResult)
-        //{
-        //    return Write(DataModel, AnyResult, AnyResult, AnyResult);
-        //}
-
         public TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = GetLogicModel<TMODEL>();
+                var LogicModel = CreateLogicModel<TMODEL>();
                 var Redirect = CheckPermission(LogicModel); // Delete
 
                 if (Redirect != null)
@@ -123,7 +134,7 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private IModel<TMODEL> GetLogicModel<TMODEL>()
+        private IModel<TMODEL> CreateLogicModel<TMODEL>()
         {
             using (new FunctionLogger(Log))
             {
@@ -148,7 +159,14 @@ namespace Fido.Action.Implementation
                 if (AuthenticationAPI.LoggedInCredentialState == "Expired")
                     return PasswordResetResult();
 
-                // PermissionCheck(UserInterface.UserId, ReadHandler.Name, Write) // throw if missing required permission
+                var UserService = ServiceFactory.CreateService<IUserService>();
+                var Name = LogicModel.GetType().Name;
+
+                if (!UserService.UserHasActivity(AuthenticationAPI.AuthenticatedId, Name))
+                {
+                    FeedbackAPI.DisplayError("You are not authorised to perform that action under your current login.");
+                    return AuthenticateResult();
+                }
             }
 
             return default(TRETURN);

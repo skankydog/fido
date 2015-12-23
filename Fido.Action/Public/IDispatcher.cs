@@ -9,7 +9,8 @@ namespace Fido.Action
 {
     public interface IDispatcher<TRETURN>
     {
-        TRETURN View<TMODEL>(Func<TRETURN> Result);
+        TRETURN View<TMODEL>(Func<TRETURN> Result); // Not sure I should allow for parameterless delegates
+        TRETURN View<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result);
         TRETURN Read<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result);
         TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
         TRETURN Write<TMODEL>(

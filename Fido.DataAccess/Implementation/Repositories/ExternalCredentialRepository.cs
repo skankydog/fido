@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using RefactorThis.GraphDiff;
 using Fido.DataAccess;
 using Fido.Entities;
 using Fido.Core;
@@ -16,5 +17,17 @@ namespace Fido.DataAccess.Implementation
         public ExternalCredentialRepository(IUnitOfWork UnitOfWork)
             : base(UnitOfWork)
         {}
+
+        public override ExternalCredential Insert(ExternalCredential Entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ExternalCredential Update(ExternalCredential Entity)
+        {
+            Context.UpdateGraph(Entity);
+
+            return Entity;
+        }
     }
 }

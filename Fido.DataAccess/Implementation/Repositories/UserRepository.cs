@@ -22,6 +22,24 @@ namespace Fido.DataAccess.Implementation
 
         protected override string DefaultIncludes { get { return "Roles, ExternalCredentials"; } }
 
+        public override User Insert(User Entity)
+        {
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("User.Id='{0}'", Entity.Id);
+
+                Context.Set<User>().Add(Entity);
+
+                foreach (var Role in Entity.Roles)
+                    Context.Entry(Role).State = System.Data.Entity.EntityState.Unchanged;
+
+                foreach (var ExternalCredential in Entity.ExternalCredentials)
+                    Context.Entry(ExternalCredential).State = System.Data.Entity.EntityState.Unchanged;
+
+                return Entity;
+            }
+        }
+
         public override User Update(User Entity)
         {
             using (new FunctionLogger(Log))
@@ -44,13 +62,6 @@ namespace Fido.DataAccess.Implementation
                 Log.DebugFormat("ProviderKey: {0}", ProviderKey);
                 Log.DebugFormat("IncludeProperties: {0}", IncludeProperties);
 
-                //var UserEntity =
-                //    (from u in Context.Set<User>()
-                //     join e in Context.Set<ExternalCredential>()
-                //        on u.Id equals e.UserId
-                //     where e.LoginProvider == LoginProvider && e.ProviderKey == ProviderKey
-                //     select u).AsNoTracking().ToList();
-
                 IQueryable<User> Query =
                     (from u in Context.Set<User>()
                      join e in Context.Set<ExternalCredential>()
@@ -66,18 +77,6 @@ namespace Fido.DataAccess.Implementation
 
                 var DistinctList = Query.DistinctBy(u => u.Id).ToList();
                 return DistinctList.Count() == 0 ? null : DistinctList.First();
-
-                //Log.InfoFormat("Found {0} match(es) for provider/key: {1}/{2}",
-                //    UserEntity.Count(), LoginProvider, ProviderKey);
-
-                //if (UserEntity.Count() == 0)
-                //    return null;
-
-                //if (UserEntity.Count() > 1)
-                //    throw new ApplicationException(string.Format("More than one match found for provider/key: {0}/{1}",
-                //        LoginProvider, ProviderKey));
-
-                //return UserEntity.First();
             }
         }
 
@@ -88,13 +87,6 @@ namespace Fido.DataAccess.Implementation
                 IncludeProperties = IncludeProperties.IsNullOrEmpty() ? DefaultIncludes : IncludeProperties;
                 Log.DebugFormat("EmailAddress: {0}", EmailAddress);
                 Log.DebugFormat("IncludeProperties: {0}", IncludeProperties);
-
-                //var UserEntity =
-                //    (from u in Context.Set<User>()
-                //     join e in Context.Set<ExternalCredential>()
-                //        on u.Id equals e.UserId
-                //     where e.EmailAddress == EmailAddress
-                //     select u).AsNoTracking().DistinctBy(u => u.Id).ToList();
 
                 IQueryable<User> Query =
                     (from u in Context.Set<User>()

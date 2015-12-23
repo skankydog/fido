@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Implementation\IModelCRUD.cs" />
     <Compile Include="Implementation\Mapping\RoleModelMapping .cs" />
     <Compile Include="Implementation\Mapping\UserModelMapping.cs" />
     <Compile Include="Public\IDispatcher.cs" />

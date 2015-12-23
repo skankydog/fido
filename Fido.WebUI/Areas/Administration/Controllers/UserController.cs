@@ -24,12 +24,15 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Index()
         {
-            return Dispatcher.View<UsersModel>(View);
+            return Dispatcher.View<UsersModel>(
+                () => View()); // Not sure I should allow for parameterless delegates
         }
 
         public ActionResult Create()
         {
-            return Dispatcher.View<UserModel>(View);
+            return Dispatcher.View<UserModel>(
+                DataModel: new UserModel(),
+                Result: m => View(m));
         }
 
         [HttpPost]

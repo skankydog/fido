@@ -18,7 +18,7 @@ namespace Fido.Action.Models
         public string EmailAddress { get; set; }
         #endregion
 
-        public ChangeEmailAddressModel() { } // pure model
+        public ChangeEmailAddressModel() { }
         public ChangeEmailAddressModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

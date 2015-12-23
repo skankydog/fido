@@ -76,7 +76,7 @@ namespace Fido.DataAccess.Tests
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                UserRepository.Insert(NewUser);
+                UserRepository.CascadeInsert(NewUser);
 
                 UnitOfWork.Commit();
             }
@@ -105,7 +105,7 @@ namespace Fido.DataAccess.Tests
             }
 
             Assert.IsNotNull(ReadUser);
-            Assert.AreEqual(3, ReadUser.Roles.Count());
+            Assert.AreEqual(4, ReadUser.Roles.Count());
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -153,7 +153,7 @@ namespace Fido.DataAccess.Tests
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                UserRepository.Insert(NewUser);
+                UserRepository.CascadeInsert(NewUser);
 
                 UnitOfWork.Commit();
             }

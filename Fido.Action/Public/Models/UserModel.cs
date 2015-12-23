@@ -11,7 +11,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class UserModel : Model<UserModel>, IModelCRUD
+    public class UserModel : Model<UserModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -73,7 +73,13 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public UserModel() { } // pure model
+        public UserModel() // Pure model
+        {``
+            Id = Guid.NewGuid();
+            CreatedUtc = DateTime.UtcNow;
+            IsNew = true;
+        }
+
         public UserModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,
@@ -82,17 +88,25 @@ namespace Fido.Action.Models
                         RequiresAuthentication: true)
         { }
 
+        public override UserModel Prepare(UserModel Model)
+        {
+            var RoleService = ServiceFactory.CreateService<IRoleService>();
+            Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
+
+            Model.AllLocalCredentialStates = new HashSet<string>() { "Expired", "Enabled", "Disabled", Model.LocalCredentialState };
+            Model.AllExternalCredentialStates = new HashSet<string>() { "Enabled", "Disabled", Model.ExternalCredentialState };
+
+            return Model;
+        }
+
         public override UserModel Read(Guid Id)
         {
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
             
-                var User = UserService.Get(Id, "ExternalCredentials, Roles");
+                var User = UserService.Get(Id);
                 var Model = Mapper.Map<Dtos.User, UserModel>(User);
-
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
 
                 return Model;
             }
@@ -102,9 +116,6 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
-
                 var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
                 UserDto.Roles = Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>((from r in Model.AllRoles
                                                                                 where (Model.SelectedRoles.Contains(r.Id))
@@ -112,7 +123,7 @@ namespace Fido.Action.Models
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
 
-                UserService.Save(UserDto);
+                var x = UserService.Save(UserDto);
                 UserService.SetLocalCredentialState(UserDto.Id, Model.LocalCredentialState);
                 UserService.SetExternalCredentialState(UserDto.Id, Model.ExternalCredentialState);
 
@@ -129,7 +140,7 @@ namespace Fido.Action.Models
 
                 UserService.Delete(Model.Id);
 
-                FeedbackAPI.DisplaySuccess("The user record has been deleted");
+                FeedbackAPI.DisplaySuccess("The user details have been deleted");
                 return true;
             }
         }

@@ -40,6 +40,8 @@ namespace Fido.DataAccess.Implementation
             Role03.Activities.Add(Activity05);
             Role03.Activities.Add(Activity06);
 
+            Role FidoAdministrator = new Role { Id = Guid.NewGuid(), Name = "Fido Administrator" };
+
             User HomerSimpson = new User
             {
                 Id = Guid.NewGuid(),
@@ -57,6 +59,7 @@ namespace Fido.DataAccess.Implementation
             HomerSimpson.Roles.Add(AllActivitiesRole);
             HomerSimpson.Roles.Add(Role02);
             HomerSimpson.Roles.Add(Role03);
+            HomerSimpson.Roles.Add(FidoAdministrator);
             HomerSimpson.ExternalCredentialState = "Enabled";
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook1", EmailAddress = "homer@gmail.com" });
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook2", EmailAddress = "homie@hotmail.com" });
@@ -217,21 +220,21 @@ namespace Fido.DataAccess.Implementation
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var ConfigurationRepository = DataAccessFactory.CreateRepository<IConfigurationRepository>(UnitOfWork);
-                ConfigurationRepository.Insert(
+                ConfigurationRepository.CascadeInsert(
                     new Configuration { PasswordChangePolicyDays = 30 });
 
                 var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                UserRepository.Insert(HomerSimpson);
-                UserRepository.Insert(MargeSimpson);
-                UserRepository.Insert(BartSimpson);
-                UserRepository.Insert(WaylanSmithers);
-                UserRepository.Insert(MontyBurns);
-                UserRepository.Insert(Blinky);
-                UserRepository.Insert(KentBrockman);
-                UserRepository.Insert(BumblebeeMan);
-                UserRepository.Insert(CrazyCatLady);
-                UserRepository.Insert(DiscoStu);
-                UserRepository.Insert(FatTony);
+                UserRepository.CascadeInsert(HomerSimpson);
+                UserRepository.CascadeInsert(MargeSimpson);
+                UserRepository.CascadeInsert(BartSimpson);
+                UserRepository.CascadeInsert(WaylanSmithers);
+                UserRepository.CascadeInsert(MontyBurns);
+                UserRepository.CascadeInsert(Blinky);
+                UserRepository.CascadeInsert(KentBrockman);
+                UserRepository.CascadeInsert(BumblebeeMan);
+                UserRepository.CascadeInsert(CrazyCatLady);
+                UserRepository.CascadeInsert(DiscoStu);
+                UserRepository.CascadeInsert(FatTony);
 
                 UnitOfWork.Commit();
             }

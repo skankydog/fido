@@ -16,6 +16,6 @@ namespace Fido.Entities
         public Guid Id { get; set; }
         public DateTime CreatedUtc { get; set; }
         public int? CreatedAgeDays { get { return CreatedUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)CreatedUtc).TotalDays); } }
-        public byte[] RowVersion { get; set; } // ...for optimistic concurrency
+        public byte[] RowVersion { get; set; } // For optimistic concurrency
     }
 }

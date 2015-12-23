@@ -7,7 +7,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class ProfileModel : Model<ProfileModel>, IModelCRUD
+    public class ProfileModel : Model<ProfileModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -16,7 +16,6 @@ namespace Fido.Action.Models
         public DateTime CreatedUtc { get; set; }
         public bool IsNew { get; set; }
         public byte[] RowVersion { get; set; }
-   //     public string InputState { get; set; }
 
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; } // Read only
@@ -43,7 +42,13 @@ namespace Fido.Action.Models
         public int RegisteredDays { get; set; } // Read only
         #endregion
 
-        public ProfileModel() { } // pure model
+        public ProfileModel()
+        {
+            Id = Guid.NewGuid();
+            CreatedUtc = DateTime.UtcNow;
+            IsNew = true;
+        }
+
         public ProfileModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

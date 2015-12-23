@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using RefactorThis.GraphDiff;
 using Fido.DataAccess;
 using Fido.Entities;
 using Fido.Core;
@@ -16,5 +17,17 @@ namespace Fido.DataAccess.Implementation
         public ConfigurationRepository(IUnitOfWork UnitOfWork)
             : base(UnitOfWork)
         {}
+
+        public override Configuration Insert(Configuration Entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Configuration Update(Configuration Entity)
+        {
+            Context.UpdateGraph(Entity);
+
+            return Entity;
+        }
     }
 }

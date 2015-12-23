@@ -106,7 +106,7 @@ namespace Fido.Service.Implementation
                     QueuedUTC = DateTime.UtcNow
                 };
 
-                Repository.Insert(Queued);
+                Repository.CascadeInsert(Queued);
                 return Queued.Id;
             }
         }

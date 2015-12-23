@@ -127,7 +127,8 @@ namespace Fido.WebUI.Controllers
         #region Registration
         public ActionResult Registration()
         {
-            return Dispatcher.View<RegistrationModel>(View);
+            return Dispatcher.View<RegistrationModel>(
+                Result: () => View());
         }
 
         [HttpPost]
@@ -143,7 +144,8 @@ namespace Fido.WebUI.Controllers
         #region Forgotten Password
         public ActionResult ForgottenPassword()
         {
-            return Dispatcher.View<ForgottenPasswordModel>(View);
+            return Dispatcher.View<ForgottenPasswordModel>(
+                Result: () => View());
         }
 
         [HttpPost]
@@ -157,7 +159,8 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult ResetPassword(Guid ConfirmationId)
         {
-            return Dispatcher.View<ResetPasswordModel>(View);
+            return Dispatcher.View<ResetPasswordModel>(
+                () => View()); // Not sure I should be allowing parameterless results
         }
 
         [HttpPost]

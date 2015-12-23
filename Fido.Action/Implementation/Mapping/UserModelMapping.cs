@@ -25,9 +25,11 @@ namespace Fido.Action.Mapping
             {
                 Mapper.CreateMap<Dtos.User, UserModel>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
-                    .ForMember(Dest => Dest.AllLocalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Expired", "Enabled", "Disabled", Src.LocalCredentialState }))
-                    .ForMember(Dest => Dest.AllExternalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Enabled", "Disabled", Src.ExternalCredentialState }))
-                    .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore()) // Might need to re-think this
+                    //.ForMember(Dest => Dest.AllLocalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Expired", "Enabled", "Disabled", Src.LocalCredentialState }))
+                    //.ForMember(Dest => Dest.AllExternalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Enabled", "Disabled", Src.ExternalCredentialState }))
+                    .ForMember(Dest => Dest.AllLocalCredentialStates, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AllExternalCredentialStates, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
                     .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
                     .ForMember(Dest => Dest.DisplayName, Options => Options.MapFrom(Src => Src.Fullname.DisplayName))

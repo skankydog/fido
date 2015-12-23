@@ -37,7 +37,7 @@ namespace Fido.Action.Models
         public string ConfirmPassword { get; set; }
         #endregion
 
-        public RegistrationModel() { } // pure model
+        public RegistrationModel() { }
         public RegistrationModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

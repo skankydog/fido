@@ -13,6 +13,7 @@ namespace Fido.Service
         IList<User> GetUsersInRole(Guid RoleId);
         IList<Activity> GetActivitiesForRole(Guid RoleId);
         void SetActivitiesForRole(Guid RoleId, IList<Activity> Activities);
+        void SetAdministrationRole(string RoleName);
 
         bool NameFree(string Name);             // Name must be unique
     }

@@ -25,6 +25,16 @@ namespace Fido.Action.Implementation
             this.LogicModel = LogicModel;
         }
 
+        public TRETURN ExecuteView(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            using (new FunctionLogger(Log))
+            {
+                DataModel = LogicModel.Prepare(DataModel);
+
+                return Result(DataModel);
+            }
+        }
+
         public TRETURN ExecuteRead(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
             return DoExecuteRead(Guid.Empty, IndexOptions, Result);
@@ -58,6 +68,8 @@ namespace Fido.Action.Implementation
                     Log.Fatal(Ex.ToString());
                 }
 
+                DataModel = LogicModel.Prepare(DataModel);
+
                 return Result(DataModel);
             }
         }
@@ -66,6 +78,8 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
+                DataModel = LogicModel.Prepare(DataModel);
+
                 if (ModelAPI.ModelStateIsValid())
                 {
                     try
@@ -73,7 +87,6 @@ namespace Fido.Action.Implementation
                         if (LogicModel.Write(DataModel) == true)
                         {
                             Log.Info("Successful write");
-
                             return SuccessResult();
                         }
                     }
@@ -84,13 +97,11 @@ namespace Fido.Action.Implementation
                     }
 
                     LogicModel.OnFailedWrite(DataModel);
-
                     return FailureResult(DataModel);
                 }
 
                 Log.Info("Invalid model");
                 LogicModel.OnInvalidWrite(DataModel);
-
                 return InvalidResult(DataModel);
             }
         }

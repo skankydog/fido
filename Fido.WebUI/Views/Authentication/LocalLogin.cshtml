@@ -32,7 +32,7 @@
 
             <h3>Login or @Html.ActionLink("Register", "Registration")</h3>
 
-            @Html.Partial("ExternalLogin", new @*ExternalLoginModel*@ { ReturnUrl = ViewBag.ReturnUrl })
+            @Html.Partial("ExternalLogin", new { ReturnUrl = ViewBag.ReturnUrl })
 
             <div class="row skd-row-sm-offset-3 skd-login-or">
                 <div class="col-xs-12 col-sm-6">

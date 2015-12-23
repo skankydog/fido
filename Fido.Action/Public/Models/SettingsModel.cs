@@ -38,7 +38,7 @@ namespace Fido.Action.Models
         }
         #endregion
 
-        public SettingsModel() { } // pure model
+        public SettingsModel() { }
         public SettingsModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

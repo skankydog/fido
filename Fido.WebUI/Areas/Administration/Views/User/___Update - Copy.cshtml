@@ -7,19 +7,14 @@
 @using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-
-    @Html.Hidden("Id", Model.Id)
-    @Html.Hidden("CreatedUtc", Model.CreatedUtc)
-    @Html.Hidden("IsNew", Model.IsNew)
-    @Html.Hidden("RowVersion", Model.RowVersion)
-
+    
     <div class="well">
         <div class="row">
             @if (Model.HasLocalCredentials)
             {
-                <div class="col-xs-12 skd-padding">
-                    <div>Password @Model.PasswordAgeDays day(s) old</div>
-                </div>
+            <div class="col-xs-12 skd-padding">
+                <div>Password @Model.PasswordAgeDays day(s) old</div>
+            </div>
             }
 
             <div class="col-xs-8 col-sm-6 skd-padding">
@@ -94,8 +89,62 @@
         <div class="visible-xs">
             <span class="skd-spacing"></span>
         </div>
-        
-        @Html.Partial("UserForm", Model)
-        
+
+        <div class="row">
+            <div class="col-sm-6 skd-padding">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-sm-6 skd-padding">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 skd-padding">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-comment"></i></span>
+                    @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 skd-padding">
+                Roles
+            </div>
+
+            <div class="col-xs-12">
+                @Html.ListBoxFor(m => m.SelectedRoles, new SelectList(Model.AllRoles, "Id", "Name"), new { @class = "form-control chosen-select" })
+            </div>
+        </div>
     </div>
+
+    @Html.Hidden("Id", Model.Id)
+    @Html.Hidden("CreatedUtc", Model.CreatedUtc)
+    @Html.Hidden("IsNew", Model.IsNew)
+    @Html.Hidden("RowVersion", Model.RowVersion)
+
+    <span class="skd-spacing-large"></span>
+
+    <div class="row">
+        <div class="col-xs-6 col-centered">
+            <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
+                <span><i class="fa fa-check"></i></span>
+            </button>
+        </div>
+        <div class="col-xs-6 col-centered">
+            <a href="@Url.Action("Index", "User")">
+                <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
+            </a>
+        </div>
+    </div>
+
+    <span class="skd-spacing-large"></span>
 }

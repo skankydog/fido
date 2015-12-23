@@ -144,7 +144,6 @@ namespace Fido.WebUI.Common
                 return Request.Cookies["loggedincredentialstate"].Value;
             }
 
-            /*private*/
             set
             {
                 Response.Cookies["loggedincredentialstate"].Value = value;
