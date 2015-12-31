@@ -35,7 +35,7 @@
                     @Html.ActionLink("Fido Administration", "About", "Home", null, new { @class="modal-link btn btn-success" })
                 </div>
 
-                @using (Html.BeginForm("Logout", "Authentication", FormMethod.Post, new { id = "LogoutForm" }))
+                @using (Html.BeginForm("Logout", "Authentication", FormMethod.Post, new { Area = string.Empty, id = "LogoutForm" }))
                 {
                     @Html.AntiForgeryToken()
 
@@ -187,8 +187,8 @@
                             <!-- User -->
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">@User.Identity.GetUserName()<i class="fa fa-caret-down"></i></a>
                             <ul class="dropdown-menu dropdown-user">
-                                <li><a href="@Url.Action("Profile_", "Account")"><i class="fa fa-user fa-fw"></i> Profile</a></li>
-                                <li><a href="@Url.Action("Settings", "Account")"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
+                                <li><a href="@Url.Action("Profile_", "Account", new { Area = string.Empty })"><i class="fa fa-user fa-fw"></i>Profile</a></li>
+                                <li><a href="@Url.Action("Settings", "Account", new { Area = string.Empty })"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
                                 <li class="divider"></li>
                                 <li><a title="Logout" href="javascript:document.getElementById('LogoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
                             </ul>
@@ -260,10 +260,10 @@
                                 <a href="#"><i class="fa fa-cogs fa-fw"></i> Administration<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="@Url.Action("Index", "Users", "Administration")">Users</a>
+                                        <a href="@Url.Action("Index", "User", new { Area = "Administration" })">Users</a>
                                     </li>
                                     <li>
-                                        <a href="@Url.Action("Index", "Roles", "Administration")">Roles</a>
+                                        <a href="@Url.Action("Index", "Role", new { Area = "Administration" })">Roles</a>
                                     </li>
                                     <li>
                                         <a href="#">Third Level <span class="fa arrow"></span></a>

@@ -73,8 +73,8 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public UserModel() // Pure model
-        {``
+        public UserModel()
+        {
             Id = Guid.NewGuid();
             CreatedUtc = DateTime.UtcNow;
             IsNew = true;
@@ -117,9 +117,12 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
-                UserDto.Roles = Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>((from r in Model.AllRoles
-                                                                                where (Model.SelectedRoles.Contains(r.Id))
-                                                                                select r).ToList());
+                UserDto.Roles = new List<Dtos.Role>();
+
+                if (Model.SelectedRoles != null)
+                    UserDto.Roles = Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>((from r in Model.AllRoles
+                                                                                    where (Model.SelectedRoles.Contains(r.Id))
+                                                                                    select r).ToList());
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -127,7 +130,7 @@ namespace Fido.Action.Models
                 UserService.SetLocalCredentialState(UserDto.Id, Model.LocalCredentialState);
                 UserService.SetExternalCredentialState(UserDto.Id, Model.ExternalCredentialState);
 
-                FeedbackAPI.DisplaySuccess("The user details have been updated");
+                FeedbackAPI.DisplaySuccess("The user details have been saved");
                 return true;
             }
         }

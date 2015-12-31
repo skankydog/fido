@@ -1,4 +1,5 @@
 ﻿@model Fido.Action.Models.UserModel
+@using Fido.Action.Models
 
 @{
     ViewBag.Title = "Update User";
@@ -14,6 +15,7 @@
     @Html.Hidden("RowVersion", Model.RowVersion)
 
     <div class="well">
+
         <div class="row">
             @if (Model.HasLocalCredentials)
             {
@@ -22,13 +24,13 @@
                 </div>
             }
 
-            <div class="col-xs-8 col-sm-6 skd-padding">
+            <div class="col-xs-6 skd-padding">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                     @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "no local credentials", @value = "", @disabled = "true" })
                 </div>
             </div>
-            <div class="col-xs-4 skd-padding">
+            <div class="col-xs-3 skd-padding">
                 <div class="input-group">
                     @if (Model.HasLocalCredentials)
                     {
@@ -39,14 +41,24 @@
                     }
                     else
                     {
-                        @Html.TextBoxFor(m => m.LocalCredentialState, new { @class = "form-control", @placeholder = "local credential state", @value = "", @disabled = "true" })
+                        @Html.TextBoxFor(m => m.LocalCredentialState, new { @class = "form-control", @placeholder = "local credential state", @value = "", @disabled = "true" })    
                     }
                 </div>
+            </div>
+            <div class="col-xs-3 skd-padding">
+                @if(Model.HasLocalCredentials)
+                {
+                    @Html.ActionLink("Delete", "Delete", "LocalCredential", new LocalCredentialModel { Id = Model.Id, EmailAddress = Model.EmailAddress }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                }
+                else
+                {
+                    @Html.ActionLink("Create", "Create", "LocalCredential", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                }
             </div>
         </div>
 
         <div class="row col-centered">
-            <div class="col-xs-8 col-sm-6 skd-padding">
+            <div class="col-xs-6 skd-padding">
                 @{
                     string facebook_colour = "skd-colour-info";
                     if (Model.HasFacebook) { facebook_colour = "skd-colour-facebook"; }
@@ -74,7 +86,7 @@
                     <span><i class="fa fa-google-plus"></i></span>
                 </div>
             </div>
-            <div class="col-xs-4 skd-padding">
+            <div class="col-xs-3 skd-padding">
                 <div class="input-group">
                     @if (Model.HasExternalCredentials)
                     {

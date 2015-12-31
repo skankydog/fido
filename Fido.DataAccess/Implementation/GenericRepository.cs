@@ -175,7 +175,8 @@ namespace Fido.DataAccess.Implementation
                         FROM sys.indexes 
                         WHERE name='IX_{0}_{1}' AND object_id = OBJECT_ID('{2}')) 
                     BEGIN 
-                        CREATE UNIQUE INDEX IX_{0}_{1} ON {2} ({1}); 
+                        CREATE UNIQUE INDEX IX_{0}_{1} ON {2}({1}) 
+                        WHERE {1} IS NOT NULL;  
                     END",
                     EntityName, FieldName, TableName);
 

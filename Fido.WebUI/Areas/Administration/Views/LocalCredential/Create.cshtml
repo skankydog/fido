@@ -1,0 +1,45 @@
+﻿@model Fido.Action.Models.LocalCredentialModel
+
+@{
+    ViewBag.Title = "Create Local Credentials";
+    Layout = null;
+}
+
+@using (Html.BeginForm("Create", "LocalCredential", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="well">
+        <div class="row">
+            <div class="col-xs-6 skd-padding">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "no local credentials", @value = "" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 skd-padding">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "one-time password", @value = "" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="col-xs-6 col-centered">
+            <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save" id="approve-btn">
+                <span><i class="fa fa-check"></i></span>
+            </button>
+        </div>
+        <div class="col-xs-6 col-centered">
+            <button type="button" class="btn btn-danger btn-circle btn-lg" data-dismiss="modal">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <span class="skd-spacing-large"></span>
+}

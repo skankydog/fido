@@ -28,27 +28,22 @@ namespace Fido.Entities
                 switch (value)
                 {
                     case UserDetails.LocalCredentialStates.None.Name_:
-                    //case "None":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.None(this);
                         break;
 
                     case UserDetails.LocalCredentialStates.Registered.Name_:
-                    //case "Registered":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Registered(this);
                         break;
 
                     case UserDetails.LocalCredentialStates.Expired.Name_:
-                    //case "Expired":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Expired(this);
                         break;
 
                     case UserDetails.LocalCredentialStates.Enabled.Name_:
-                    //case "Enabled":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Enabled(this);
                         break;
 
                     case UserDetails.LocalCredentialStates.Disabled.Name_:
-                    //case "Disabled":
                         CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Disabled(this);
                         break;
 

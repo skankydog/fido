@@ -30,7 +30,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Create()
         {
-            return Dispatcher.View<UserModel>(
+            return Dispatcher.View(
                 DataModel: new UserModel(),
                 Result: m => View(m));
         }
