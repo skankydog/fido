@@ -20,7 +20,10 @@ namespace Fido.DataAccess.Implementation
 
         public override Activity Insert(Activity Entity)
         {
-            throw new NotImplementedException();
+            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+
+            Context.Set<Activity>().Add(Entity);
+            return Entity;
         }
 
         public override Activity Update(Activity Entity)

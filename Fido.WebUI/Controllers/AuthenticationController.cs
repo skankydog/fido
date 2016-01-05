@@ -71,7 +71,7 @@ namespace Fido.WebUI.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToLocal(ReturnUrl),
                 NonsuccessResult: m => View());
@@ -96,7 +96,7 @@ namespace Fido.WebUI.Controllers
                 return RedirectToAction("LocalLogin");
             }
 
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: new ExternalLoginCallbackModel
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
@@ -127,14 +127,14 @@ namespace Fido.WebUI.Controllers
         #region Registration
         public ActionResult Registration()
         {
-            return Dispatcher.View<RegistrationModel>(
+            return Dispatcher.CreateView<RegistrationModel>(
                 Result: () => View());
         }
 
         [HttpPost]
         public ActionResult Registration(RegistrationModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("LocalLogin"),
                 NonsuccessResult: m => View(m));
@@ -144,14 +144,14 @@ namespace Fido.WebUI.Controllers
         #region Forgotten Password
         public ActionResult ForgottenPassword()
         {
-            return Dispatcher.View<ForgottenPasswordModel>(
+            return Dispatcher.CreateView<ForgottenPasswordModel>(
                 Result: () => View());
         }
 
         [HttpPost]
         public ActionResult ForgottenPassword(ForgottenPasswordModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("LocalLogin"),
                 NonsuccessResult: m => View(m));
@@ -159,14 +159,14 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult ResetPassword(Guid ConfirmationId)
         {
-            return Dispatcher.View<ResetPasswordModel>(
+            return Dispatcher.CreateView<ResetPasswordModel>(
                 () => View()); // Not sure I should be allowing parameterless results
         }
 
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("Index", "Home"),
                 NonsuccessResult: m => PartialView(m));

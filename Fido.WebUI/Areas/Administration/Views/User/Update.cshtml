@@ -48,11 +48,11 @@
             <div class="col-xs-3 skd-padding">
                 @if(Model.HasLocalCredentials)
                 {
-                    @Html.ActionLink("Delete", "Delete", "LocalCredential", new LocalCredentialModel { Id = Model.Id, EmailAddress = Model.EmailAddress }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Delete", "Delete", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 }
                 else
                 {
-                    @Html.ActionLink("Create", "Create", "LocalCredential", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Create", "Create", "LocalCredential", new LocalCredentialModel { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 }
             </div>
         </div>

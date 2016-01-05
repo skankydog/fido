@@ -19,37 +19,52 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 ServiceFactory.Boot();
-
-                BootAuthorisation();
+                BootPermissions();
             }
         }
 
-        private void BootAuthorisation()
+        private void BootPermissions()
         {
             using (new FunctionLogger(Log))
             {
-                var ActivityService = ServiceFactory.CreateService<IActivityService>();
                 var ModelTypes = new TypeFinder().Find<IModel>().Where(t => t.Namespace == "Fido.Action.Models");
 
                 foreach (var ModelType in ModelTypes)
                 {
                     var ModelInstance = (IModel)Activator.CreateInstance(ModelType, null, null, null);
 
-                    if (ModelInstance.RequiresAuthentication == true)
-                    {
-                        string Name = ModelInstance.GetType().Name;
+                    if (ModelInstance.RequiresReadPermission)
+                        EnsurePermission(ModelInstance.GetType().Name, Permission.Read);
 
-                        if (ActivityService.GetByName(Name) == null)
-                        {
-                            Log.InfoFormat("Adding activity: {0}", Name);
-                            ActivityService.Save(new Dtos.Activity { Name = Name });
-                        }
-                    }
+                    if (ModelInstance.RequiresWritePermission)
+                        EnsurePermission(ModelInstance.GetType().Name, Permission.Write);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
                 RoleService.SetAdministrationRole("Fido Administrator");
-                //RoleService.SetAdministrationRole("Role02");
+            }
+        }
+
+        private void EnsurePermission(string Name, Permission Permission)
+        {
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("Name: {0}", Name);
+                Log.InfoFormat("Permission: {0}", Permission.ToString());
+
+                // TO DO: Also look here for inconsistencies and throw if found. Basically, if there is a model set
+                //        to RequiresWritePermissions that does not overload Write or Delete, or one with
+                //        RequiresReadPermission and does not overload read, we want to throw an exception as this
+                //        is not valid - you can't check for the opposite, of course, as having a write that does
+                //        not require permission is actually valid.
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+                string ActivityName = string.Format("{0}-{1}", Name, Permission.ToString());
+
+                if (ActivityService.GetByName(ActivityName) == null)
+                {
+                    Log.InfoFormat("Adding activity: {0}", ActivityName);
+                    ActivityService.Save(new Dtos.Activity { Name = ActivityName });
+                }
             }
         }
     }

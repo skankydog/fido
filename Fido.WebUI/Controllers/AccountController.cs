@@ -16,7 +16,7 @@ namespace Fido.WebUI.Controllers
         #region Profile
         public ActionResult Profile_()
         {
-            return Dispatcher.Read<ProfileModel>(
+            return Dispatcher.UpdateView<ProfileModel>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }
@@ -24,7 +24,7 @@ namespace Fido.WebUI.Controllers
         [HttpPost]
         public ActionResult Profile_(ProfileModel Model)
         {
-            return Dispatcher.Write<ProfileModel>(
+            return Dispatcher.Update<ProfileModel>(
                 DataModel: Model,
                 SuccessResult: () => View(),
                 NonsuccessResult: m => View(m));
@@ -32,7 +32,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult ProfileImage(Guid UserId)
         {
-            return Dispatcher.Read<ProfileImageModel>(
+            return Dispatcher.UpdateView<ProfileImageModel>(
                 Id: UserId,
                 Result:
                     m => m != null && m.Image != null
@@ -44,7 +44,7 @@ namespace Fido.WebUI.Controllers
         #region Settings
         public ActionResult Settings()
         {
-            return Dispatcher.Read<SettingsModel>(
+            return Dispatcher.UpdateView<SettingsModel>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }
@@ -53,14 +53,14 @@ namespace Fido.WebUI.Controllers
         #region Change Password
         public ActionResult ChangePassword()
         {
-            return Dispatcher.View<ChangePasswordModel>(
+            return Dispatcher.CreateView<ChangePasswordModel>(
                 Result: () => PartialView());
         }
 
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
                 NonsuccessResult: m => PartialView(m));
@@ -70,14 +70,14 @@ namespace Fido.WebUI.Controllers
         #region Change Email Address
         public ActionResult ChangeEmailAddress()
         {
-            return Dispatcher.View<ChangeEmailAddressModel>(
+            return Dispatcher.CreateView<ChangeEmailAddressModel>(
                 Result: () => PartialView());
         }
 
         [HttpPost]
         public ActionResult ChangeEmailAddress(ChangeEmailAddressModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
                 NonsuccessResult: m => PartialView(m));
@@ -87,14 +87,14 @@ namespace Fido.WebUI.Controllers
         #region Set Credentials
         public ActionResult SetCredentials()
         {
-            return Dispatcher.View<SetCredentialsModel>(
+            return Dispatcher.CreateView<SetCredentialsModel>(
                 Result: () => PartialView());
         }
 
         [HttpPost]
         public ActionResult SetCredentials(SetCredentialsModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => ModalRedirectToLocal(Url.Action("Settings", "Account", new { Area = "" }, null)),
                 NonsuccessResult: m => PartialView(m));
@@ -118,7 +118,7 @@ namespace Fido.WebUI.Controllers
                 return RedirectToAction("Settings");
             }
 
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: new LinkExternalCredentialsCallbackModel
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
@@ -131,7 +131,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult UnlinkExternalCredentials(UnlinkExternalCredentialsModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("Settings"),
                 NonsuccessResult: m => RedirectToAction("Settings"));
@@ -140,7 +140,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Confirmation(ConfirmationModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("LocalLogin", "Authentication"),
                 NonsuccessResult: m => RedirectToAction("LocalLogin", "Authentication"));

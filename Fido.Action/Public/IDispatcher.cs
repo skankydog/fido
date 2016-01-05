@@ -9,22 +9,32 @@ namespace Fido.Action
 {
     public interface IDispatcher<TRETURN>
     {
-        TRETURN View<TMODEL>(Func<TRETURN> Result); // Not sure I should allow for parameterless delegates
-        TRETURN View<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result);
-        TRETURN Read<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result);
-        TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
-        TRETURN Write<TMODEL>(
+        TRETURN IndexView<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result);
+        TRETURN CreateView<TMODEL>(Func<TRETURN> Result); // Not sure I should allow for parameterless delegates
+        TRETURN CreateView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result);
+        TRETURN UpdateView<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
+        TRETURN DeleteView<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result);
+
+        TRETURN Create<TMODEL>(
             TMODEL DataModel,
             Func<TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> FailureResult,
             Func<TMODEL, TRETURN> InvalidResult);
-        TRETURN Write<TMODEL>(
+        TRETURN Create<TMODEL>(
             TMODEL DataModel,
             Func<TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> NonsuccessResult);
-        //TRETURN Write<TMODEL>(
-        //    TMODEL DataModel,
-        //    Func<TMODEL, TRETURN> AnyResult);
+
+        TRETURN Update<TMODEL>(
+            TMODEL DataModel,
+            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> FailureResult,
+            Func<TMODEL, TRETURN> InvalidResult);
+        TRETURN Update<TMODEL>(
+            TMODEL DataModel,
+            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> NonsuccessResult);
+
         TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result);
     }
 }

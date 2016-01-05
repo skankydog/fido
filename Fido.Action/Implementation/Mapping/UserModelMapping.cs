@@ -38,7 +38,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.HasLinkedIn, Options => Options.MapFrom(Src => Src.HasLoginProvider("linkedin")))
                     .ForMember(Dest => Dest.HasGoogle, Options => Options.MapFrom(Src => Src.HasLoginProvider("google")))
                     .ForMember(Dest => Dest.SelectedRoles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Guid>>(Src.Roles)))
-                    .ForMember(Dest => Dest.RequiresAuthentication, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
 
                 Mapper.CreateMap<UserModel, Dtos.Fullname>()
                     .ForMember(Dest => Dest.DisplayName, Options => Options.Ignore());

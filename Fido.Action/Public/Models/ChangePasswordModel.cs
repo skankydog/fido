@@ -34,7 +34,7 @@ namespace Fido.Action.Models
             IAuthenticationAPI LoginAPI,
             IModelAPI ModelAPI)
                 : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresAuthentication: true)
+                        RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 
         public override bool Write(ChangePasswordModel Model)

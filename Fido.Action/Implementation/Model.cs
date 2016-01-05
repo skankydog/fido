@@ -11,17 +11,20 @@ namespace Fido.Action.Implementation
         protected IModelAPI ModelAPI;
 
         [ScriptIgnore]
-        public bool RequiresAuthentication { get; private set; }
+        public bool RequiresReadPermission { get; private set; }
+        [ScriptIgnore]
+        public bool RequiresWritePermission { get; private set; }
 
         public Model() { }
         internal Model(
             IFeedbackAPI FeedbackAPI, IAuthenticationAPI AuthenticationAPI, IModelAPI ModelAPI,
-            bool RequiresAuthentication)
+            bool RequiresReadPermission, bool RequiresWritePermission)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
-            this.RequiresAuthentication = RequiresAuthentication;
+            this.RequiresReadPermission = RequiresReadPermission;
+            this.RequiresWritePermission = RequiresWritePermission;
         }
 
         public virtual TMODEL Prepare(TMODEL Model) { return Model; }

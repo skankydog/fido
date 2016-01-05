@@ -5,7 +5,8 @@ namespace Fido.Action.Implementation
 {
     internal interface IModel
     {
-        bool RequiresAuthentication { get; }
+        bool RequiresReadPermission { get; }
+        bool RequiresWritePermission { get; }
     }
 
     internal interface IModel<TMODEL> : IModel

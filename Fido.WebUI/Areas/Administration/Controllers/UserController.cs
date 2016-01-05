@@ -17,20 +17,20 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.Read<UsersModel>(
+            return Dispatcher.IndexView<UsersModel>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Index()
         {
-            return Dispatcher.View<UsersModel>(
-                () => View()); // Not sure I should allow for parameterless delegates
+            return Dispatcher.CreateView<UsersModel>( // Another version of IndexView?????
+                Result: () => View()); // Not sure I should allow for parameterless delegates
         }
 
         public ActionResult Create()
         {
-            return Dispatcher.View(
+            return Dispatcher.CreateView(
                 DataModel: new UserModel(),
                 Result: m => View(m));
         }
@@ -38,7 +38,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Create(UserModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("Index"),
                 NonsuccessResult: m => RedirectToAction("Index"));
@@ -46,7 +46,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.Read<UserModel>(
+            return Dispatcher.UpdateView<UserModel>(
                 Id: Id,
                 Result: m => View(m));
         }
@@ -54,7 +54,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(UserModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: () => RedirectToAction("Index", "User"),
                 NonsuccessResult: m => View(m));
@@ -62,7 +62,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Read<UserModel>(
+            return Dispatcher.DeleteView<UserModel>(
                 Id: Id,
                 Result: m => PartialView(m));
         }

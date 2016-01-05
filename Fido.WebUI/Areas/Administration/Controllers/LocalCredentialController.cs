@@ -17,15 +17,15 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.View(
+            return Dispatcher.CreateView(
                 DataModel: new LocalCredentialModel(),
-                Result: m => View(m));
+                Result: m => PartialView(m));
         }
 
         [HttpPost]
         public ActionResult Create(LocalCredentialModel Model)
         {
-            return Dispatcher.Write(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: () => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)),
                 NonsuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
@@ -33,7 +33,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Read<LocalCredentialModel>(
+            return Dispatcher.DeleteView<LocalCredentialModel>(
                 Id: Id,
                 Result: m => PartialView(m));
         }

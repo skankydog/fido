@@ -21,7 +21,7 @@ namespace Fido.Action.Models
             IAuthenticationAPI LoginAPI,
             IModelAPI ModelAPI)
                 : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresAuthentication: false)
+                        RequiresReadPermission: false, RequiresWritePermission: true)
         { }
 
         public override bool Write(ConfirmationModel Model)

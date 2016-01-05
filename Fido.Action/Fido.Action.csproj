@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Implementation\Mapping\RoleModelMapping .cs" />
     <Compile Include="Implementation\Mapping\UserModelMapping.cs" />
+    <Compile Include="Implementation\Permission.cs" />
     <Compile Include="Public\IDispatcher.cs" />
     <Compile Include="Public\Models\ChangeEmailAddressModel.cs" />
     <Compile Include="Public\Models\ChangePasswordModel.cs" />
