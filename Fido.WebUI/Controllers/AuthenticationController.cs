@@ -71,9 +71,9 @@ namespace Fido.WebUI.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
-            return Dispatcher.Update(
+            return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: () => RedirectToLocal(ReturnUrl),
+                SuccessResult: m => RedirectToLocal(ReturnUrl),
                 NonsuccessResult: m => View());
         }
         #endregion
@@ -96,7 +96,7 @@ namespace Fido.WebUI.Controllers
                 return RedirectToAction("LocalLogin");
             }
 
-            return Dispatcher.Update(
+            return Dispatcher.SavePostedModel(
                 DataModel: new ExternalLoginCallbackModel
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
@@ -104,7 +104,7 @@ namespace Fido.WebUI.Controllers
                         EmailAddress = ExternalLoginInfo.Email,
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
-                SuccessResult: () => RedirectToLocal(ReturnUrl),
+                SuccessResult: m => RedirectToLocal(ReturnUrl),
                 NonsuccessResult: m => RedirectToAction("LocalLogin"));
         }
         #endregion
@@ -127,16 +127,17 @@ namespace Fido.WebUI.Controllers
         #region Registration
         public ActionResult Registration()
         {
-            return Dispatcher.CreateView<RegistrationModel>(
-                Result: () => View());
+            return Dispatcher.ReturnEmptyModel(
+                new RegistrationModel(),
+                Result: m => View());
         }
 
         [HttpPost]
         public ActionResult Registration(RegistrationModel Model)
         {
-            return Dispatcher.Update(
+            return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: () => RedirectToAction("LocalLogin"),
+                SuccessResult: m => RedirectToAction("LocalLogin"),
                 NonsuccessResult: m => View(m));
         }
         #endregion
@@ -144,31 +145,33 @@ namespace Fido.WebUI.Controllers
         #region Forgotten Password
         public ActionResult ForgottenPassword()
         {
-            return Dispatcher.CreateView<ForgottenPasswordModel>(
-                Result: () => View());
+            return Dispatcher.ReturnEmptyModel/*<ForgottenPasswordModel>*/(
+                new ForgottenPasswordModel(),
+                Result: m => View());
         }
 
         [HttpPost]
         public ActionResult ForgottenPassword(ForgottenPasswordModel Model)
         {
-            return Dispatcher.Update(
+            return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: () => RedirectToAction("LocalLogin"),
+                SuccessResult: m => RedirectToAction("LocalLogin"),
                 NonsuccessResult: m => View(m));
         }
 
         public ActionResult ResetPassword(Guid ConfirmationId)
         {
-            return Dispatcher.CreateView<ResetPasswordModel>(
-                () => View()); // Not sure I should be allowing parameterless results
+            return Dispatcher.ReturnEmptyModel(
+                DataModel: new ResetPasswordModel(),
+                Result: m => View());
         }
 
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordModel Model)
         {
-            return Dispatcher.Update(
+            return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: () => RedirectToAction("Index", "Home"),
+                SuccessResult: m => RedirectToAction("Index", "Home"),
                 NonsuccessResult: m => PartialView(m));
         }
         #endregion

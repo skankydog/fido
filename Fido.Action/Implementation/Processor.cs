@@ -74,7 +74,7 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
+        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -87,7 +87,7 @@ namespace Fido.Action.Implementation
                         if (LogicModel.Write(DataModel) == true)
                         {
                             Log.Info("Successful write");
-                            return SuccessResult();
+                            return SuccessResult(DataModel);
                         }
                     }
                     catch (Exception Ex)
@@ -106,12 +106,12 @@ namespace Fido.Action.Implementation
             }
         }
 
-        public TRETURN ExecuteDelete(TMODEL DataModel, Func<TRETURN> Result)
+        public TRETURN ExecuteDelete(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
                 LogicModel.Delete(DataModel);
-                return Result();
+                return Result(DataModel);
             }
         }
     }

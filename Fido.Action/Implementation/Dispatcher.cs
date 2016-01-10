@@ -31,7 +31,34 @@ namespace Fido.Action.Implementation
             this.PasswordResetResult = PasswordResetResult;
         }
 
-        public TRETURN IndexView<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            return ReturnModelOrView(DataModel, Result, Permission.Write);
+        }
+
+        public TRETURN ReturnIndexWrapper<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            return ReturnModelOrView(DataModel, Result, Permission.Read);
+        }
+
+        private TRETURN ReturnModelOrView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result, Permission RequiredPermission)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var LogicModel = CreateLogicModel<TMODEL>();
+                var Redirect = CheckForPermission(LogicModel, RequiredPermission);
+
+                if (Redirect != null)
+                    return Redirect;
+
+                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                return Processor.ExecuteView(
+                    DataModel: DataModel,
+                    Result: Result);
+            }
+        }
+
+        public TRETURN ReturnLoadedModel<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
@@ -46,60 +73,12 @@ namespace Fido.Action.Implementation
             }
         }
 
-        #region Create View
-        public TRETURN CreateView<TMODEL>(Func<TRETURN> Result) // Not sure I should allow for parameterless delegates
+        public TRETURN ReturnLoadedModel<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
                 var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write);
-
-                if (Redirect != null)
-                    return Redirect;
-
-                return Result();
-            }
-        }
-
-        public TRETURN CreateView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write);
-
-                if (Redirect != null)
-                    return Redirect;
-
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteView(
-                    DataModel: DataModel,
-                    Result: Result);
-            }
-        }
-        #endregion
-
-        #region Update/Delete View
-        public TRETURN UpdateView<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
-        {
-            return UpdateOrDeleteView<TMODEL>(
-                Id: Id,
-                Result: Result);
-        }
-
-        public TRETURN DeleteView<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
-        {
-            return UpdateOrDeleteView<TMODEL>(
-                Id: Id,
-                Result: Result);
-        }
-
-        private TRETURN UpdateOrDeleteView<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write); // Thought: If they have read access, they should be able to view the record, just not save/write (Update post).
+                var Redirect = CheckForPermission(LogicModel, Permission.Write); // TO DO?: If they have read access, they should be able to view the record, just not save/write (Update post).
 
                 if (Redirect != null)
                     return Redirect;
@@ -108,62 +87,23 @@ namespace Fido.Action.Implementation
                 return Processor.ExecuteRead(Id, Result);
             }
         }
-        #endregion
 
-        #region Create/Update
-        public TRETURN Create<TMODEL>(
+        #region Save
+        public TRETURN SavePostedModel<TMODEL>(
             TMODEL DataModel,
-            Func<TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> FailureResult,
-            Func<TMODEL, TRETURN> InvalidResult)
-        {
-            return CreateOrUpdate(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                FailureResult: FailureResult,
-                InvalidResult: InvalidResult);
-        }
-
-        public TRETURN Create<TMODEL>(
-            TMODEL DataModel,
-            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> NonsuccessResult)
         {
-            return CreateOrUpdate(
+            return SavePostedModel(
                 DataModel: DataModel,
                 SuccessResult: SuccessResult,
                 FailureResult: NonsuccessResult,
                 InvalidResult: NonsuccessResult);
         }
 
-        public TRETURN Update<TMODEL>(
+        public TRETURN SavePostedModel<TMODEL>(
             TMODEL DataModel,
-            Func<TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> FailureResult,
-            Func<TMODEL, TRETURN> InvalidResult)
-        {
-            return CreateOrUpdate(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                FailureResult: FailureResult,
-                InvalidResult: InvalidResult);
-        }
-
-        public TRETURN Update<TMODEL>(
-            TMODEL DataModel,
-            Func<TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> NonsuccessResult)
-        {
-            return CreateOrUpdate(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                FailureResult: NonsuccessResult,
-                InvalidResult: NonsuccessResult);
-        }
-
-        private TRETURN CreateOrUpdate<TMODEL>(
-            TMODEL DataModel,
-            Func<TRETURN> SuccessResult,
+            Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> FailureResult,
             Func<TMODEL, TRETURN> InvalidResult)
         {
@@ -182,7 +122,7 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Delete
-        public TRETURN Delete_<TMODEL>(TMODEL DataModel, Func<TRETURN> Result)
+        public TRETURN DeletePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
         {
             using (new FunctionLogger(Log))
             {
@@ -198,6 +138,7 @@ namespace Fido.Action.Implementation
         }
         #endregion
 
+        #region Private Members
         private IModel<TMODEL> CreateLogicModel<TMODEL>()
         {
             using (new FunctionLogger(Log))
@@ -215,26 +156,30 @@ namespace Fido.Action.Implementation
 
         private TRETURN CheckForPermission<TMODEL>(IModel<TMODEL> LogicModel, Permission Permission)
         {
-            if (LogicModel.RequiresReadPermission && Permission == Permission.Read ||
-                LogicModel.RequiresWritePermission && Permission == Permission.Write)
+            using (new FunctionLogger(Log))
             {
-                if (!AuthenticationAPI.Authenticated)
-                    return AuthenticateResult();
-
-                if (AuthenticationAPI.LoggedInCredentialState == "Expired")
-                    return PasswordResetResult();
-
-                var UserService = ServiceFactory.CreateService<IUserService>();
-                var Name = string.Format("{0}-{1}", LogicModel.GetType().Name, Permission.ToString());
-
-                if (!UserService.UserHasActivity(AuthenticationAPI.AuthenticatedId, Name))
+                if (LogicModel.RequiresReadPermission && Permission == Permission.Read ||
+                    LogicModel.RequiresWritePermission && Permission == Permission.Write)
                 {
-                    FeedbackAPI.DisplayError("You are not authorised to perform the requested action.");
-                    return AuthenticateResult();
-                }
-            }
+                    if (!AuthenticationAPI.Authenticated)
+                        return AuthenticateResult();
 
-            return default(TRETURN);
+                    if (AuthenticationAPI.LoggedInCredentialState == "Expired")
+                        return PasswordResetResult();
+
+                    var UserService = ServiceFactory.CreateService<IUserService>();
+                    var Name = string.Format("{0}-{1}", LogicModel.GetType().Name, Permission.ToString());
+
+                    if (!UserService.UserHasActivity(AuthenticationAPI.AuthenticatedId, Name))
+                    {
+                        FeedbackAPI.DisplayError("You are not authorised to perform the requested action.");
+                        return AuthenticateResult();
+                    }
+                }
+
+                return default(TRETURN);
+            }
         }
+        #endregion
     }
 }

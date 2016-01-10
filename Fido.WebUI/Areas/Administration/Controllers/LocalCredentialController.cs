@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.CreateView(
+            return Dispatcher.ReturnEmptyModel(
                 DataModel: new LocalCredentialModel(),
                 Result: m => PartialView(m));
         }
@@ -25,15 +25,15 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Create(LocalCredentialModel Model)
         {
-            return Dispatcher.Create(
+            return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: () => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)),
+                SuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)),
                 NonsuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.DeleteView<LocalCredentialModel>(
+            return Dispatcher.ReturnLoadedModel<LocalCredentialModel>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
@@ -41,9 +41,9 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Delete(LocalCredentialModel Model)
         {
-            return Dispatcher.Delete_<LocalCredentialModel>(
+            return Dispatcher.DeletePostedModel(
                 DataModel: Model,
-                Result: () => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
+                Result: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
         }
     }
 }
