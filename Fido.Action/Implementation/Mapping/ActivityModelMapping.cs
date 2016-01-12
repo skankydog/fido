@@ -10,7 +10,7 @@ using Fido.Core.Bootstrapper;
 
 namespace Fido.Action.Mapping
 {
-    class RoleModelMapping : Profile, IBootstrapper
+    class ActivityModelMapping : Profile, IBootstrapper
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,19 +23,14 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Dtos.Role, Guid>()
+                Mapper.CreateMap<Dtos.Activity, Guid>()
                     .ConvertUsing(Src => Src.Id);
-                Mapper.CreateMap<Dtos.Role, RoleModel>()
+                Mapper.CreateMap<Dtos.Activity, ActivityModel>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
-                    .ForMember(Dest => Dest.AllActivities, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.AllUsers, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.SelectedActivities, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Activity>, IList<Guid>>(Src.Activities)))
-                    .ForMember(Dest => Dest.SelectedUsers, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.User>, IList<Guid>>(Src.Users)))
                     .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
 
-                Mapper.CreateMap<RoleModel, Dtos.Role>()
-                    .ForMember(Dest => Dest.Activities, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.Users, Options => Options.Ignore());
+                Mapper.CreateMap<ActivityModel, Dtos.Activity>()
+                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
             }
         }
     }

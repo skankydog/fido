@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using Fido.Core;
 using Fido.Service;
@@ -15,11 +16,17 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
+        public IList<ActivityModel> AllActivities = new List<ActivityModel>();
+        public IList<UserModel> AllUsers = new List<UserModel>();
+
         public Guid Id { get; set; }
 
         [Display(Name = "role name")]
         [Required(ErrorMessage = "The role name field cannot be left blank")]
         public string Name { get; set; }
+
+        public IList<Guid> SelectedActivities { get; set; }
+        public IList<Guid> SelectedUsers { get; set; }
 
         [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
@@ -41,8 +48,61 @@ namespace Fido.Action.Models
             IAuthenticationAPI LoginAPI,
             IModelAPI ModelAPI)
                 : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+                        RequiresReadPermission: true,
+                        RequiresWritePermission: true)
         { }
+
+        public override RoleModel Prepare(RoleModel Model)
+        {
+            var ActivityService = ServiceFactory.CreateService<IActivityService>();
+            Model.AllActivities = Mapper.Map<IList<Dtos.Activity>, IList<ActivityModel>>(ActivityService.GetAll());
+
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            Model.AllUsers = Mapper.Map<IList<Dtos.User>, IList<UserModel>>(UserService.GetAll());
+
+            return Model;
+        }
+
+        public override RoleModel Read(Guid Id)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+
+                var Role = RoleService.Get(Id);
+                var Model = Mapper.Map<Dtos.Role, RoleModel>(Role);
+
+                return Model;
+            }
+        }
+
+        public override bool Write(RoleModel Model)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var RoleDto = Mapper.Map<RoleModel, Dtos.Role>(Model);
+
+                RoleDto.Activities = new List<Dtos.Activity>();
+                RoleDto.Activities = Model.SelectedActivities == null ? new List<Dtos.Activity>()
+                : Mapper.Map<IList<ActivityModel>, IList<Dtos.Activity>>(
+                    (from a in Model.AllActivities
+                     where (Model.SelectedActivities.Contains(a.Id))
+                     select a).ToList());
+
+                RoleDto.Users = new List<Dtos.User>();
+                RoleDto.Users = Model.SelectedUsers == null ? new List<Dtos.User>()
+                : Mapper.Map<IList<UserModel>, IList<Dtos.User>>(
+                    (from a in Model.AllUsers
+                     where (Model.SelectedUsers.Contains(a.Id))
+                     select a).ToList());
+
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+                RoleDto = RoleService.Save(RoleDto);
+
+                FeedbackAPI.DisplaySuccess("The role details have been saved");
+                return true;
+            }
+        }
 
         public override bool Delete(RoleModel Model)
         {

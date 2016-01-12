@@ -23,6 +23,8 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
+                Mapper.CreateMap<Dtos.User, Guid>()
+                    .ConvertUsing(Src => Src.Id);
                 Mapper.CreateMap<Dtos.User, UserModel>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
                     //.ForMember(Dest => Dest.AllLocalCredentialStates, Options => Options.MapFrom(Src => new HashSet<string>() { "Expired", "Enabled", "Disabled", Src.LocalCredentialState }))
@@ -47,7 +49,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<UserModel, Dtos.Fullname>(Src)))
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore()) // Can't be updated via this view
                  //   .ForMember(Dest => Dest.Roles, Options => Options.UseValue(Src => (from Src.SelectedRoles select new Dtos.Role { Id=  Src.SelectedRoles })));
-                 .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
             }
         }
     }

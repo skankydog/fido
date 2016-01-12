@@ -14,6 +14,49 @@ namespace Fido.Service.Implementation
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        #region Pages
+        public IList<Role> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Id),
+                OrderByDescending: q => q.OrderByDescending(s => s.Id));
+        }
+
+        public IList<Role> GetPageInNameOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Name),
+                OrderByDescending: q => q.OrderByDescending(s => s.Name));
+        }
+
+        private IList<Role> GetPage(char SortOrder, int Skip, int Take, string Filter,
+            Func<IQueryable<Entities.Role>, IOrderedQueryable<Entities.Role>> OrderByAscending,
+            Func<IQueryable<Entities.Role>, IOrderedQueryable<Entities.Role>> OrderByDescending)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var RoleRepository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
+                    var OrderBy = SortOrder == 'a' ? OrderByAscending : OrderByDescending;
+                    var Query = RoleRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
+
+                    if (Filter.IsNotNullOrEmpty())
+                    {
+                        Query = Query.Where(e => e.Name.ToLower().Contains(Filter.ToLower()));
+                    }
+
+                    Query = Query.Skip(Skip).Take(Take);
+
+                    var EntityList = Query.ToList(); // Hit the database
+
+                    IList<Role> DtoList = AutoMapper.Mapper.Map<IList<Entities.Role>, IList<Role>>(EntityList);
+                    return DtoList;
+                }
+            }
+        }
+        #endregion
+
         public Role GetByName(string Name)
         {
             using (new FunctionLogger(Log))

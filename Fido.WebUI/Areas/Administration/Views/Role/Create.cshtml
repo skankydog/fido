@@ -1,0 +1,14 @@
+﻿@model Fido.Action.Models.RoleModel
+
+@{
+    ViewBag.Title = "Create Role";
+}
+
+@using (Html.BeginForm("Create", "Role", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="well">
+        @Html.Partial("RoleForm", Model)
+    </div>    
+}

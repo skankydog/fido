@@ -9,9 +9,10 @@ namespace Fido.Entities
     public class User : Entity
     {
         public Fullname Fullname { get; set; }
-        public ICollection<Role> Roles { get; set; }
         public ProfileImage ProfileImage { get; set; }
         public string About { get; set; }
+
+        public ICollection<Role> Roles { get; set; }
 
         #region Local Credential Properties
         public bool HasLocalCredentials { get { return CurrentLocalCredentialState.HasCredentials; } }
@@ -146,8 +147,8 @@ namespace Fido.Entities
             CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.None(this);
 
             Fullname = new Fullname();
-            Roles = new List<Role>();
             ExternalCredentials = new List<ExternalCredential>();
+            Roles = new List<Role>();
         }
     }
 }

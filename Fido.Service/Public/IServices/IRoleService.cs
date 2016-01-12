@@ -9,6 +9,9 @@ namespace Fido.Service
 {
     public interface IRoleService : ICRUDService<Role>
     {
+        IList<Role> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter);
+        IList<Role> GetPageInNameOrder(char SortOrder, int Skip, int Take, string Filter);
+
         Role GetByName(string Name);
         IList<User> GetUsersInRole(Guid RoleId);
         IList<Activity> GetActivitiesForRole(Guid RoleId);

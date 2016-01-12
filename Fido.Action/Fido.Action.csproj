@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\Mapping\ActivityModelMapping.cs" />
     <Compile Include="Implementation\Mapping\RoleModelMapping .cs" />
     <Compile Include="Implementation\Mapping\UserModelMapping.cs" />
     <Compile Include="Implementation\Permission.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="Public\Models\ExternalLoginCallbackModel.cs" />
     <Compile Include="Public\Models\ForgottenPasswordModel.cs" />
     <Compile Include="Public\Models\LocalCredentialModel.cs" />
+    <Compile Include="Public\Models\ActivityModel.cs" />
     <Compile Include="Public\Models\RoleModel.cs" />
     <Compile Include="Public\Models\UserModel.cs" />
+    <Compile Include="Public\Models\RolesModel.cs" />
     <Compile Include="Public\Models\UsersModel.cs" />
     <Compile Include="Public\Models\UnlinkExternalCredentialsModel.cs" />
     <Compile Include="Public\Models\LocalLoginModel.cs" />

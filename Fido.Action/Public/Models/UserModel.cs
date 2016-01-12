@@ -120,14 +120,15 @@ namespace Fido.Action.Models
                 var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
                 UserDto.Roles = new List<Dtos.Role>();
 
-                if (Model.SelectedRoles != null)
-                    UserDto.Roles = Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>((from r in Model.AllRoles
-                                                                                    where (Model.SelectedRoles.Contains(r.Id))
-                                                                                    select r).ToList());
+                UserDto.Roles = Model.SelectedRoles == null ? new List<Dtos.Role>()
+                : Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>(
+                    (from r in Model.AllRoles
+                     where (Model.SelectedRoles.Contains(r.Id))
+                     select r).ToList());
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
 
-                var x = UserService.Save(UserDto);
+                UserDto = UserService.Save(UserDto);
                 UserService.SetLocalCredentialState(UserDto.Id, Model.LocalCredentialState);
                 UserService.SetExternalCredentialState(UserDto.Id, Model.ExternalCredentialState);
 

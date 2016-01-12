@@ -1,0 +1,20 @@
+﻿@model Fido.Action.Models.RoleModel
+@using Fido.Action.Models
+
+@{
+    ViewBag.Title = "Update Role";
+}
+
+@using (Html.BeginForm("Update", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("Id", Model.Id)
+    @Html.Hidden("CreatedUtc", Model.CreatedUtc)
+    @Html.Hidden("IsNew", Model.IsNew)
+    @Html.Hidden("RowVersion", Model.RowVersion)
+
+    <div class="well">
+        @Html.Partial("RoleForm", Model)
+    </div>
+}

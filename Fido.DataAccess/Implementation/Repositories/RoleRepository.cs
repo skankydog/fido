@@ -22,7 +22,20 @@ namespace Fido.DataAccess.Implementation
 
         public override Role Insert(Role Entity)
         {
-            throw new NotImplementedException();
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("Role.Id='{0}'", Entity.Id);
+
+                Context.Set<Role>().Add(Entity);
+
+                foreach (var User in Entity.Users)
+                    Context.Entry(User).State = System.Data.Entity.EntityState.Unchanged;
+
+                foreach (var Activity in Entity.Activities)
+                    Context.Entry(Activity).State = System.Data.Entity.EntityState.Unchanged;
+
+                return Entity;
+            }
         }
 
         public override Role Update(Role Entity)

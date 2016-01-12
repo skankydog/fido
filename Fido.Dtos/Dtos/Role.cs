@@ -13,5 +13,8 @@ namespace Fido.Dtos
         }
 
         public string Name { get; set; }
+
+        public IList<Activity> Activities { get; set; }
+        public IList<User> Users { get; set; }
     }
 }
