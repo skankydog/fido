@@ -26,7 +26,7 @@
     </div>
 
     <div class="col-xs-12">
-        @Html.ListBoxFor(m => m.SelectedUsers, new SelectList(Model.AllUsers, "Id", "DisplayName"), new { @class = "form-control chosen-select" })
+        @Html.ListBoxFor(m => m.SelectedUsers, new SelectList(Model.AllUsers, "Id", "SurnameFirstname"), new { @class = "form-control chosen-select" })
     </div>
 </div>
 

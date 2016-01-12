@@ -36,7 +36,7 @@ namespace Fido.Action.Models
                     var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
                     var User = AuthenticationService.CompleteRegistration(Model.ConfirmationId);
 
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
 
                     FeedbackAPI.DisplaySuccess("Thank you for confirming your email address and completing your registration - welcome " + User.Fullname.Firstname + ".");
                     return true;
@@ -58,7 +58,7 @@ namespace Fido.Action.Models
                     var User = AuthenticationService.CompleteSetLocalCredentials(Model.ConfirmationId);
 
                     AuthenticationAPI.SignOut();
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
                     AuthenticationAPI.LoggedInCredentialState = User.LocalCredentialState;
                     FeedbackAPI.DisplaySuccess("Your local credentials have been confirmed.");
 

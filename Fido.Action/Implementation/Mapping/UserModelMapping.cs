@@ -34,7 +34,8 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
                     .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
-                    .ForMember(Dest => Dest.DisplayName, Options => Options.MapFrom(Src => Src.Fullname.DisplayName))
+                    .ForMember(Dest => Dest.FirstnameSurname, Options => Options.MapFrom(Src => Src.Fullname.FirstnameSurname))
+                    .ForMember(Dest => Dest.SurnameFirstname, Options => Options.MapFrom(Src => Src.Fullname.SurnameFirstname))
                     .ForMember(Dest => Dest.HasFacebook, Options => Options.MapFrom(Src => Src.HasLoginProvider("facebook")))
                     .ForMember(Dest => Dest.HasTwitter, Options => Options.MapFrom(Src => Src.HasLoginProvider("twitter")))
                     .ForMember(Dest => Dest.HasLinkedIn, Options => Options.MapFrom(Src => Src.HasLoginProvider("linkedin")))
@@ -43,7 +44,8 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
 
                 Mapper.CreateMap<UserModel, Dtos.Fullname>()
-                    .ForMember(Dest => Dest.DisplayName, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.FirstnameSurname, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.SurnameFirstname, Options => Options.Ignore());
                 Mapper.CreateMap<UserModel, Dtos.User>()
                     .ForMember(Dest => Dest.LocalCredentialState, Options => Options.MapFrom(m => m.ExternalCredentialState == null ? "None" : m.ExternalCredentialState))
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<UserModel, Dtos.Fullname>(Src)))

@@ -44,7 +44,7 @@ namespace Fido.Action.Models
 
                 if (User != null)
                 {
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, Model.RememberMe);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, Model.RememberMe);
                     AuthenticationAPI.LoggedInCredentialState = User.LocalCredentialState;
 
                     return true;

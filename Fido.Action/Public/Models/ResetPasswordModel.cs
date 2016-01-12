@@ -48,7 +48,7 @@ namespace Fido.Action.Models
                 }
 
                 var User = AuthenticationService.CompleteForgottenPassword(Model.ConfirmationId, Model.Password);
-                AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
                 AuthenticationAPI.LoggedInCredentialState = User.LocalCredentialState;
 
                 FeedbackAPI.DisplaySuccess("Your password has been changed - welcome back " + User.Fullname.Firstname + ".");

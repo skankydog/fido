@@ -31,7 +31,10 @@ namespace Fido.Action.Models
         public string Surname { get; set; }
 
         [Display(Name = "fullname")]
-        public string DisplayName { get; set; }
+        public string FirstnameSurname { get; set; }
+
+        [Display(Name = "surname, firstname")]
+        public string SurnameFirstname { get; set; }
 
         public string About { get; set; }
 
@@ -92,7 +95,7 @@ namespace Fido.Action.Models
         public override UserModel Prepare(UserModel Model)
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
-            Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll());
+            Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll().OrderBy(r => r.Name).ToList());
 
             Model.AllLocalCredentialStates = new HashSet<string>() { "Expired", "Enabled", "Disabled", Model.LocalCredentialState };
             Model.AllExternalCredentialStates = new HashSet<string>() { "Enabled", "Disabled", Model.ExternalCredentialState };

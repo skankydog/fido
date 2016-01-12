@@ -10,6 +10,7 @@ namespace Fido.Entities.UserDetails
         public string Firstname { get; set; }
         public string Surname { get; set; }
 
-        public string DisplayName { get { return string.Concat(Firstname, " ", Surname); } }
+        public string FirstnameSurname { get { return string.Concat(Firstname, " ", Surname); } }
+        public string SurnameFirstname { get { return string.Concat(Surname, ", ", Firstname); } }
     }
 }

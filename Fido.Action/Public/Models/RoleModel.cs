@@ -55,10 +55,10 @@ namespace Fido.Action.Models
         public override RoleModel Prepare(RoleModel Model)
         {
             var ActivityService = ServiceFactory.CreateService<IActivityService>();
-            Model.AllActivities = Mapper.Map<IList<Dtos.Activity>, IList<ActivityModel>>(ActivityService.GetAll());
+            Model.AllActivities = Mapper.Map<IList<Dtos.Activity>, IList<ActivityModel>>(ActivityService.GetAll().OrderBy(a => a.Name).ToList());
 
             var UserService = ServiceFactory.CreateService<IUserService>();
-            Model.AllUsers = Mapper.Map<IList<Dtos.User>, IList<UserModel>>(UserService.GetAll());
+            Model.AllUsers = Mapper.Map<IList<Dtos.User>, IList<UserModel>>(UserService.GetAll().OrderBy(u => u.Fullname.SurnameFirstname).ToList());
 
             return Model;
         }

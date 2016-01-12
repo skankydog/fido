@@ -9,6 +9,7 @@ namespace Fido.Dtos
     {
         public string Firstname { get; set; }
         public string Surname { get; set; }
-        public string DisplayName { get; set; }
+        public string FirstnameSurname { get; set; }
+        public string SurnameFirstname { get; set; }
     }
 }

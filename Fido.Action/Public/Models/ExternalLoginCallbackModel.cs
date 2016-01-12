@@ -36,7 +36,7 @@ namespace Fido.Action.Models
 
                 if (User != null)
                 {
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
                     AuthenticationAPI.LoggedInCredentialState = User.ExternalCredentialState;
                     
                     return true;
@@ -46,7 +46,7 @@ namespace Fido.Action.Models
 
                 if (User != null)
                 {
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
                     AuthenticationAPI.LoggedInCredentialState = User.ExternalCredentialState;
 
                     FeedbackAPI.DisplaySuccess("The external credentials have been linked to an already existing account via your email address");
@@ -57,7 +57,7 @@ namespace Fido.Action.Models
                 
                 if (User != null)
                 {
-                    AuthenticationAPI.SignIn(User.Id, User.Fullname.DisplayName, false);
+                    AuthenticationAPI.SignIn(User.Id, User.Fullname.FirstnameSurname, false);
                     AuthenticationAPI.LoggedInCredentialState = User.ExternalCredentialState;
 
                     FeedbackAPI.DisplaySuccess("A new account has been created");

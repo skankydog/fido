@@ -27,7 +27,7 @@ namespace Fido.Action.Models
         public string Surname { get; set; }
 
         [Display(Name = "Display Name")]
-        public string DisplayName { get; set; } // Read only
+        public string FirstnameSurname { get; set; } // Read only
 
         [Display(Name = "About")]
         public string About { get; set; }
@@ -70,7 +70,7 @@ namespace Fido.Action.Models
                 RowVersion = ProfileDto.RowVersion;
                 Firstname = ProfileDto.Fullname.Firstname;
                 Surname = ProfileDto.Fullname.Surname;
-                DisplayName = ProfileDto.Fullname.DisplayName;
+                FirstnameSurname = ProfileDto.Fullname.FirstnameSurname;
                 About = ProfileDto.About;
                 RegisteredDays = int.Parse(Math.Truncate((DateTime.UtcNow - ProfileDto.CreatedUtc).TotalDays).ToString());
 
@@ -95,7 +95,7 @@ namespace Fido.Action.Models
                     {
                         Firstname = Model.Firstname,
                         Surname = Model.Surname,
-                        DisplayName = Model.DisplayName
+                        FirstnameSurname = Model.FirstnameSurname
                     }
                 };
 
