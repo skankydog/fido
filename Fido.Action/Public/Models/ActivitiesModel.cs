@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models
 {
-    public class RolesModel : Model<RolesModel>
+    public class ActivitiesModel : Model<ActivitiesModel>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,16 +21,17 @@ namespace Fido.Action.Models
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public RolesModel() { }
-        public RolesModel(
+        public ActivitiesModel() { }
+        public ActivitiesModel(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,
             IModelAPI ModelAPI)
                 : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+                        RequiresReadPermission: true,
+                        RequiresWritePermission: true)
         { }
 
-        public override RolesModel Read(IndexOptions IndexOptions)
+        public override ActivitiesModel Read(IndexOptions IndexOptions)
         {
             using (new FunctionLogger(Log))
             {
@@ -38,7 +39,7 @@ namespace Fido.Action.Models
                 var CountUnfiltered = CountAll();
                 var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new RolesModel
+                return new ActivitiesModel
                 {
                     sEcho = IndexOptions.Echo,
                     iTotalRecords = CountUnfiltered,
@@ -52,25 +53,25 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                IList<Role> RoleDtos;
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+                IList<Activity> ActivityDtos;
 
                 switch (SortColumn)
                 {
                     case 0:
-                        RoleDtos = RoleService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
+                        ActivityDtos = ActivityService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     default:
-                        RoleDtos = RoleService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
+                        ActivityDtos = ActivityService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
                         break;
                 }
 
-                return (from RoleDto in RoleDtos
+                return (from ActivityDto in ActivityDtos
                         select new[] {
-                        RoleDto.Name.Nvl(),
-                        RoleDto.Id.ToString(), // Edit
-                        RoleDto.Id.ToString()  // Delete
+                        ActivityDto.Name.Nvl(),
+                        ActivityDto.Id.ToString(), // Edit
+                        ActivityDto.Id.ToString()  // Delete
                     }).ToArray();
             }
         }
@@ -79,8 +80,8 @@ namespace Fido.Action.Models
         {
             using (new FunctionLogger(Log))
             {
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                return RoleService.CountAll();
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+                return ActivityService.CountAll();
             }
         }
     }

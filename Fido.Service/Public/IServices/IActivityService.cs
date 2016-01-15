@@ -9,6 +9,9 @@ namespace Fido.Service
 {
     public interface IActivityService : ICRUDService<Activity>
     {
+        IList<Activity> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter);
+        IList<Activity> GetPageInNameOrder(char SortOrder, int Skip, int Take, string Filter);
+
         Activity GetByName(string Name);
         bool NameFree(string Name);             // Name must be unique
     }

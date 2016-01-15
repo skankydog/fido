@@ -18,19 +18,33 @@ namespace Fido.DataAccess.Implementation
             : base(UnitOfWork)
         {}
 
+        protected override string DefaultIncludes { get { return "Roles"; } }
+
         public override Activity Insert(Activity Entity)
         {
-            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
 
-            Context.Set<Activity>().Add(Entity);
-            return Entity;
+                Context.Set<Activity>().Add(Entity);
+
+                foreach (var Role in Entity.Roles)
+                    Context.Entry(Role).State = System.Data.Entity.EntityState.Unchanged;
+
+                return Entity;
+            }
         }
 
         public override Activity Update(Activity Entity)
         {
-            Context.UpdateGraph(Entity);
+            using (new FunctionLogger(Log))
+            {
+                Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
 
-            return Entity;
+                Context.UpdateGraph(Entity, Map => Map.AssociatedCollection(Activity => Activity.Roles));
+
+                return Entity;
+            }
         }
     }
 }

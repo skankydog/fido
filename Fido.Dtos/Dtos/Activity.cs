@@ -14,6 +14,6 @@ namespace Fido.Dtos
 
         public string Name { get; set; }
 
-        public List<Role> Roles { get; set; } 
+        public IList<Role> Roles { get; set; }
     }
 }

@@ -82,14 +82,14 @@ namespace Fido.Action.Models
             {
                 var RoleDto = Mapper.Map<RoleModel, Dtos.Role>(Model);
 
-                RoleDto.Activities = new List<Dtos.Activity>();
+         //       RoleDto.Activities = new List<Dtos.Activity>();
                 RoleDto.Activities = Model.SelectedActivities == null ? new List<Dtos.Activity>()
                 : Mapper.Map<IList<ActivityModel>, IList<Dtos.Activity>>(
                     (from a in Model.AllActivities
                      where (Model.SelectedActivities.Contains(a.Id))
                      select a).ToList());
 
-                RoleDto.Users = new List<Dtos.User>();
+          //      RoleDto.Users = new List<Dtos.User>();
                 RoleDto.Users = Model.SelectedUsers == null ? new List<Dtos.User>()
                 : Mapper.Map<IList<UserModel>, IList<Dtos.User>>(
                     (from a in Model.AllUsers

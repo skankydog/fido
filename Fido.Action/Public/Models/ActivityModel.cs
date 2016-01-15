@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AutoMapper;
 using Fido.Core;
 using Fido.Service;
@@ -15,9 +16,13 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
+        public IList<RoleModel> AllRoles = new List<RoleModel>();
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public IList<Guid> SelectedRoles { get; set; }
 
         [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
@@ -43,17 +48,46 @@ namespace Fido.Action.Models
                         RequiresWritePermission: true)
         { }
 
-        //public override ActivityModel Read(Guid Id)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        var ActivityService = ServiceFactory.CreateService<IActivityService>();
+        public override ActivityModel Prepare(ActivityModel Model)
+        {
+            var RoleService = ServiceFactory.CreateService<IRoleService>();
+            Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<RoleModel>>(RoleService.GetAll().OrderBy(r => r.Name).ToList());
 
-        //        var Activity = ActivityService.Get(Id);
-        //        var Model = Mapper.Map<Dtos.Activity, ActivityModel>(Activity);
+            return Model;
+        }
 
-        //        return Model;
-        //    }
-        //}
+        public override ActivityModel Read(Guid Id)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+
+                var Activity = ActivityService.Get(Id);
+                var Model = Mapper.Map<Dtos.Activity, ActivityModel>(Activity);
+
+                return Model;
+            }
+        }
+
+        public override bool Write(ActivityModel Model)
+        {
+            using (new FunctionLogger(Log))
+            {
+                var ActivityDto = Mapper.Map<ActivityModel, Dtos.Activity>(Model);
+
+         //       ActivityDto.Roles = new List<Dtos.Role>();
+                ActivityDto.Roles = Model.SelectedRoles == null ? new List<Dtos.Role>()
+                : Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>(
+                    (from a in Model.AllRoles
+                     where (Model.SelectedRoles.Contains(a.Id))
+                     select a).ToList());
+
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+                ActivityDto = ActivityService.Save(ActivityDto);
+
+                FeedbackAPI.DisplaySuccess("The activity details have been saved");
+                return true;
+            }
+        }
     }
 }

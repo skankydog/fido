@@ -67,7 +67,7 @@ namespace Fido.WebUI.Common
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { Area = string.Empty });
             }
         }
 

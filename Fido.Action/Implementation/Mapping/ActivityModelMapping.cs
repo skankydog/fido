@@ -27,6 +27,7 @@ namespace Fido.Action.Mapping
                     .ConvertUsing(Src => Src.Id);
                 Mapper.CreateMap<Dtos.Activity, ActivityModel>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
+                    .ForMember(Dest => Dest.SelectedRoles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Guid>>(Src.Roles)))
                     .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
 
                 Mapper.CreateMap<ActivityModel, Dtos.Activity>()

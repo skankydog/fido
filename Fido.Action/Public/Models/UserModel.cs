@@ -121,7 +121,7 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserDto = Mapper.Map<UserModel, Dtos.User>(Model);
-                UserDto.Roles = new List<Dtos.Role>();
+//                UserDto.Roles = new List<Dtos.Role>();
 
                 UserDto.Roles = Model.SelectedRoles == null ? new List<Dtos.Role>()
                 : Mapper.Map<IList<RoleModel>, IList<Dtos.Role>>(

@@ -14,6 +14,49 @@ namespace Fido.Service.Implementation
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        #region Pages
+        public IList<Activity> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Id),
+                OrderByDescending: q => q.OrderByDescending(s => s.Id));
+        }
+
+        public IList<Activity> GetPageInNameOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Name),
+                OrderByDescending: q => q.OrderByDescending(s => s.Name));
+        }
+
+        private IList<Activity> GetPage(char SortOrder, int Skip, int Take, string Filter,
+            Func<IQueryable<Entities.Activity>, IOrderedQueryable<Entities.Activity>> OrderByAscending,
+            Func<IQueryable<Entities.Activity>, IOrderedQueryable<Entities.Activity>> OrderByDescending)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var ActivityRepository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
+                    var OrderBy = SortOrder == 'a' ? OrderByAscending : OrderByDescending;
+                    var Query = ActivityRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
+
+                    if (Filter.IsNotNullOrEmpty())
+                    {
+                        Query = Query.Where(e => e.Name.ToLower().Contains(Filter.ToLower()));
+                    }
+
+                    Query = Query.Skip(Skip).Take(Take);
+
+                    var EntityList = Query.ToList(); // Hit the database
+
+                    IList<Activity> DtoList = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Activity>>(EntityList);
+                    return DtoList;
+                }
+            }
+        }
+        #endregion
+
         public Activity GetByName(string Name)
         {
             using (new FunctionLogger(Log))

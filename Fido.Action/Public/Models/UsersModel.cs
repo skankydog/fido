@@ -53,7 +53,7 @@ namespace Fido.Action.Models
             using (new FunctionLogger(Log))
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var UserDtos = UserService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
+                IList<User> UserDtos;
 
                 switch (SortColumn)
                 {
@@ -75,6 +75,10 @@ namespace Fido.Action.Models
 
                     case 4:
                         UserDtos = UserService.GetPageInExternalCredentialOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    default:
+                        UserDtos = UserService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
                         break;
                 }
 

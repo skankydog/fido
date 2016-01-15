@@ -64,6 +64,7 @@
     <Compile Include="Public\Models\RoleModel.cs" />
     <Compile Include="Public\Models\UserModel.cs" />
     <Compile Include="Public\Models\RolesModel.cs" />
+    <Compile Include="Public\Models\ActivitiesModel.cs" />
     <Compile Include="Public\Models\UsersModel.cs" />
     <Compile Include="Public\Models\UnlinkExternalCredentialsModel.cs" />
     <Compile Include="Public\Models\LocalLoginModel.cs" />
