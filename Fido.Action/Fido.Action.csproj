@@ -73,9 +73,7 @@
     <Compile Include="Public\Models\Administration\RolesVM.cs" />
     <Compile Include="Public\Models\Administration\ActivitiesVM.cs" />
     <Compile Include="Public\Models\Administration\UsersVM.cs" />
-    <Compile Include="Public\Models\Account\_UnlinkExternalCredentialsVM.cs" />
     <Compile Include="Public\Models\LocalLoginVM.cs" />
-    <Compile Include="Public\Models\Account\_LinkExternalCredentialsCallbackVM.cs" />
     <Compile Include="Public\Models\Account\ProfileVM.cs" />
     <Compile Include="Public\Models\RegistrationVM.cs" />
     <Compile Include="Public\Models\ResetPasswordVM.cs" />

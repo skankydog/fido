@@ -209,9 +209,9 @@ namespace Fido.Action.Models
 
         public VirtualVM()
         {
-            Id = Guid.NewGuid();
-            CreatedUtc = DateTime.UtcNow;
-            IsNew = true;
+   //         Id = Guid.NewGuid();
+   //         CreatedUtc = DateTime.UtcNow;
+   //         IsNew = true;
         }
 
         public VirtualVM(

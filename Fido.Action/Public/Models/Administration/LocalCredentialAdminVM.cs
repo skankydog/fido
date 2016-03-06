@@ -19,7 +19,6 @@ namespace Fido.Action.Models
         #endregion
 
         public LocalCredentialAdminVM() { }
-
         public LocalCredentialAdminVM(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

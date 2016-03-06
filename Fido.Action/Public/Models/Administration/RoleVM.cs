@@ -38,9 +38,9 @@ namespace Fido.Action.Models
 
         public RoleVM()
         {
-            Id = Guid.NewGuid();
-            CreatedUtc = DateTime.UtcNow;
-            IsNew = true;
+  //          Id = Guid.NewGuid();
+  //          CreatedUtc = DateTime.UtcNow;
+  //          IsNew = true;
         }
 
         public RoleVM(

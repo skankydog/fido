@@ -42,13 +42,7 @@ namespace Fido.Action.Models
         public int CreatedAgeDays { get; set; } // Read only
         #endregion
 
-        public ProfileVM()
-        {
-            Id = Guid.NewGuid();
-            CreatedUtc = DateTime.UtcNow;
-            IsNew = true;
-        }
-
+        public ProfileVM() { }
         public ProfileVM(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

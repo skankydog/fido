@@ -78,9 +78,9 @@ namespace Fido.Action.Models
 
         public UserVM()
         {
-            Id = Guid.NewGuid();
-            CreatedUtc = DateTime.UtcNow;
-            IsNew = true;
+   //         Id = Guid.NewGuid();
+   //         CreatedUtc = DateTime.UtcNow;
+   //         IsNew = true;
         }
 
         public UserVM(

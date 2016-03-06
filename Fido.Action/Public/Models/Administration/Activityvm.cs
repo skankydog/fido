@@ -34,9 +34,9 @@ namespace Fido.Action.Models
 
         public ActivityVM()
         {
-            Id = Guid.NewGuid();
-            CreatedUtc = DateTime.UtcNow;
-            IsNew = true;
+   //         Id = Guid.NewGuid();
+   //         CreatedUtc = DateTime.UtcNow;
+   //         IsNew = true;
         }
 
         public ActivityVM(
