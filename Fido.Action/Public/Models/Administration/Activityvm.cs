@@ -32,13 +32,7 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public ActivityVM()
-        {
-   //         Id = Guid.NewGuid();
-   //         CreatedUtc = DateTime.UtcNow;
-   //         IsNew = true;
-        }
-
+        public ActivityVM() { }
         public ActivityVM(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

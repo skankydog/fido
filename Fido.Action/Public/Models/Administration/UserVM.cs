@@ -76,13 +76,7 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public UserVM()
-        {
-   //         Id = Guid.NewGuid();
-   //         CreatedUtc = DateTime.UtcNow;
-   //         IsNew = true;
-        }
-
+        public UserVM() { }
         public UserVM(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,

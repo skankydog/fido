@@ -207,13 +207,7 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public VirtualVM()
-        {
-   //         Id = Guid.NewGuid();
-   //         CreatedUtc = DateTime.UtcNow;
-   //         IsNew = true;
-        }
-
+        public VirtualVM() { }
         public VirtualVM(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI LoginAPI,
