@@ -84,7 +84,7 @@ namespace Fido.Action.Implementation
                 {
                     try
                     {
-                        if (LogicModel.Write(DataModel) == true)
+                        if (LogicModel.Save(DataModel) == true)
                         {
                             Log.Info("Successful write");
                             return SuccessResult(DataModel);

@@ -117,7 +117,7 @@ namespace Fido.Service.Tests
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
             Assert.AreEqual("None", UserDTO.LocalCredentialState);
 
-            var ConfirmationId = AuthenticationService.InitiateSetLocalCredentials(UserDTO.Id, "waylan.smithers@skankydog.com", "28*8sdjhhjdjssd");
+            var ConfirmationId = AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "waylan.smithers@skankydog.com", "28*8sdjhhjdjssd");
             UserDTO = UserService.Get(UserDTO.Id);
             Assert.AreEqual("Registered", UserDTO.LocalCredentialState);
 
@@ -135,7 +135,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredentials(UserDTO.Id, "bart.simpson@skankydog.com", "skjk(8sdkjkjsd");
+            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "bart.simpson@skankydog.com", "skjk(8sdkjkjsd");
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredentials(UserDTO.Id, "not.a.valid.email.address", "skjk(8sdkjkjsd");
+            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "not.a.valid.email.address", "skjk(8sdkjkjsd");
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredentials(UserDTO.Id, "waylan.smithers@skankydog.com", "weak");
+            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "waylan.smithers@skankydog.com", "weak");
         }
         #endregion
 

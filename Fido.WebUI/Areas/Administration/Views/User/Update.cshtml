@@ -1,4 +1,4 @@
-﻿@model Fido.Action.Models.UserModel
+﻿@model Fido.Action.Models.UserVM
 @using Fido.Action.Models
 
 @{
@@ -41,18 +41,18 @@
                     }
                     else
                     {
-                        @Html.TextBoxFor(m => m.LocalCredentialState, new { @class = "form-control", @placeholder = "local credential state", @value = "", @disabled = "true" })    
+                        @Html.TextBoxFor(m => m.LocalCredentialState, new { @class = "form-control", @placeholder = "local credential state", @value = "", @disabled = "true" })
                     }
                 </div>
             </div>
             <div class="col-xs-3 skd-padding">
                 @if(Model.HasLocalCredentials)
                 {
-                    @Html.ActionLink("Delete", "Delete", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Clear", "Delete", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 }
                 else
                 {
-                    @Html.ActionLink("Create", "Create", "LocalCredential", new LocalCredentialModel { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Set", "Update", "LocalCredential", new LocalCredentialVM { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 }
             </div>
         </div>

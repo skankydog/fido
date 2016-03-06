@@ -67,7 +67,7 @@ namespace Fido.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult LocalLogin(LocalLoginModel Model, string ReturnUrl)
+        public ActionResult LocalLogin(LocalLoginVM Model, string ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
@@ -97,7 +97,7 @@ namespace Fido.WebUI.Controllers
             }
 
             return Dispatcher.SavePostedModel(
-                DataModel: new ExternalLoginCallbackModel
+                DataModel: new ExternalLoginCallbackVM
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
@@ -128,12 +128,12 @@ namespace Fido.WebUI.Controllers
         public ActionResult Registration()
         {
             return Dispatcher.ReturnEmptyModel(
-                new RegistrationModel(),
+                new RegistrationVM(),
                 Result: m => View());
         }
 
         [HttpPost]
-        public ActionResult Registration(RegistrationModel Model)
+        public ActionResult Registration(RegistrationVM Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
@@ -146,12 +146,12 @@ namespace Fido.WebUI.Controllers
         public ActionResult ForgottenPassword()
         {
             return Dispatcher.ReturnEmptyModel/*<ForgottenPasswordModel>*/(
-                new ForgottenPasswordModel(),
+                new ForgottenPasswordVM(),
                 Result: m => View());
         }
 
         [HttpPost]
-        public ActionResult ForgottenPassword(ForgottenPasswordModel Model)
+        public ActionResult ForgottenPassword(ForgottenPasswordVM Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
@@ -162,12 +162,12 @@ namespace Fido.WebUI.Controllers
         public ActionResult ResetPassword(Guid ConfirmationId)
         {
             return Dispatcher.ReturnEmptyModel(
-                DataModel: new ResetPasswordModel(),
+                DataModel: new ResetPasswordVM(),
                 Result: m => View());
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(ResetPasswordModel Model)
+        public ActionResult ResetPassword(ResetPasswordVM Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,

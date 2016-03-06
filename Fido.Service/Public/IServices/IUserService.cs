@@ -24,8 +24,11 @@ namespace Fido.Service
         User ChangeLocalPassword(Guid UserId, string OldPassword, string NewPassword);
 
         #region Administration
-        User SetLocalCredentialState(Guid UserId, string State);
-        User SetExternalCredentialState(Guid UserId, string State);
+     //   User SetLocalCredentialState(Guid UserId, string State);
+     //   User SetExternalCredentialState(Guid UserId, string State);
+        User SaveWithStates(User User);
+        User CreateLocalCredential(Guid UserId, string EmailAddress, string Password);
+        User DeleteLocalCredential(Guid UserId);
         #endregion
 
         User GetByEmailAddress(string EmailAddress);

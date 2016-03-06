@@ -168,7 +168,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User ExpireLocalCredentials(Guid UserId)
+        public User ExpireLocalCredential(Guid UserId)
         {
             using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -195,7 +195,7 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = Repository.Get(e => e.EmailAddress == EmailAddress, "Roles");
+                    var UserEntity = Repository.Get(e => e.EmailAddress == EmailAddress);
 
                     User UserDTO = AutoMapper.Mapper.Map<Entities.User, User>(UserEntity);
 
@@ -206,6 +206,11 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Profile
+        // Interestingly, found an issue when reading the user entity and including the image. The image entity was
+        // not resolving. Turns out it appears to be an issue in the .NET layer and you need to revert to the 2010
+        // one; http://blogs.msdn.com/b/visualstudioalm/archive/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013.aspx
+        //
+        // I suspect I will need to utilise the old EXE interpreter as well when I build the release version.
         public Profile GetProfile(Guid UserId)
         {
             using (new FunctionLogger(Log))
@@ -213,9 +218,11 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId, "ProfileImage");
+                    var UserEntity = UserRepository.Get(UserId, "UserImage");
 
-                    return AutoMapper.Mapper.Map<Entities.User, Profile>(UserEntity);
+                    var ProfileDto = AutoMapper.Mapper.Map<Entities.User, Profile>(UserEntity);
+
+                    return ProfileDto;
                 }
             }
         }
@@ -227,33 +234,11 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(Profile.Id);
+                    var UserEntity = UserRepository.Get(Profile.Id, "Roles, ExternalCredentials, UserImage");
 
                     UserEntity = AutoMapper.Mapper.Map<Profile, Entities.User>(Profile, UserEntity);
+
                     UserRepository.Update(UserEntity);
-
-                    if (Profile.Image != null) // Post contains an image
-                    {
-                        var ProfileImageRepository = DataAccessFactory.CreateRepository<IProfileImageRepository>(UnitOfWork);
-                        var ProfileImageEntity = ProfileImageRepository.Get(Profile.Id);
-
-                        if (ProfileImageEntity == null) // No image in the database
-                        {
-                            ProfileImageEntity = new Entities.ProfileImage
-                                {
-                                    Id = Profile.Id,
-                                    Image = Profile.Image
-                                };
-
-                            ProfileImageRepository.CascadeInsert(ProfileImageEntity);
-                        }
-                        else // insert image into the database
-                        {
-                            ProfileImageEntity = AutoMapper.Mapper.Map<Profile, Entities.ProfileImage>(Profile, ProfileImageEntity);
-                            ProfileImageRepository.Update(ProfileImageEntity);
-                        }
-                    }
-
                     UnitOfWork.Commit();
                 }
             }
@@ -268,7 +253,8 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+                    //var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+                    var UserEntity = UserRepository.Get(UserId);
 
                     var ConfigurationRepository = DataAccessFactory.CreateRepository<IConfigurationRepository>(UnitOfWork);
                     var ConfigurationEntity = ConfigurationRepository.Get(e => e.Id != null);
@@ -281,16 +267,56 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Administration
-        public User SetLocalCredentialState(Guid UserId, string State)
+        //public User SetLocalCredentialState(Guid UserId, string State)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //        {
+        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+        //            var UserEntity = UserRepository.Get(UserId);
+
+        //      //      UserEntity.SetLocalCredentialState(State);
+
+        //            var SavedUser = UserRepository.Update(UserEntity);
+        //            UnitOfWork.Commit();
+
+        //            return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+        //        }
+        //    }
+        //}
+
+        //public User SetExternalCredentialState(Guid UserId, string State)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //        {
+        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+        //            var UserEntity = UserRepository.Get(UserId);
+
+        //            UserEntity.SetExternalCredentialState(State);
+        //            var SavedUser = UserRepository.Update(UserEntity);
+        //            UnitOfWork.Commit();
+
+        //            return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+        //        }
+        //    }
+        //}
+
+        public User SaveWithStates(User User)
         {
             using (new FunctionLogger(Log))
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId);
+                    var UserEntity = UserRepository.Get(User.Id);
 
-                    UserEntity.SetLocalCredentialState(State);
+                    UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
+                    UserEntity.LocalCredentialState = User.LocalCredentialState;
+                    UserEntity.ExternalCredentialState = User.ExternalCredentialState;
+
                     var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
@@ -299,7 +325,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User SetExternalCredentialState(Guid UserId, string State)
+        public User CreateLocalCredential(Guid UserId, string EmailAddress, string Password)
         {
             using (new FunctionLogger(Log))
             {
@@ -308,7 +334,33 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(UserId);
 
-                    UserEntity.SetExternalCredentialState(State);
+                    // Manual mapping as normal map updates all but the below...
+                    UserEntity.LocalCredentialState = "Enabled";
+                    UserEntity.EmailAddress = EmailAddress;
+                    UserEntity.Password = Password;
+
+                    var SavedUser = UserRepository.Update(UserEntity);
+                    UnitOfWork.Commit();
+
+                    return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                }
+            }
+        }
+
+        public User DeleteLocalCredential(Guid UserId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = UserRepository.Get(UserId);
+
+                    // Manual mapping as normal map updates all but the below...
+                    UserEntity.LocalCredentialState = "None";
+                    UserEntity.EmailAddress = null;
+                    UserEntity.Password = null;
+
                     var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
@@ -326,7 +378,7 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = Repository.Get(e => e.Id == UserId, "Roles");
+                    var UserEntity = Repository.Get(e => e.Id == UserId);
 
                     IList<Role> Roles = new List<Role>();
                     Roles = AutoMapper.Mapper.Map<ICollection<Entities.Role>, IList<Dtos.Role>>(UserEntity.Roles, Roles);
@@ -345,7 +397,7 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles");
+                    var UserEntity = UserRepository.Get(e => e.Id == UserId);
 
                     UserEntity.Roles = RoleEntities;
 
@@ -396,7 +448,7 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles, Roles.Activities");
+                    var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles.Activities");
                     var ActivityEntities = new List<Entities.Activity>();
 
                     foreach (var RoleEntity in UserEntity.Roles)

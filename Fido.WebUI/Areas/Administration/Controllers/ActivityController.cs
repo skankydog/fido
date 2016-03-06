@@ -18,26 +18,26 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         public ActionResult Index()
         {
             return Dispatcher.ReturnIndexWrapper(
-                DataModel: new ActivitiesModel(),
+                DataModel: new ActivitiesVM(),
                 Result: m => View());
         }
 
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.ReturnLoadedModel<ActivitiesModel>(
+            return Dispatcher.ReturnLoadedModel<ActivitiesVM>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<ActivityModel>(
+            return Dispatcher.ReturnLoadedModel<ActivityVM>(
                 Id: Id,
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Update(ActivityModel Model)
+        public ActionResult Update(ActivityVM Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,

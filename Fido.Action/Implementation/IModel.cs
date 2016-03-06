@@ -14,7 +14,7 @@ namespace Fido.Action.Implementation
         TMODEL Prepare(TMODEL Model);
         TMODEL Read(Guid Id);
         TMODEL Read(IndexOptions IndexOptions);
-        bool Write(TMODEL DataModel);
+        bool Save(TMODEL DataModel);
         bool Delete(TMODEL DataModel);
         void OnInvalidWrite(TMODEL DataModel);
         void OnFailedWrite(TMODEL DataModel);

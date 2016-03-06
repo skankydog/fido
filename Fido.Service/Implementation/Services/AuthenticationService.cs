@@ -227,7 +227,7 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Set Local Credentials
-        public Guid InitiateSetLocalCredentials(Guid UserId, string EmailAddress, string Password)
+        public Guid InitiateSetLocalCredential(Guid UserId, string EmailAddress, string Password)
         {
             using (new FunctionLogger(Log))
             {
@@ -407,7 +407,8 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccess.DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+                    //var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+                    var UserEntity = UserRepository.Get(UserId);
 
                     if (UserEntity == null)
                         throw new Exception("User not found");
@@ -435,7 +436,7 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccess.DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
+                    var UserEntity = UserRepository.Get(UserId);
 
                     if (UserEntity == null)
                         throw new Exception("User not found");

@@ -15,35 +15,35 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 {
     public class LocalCredentialController : BaseController
     {
-        public ActionResult Create()
+        public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnEmptyModel(
-                DataModel: new LocalCredentialModel(),
-                Result: m => PartialView(m));
-        }
-
-        [HttpPost]
-        public ActionResult Create(LocalCredentialModel Model)
-        {
-            return Dispatcher.SavePostedModel(
-                DataModel: Model,
-                SuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)),
-                NonsuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
-        }
-
-        public ActionResult Delete(Guid Id)
-        {
-            return Dispatcher.ReturnLoadedModel<LocalCredentialModel>(
+            return Dispatcher.ReturnLoadedModel<LocalCredentialAdminVM>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(LocalCredentialModel Model)
+        public ActionResult Update(LocalCredentialAdminVM Model)
+        {
+            return Dispatcher.SavePostedModel(
+                DataModel: Model,
+                SuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })),
+                NonsuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })));
+        }
+
+        public ActionResult Delete(Guid Id)
+        {
+            return Dispatcher.ReturnLoadedModel<LocalCredentialAdminVM>(
+                Id: Id,
+                Result: m => PartialView(m));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(LocalCredentialAdminVM Model)
         {
             return Dispatcher.DeletePostedModel(
                 DataModel: Model,
-                Result: m => ModalRedirectToLocal(Url.Action("Update", "User", Model.Id)));
+                Result: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })));
         }
     }
 }

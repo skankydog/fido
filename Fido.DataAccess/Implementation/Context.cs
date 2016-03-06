@@ -20,7 +20,6 @@ namespace Fido.DataAccess.Implementation
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DbSet<Configuration> Configurations { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<ProfileImage> UserImages { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Confirmation> Confirmations { get; set; }
@@ -60,15 +59,10 @@ namespace Fido.DataAccess.Implementation
                 DbModelBuilder.Entity<User>().Property(e => e.CreatedUtc).IsRequired();
                 DbModelBuilder.Entity<User>().Property(e => e.RowVersion).IsRowVersion();
                 DbModelBuilder.Entity<User>().Property(e => e.EmailAddress).HasMaxLength(150);
+                DbModelBuilder.Entity<User>()
+                    .HasOptional(e => e.UserImage).WithRequired(e => e.User);//.WillCascadeOnDelete(true);
 
-                // Map one-to-zero-or-one relationship...
-                DbModelBuilder.Entity<ProfileImage>().HasKey(e => e.Id);
-                DbModelBuilder.Entity<ProfileImage>().Property(e => e.CreatedUtc).IsRequired();
-                DbModelBuilder.Entity<ProfileImage>().Property(e => e.RowVersion).IsRowVersion();
-                DbModelBuilder.Entity<ProfileImage>() // Configure foreign key
-                    .HasRequired(e => e.User)
-                    .WithOptional(e => e.ProfileImage)
-                    .WillCascadeOnDelete(true);
+                DbModelBuilder.Entity<UserImage>().HasKey(e => e.Id);
 
                 DbModelBuilder.Entity<Role>().HasKey(e => e.Id);
                 DbModelBuilder.Entity<Role>().Property(e => e.CreatedUtc).IsRequired();

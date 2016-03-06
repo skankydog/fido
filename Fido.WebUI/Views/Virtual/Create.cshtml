@@ -1,0 +1,14 @@
+﻿@model Fido.Action.Models.VirtualVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "Virtual", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @enctype = "multipart/form-data", @class = "grid-form", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="well">
+        @Html.Partial("VirtualForm", Model)
+    </div>    
+}

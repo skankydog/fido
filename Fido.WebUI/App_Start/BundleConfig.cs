@@ -17,7 +17,8 @@ namespace Fido.WebUI
                 .Include("~/Content/css/authenticated.css")
                 .Include("~/Content/bootstrap-chosen.css")
                 .Include("~/Content/css/plugins/metisMenu/metisMenu.min.css")
-                .Include("~/Content/css/plugins/dataTables.bootstrap.css"));
+                .Include("~/Content/css/plugins/dataTables.bootstrap.css")
+                .Include("~/Content/css/gridforms.css"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -27,6 +28,7 @@ namespace Fido.WebUI
                 .Include("~/Scripts/jquery.unobtrusive-ajax.js")
                 .Include("~/Scripts/plugins/dataTables/jquery.dataTables.js")
                 .Include("~/Scripts/plugins/dataTables/dataTables.bootstrap.js")
+                .Include("~/Scripts/gridforms.js")
                 .Include("~/Scripts/modernizr-*"));
 
             Bundles.Add(new ScriptBundle("~/page.bottom.scripts")

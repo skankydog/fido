@@ -33,9 +33,9 @@ namespace Fido.DataAccess.Implementation
                         var ActivityRepository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
                         ActivityRepository.SetUnique("Name");
 
-                        ////var ExternalLoginRepository = DataAccessFactory.CreateRepository<IExternalLoginRepository>(UnitOfWork);
-                        ////ExternalLoginRepository.Index("LoginProvider");
-                        ////ExternalLoginRepository.Index("ProviderKey"); // Should be a composite index?
+                        //var ExternalLoginRepository = DataAccessFactory.CreateRepository<IExternalLoginRepository>(UnitOfWork);
+                        //ExternalLoginRepository.Index("LoginProvider");
+                        //ExternalLoginRepository.Index("ProviderKey"); // Should be a composite index?
                     }
                 }
             }

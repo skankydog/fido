@@ -46,7 +46,7 @@
     <Compile Include="Dtos\Settings.cs" />
     <Compile Include="Dtos\Profile.cs" />
     <Compile Include="Dtos\Role.cs" />
-    <Compile Include="Dtos\ProfileImage.cs" />
+    <Compile Include="Dtos\UserImage.cs" />
     <Compile Include="Dtos\User.cs" />
     <Compile Include="Dto.cs" />
     <Compile Include="Dtos\Fullname.cs" />

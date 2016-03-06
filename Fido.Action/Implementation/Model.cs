@@ -30,7 +30,7 @@ namespace Fido.Action.Implementation
         public virtual TMODEL Prepare(TMODEL Model) { return Model; }
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
         public virtual TMODEL Read(IndexOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
-        public virtual bool Write(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
+        public virtual bool Save(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
         public virtual bool Delete(TMODEL DataModel) { throw new NotImplementedException("Delete not implemented"); }
         public virtual void OnInvalidWrite(TMODEL DataModel) { }
         public virtual void OnFailedWrite(TMODEL DataModel) { }

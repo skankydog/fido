@@ -22,22 +22,20 @@ namespace Fido.Service.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Entities.ProfileImage, Dtos.Profile>()
-                    .ForMember(Dest => Dest.About, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.CreatedUtc, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.IsNew, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.Fullname, Options => Options.Ignore());
+                Mapper.CreateMap<Entities.UserImage, byte[]>()
+                    .ConvertUsing(Src => Src.Image);
                 Mapper.CreateMap<Entities.User, Dtos.Profile>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
-                    .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.Image, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.Image, Options =>
+                        Options.MapFrom(Src => Src.UserImage == null ? null : Mapper.Map<Entities.UserImage, byte[]>(Src.UserImage)))
+                    .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore()); // TO DO: DoB needed later
 
-                Mapper.CreateMap<Dtos.Profile, Entities.ProfileImage>()
-                    .ForMember(Dest => Dest.User, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.UserId, Options => Options.MapFrom(Src => Src.Id));
+                Mapper.CreateMap<Dtos.Profile, Entities.UserImage>()
+                    .ForMember(Dest => Dest.Image, Options => Options.MapFrom(Src => Src.Image));
                 Mapper.CreateMap<Dtos.Profile, Entities.User>()
+                    .ForMember(Dest => Dest.UserImage, Options => Options.MapFrom(Src => Mapper.Map<Dtos.Profile, Entities.UserImage>(Src)))
+                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore()) // Don't know
+                    .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore()) // Don't know
                     .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore()) // Changes to EmailAddress must be done via service call
                     .ForMember(Dest => Dest.Password, Options => Options.Ignore()) // Not available to the DTO
                     .ForMember(Dest => Dest.LocalCredentialState, Options => Options.Ignore()) // Read only to the DTO
@@ -48,8 +46,6 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.CurrentExternalCredentialState, Options => Options.Ignore()) // Read only to the DTO
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.ProfileImage, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.Ignore())
                     .ForMember(Dest => Dest.EmailAddressAgeDays, Options => Options.Ignore());
             }
         }

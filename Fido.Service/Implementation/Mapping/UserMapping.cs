@@ -24,7 +24,7 @@ namespace Fido.Service.Mapping
             {
                 Mapper.CreateMap<Entities.User, Dtos.User>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
-                    .ForMember(Dest => Dest.HasLocalCredentials, Options => Options.MapFrom(Src => Src.CurrentLocalCredentialState.HasCredentials))
+                    .ForMember(Dest => Dest.HasLocalCredentials, Options => Options.MapFrom(Src => Src.CurrentLocalCredentialState.HasCredentials)) // TO DO: Make these members of the User entity and map them normally
                     .ForMember(Dest => Dest.PasswordAgeDays, Options => Options.MapFrom(Src => Src.PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.PasswordLastChangeUtc).TotalDays)))
                     .ForMember(Dest => Dest.EmailAddressAgeDays, Options => Options.MapFrom(Src => Src.EmailAddressLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.EmailAddressLastChangeUtc).TotalDays)))
                     .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.MapFrom(Src => Src.CreatedUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.CreatedUtc).TotalDays)))
@@ -39,10 +39,9 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.EmailAddressLastChangeUtc, Options => Options.Ignore()) // Read only to the DTO
                     .ForMember(Dest => Dest.ExternalCredentialState, Options => Options.Ignore()) // Read only to the DTO
                     .ForMember(Dest => Dest.CurrentExternalCredentialState, Options => Options.Ignore()) // Read only to the DTO
-                    //.ForMember(Dest => Dest.Roles, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.UserImage, Options => Options.MapFrom(Src => Mapper.Map<Dtos.User, Entities.UserImage>(Src)))
                     .ForMember(Dest => Dest.Roles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Entities.Role>>(Src.Roles)))
-                    .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.ProfileImage, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore());
             }
         }
     }

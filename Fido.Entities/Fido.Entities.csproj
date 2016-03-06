@@ -46,7 +46,7 @@
     <Compile Include="Entities\Configuration.cs" />
     <Compile Include="Entities\Confirmation.cs" />
     <Compile Include="Entities\ExternalCredential.cs" />
-    <Compile Include="Entities\ProfileImage.cs" />
+    <Compile Include="Entities\UserPicture.cs" />
     <Compile Include="Entities\UserDetails\IExternalCredentialState.cs" />
     <Compile Include="Entities\UserDetails\ExternalCredentialStates\Enabled.cs" />
     <Compile Include="Entities\UserDetails\ExternalCredentialStates\Disabled.cs" />

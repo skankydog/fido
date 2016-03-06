@@ -21,7 +21,7 @@ namespace Fido.Service
 
         Guid InitiateRegistration(string EmailAddress, string Password, string Firstname, string Surname);
         User CompleteRegistration(Guid ConfirmationId);
-        Guid InitiateSetLocalCredentials(Guid UserId, string EmailAddress, string Password);
+        Guid InitiateSetLocalCredential(Guid UserId, string EmailAddress, string Password);
         User CompleteSetLocalCredentials(Guid ConfirmationId);
         Guid InitiateForgottenPassword(string EmailAddress);
         User CompleteForgottenPassword(Guid ConfirmationId, string NewPassword);

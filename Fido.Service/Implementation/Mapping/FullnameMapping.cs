@@ -22,8 +22,7 @@ namespace Fido.Service.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Entities.UserDetails.Fullname, Dtos.Fullname>()
-                   ;// .ForMember(Dest => Dest.DisplayName, Options => Options.MapFrom(Src => string.Concat(Src.Firstname, " ", Src.Surname)));
+                Mapper.CreateMap<Entities.UserDetails.Fullname, Dtos.Fullname>();
 
                 Mapper.CreateMap<Dtos.Fullname, Entities.UserDetails.Fullname>();
             }

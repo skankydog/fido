@@ -1,0 +1,84 @@
+﻿@model Fido.Action.Models.SettingsVM
+
+@if (Model.HasLocalCredentials)
+{
+    <div class="row skd-row-sm-offset-1">
+        <div class="col-sm-5 col-xs-12">
+            <p>Your local credentials are @Model.LocalCredentialState.</p>
+            <p>
+                @switch (Model.LocalCredentialState)
+                {
+                    case "Enabled":
+                        <text>
+                            Use the options on this page to change your email
+                            address or password associated with these credentials.
+                        </text>
+
+                        if (Model.PasswordChangePolicy)
+                        {
+                            <text>
+                                Your password will expire in @Model.DaysUntilPasswordExpires days.
+                            </text>
+                        }
+                        break;
+
+                    case "Disabled":
+                        <text>
+                            Please contact your administrator to re-activate your
+                            local credentials.
+                        </text>
+                        break;
+
+                    case "Expired":
+                        <text>
+                            You will need to reset your password to reactivate your local
+                            credentials.
+                        </text>
+                        break;
+
+                    case "Registered":
+                        <text>
+                            Your local credentials have not yet been validated. You were
+                            sent an email containing a link upon registration - this link
+                            must be clicked to validate your local credentials.
+                        </text>
+                        break;
+                }
+            </p>
+        </div>
+        <div class="col-sm-5 col-xs-12">
+            <div class="row center-block">
+                <div>
+                    @Html.ActionLink("Change Your Email Address", "ChangeEmailAddress", "Account", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                </div>
+            </div>
+            <div class="row center-block">
+                <div>
+                    @Html.ActionLink("Change Your Password", "ChangePassword", "Account", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>
+                        Your account does not have local credentials. Use the button provided to attach local
+                        credentials to your account.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="row center-block">
+                <div>
+                    @Html.ActionLink("Create Credentials", "SetCredentials", "Account", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                </div>
+            </div>
+        </div>
+    </div>
+}

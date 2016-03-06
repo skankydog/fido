@@ -49,6 +49,9 @@ namespace Fido.DataAccess.Implementation
                 Context.UpdateGraph(Entity, Map => Map.AssociatedCollection(User => User.Roles));
                 Context.UpdateGraph(Entity, Map => Map.OwnedCollection(User => User.ExternalCredentials));
 
+                if (Entity.UserImage != null)
+                    Context.UpdateGraph(Entity, Map => Map.OwnedEntity(User => User.UserImage));
+
                 return Entity;
             }
         }

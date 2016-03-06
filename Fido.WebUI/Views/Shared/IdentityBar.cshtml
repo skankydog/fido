@@ -15,19 +15,11 @@
                 </ul>
             </li>
         </ul>
-
-        @*<ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink(User.Identity.GetUserName(), "Details", "Account", routeValues: null, htmlAttributes: new { title = "Account" })
-            </li>
-            <li><a title="Log Out" href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-lg"></i></a></li>
-        </ul>*@
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        @*<li>@Html.ActionLink("Register", "InitiateLocalRegistration", "Authentication", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
         <li>@Html.ActionLink(" ", "LocalLogin", "Authentication", routeValues: null, htmlAttributes: new { title="Log In", id = "loginLink", @class ="fa fa-sign-in fa-lg" })</li>
     </ul>
 }
