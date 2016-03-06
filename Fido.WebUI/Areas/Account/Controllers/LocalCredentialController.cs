@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         {
             return Dispatcher.ReturnEmptyModel( // TO DO: Make this a read for consistency!!
                 new LocalCredentialVM(),
-                Result: m => PartialView());
+                Result: m => PartialView(m));
         }
 
         [HttpPost]
