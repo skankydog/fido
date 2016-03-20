@@ -15,18 +15,17 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.ReturnLoadedModel<ProfileVM>(
+            return Dispatcher.ReturnLoadedModel<Profile>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Update(ProfileVM Model)
+        public ActionResult Update(Profile Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => View(m),
-                NonsuccessResult: m => View(m));
+                Result: m => View(m));
         }
 
         // I used to have this function in a UserImageController and use it to return the image to the

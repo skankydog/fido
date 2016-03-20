@@ -29,7 +29,8 @@ namespace Fido.WebUI.Common
             Dispatcher = ActionFactory.CreateDispatcher<ActionResult>(
                 this, this, this,
                 AuthoriseResult: () => new HttpUnauthorizedResult(),
-                PasswordResetResult: () => RedirectToAction("Settings", "Account"));
+                PasswordResetResult: () => RedirectToAction("Settings", "Account"),
+                DefaultErrorResult: () => RedirectToAction("Error", "Home"));
             Flash = new Flasher();
         }
 

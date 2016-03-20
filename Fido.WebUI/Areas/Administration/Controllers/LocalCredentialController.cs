@@ -17,29 +17,28 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<LocalCredentialAdminVM>(
+            return Dispatcher.ReturnLoadedModel<LocalCredentialAdmin>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Update(LocalCredentialAdminVM Model)
+        public ActionResult Update(LocalCredentialAdmin Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })),
-                NonsuccessResult: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })));
+                Result: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<LocalCredentialAdminVM>(
+            return Dispatcher.ReturnLoadedModel<LocalCredentialAdmin>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(LocalCredentialAdminVM Model)
+        public ActionResult Delete(LocalCredentialAdmin Model)
         {
             return Dispatcher.DeletePostedModel(
                 DataModel: Model,

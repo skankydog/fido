@@ -16,17 +16,17 @@ namespace Fido.WebUI.Areas.Account.Controllers
         public ActionResult Update()
         {
             return Dispatcher.ReturnEmptyModel( // TO DO: No read, however!!   Or should I??
-                new PasswordVM(),
+                new Password(),
                 Result: m => PartialView());
         }
 
         [HttpPost]
-        public ActionResult Update(PasswordVM Model)
+        public ActionResult Update(Password Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
-                NonsuccessResult: m => PartialView(m));
+                InvalidResult: m => PartialView(m));
         }
     }
 }

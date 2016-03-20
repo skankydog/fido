@@ -21,14 +21,14 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-            Guid IntitiateRegistrationConfirmationId = AuthenticationService.InitiateRegistration("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
-            AuthenticationService.CompleteRegistration(IntitiateRegistrationConfirmationId);
+            Guid IntitiateRegistrationConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            AuthenticationService.RegistrationComplete(IntitiateRegistrationConfirmationId);
 
             var UserService = ServiceFactory.CreateService<IUserService>();
             var UserDTO = UserService.GetByEmailAddress("santas.little.helper@skankydog.com");
 
-            Guid ChangeEmailAddressConfirmationId = UserService.InitiateChangeEmailAddress(UserDTO.Id, "moe.szyslak@skankydog.com");
-            UserService.CompleteChangeEmailAddress(ChangeEmailAddressConfirmationId);
+            Guid ChangeEmailAddressConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com");
+            UserService.ChangeEmailAddressComplete(ChangeEmailAddressConfirmationId);
 
             UserDTO = UserService.GetByEmailAddress("moe.szyslak@skankydog.com");
             Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
@@ -41,7 +41,7 @@ namespace Fido.Service.Tests
             var UserService = ServiceFactory.CreateService<IUserService>();
             User UserDTO = UserService.GetByEmailAddress("bart.simpson@skankydog.com");
 
-            UserService.InitiateChangeEmailAddress(UserDTO.Id, "homer.simpson@skankydog.com");
+            UserService.ChangeEmailAddressInitiate(UserDTO.Id, "homer.simpson@skankydog.com");
         }
 
         [TestMethod]
@@ -57,10 +57,10 @@ namespace Fido.Service.Tests
             try
             {
                 // Initiate a change to an existing account
-                ConfirmationId = UserService.InitiateChangeEmailAddress(UserDTO.Id, "moe.szyslak@skankydog.com");
+                ConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com");
 
                 // Before the change is confirmed, register a new user
-                AuthenticationService.InitiateRegistration("moe.szyslak@skankydog.com", "98(jsjhdJHJHSJHD00909(#(#", "Moe", "Szyslak");
+                AuthenticationService.RegistrationInitiate("moe.szyslak@skankydog.com", "98(jsjhdJHJHSJHD00909(#(#", "Moe", "Szyslak");
             }
             catch(Exception)
             {
@@ -75,7 +75,7 @@ namespace Fido.Service.Tests
         //                        where C.Type == "Change Email Address"
         //                        select C).FirstOrDefault();
         //    ConfirmationService.MarkConfirmationAsSent(Confirmation.Id);
-            UserService.CompleteChangeEmailAddress(ConfirmationId);
+            UserService.ChangeEmailAddressComplete(ConfirmationId);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace Fido.Service.Tests
             var UserService = ServiceFactory.CreateService<IUserService>();
             User UserDTO = UserService.GetByEmailAddress("bart.simpson@skankydog.com");
 
-            UserService.InitiateChangeEmailAddress(UserDTO.Id, "not.a.valid.email.address");
+            UserService.ChangeEmailAddressInitiate(UserDTO.Id, "not.a.valid.email.address");
         }
         #endregion
 
@@ -96,8 +96,8 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
 
-            var ConfirmationId = AuthenticationService.InitiateRegistration("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
-            var UserDTO = AuthenticationService.CompleteRegistration(ConfirmationId);
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            var UserDTO = AuthenticationService.RegistrationComplete(ConfirmationId);
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "9398349DKjsdkj((#$349");
 
@@ -112,8 +112,8 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
 
-            var ConfirmationId = AuthenticationService.InitiateRegistration("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
-            var UserDTO = AuthenticationService.CompleteRegistration(ConfirmationId);
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            var UserDTO = AuthenticationService.RegistrationComplete(ConfirmationId);
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "weak");
         }

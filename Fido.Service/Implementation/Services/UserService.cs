@@ -89,7 +89,9 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Change Email Address
-        public Guid InitiateChangeEmailAddress(Guid UserId, string NewEmailAddress)
+        private const string CHANGE_EMAIL_ADDRESS = "Change Email Address";
+
+        public Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress)
         {
             using (new FunctionLogger(Log))
             {
@@ -109,7 +111,7 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new ServiceException("Failed to retrieve user details");
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Change Email Address", UserId, NewEmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, CHANGE_EMAIL_ADDRESS, UserId, NewEmailAddress);
                     UserEntity.CurrentLocalCredentialState.InitiateChangeEmailAddress();
 
                     UnitOfWork.Commit();
@@ -118,14 +120,14 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User CompleteChangeEmailAddress(Guid ConfirmationId)
+        public User ChangeEmailAddressComplete(Guid ConfirmationId)
         {
             using (new FunctionLogger(Log))
             {
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Change Email Address");
+                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, CHANGE_EMAIL_ADDRESS);
 
                     if (Confirmation == null)
                         throw new ServiceException(string.Format("Unable to change email address - {0} not found or expired", ConfirmationId));
@@ -313,9 +315,9 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(User.Id);
 
-                    UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
-                    UserEntity.LocalCredentialState = User.LocalCredentialState;
-                    UserEntity.ExternalCredentialState = User.ExternalCredentialState;
+                    UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
+                    UserEntity.LocalCredentialState = User.LocalCredentialState; // Not automapped
+                    UserEntity.ExternalCredentialState = User.ExternalCredentialState; // Not automapped
 
                     var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
@@ -335,7 +337,7 @@ namespace Fido.Service.Implementation
                     var UserEntity = UserRepository.Get(UserId);
 
                     // Manual mapping as normal map updates all but the below...
-                    UserEntity.LocalCredentialState = "Enabled";
+                    UserEntity.LocalCredentialState = "Expired";
                     UserEntity.EmailAddress = EmailAddress;
                     UserEntity.Password = Password;
 

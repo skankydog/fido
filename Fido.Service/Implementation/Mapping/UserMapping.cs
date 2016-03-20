@@ -23,12 +23,7 @@ namespace Fido.Service.Mapping
             using (new FunctionLogger(Log))
             {
                 Mapper.CreateMap<Entities.User, Dtos.User>()
-                    .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Dto was created from a read
-                    .ForMember(Dest => Dest.HasLocalCredentials, Options => Options.MapFrom(Src => Src.CurrentLocalCredentialState.HasCredentials)) // TO DO: Make these members of the User entity and map them normally
-                    .ForMember(Dest => Dest.PasswordAgeDays, Options => Options.MapFrom(Src => Src.PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.PasswordLastChangeUtc).TotalDays)))
-                    .ForMember(Dest => Dest.EmailAddressAgeDays, Options => Options.MapFrom(Src => Src.EmailAddressLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.EmailAddressLastChangeUtc).TotalDays)))
-                    .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.MapFrom(Src => Src.CreatedUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.CreatedUtc).TotalDays)))
-                    .ForMember(Dest => Dest.HasExternalCredentials, Options => Options.MapFrom(Src => Src.CurrentExternalCredentialState.HasCredentials));
+                    .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)); // Dto was created from a read
 
                 Mapper.CreateMap<Dtos.User, Entities.User>()
                     .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore()) // Changes to EmailAddress must be done via service call

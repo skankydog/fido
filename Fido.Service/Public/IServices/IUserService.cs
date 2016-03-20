@@ -18,14 +18,12 @@ namespace Fido.Service
         IList<User> GetPageInLocalCredentialOrder(char SortOrder,int Skip, int Take, string Filter);
         IList<User> GetPageInExternalCredentialOrder(char SortOrder, int Skip, int Take, string Filter);
 
-        Guid InitiateChangeEmailAddress(Guid UserId, string NewEmailAddress);
-        User CompleteChangeEmailAddress(Guid ConfirmationId);
+        Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress);
+        User ChangeEmailAddressComplete(Guid ConfirmationId);
 
         User ChangeLocalPassword(Guid UserId, string OldPassword, string NewPassword);
 
         #region Administration
-     //   User SetLocalCredentialState(Guid UserId, string State);
-     //   User SetExternalCredentialState(Guid UserId, string State);
         User SaveWithStates(User User);
         User CreateLocalCredential(Guid UserId, string EmailAddress, string Password);
         User DeleteLocalCredential(Guid UserId);

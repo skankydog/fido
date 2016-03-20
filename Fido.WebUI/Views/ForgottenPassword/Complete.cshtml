@@ -1,0 +1,74 @@
+﻿@using Fido.WebUI.Extensions
+@model Fido.Action.Models.ForgottenPasswordComplete
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "" "">
+<html lang="en">
+<head>
+    <meta content="IE=10.000" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <title>Change Forgotten Password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @Scripts.Render("~/page.top.scripts")
+    @Styles.Render("~/anonymous.styles")
+    @*Scripts.Render("~/bundles/scripts/jquery")*@
+    <link href="~/Content/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    @*<meta name="GENERATOR" content="MSHTML 10.00.9200.17116">*@
+</head>
+<body>
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.Flash()
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="skd-login">
+
+            @using (Html.BeginForm("CompleteForgottenPassword", "Authentication", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ConfirmationId)
+                
+                <div class="row skd-row-sm-offset-3">
+                    <div class="col-xs-12 col-sm-6">
+
+                        <h3>Change Forgotten Password</h3>
+                        Please complete the below to change your password.
+                        <span class="skd-spacing"></span>
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "password", @value = "" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                        <span class="skd-spacing"></span>                
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "confirm password", @value = "" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+
+                        <span class="skd-spacing"></span>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <span class="skd-spacing"></span>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Change Password</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @*Scripts.Render("~/bundles/scripts/bootstrap")
+    Scripts.Render("~/bundles/scripts/modernizr")
+    Styles.Render("~/bundles/css/anonymous")*@
+    @Scripts.Render("~/page.bottom.scripts")
+</body>
+</html>

@@ -16,32 +16,65 @@ namespace Fido.Action.Implementation
         IModelAPI ModelAPI;
         Func<TRETURN> AuthenticateResult;
         Func<TRETURN> PasswordResetResult;
+        Func<TRETURN> DefaultErrorResult;
 
         public Dispatcher(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
             Func<TRETURN> AuthenticateResult,
-            Func<TRETURN> PasswordResetResult)
+            Func<TRETURN> PasswordResetResult,
+            Func<TRETURN> DefaultErrorResult)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
             this.AuthenticateResult = AuthenticateResult;
             this.PasswordResetResult = PasswordResetResult;
+            this.DefaultErrorResult = DefaultErrorResult;
         }
 
-        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
-        {
-            return ReturnModelOrView(DataModel, Result, Permission.Write);
-        }
-
+        #region Index
         public TRETURN ReturnIndexWrapper<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
         {
-            return ReturnModelOrView(DataModel, Result, Permission.Read);
+            return ReturnModelOrView(
+                DataModel: DataModel,
+                SuccessResult: Result,
+                ErrorResult: DefaultErrorResult,
+                RequiredPermission: Permission.Read);
         }
 
-        private TRETURN ReturnModelOrView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result, Permission RequiredPermission)
+        public TRETURN ReturnIndexWrapper<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        {
+            return ReturnModelOrView(
+                DataModel: DataModel,
+                SuccessResult: SuccessResult,
+                ErrorResult: ErrorResult,
+                RequiredPermission: Permission.Read);
+        }
+        #endregion
+
+        #region EmptyModel
+        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            return ReturnModelOrView(
+                DataModel: DataModel,
+                SuccessResult: Result,
+                ErrorResult: DefaultErrorResult,
+                RequiredPermission: Permission.Write);
+        }
+
+        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        {
+            return ReturnModelOrView(
+                DataModel: DataModel,
+                SuccessResult: SuccessResult,
+                ErrorResult: ErrorResult,
+                RequiredPermission: Permission.Write);
+        }
+        #endregion
+
+        private TRETURN ReturnModelOrView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult, Permission RequiredPermission)
         {
             using (new FunctionLogger(Log))
             {
@@ -54,11 +87,21 @@ namespace Fido.Action.Implementation
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
                 return Processor.ExecuteView(
                     DataModel: DataModel,
-                    Result: Result);
+                    SuccessResult: SuccessResult,
+                    ErrorResult: ErrorResult);
             }
         }
 
+        #region Reads
         public TRETURN ReturnLoadedModel<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        {
+            return ReturnLoadedModel(
+                IndexOptions: IndexOptions,
+                SuccessResult: Result,
+                ErrorResult: DefaultErrorResult);
+        }
+
+        public TRETURN ReturnLoadedModel<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -69,11 +112,22 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteRead(IndexOptions, Result);
+                return Processor.ExecuteRead(
+                    IndexOptions: IndexOptions,
+                    SuccessResult: SuccessResult,
+                    ErrorResult: ErrorResult);
             }
         }
 
         public TRETURN ReturnLoadedModel<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
+        {
+            return ReturnLoadedModel(
+                Id: Id,
+                SuccessResult: Result,
+                ErrorResult: DefaultErrorResult);
+        }
+
+        public TRETURN ReturnLoadedModel<TMODEL>(Guid Id, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -84,28 +138,41 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteRead(Id, Result);
+                return Processor.ExecuteRead(
+                    Id: Id,
+                    SuccessResult: SuccessResult,
+                    ErrorResult: ErrorResult);
             }
         }
+        #endregion
 
         #region Save
+        public TRETURN SavePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        {
+            return SavePostedModel(
+                DataModel: DataModel,
+                SuccessResult: Result,
+                InvalidResult: Result,
+                ErrorResult: DefaultErrorResult);
+        }
+
         public TRETURN SavePostedModel<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> NonsuccessResult)
+            Func<TMODEL, TRETURN> InvalidResult)
         {
             return SavePostedModel(
                 DataModel: DataModel,
                 SuccessResult: SuccessResult,
-                FailureResult: NonsuccessResult,
-                InvalidResult: NonsuccessResult);
+                InvalidResult: InvalidResult,
+                ErrorResult: DefaultErrorResult);
         }
 
         public TRETURN SavePostedModel<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> FailureResult,
-            Func<TMODEL, TRETURN> InvalidResult)
+            Func<TMODEL, TRETURN> InvalidResult,
+            Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -116,7 +183,11 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteWrite(DataModel, SuccessResult, FailureResult, InvalidResult);
+                return Processor.ExecuteWrite(
+                    DataModel: DataModel,
+                    SuccessResult: SuccessResult,
+                    InvalidResult: InvalidResult,
+                    ErrorResult: ErrorResult);
             }
         }
         #endregion
@@ -124,6 +195,14 @@ namespace Fido.Action.Implementation
         #region Delete
         public TRETURN DeletePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
         {
+            return DeletePostedModel(
+                DataModel: DataModel,
+                SuccessResult: Result,
+                ErrorResult: DefaultErrorResult);
+        }
+
+        public TRETURN DeletePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        {
             using (new FunctionLogger(Log))
             {
                 var LogicModel = CreateLogicModel<TMODEL>();
@@ -133,7 +212,10 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteDelete(DataModel, Result);
+                return Processor.ExecuteDelete(
+                    DataModel: DataModel,
+                    SuccessResult: SuccessResult,
+                    ErrorResult: ErrorResult);
             }
         }
         #endregion

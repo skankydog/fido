@@ -43,9 +43,4 @@ namespace Fido.WebUI.Controllers
             }
         }
     }
-
-    //public class RedirectorModel
-    //{
-    //    public string Location { get; set; }
-    //}
 }

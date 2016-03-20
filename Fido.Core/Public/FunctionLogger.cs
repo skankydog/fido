@@ -10,7 +10,7 @@ namespace Fido.Core
         private log4net.ILog Log { get; set; }
         private string Name { get; set; }
 
-        // When targetting 4.5/C# 5:
+        // When targeting 4.5/C# 5:
         // public void LogWrapper(log4net.ILog Log, [CallerMemberName] string Caller = null)
         //     The compiler will add the caller name at compile-time, so will have zero cost
         //     as far as execution goes.

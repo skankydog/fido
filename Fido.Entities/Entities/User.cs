@@ -56,6 +56,7 @@ namespace Fido.Entities
         public DateTime? EmailAddressLastChangeUtc { get; set; } // NULL if no local credentials
         public int? EmailAddressAgeDays { get { return EmailAddressLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)EmailAddressLastChangeUtc).TotalDays); } }
         public DateTime? PasswordLastChangeUtc { get; set; } // NULL if no local credentials
+        public int? PasswordAgeDays { get { return PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)PasswordLastChangeUtc).TotalDays); } }
         #endregion
 
         #region External Credential Properties

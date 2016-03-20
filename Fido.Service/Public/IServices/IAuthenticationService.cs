@@ -19,12 +19,13 @@ namespace Fido.Service
         User LoginByExternalEmailAddress(string LoginProvider, string ProviderKey, string EmailAddress);
         User CreateByExternalCredentials(string LoginProvider, string ProviderKey, string EmailAddress, string Name);
 
-        Guid InitiateRegistration(string EmailAddress, string Password, string Firstname, string Surname);
-        User CompleteRegistration(Guid ConfirmationId);
-        Guid InitiateSetLocalCredential(Guid UserId, string EmailAddress, string Password);
-        User CompleteSetLocalCredentials(Guid ConfirmationId);
-        Guid InitiateForgottenPassword(string EmailAddress);
-        User CompleteForgottenPassword(Guid ConfirmationId, string NewPassword);
+        Guid RegistrationInitiate(string EmailAddress, string Password, string Firstname, string Surname);
+        User RegistrationComplete(Guid ConfirmationId);
+        Guid SetLocalCredentialInitiate(Guid UserId, string EmailAddress, string Password);
+        User SetLocalCredentialComplete(Guid ConfirmationId);
+        Guid ForgottenPasswordInitiate(string EmailAddress);
+        Confirmation ForgottenPasswordReceive(Guid ConfirmationId);
+        User ForgottenPasswordComplete(Guid ConfirmationId, string NewPassword);
         
         bool PasswordPassesValidation(string Password);
         PasswordScore GetPasswordScore(string Password);

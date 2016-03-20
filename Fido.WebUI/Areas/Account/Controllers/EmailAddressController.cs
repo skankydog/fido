@@ -13,20 +13,20 @@ namespace Fido.WebUI.Areas.Account.Controllers
 {
     public class EmailAddressController : BaseController
     {
-        public ActionResult Update()
+        public ActionResult Initiate()
         {
             return Dispatcher.ReturnEmptyModel(
-                new EmailAddressVM(),
+                new ChangeEmailAddressInitiate(),
                 Result: m => PartialView());
         }
 
         [HttpPost]
-        public ActionResult Update(EmailAddressVM Model)
+        public ActionResult Initiate(ChangeEmailAddressInitiate Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
-                NonsuccessResult: m => PartialView(m));
+                InvalidResult: m => PartialView(m));
         }
     }
 }

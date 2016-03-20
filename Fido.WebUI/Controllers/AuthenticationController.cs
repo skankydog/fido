@@ -15,48 +15,6 @@ namespace Fido.WebUI.Controllers
     [AllowAnonymous]
     public class AuthenticationController : BaseController
     {
-        #region Properties, Constructors & Dispose
-
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
-        //private OOTBUserManager Manager;
-
-        //public AuthenticationController()
-        //{
-        //}
-
-        //public AuthenticationController(OOTBUserManager Manager)
-        //{
-        //    UserManager = Manager;
-        //}
-
-        //public OOTBUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return Manager ?? HttpContext.GetOwinContext().GetUserManager<OOTBUserManager>();
-        //    }
-        //    private set
-        //    {
-        //        Manager = value;
-        //    }
-        //}
-
-
-
-        //protected override void Dispose(bool Disposing)
-        //{
-        //    if (Disposing && UserManager != null)
-        //    {
-        //        UserManager.Dispose();
-        //        UserManager = null;
-        //    }
-
-        //    base.Dispose(Disposing);
-        //}
-        #endregion
-
         #region Local Login
         public ActionResult LocalLogin(string ReturnUrl = @"/Home/Index")
         {
@@ -67,18 +25,21 @@ namespace Fido.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult LocalLogin(LocalLoginVM Model, string ReturnUrl)
+        public ActionResult LocalLogin(LocalLogin Model, string ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => RedirectToLocal(ReturnUrl),
-                NonsuccessResult: m => View());
+                InvalidResult: m => View());
         }
         #endregion
 
         #region External Login
+        // Used for XSRF protection when adding external logins
+        private const string XsrfKey = "XsrfId";
+
         [HttpPost]
         public ActionResult ExternalLogin(string Provider, string ReturnUrl)
         {
@@ -97,7 +58,7 @@ namespace Fido.WebUI.Controllers
             }
 
             return Dispatcher.SavePostedModel(
-                DataModel: new ExternalLoginCallbackVM
+                DataModel: new ExternalLoginCallback
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
@@ -105,7 +66,7 @@ namespace Fido.WebUI.Controllers
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
                 SuccessResult: m => RedirectToLocal(ReturnUrl),
-                NonsuccessResult: m => RedirectToAction("LocalLogin"));
+                InvalidResult: m => RedirectToAction("LocalLogin"));
         }
         #endregion
 
@@ -128,52 +89,52 @@ namespace Fido.WebUI.Controllers
         public ActionResult Registration()
         {
             return Dispatcher.ReturnEmptyModel(
-                new RegistrationVM(),
+                new RegistrationInitiate(),
                 Result: m => View());
         }
 
         [HttpPost]
-        public ActionResult Registration(RegistrationVM Model)
+        public ActionResult Registration(RegistrationInitiate Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("LocalLogin"),
-                NonsuccessResult: m => View(m));
+                InvalidResult: m => View(m));
         }
         #endregion
 
-        #region Forgotten Password
-        public ActionResult ForgottenPassword()
-        {
-            return Dispatcher.ReturnEmptyModel/*<ForgottenPasswordModel>*/(
-                new ForgottenPasswordVM(),
-                Result: m => View());
-        }
+        //#region Forgotten/Reset Password
+        //public ActionResult ForgottenPassword()
+        //{
+        //    return Dispatcher.ReturnEmptyModel/*<ForgottenPasswordModel>*/(
+        //        new ForgottenPasswordInitiate(),
+        //        Result: m => View());
+        //}
 
-        [HttpPost]
-        public ActionResult ForgottenPassword(ForgottenPasswordVM Model)
-        {
-            return Dispatcher.SavePostedModel(
-                DataModel: Model,
-                SuccessResult: m => RedirectToAction("LocalLogin"),
-                NonsuccessResult: m => View(m));
-        }
+        //[HttpPost]
+        //public ActionResult ForgottenPassword(ForgottenPasswordInitiate Model)
+        //{
+        //    return Dispatcher.SavePostedModel(
+        //        DataModel: Model,
+        //        SuccessResult: m => RedirectToAction("LocalLogin"),
+        //        InvalidResult: m => View(m));
+        //}
 
-        public ActionResult ResetPassword(Guid ConfirmationId)
-        {
-            return Dispatcher.ReturnEmptyModel(
-                DataModel: new ResetPasswordVM(),
-                Result: m => View());
-        }
+        //public ActionResult ResetPassword(Guid ConfirmationId)
+        //{
+        //    return Dispatcher.ReturnEmptyModel(
+        //        DataModel: new ForgottenPasswordComplete(),
+        //        Result: m => View());
+        //}
 
-        [HttpPost]
-        public ActionResult ResetPassword(ResetPasswordVM Model)
-        {
-            return Dispatcher.SavePostedModel(
-                DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "Home"),
-                NonsuccessResult: m => PartialView(m));
-        }
-        #endregion
+        //[HttpPost]
+        //public ActionResult ResetPassword(ForgottenPasswordComplete Model)
+        //{
+        //    return Dispatcher.SavePostedModel(
+        //        DataModel: Model,
+        //        SuccessResult: m => RedirectToAction("Index", "Home"),
+        //        InvalidResult: m => PartialView(m));
+        //}
+        //#endregion
     }
 }

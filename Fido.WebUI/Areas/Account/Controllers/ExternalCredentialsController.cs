@@ -31,25 +31,23 @@ namespace Fido.WebUI.Areas.Account.Controllers
             }
 
             return Dispatcher.SavePostedModel(
-                DataModel: new ExternalCredentialVM
+                DataModel: new ExternalCredential
                     {
                         Id = Guid.Empty,
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
                         ProviderKey = ExternalLoginInfo.Login.ProviderKey,
                         EmailAddress = ExternalLoginInfo.Email
                     },
-                    SuccessResult: m => RedirectToAction("Index", "Settings"),
-                    NonsuccessResult: m => RedirectToAction("Index", "Settings"));
+                    Result: m => RedirectToAction("Index", "Settings"));
         }
         #endregion
 
         #region Unlink
-        public ActionResult Unlink(ExternalCredentialVM Model)
+        public ActionResult Unlink(ExternalCredential Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "Settings"),
-                NonsuccessResult: m => RedirectToAction("Index", "Settings"));
+                Result: m => RedirectToAction("Index", "Settings"));
         }
         #endregion
     }

@@ -1,4 +1,4 @@
-﻿@model Fido.Action.Models.SettingsVM
+﻿@model Fido.Action.Models.Settings
 
 @if (Model.HasLocalCredentials)
 {
@@ -49,12 +49,12 @@
         <div class="col-sm-5 col-xs-12">
             <div class="row center-block">
                 <div>
-                    @Html.ActionLink("Change Your Email Address", "Update", "EmailAddress", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Change Your Email Address", "Initiate", "EmailAddress", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 </div>
             </div>
             <div class="row center-block">
                 <div>
-                    @Html.ActionLink("Change Your Password", "Update", "Password", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Change Your Password", "Initiate", "Password", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@ else
         <div class="col-sm-7">
             <div class="row center-block">
                 <div>
-                    @Html.ActionLink("Create Credentials", "SetCredentials", "Account", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Create Credentials", "Initiate", "LocalCredential", null, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 </div>
             </div>
         </div>

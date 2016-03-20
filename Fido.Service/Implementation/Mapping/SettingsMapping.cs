@@ -23,7 +23,7 @@ namespace Fido.Service.Mapping
             using (new FunctionLogger(Log))
             {
                 Mapper.CreateMap<Entities.User, Dtos.Settings>()
-                    .ForMember(Dest => Dest.PasswordAgeDays, Options => Options.MapFrom(Src => Src.PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.PasswordLastChangeUtc).TotalDays)))
+                    //.ForMember(Dest => Dest.PasswordAgeDays, Options => Options.MapFrom(Src => Src.PasswordLastChangeUtc == null ? (int?)null : Convert.ToInt16((DateTime.UtcNow - (DateTime)Src.PasswordLastChangeUtc).TotalDays)))
                     .ForMember(Dest => Dest.PasswordChangePolicy, Options => Options.Ignore())
                     .ForMember(Dest => Dest.PasswordChangePolicyDays, Options => Options.Ignore());
                 Mapper.CreateMap<Entities.Configuration, Dtos.Settings>()

@@ -68,7 +68,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public string GetConfirmType(Guid Id)
+        public string GetConfirmationType(Guid Id)
         {
             using (new FunctionLogger(Log))
             {

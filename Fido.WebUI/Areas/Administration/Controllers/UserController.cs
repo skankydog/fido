@@ -18,13 +18,13 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         public ActionResult Index()
         {
             return Dispatcher.ReturnIndexWrapper(
-                DataModel: new UsersVM(),
+                DataModel: new Users(),
                 Result: m => View());
         }
 
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.ReturnLoadedModel<UsersVM>(
+            return Dispatcher.ReturnLoadedModel<Users>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
@@ -32,46 +32,45 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         public ActionResult Create()
         {
             return Dispatcher.ReturnEmptyModel(
-                DataModel: new UserVM(),
+                DataModel: new User(),
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Create(UserVM Model)
+        public ActionResult Create(User Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index"),
-                NonsuccessResult: m => RedirectToAction("Index"));
+                Result: m => RedirectToAction("Index"));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<UserVM>(
+            return Dispatcher.ReturnLoadedModel<User>(
                 Id: Id,
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Update(UserVM Model)
+        public ActionResult Update(User Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "User"),
-                NonsuccessResult: m => View(m));
+                InvalidResult: m => View(m));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<UserVM>(
+            return Dispatcher.ReturnLoadedModel<User>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(UserVM Model)
+        public ActionResult Delete(User Model)
         {
-            return Dispatcher.DeletePostedModel<UserVM>(
+            return Dispatcher.DeletePostedModel<User>(
                 DataModel: Model,
                 Result: m => ModalRedirectToLocal(Url.Action("Index", "User")));
         }

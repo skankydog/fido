@@ -18,13 +18,13 @@ namespace Fido.WebUI.Controllers
         public ActionResult Index()
         {
             return Dispatcher.ReturnIndexWrapper(
-                DataModel: new VirtualsVM(),
+                DataModel: new Virtuals(),
                 Result: m => View());
         }
 
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.ReturnLoadedModel<VirtualsVM>(
+            return Dispatcher.ReturnLoadedModel<Virtuals>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
@@ -32,46 +32,45 @@ namespace Fido.WebUI.Controllers
         public ActionResult Create()
         {
             return Dispatcher.ReturnEmptyModel(
-                DataModel: new VirtualVM(),
+                DataModel: new Virtual(),
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Create(VirtualVM Model)
+        public ActionResult Create(Virtual Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index"),
-                NonsuccessResult: m => RedirectToAction("Index"));
+                Result: m => RedirectToAction("Index"));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<VirtualVM>(
+            return Dispatcher.ReturnLoadedModel<Virtual>(
                 Id: Id,
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Update(VirtualVM Model)
+        public ActionResult Update(Virtual Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "User"),
-                NonsuccessResult: m => View(m));
+                InvalidResult: m => View(m));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<VirtualVM>(
+            return Dispatcher.ReturnLoadedModel<Virtual>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(VirtualVM Model)
+        public ActionResult Delete(Virtual Model)
         {
-            return Dispatcher.DeletePostedModel<VirtualVM>(
+            return Dispatcher.DeletePostedModel<Virtual>(
                 DataModel: Model,
                 Result: m => ModalRedirectToLocal(Url.Action("Index", "User")));
         }

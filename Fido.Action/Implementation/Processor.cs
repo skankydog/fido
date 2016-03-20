@@ -25,27 +25,51 @@ namespace Fido.Action.Implementation
             this.LogicModel = LogicModel;
         }
 
-        public TRETURN ExecuteView(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        public TRETURN ExecuteView(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
-                DataModel = LogicModel.Prepare(DataModel);
+                try
+                {
+                    DataModel = LogicModel.Prepare(DataModel);
+                }
+                catch (Exception Ex)
+                {
+                    Log.Fatal(Ex.ToString());
 
-                return Result(DataModel);
+                    FeedbackAPI.DisplayError(Ex.Message);
+                    return ErrorResult();
+                }
+
+                return SuccessResult(DataModel);
             }
         }
 
-        public TRETURN ExecuteRead(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
-        {
-            return DoExecuteRead(Guid.Empty, IndexOptions, Result);
-        }
+        #region Index Reads
+        //public TRETURN ExecuteRead(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        //{
+        //    return DoExecuteRead(Guid.Empty, IndexOptions, Result, Result);
+        //}
 
-        public TRETURN ExecuteRead(Guid Id, Func<TMODEL, TRETURN> Result)
+        public TRETURN ExecuteRead(IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
-            return DoExecuteRead(Id, null, Result);
+            return DoExecuteRead(Guid.Empty, IndexOptions, SuccessResult, ErrorResult);
         }
+        #endregion
 
-        private TRETURN DoExecuteRead(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        #region Non-Index Reads
+        //public TRETURN ExecuteRead(Guid Id, Func<TMODEL, TRETURN> Result)
+        //{
+        //    return DoExecuteRead(Id, null, Result, Result);
+        //}
+
+        public TRETURN ExecuteRead(Guid Id, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        {
+            return DoExecuteRead(Id, null, SuccessResult, ErrorResult);
+        }
+        #endregion
+
+        private TRETURN DoExecuteRead(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -61,20 +85,22 @@ namespace Fido.Action.Implementation
                     {
                         DataModel = LogicModel.Read(IndexOptions);
                     }
+
+                    DataModel = LogicModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)
                 {
-                    FeedbackAPI.DisplayError(Ex.Message);
                     Log.Fatal(Ex.ToString());
+                    
+                    FeedbackAPI.DisplayError(Ex.Message);
+                    return ErrorResult();
                 }
 
-                DataModel = LogicModel.Prepare(DataModel);
-
-                return Result(DataModel);
+                return SuccessResult(DataModel);
             }
         }
 
-        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> FailureResult, Func<TMODEL, TRETURN> InvalidResult)
+        public TRETURN ExecuteWrite(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> InvalidResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
@@ -92,26 +118,37 @@ namespace Fido.Action.Implementation
                     }
                     catch (Exception Ex)
                     {
+                        Log.Fatal(Ex.ToString());
                         FeedbackAPI.DisplayError(Ex.Message);
-                        Log.Info("Exception thrown in write: " + Ex.ToString());
                     }
 
                     LogicModel.OnFailedWrite(DataModel);
-                    return FailureResult(DataModel);
+                    return ErrorResult();
                 }
 
-                Log.Info("Invalid model");
+                Log.Warn("Model is invalid");
                 LogicModel.OnInvalidWrite(DataModel);
                 return InvalidResult(DataModel);
             }
         }
 
-        public TRETURN ExecuteDelete(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        public TRETURN ExecuteDelete(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
         {
             using (new FunctionLogger(Log))
             {
-                LogicModel.Delete(DataModel);
-                return Result(DataModel);
+                try
+                {
+                    LogicModel.Delete(DataModel);
+                }
+                catch (Exception Ex)
+                {
+                    Log.Fatal(Ex.ToString());
+                    FeedbackAPI.DisplayError(Ex.Message);
+
+                    return ErrorResult();
+                }
+
+                return SuccessResult(DataModel);
             }
         }
     }

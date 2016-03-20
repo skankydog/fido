@@ -168,7 +168,9 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Registration
-        public Guid InitiateRegistration(string EmailAddress, string Password, string Firstname, string Surname)
+        private string REGISTRATION = "Register Local Account";
+
+        public Guid RegistrationInitiate(string EmailAddress, string Password, string Firstname, string Surname)
         {
             using (new FunctionLogger(Log))
             {
@@ -191,7 +193,7 @@ namespace Fido.Service.Implementation
                         CreatedUtc = DateTime.UtcNow
                     };
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Register Local Account", UserEntity.Id, EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, REGISTRATION, UserEntity.Id, EmailAddress);
                     UserEntity.CurrentLocalCredentialState.InitiateRegistration(EmailAddress, Password, Firstname, Surname);
 
                     UserRepository.CascadeInsert(UserEntity);
@@ -202,14 +204,14 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User CompleteRegistration(Guid ConfirmationId)
+        public User RegistrationComplete(Guid ConfirmationId)
         {
             using (new FunctionLogger(Log))
             {
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Register Local Account");
+                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, REGISTRATION);
 
                     if (Confirmation == null)
                         throw new ServiceException(string.Format("Unable to complete registration - {0} not found or expired", ConfirmationId));
@@ -226,8 +228,10 @@ namespace Fido.Service.Implementation
         }
         #endregion
 
-        #region Set Local Credentials
-        public Guid InitiateSetLocalCredential(Guid UserId, string EmailAddress, string Password)
+        #region Set Local Credential
+        private string SET_LOCAL_CREDENTIAL = "Register Local Credential";
+
+        public Guid SetLocalCredentialInitiate(Guid UserId, string EmailAddress, string Password)
         {
             using (new FunctionLogger(Log))
             {
@@ -245,7 +249,7 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(UserId);
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Register Local Credentials", UserEntity.Id, EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, SET_LOCAL_CREDENTIAL, UserEntity.Id, EmailAddress);
 
                     UserEntity.CurrentLocalCredentialState.InitiateSetLocalCredentials(EmailAddress, Password);
                     UserRepository.Update(UserEntity);
@@ -256,14 +260,14 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User CompleteSetLocalCredentials(Guid ConfirmationId)
+        public User SetLocalCredentialComplete(Guid ConfirmationId)
         {
             using (new FunctionLogger(Log))
             {
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Register Local Credentials");
+                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, SET_LOCAL_CREDENTIAL);
 
                     if (Confirmation == null)
                         throw new ServiceException(string.Format("Unable to complete setting of credentials - {0} not found or expired", ConfirmationId));
@@ -281,7 +285,9 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Forgotten Password
-        public Guid InitiateForgottenPassword(string EmailAddress)
+        private string FORGOTTEN_PASSWORD = "Forgotten Password";
+
+        public Guid ForgottenPasswordInitiate(string EmailAddress)
         {
             using (new FunctionLogger(Log))
             {
@@ -293,7 +299,7 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an email address of {0} not found", EmailAddress));
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, "Forgotten Password", UserEntity.Id, UserEntity.EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, FORGOTTEN_PASSWORD, UserEntity.Id, UserEntity.EmailAddress);
                     UserEntity.CurrentLocalCredentialState.InitiateForgottenPassword();
 
                     UnitOfWork.Commit();
@@ -302,7 +308,25 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User CompleteForgottenPassword(Guid ConfirmationId, string Password)
+        public Confirmation ForgottenPasswordReceive(Guid ConfirmationId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                Entities.Confirmation ConfirmationEntity;
+
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    ConfirmationEntity = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, FORGOTTEN_PASSWORD);
+
+                    if (ConfirmationEntity == null)
+                        throw new ServiceException(string.Format("Unable to change forgotten password - {0} not found or expired", ConfirmationId));
+                }
+
+                return Mapper.Map<Entities.Confirmation, Dtos.Confirmation>(ConfirmationEntity);
+            }
+        }
+
+        public User ForgottenPasswordComplete(Guid UserId, string Password)
         {
             using (new FunctionLogger(Log))
             {
@@ -312,12 +336,7 @@ namespace Fido.Service.Implementation
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, "Forgotten Password");
-
-                    if (Confirmation == null)
-                        throw new ServiceException(string.Format("Unable to change forgotten password - {0} not found or expired", ConfirmationId));
-
-                    var UserEntity = UserRepository.Get(Confirmation.UserId);
+                    var UserEntity = UserRepository.Get(UserId);
 
                     //DateTime CurrentDateTime = DateTime.UtcNow;
                     //TimeSpan TimeSinceForgotten = CurrentDateTime.Subtract(UserEntity.Authentication.PasswordForgottenUtc);

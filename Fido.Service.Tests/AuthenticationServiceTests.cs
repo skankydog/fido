@@ -35,8 +35,8 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
             var IdWithExternalCredentials = AuthenticationService.CreateByExternalCredentials("Facebook", "<unique>", "santas.little.helper@skankydog.com", "Santa Simpson").Id;
-            var ConfirmationId = AuthenticationService.InitiateRegistration("charles.burns@skankydog.com", "sdkjKJsdI887487834ewd", "Charles", "Burns");
-            var IdWithoutExternalCredentials = AuthenticationService.CompleteRegistration(ConfirmationId).Id;
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("charles.burns@skankydog.com", "sdkjKJsdI887487834ewd", "Charles", "Burns");
+            var IdWithoutExternalCredentials = AuthenticationService.RegistrationComplete(ConfirmationId).Id;
 
             Assert.IsTrue(AuthenticationService.HasExternalCredentials(IdWithExternalCredentials));
             Assert.IsFalse(AuthenticationService.HasExternalCredentials(IdWithoutExternalCredentials));
@@ -117,11 +117,11 @@ namespace Fido.Service.Tests
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
             Assert.AreEqual("None", UserDTO.LocalCredentialState);
 
-            var ConfirmationId = AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "waylan.smithers@skankydog.com", "28*8sdjhhjdjssd");
+            var ConfirmationId = AuthenticationService.SetLocalCredentialInitiate(UserDTO.Id, "waylan.smithers@skankydog.com", "28*8sdjhhjdjssd");
             UserDTO = UserService.Get(UserDTO.Id);
             Assert.AreEqual("Registered", UserDTO.LocalCredentialState);
 
-            AuthenticationService.CompleteSetLocalCredentials(ConfirmationId);
+            AuthenticationService.SetLocalCredentialComplete(ConfirmationId);
             UserDTO = UserService.Get(UserDTO.Id);
             Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
 
@@ -135,7 +135,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "bart.simpson@skankydog.com", "skjk(8sdkjkjsd");
+            AuthenticationService.SetLocalCredentialInitiate(UserDTO.Id, "bart.simpson@skankydog.com", "skjk(8sdkjkjsd");
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "not.a.valid.email.address", "skjk(8sdkjkjsd");
+            AuthenticationService.SetLocalCredentialInitiate(UserDTO.Id, "not.a.valid.email.address", "skjk(8sdkjkjsd");
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
 
-            AuthenticationService.InitiateSetLocalCredential(UserDTO.Id, "waylan.smithers@skankydog.com", "weak");
+            AuthenticationService.SetLocalCredentialInitiate(UserDTO.Id, "waylan.smithers@skankydog.com", "weak");
         }
         #endregion
 
@@ -166,11 +166,11 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
 
-            var ConfirmationId = AuthenticationService.InitiateRegistration("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
             var UserDTO = UserService.GetByEmailAddress("santas.little.helper@skankydog.com");
             Assert.AreEqual("Registered", UserDTO.LocalCredentialState);
 
-            AuthenticationService.CompleteRegistration(ConfirmationId);
+            AuthenticationService.RegistrationComplete(ConfirmationId);
             UserDTO = UserService.GetByEmailAddress("santas.little.helper@skankydog.com");
             Assert.AreEqual("Enabled", UserDTO.LocalCredentialState);
         }
@@ -181,8 +181,8 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-            AuthenticationService.InitiateRegistration("jamie.danckert@skankydog.com", "skjk(8sdkjkjsd", "Jamie", "Danckert");
-            AuthenticationService.InitiateRegistration("jamie.danckert@skankydog.com", "skjk(8sdkjkjsd", "Jamie", "Danckert");
+            AuthenticationService.RegistrationInitiate("jamie.danckert@skankydog.com", "skjk(8sdkjkjsd", "Jamie", "Danckert");
+            AuthenticationService.RegistrationInitiate("jamie.danckert@skankydog.com", "skjk(8sdkjkjsd", "Jamie", "Danckert");
         }
 
         [TestMethod]
@@ -191,7 +191,7 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-            AuthenticationService.InitiateRegistration("not.a.valid.email.address", "skjk(8sdkjkjsd", "Jamie", "Danckert");
+            AuthenticationService.RegistrationInitiate("not.a.valid.email.address", "skjk(8sdkjkjsd", "Jamie", "Danckert");
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-            AuthenticationService.InitiateRegistration("jamie.danckert@skankydog.com", "weak", "Jamie", "Danckert");
+            AuthenticationService.RegistrationInitiate("jamie.danckert@skankydog.com", "weak", "Jamie", "Danckert");
         }
         #endregion
 
@@ -209,8 +209,8 @@ namespace Fido.Service.Tests
         public void CanPerformForgottenPassword()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
-            var ConfirmationId = AuthenticationService.InitiateForgottenPassword("homer.simpson@skankydog.com");
-            AuthenticationService.CompleteForgottenPassword(ConfirmationId, "SDssdsdeEEWe*&*74##");
+            var ConfirmationId = AuthenticationService.ForgottenPasswordInitiate("homer.simpson@skankydog.com");
+            AuthenticationService.ForgottenPasswordComplete(ConfirmationId, "SDssdsdeEEWe*&*74##");
 
             var UserService = ServiceFactory.CreateService<IUserService>();
             var UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
@@ -222,8 +222,8 @@ namespace Fido.Service.Tests
         public void InvalidPasswordThrowsOnForgottenPassword()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
-            var ConfirmationId = AuthenticationService.InitiateForgottenPassword("homer.simpson@skankydog.com");
-            AuthenticationService.CompleteForgottenPassword(ConfirmationId, "weak");
+            var ConfirmationId = AuthenticationService.ForgottenPasswordInitiate("homer.simpson@skankydog.com");
+            AuthenticationService.ForgottenPasswordComplete(ConfirmationId, "weak");
         }
         #endregion
 

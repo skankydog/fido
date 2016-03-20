@@ -12,6 +12,6 @@ namespace Fido.Service
         IList<Confirmation> GetConfirmationsForUser(Guid UserId);
         IList<Confirmation> GetAllQueuedConfirmations();
         void MarkConfirmationAsSent(Guid Id);
-        string GetConfirmType(Guid Id);
+        string GetConfirmationType(Guid Id);
     }
 }

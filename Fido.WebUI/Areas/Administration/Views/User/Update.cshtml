@@ -1,4 +1,4 @@
-﻿@model Fido.Action.Models.UserVM
+﻿@model Fido.Action.Models.User
 @using Fido.Action.Models
 
 @{
@@ -52,7 +52,7 @@
                 }
                 else
                 {
-                    @Html.ActionLink("Set", "Update", "LocalCredential", new LocalCredentialVM { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    @Html.ActionLink("Set", "Update", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
                 }
             </div>
         </div>

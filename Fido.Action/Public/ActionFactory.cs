@@ -19,9 +19,10 @@ namespace Fido.Action
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
             Func<TRETURN> AuthoriseResult,
-            Func<TRETURN> PasswordResetResult)
+            Func<TRETURN> PasswordResetResult,
+            Func<TRETURN> DefaultErrorResult)
         {
-            return new Dispatcher<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, AuthoriseResult, PasswordResetResult);
+            return new Dispatcher<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, AuthoriseResult, PasswordResetResult, DefaultErrorResult);
         }
     }
 }

@@ -13,20 +13,20 @@ namespace Fido.WebUI.Areas.Account.Controllers
 {
     public class LocalCredentialController : BaseController
     {
-        public ActionResult Update()
+        public ActionResult Initiate()
         {
             return Dispatcher.ReturnEmptyModel( // TO DO: Make this a read for consistency!!
-                new LocalCredentialVM(),
+                new SetLocalCredentialInitiate(),
                 Result: m => PartialView());
         }
 
         [HttpPost]
-        public ActionResult Update(LocalCredentialVM Model)
+        public ActionResult Initiate(SetLocalCredentialInitiate Model)
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
-                NonsuccessResult: m => PartialView(m));
+                InvalidResult: m => PartialView(m));
         }
     }
 }
