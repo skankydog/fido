@@ -441,29 +441,6 @@ h3 a:hover, a:focus {
     display: inline-block;
 }
 
-.skd-rating {
-    margin-top:20px;
-}
-
-.skd-rating a {
-    color:#f1c40f;
-    font-size:11px;
-    text-align:center;
-}
-
-.skd-rating a:hover {
-    color:#f39c12;
-    text-decoration:none;
-}
-
-.skd-tags {
-    background: #1abc9c;
-    border-radius: 2px;
-    color: #f5f5f5;
-    font-weight: bold;
-    padding: 2px 4px;
-}
-
 /*.modal-content {
     width: 600px !important;
     margin: 30px auto !important;

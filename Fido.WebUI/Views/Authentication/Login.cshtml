@@ -16,7 +16,7 @@
 
     <link href="~/Content/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
     @Scripts.Render("~/page.top.scripts")
-    @Styles.Render("~/anonymous.styles")
+    @Styles.Render("~/nolayout.styles")
 
     @*<meta name="GENERATOR" content="MSHTML 10.00.9200.17116">*@
 </head>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            @using (Html.BeginForm("LocalLogin", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Authentication", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 
@@ -72,7 +72,7 @@
                         <label>@Html.CheckBoxFor(m => m.RememberMe)Remember Me</label>
                     </div>
                     <div class="col-xs-12 col-sm-3 skd-forgotpassword">
-                        <p>@Html.ActionLink("Forgot your password?", "ForgottenPassword")</p>
+                        <p>@Html.ActionLink("Forgot your password?", "Initiate", "ForgottenPassword")</p>
                     </div>
                 </div>
             }

@@ -3,63 +3,62 @@
 
 @if (Model.HasExternalCredentials)
 {
-    <div class="row skd-row-sm-offset-2">
-        <div class="col-sm-8 skd-description">
+    <div class="row">
+        <div class="col-sm-8">
             The below list of external accounts contains details of all the social logins that are
             currently linked to your account. To disassociate a social login, use the delete option
             listed against the login below.
         </div>
     </div>
-    <div class="skd-spacing"></div>
     
     foreach (var ExternalCredential in Model.ExternalCredentials)
     {
-        <div class="row skd-row-sm-offset-2 center-block">
+        <div class="row center-block">
             @switch (@ExternalCredential.LoginProvider.Substring(0, 1).ToUpper())
             {                        
                 case "F":
-                    <div class="col-xs-4 col-sm-2 skd-table-cell">
-                        <button class="skd-no-button skd-colour-facebook">
+                    <div class="col-xs-4 col-sm-2">
+                        <button>
                             <span><i class="fa fa-facebook"></i>&nbsp;@ExternalCredential.LoginProvider</span>
                         </button>
                     </div>
                     break;
 
                 case "T":
-                    <div class="col-xs-4 col-sm-2 skd-table-cell">
-                        <button class="skd-no-button skd-colour-twitter">
+                    <div class="col-xs-4 col-sm-2">
+                        <button>
                             <span><i class="fa fa-twitter"></i>&nbsp;@ExternalCredential.LoginProvider</span>
                         </button>
                     </div>
                     break;
 
                 case "G":
-                    <div class="col-xs-4 col-sm-2 skd-table-cell">
-                        <button class="skd-no-button skd-colour-google">
+                    <div class="col-xs-4 col-sm-2">
+                        <button>
                             <span><i class="fa fa-google-plus"></i>&nbsp;@ExternalCredential.LoginProvider</span>
                         </button>
                     </div>
                     break;
 
                 case "L":
-                    <div class="col-xs-4 col-sm-2 skd-table-cell">
-                        <button class="skd-no-button skd-colour-linkedin">
+                    <div class="col-xs-4 col-sm-2">
+                        <button>
                             <span><i class="fa fa-linkedin"></i>&nbsp;@ExternalCredential.LoginProvider</span>
                         </button>
                     </div>
                     break;
 
                 default:
-                    <div class="col-xs-4 col-sm-2 skd-table-cell">
-                        <button class="skd-no-button skd-colour-info">
+                    <div class="col-xs-4 col-sm-2">
+                        <button>
                             <span><i class="fa fa-question"></i>&nbsp;@ExternalCredential.LoginProvider</span>
                         </button>
                     </div>
                     break;
             }
 
-            <div class="col-xs-7 col-sm-5 skd-table-cell">
-                <div class="skd-no-button">
+            <div class="col-xs-7 col-sm-5">
+                <div>
                     @if (ExternalCredential.EmailAddress == null)
                     {
                         <span>unknown email address</span>
@@ -71,8 +70,8 @@
                 </div>
             </div>
 
-            <div class="col-xs-1 skd-table-cell">
-                <div class="skd-no-button">
+            <div class="col-xs-1">
+                <div>
                     <a href="@Url.Action("Unlink", "ExternalCredentials", new { Id = ExternalCredential.Id })"><i class="fa fa-lg fa-chain-broken"></i></a>
                 </div>
             </div>
@@ -88,7 +87,7 @@
     var TwitterProvider = ExternalProviders.Where(e => e.Caption == "Twitter").FirstOrDefault();
     var LinkedInProvider = ExternalProviders.Where(e => e.Caption == "LinkedIn").FirstOrDefault();
 
-    <div class="row skd-row-sm-offset-2 skd-titled-bar">
+    <div class="row">
         <div class="col-xs-12 col-sm-8">
             <hr>
             <span><i class="fa fa-lg fa-link"></i></span>
@@ -100,27 +99,27 @@
         @Html.AntiForgeryToken()
 
         <div class="skd-socialbuttons">
-            <div class="row skd-row-sm-offset-2">
+            <div class="row">
                 <div class="col-xs-3 col-sm-2">
-                    <button type="submit" class="btn btn-lg btn-block skd-colour-facebook"
+                    <button type="submit" class="btn btn-lg btn-block"
                             name="Provider" value="@FacebookProvider.AuthenticationType">
                         <span><i class="fa fa-facebook"></i></span>
                     </button>
                 </div>
                 <div class="col-xs-3 col-sm-2">
-                    <button type="submit" class="btn btn-lg btn-block skd-colour-twitter"
+                    <button type="submit" class="btn btn-lg btn-block"
                             name="Provider" value="@TwitterProvider.AuthenticationType">
                         <span><i class="fa fa-twitter"></i></span>
                     </button>
                 </div>
                 <div class="col-xs-3 col-sm-2">
-                    <button type="submit" class="btn btn-lg btn-block skd-colour-google"
+                    <button type="submit" class="btn btn-lg btn-block"
                             name="Provider" value="@GoogleProvider.AuthenticationType">
                         <span><i class="fa fa-google-plus"></i></span>
                     </button>
                 </div>
                 <div class="col-xs-3 col-sm-2">
-                    <button type="submit" class="btn btn-lg btn-block skd-colour-linkedin"
+                    <button type="submit" class="btn btn-lg btn-block"
                             name="Provider" value="@LinkedInProvider.AuthenticationType">
                         <span><i class="fa fa-linkedin"></i></span>
                     </button>

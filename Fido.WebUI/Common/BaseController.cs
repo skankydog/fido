@@ -30,7 +30,7 @@ namespace Fido.WebUI.Common
                 this, this, this,
                 AuthoriseResult: () => new HttpUnauthorizedResult(),
                 PasswordResetResult: () => RedirectToAction("Settings", "Account"),
-                DefaultErrorResult: () => RedirectToAction("Error", "Home"));
+                DefaultErrorResult: () => RedirectToAction("Login", "Authentication")); // TO DO: Change this to a dedicated "error page"
             Flash = new Flasher();
         }
 

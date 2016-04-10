@@ -27,7 +27,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("LocalLogin"),
+                SuccessResult: m => RedirectToAction("Login"),
                 InvalidResult: m => View(m));
         }
 

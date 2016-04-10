@@ -17,7 +17,7 @@
 //        {
 //            return Dispatcher.SavePostedModel(
 //                DataModel: Model,
-//                Result: m => RedirectToAction("LocalLogin", "Authentication"));
+//                Result: m => RedirectToAction("Login", "Authentication"));
 //        }
 //    }
 //}

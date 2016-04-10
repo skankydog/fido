@@ -16,7 +16,7 @@ namespace Fido.WebUI.Controllers
     public class AuthenticationController : BaseController
     {
         #region Local Login
-        public ActionResult LocalLogin(string ReturnUrl = @"/Home/Index")
+        public ActionResult Login(string ReturnUrl = @"/Home/Index")
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult LocalLogin(LocalLogin Model, string ReturnUrl)
+        public ActionResult Login(LocalLogin Model, string ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
@@ -54,7 +54,7 @@ namespace Fido.WebUI.Controllers
             if (ExternalLoginInfo == null)
             {
                 Flash.Error("Invalid external credential details");
-                return RedirectToAction("LocalLogin");
+                return RedirectToAction("Login");
             }
 
             return Dispatcher.SavePostedModel(
@@ -66,7 +66,7 @@ namespace Fido.WebUI.Controllers
                         Name = ExternalLoginInfo.ExternalIdentity.Name
                     },
                 SuccessResult: m => RedirectToLocal(ReturnUrl),
-                InvalidResult: m => RedirectToAction("LocalLogin"));
+                InvalidResult: m => RedirectToAction("Login"));
         }
         #endregion
 
@@ -81,7 +81,7 @@ namespace Fido.WebUI.Controllers
             LoggedInCredentialState = "None";
             Flash.Success("You have successfully logged out.");
 
-            return RedirectToAction("LocalLogin");
+            return RedirectToAction("Login");
         }
         #endregion
 
@@ -98,7 +98,7 @@ namespace Fido.WebUI.Controllers
         {
             return Dispatcher.SavePostedModel(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("LocalLogin"),
+                SuccessResult: m => RedirectToAction("Login"),
                 InvalidResult: m => View(m));
         }
         #endregion
@@ -116,7 +116,7 @@ namespace Fido.WebUI.Controllers
         //{
         //    return Dispatcher.SavePostedModel(
         //        DataModel: Model,
-        //        SuccessResult: m => RedirectToAction("LocalLogin"),
+        //        SuccessResult: m => RedirectToAction("Login"),
         //        InvalidResult: m => View(m));
         //}
 

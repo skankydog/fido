@@ -8,17 +8,21 @@ namespace Fido.WebUI
     {
         public static void RegisterBundles(BundleCollection Bundles)
         {
-            Bundles.Add(new StyleBundle("~/anonymous.styles")
+            Bundles.Add(new StyleBundle("~/nolayout.styles")
                 .Include("~/Content/css/bootstrap.css")
-                .Include("~/Content/css/anonymous.css"));
+                .Include("~/Content/css/nolayout.css"));
 
-            Bundles.Add(new StyleBundle("~/authenticated.styles")
+            Bundles.Add(new StyleBundle("~/layout.styles")
                 .Include("~/Content/css/bootstrap.css")
-                .Include("~/Content/css/authenticated.css")
+                .Include("~/Content/css/layout.css"));
+
+            Bundles.Add(new StyleBundle("~/administration.styles")
+                .Include("~/Content/css/bootstrap.css")
+                .Include("~/Content/css/administration.css")
                 .Include("~/Content/bootstrap-chosen.css")
                 .Include("~/Content/css/plugins/metisMenu/metisMenu.min.css")
                 .Include("~/Content/css/plugins/dataTables.bootstrap.css")
-                .Include("~/Content/css/gridforms.css"));
+                .Include("~/Content/css/gridforms.css")); // Not sure I am going to use this one. Consider removing
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

@@ -50,6 +50,7 @@ namespace Fido.Action.Models
                     return true;
                 }
 
+                FeedbackAPI.DisplayError("Invalid username, password combination.");
                 ModelAPI.ModelError("Invalid username, password combination.");
                 return false;
             }

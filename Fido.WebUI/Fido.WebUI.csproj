@@ -219,7 +219,7 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
-    <Content Include="Content\css\anonymous.css" />
+    <Content Include="Content\css\nolayout.css" />
     <Content Include="Content\css\gridforms.css" />
     <Content Include="Content\css\plugins\dataTables.bootstrap.css" />
     <Content Include="Content\css\plugins\metisMenu\metisMenu.css" />
@@ -227,7 +227,8 @@
     <Content Include="Content\css\plugins\morris.css" />
     <Content Include="Content\css\plugins\social-buttons.css" />
     <Content Include="Content\css\plugins\timeline.css" />
-    <Content Include="Content\css\authenticated.css" />
+    <Content Include="Content\css\administration.css" />
+    <Content Include="Content\css\layout.css" />
     <Content Include="Content\font-awesome-4.2.0\css\font-awesome.css" />
     <Content Include="Content\font-awesome-4.2.0\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.2.0\fonts\fontawesome-webfont.svg" />
@@ -310,6 +311,7 @@
     <Content Include="Areas\Account\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Account\Views\Settings\SettingsExternal.cshtml" />
     <Content Include="Areas\Account\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_Layout-original.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -364,7 +366,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Authentication\ExternalProviders.cshtml" />
+    <Content Include="Views\Authentication\___ExternalProviders.cshtml" />
     <Content Include="Views\ForgottenPassword\Initiate.cshtml" />
     <Content Include="Views\Authentication\Registration.cshtml" />
     <Content Include="Views\ForgottenPassword\Complete.cshtml" />
@@ -375,13 +377,14 @@
     <Content Include="Views\Shared\DisplayTemplates\FlashImage.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FlashLinks.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FlashMessage.cshtml" />
-    <Content Include="Views\Authentication\LocalLogin.cshtml" />
+    <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Authentication\ExternalLogin.cshtml" />
     <Content Include="Areas\Administration\Views\User\Index.cshtml" />
     <Content Include="Views\Home\ModalRedirectToLocal.cshtml" />
     <Content Include="Views\Virtual\Create.cshtml" />
     <Content Include="Views\Virtual\Index.cshtml" />
     <Content Include="Views\Virtual\VirtualForm.cshtml" />
+    <Content Include="Views\Shared\_Layout - Original.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

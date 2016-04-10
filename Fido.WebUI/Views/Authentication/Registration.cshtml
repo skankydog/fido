@@ -1,5 +1,5 @@
 ﻿@using Fido.WebUI.Extensions
-@model Fido.Action.Models.Registration
+@model Fido.Action.Models.RegistrationInitiate
 
 @{
     Layout = null;
@@ -14,8 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     @Scripts.Render("~/page.top.scripts")
-    @Styles.Render("~/anonymous.styles")
-    @*Scripts.Render("~/bundles/scripts/jquery")*@
+    @Styles.Render("~/nolayout.styles")
     <link href="~/Content/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
     @*<meta name="GENERATOR" content="MSHTML 10.00.9200.17116">*@
@@ -87,7 +86,7 @@
 
     @*Scripts.Render("~/bundles/scripts/bootstrap")
     Scripts.Render("~/bundles/scripts/modernizr")
-    Styles.Render("~/bundles/css/anonymous")*@
+    Styles.Render("~/bundles/css/site")*@
     @Scripts.Render("~/page.bottom.scripts")
 </body>
 </html>

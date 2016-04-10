@@ -1,0 +1,282 @@
+@import url( http://fonts.googleapis.com/css?family=Raleway:400,700,900 );
+@import url( http://fonts.googleapis.com/css?family=Lato:400,900 );
+@import url( prettyPhoto.css ) screen;
+@import url( hoverex-all.css ) screen;
+* {
+	margin: 0px; padding: 0px;
+}
+body {
+	background: rgb(255, 255, 255); margin: 0px; height: 100%; color: rgb(56, 68, 82); font-family: "Lato", sans-serif; font-weight: 400;
+}
+h1 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+h2 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+h3 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+h4 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+h5 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+h6 {
+	font-family: "Raleway", sans-serif; font-weight: 700;
+}
+p {
+	padding: 0px; color: rgb(56, 68, 82); line-height: 24px; font-family: "Lato", sans-serif; font-size: 14px; font-weight: 400; margin-top: 10px; margin-bottom: 12px;
+}
+.col-centered {
+    text-align: center;
+}
+.input-group
+{
+    padding: 2px;
+}
+/*.skd-rating {
+    margin-top:20px;
+}
+.skd-rating a {
+    color:#f1c40f;
+    font-size:11px;
+    text-align:center;
+}
+.skd-rating a:hover {
+    color:#f39c12;
+    text-decoration:none;
+}
+.skd-tags {
+    background: #1abc9c;
+    border-radius: 2px;
+    color: #f5f5f5;
+    font-weight: bold;
+    padding: 2px 4px;
+}*/
+img {
+	height: auto; max-width: 100%;
+}
+a {
+	margin: 0px; padding: 0px; transition:background-color 0.4s linear, color 0.4s linear; text-decoration: none; -webkit-transition: background-color .4s linear, color .4s linear; -moz-transition: background-color .4s linear, color .4s linear; -o-transition: background-color .4s linear, color .4s linear;
+}
+a:hover {
+	color: rgb(1, 178, 254); text-decoration: none;
+}
+a:focus {
+	color: rgb(1, 178, 254); text-decoration: none;
+}
+::selection {
+	background: rgb(43, 46, 49); color: rgb(255, 255, 255); text-shadow: none;
+}
+.centered {
+	text-align: center;
+}
+.navbar {
+	padding-top: 10px; margin-bottom: 0px; min-height: 70px;
+}
+.navbar-brand {
+	font-family: "Raleway", sans-serif; font-weight: 900;
+}
+.navbar-header .navbar-brand {
+	color: white;
+}
+.navbar-default .navbar-nav > li > a {
+	color: white; font-size: 12px; font-weight: 700;
+}
+.navbar-default .navbar-nav > li > a:hover {
+	color: rgb(0, 179, 254);
+}
+.navbar-default .navbar-nav > .active > a {
+	color: rgb(0, 179, 254); background-color: transparent;
+}
+.navbar-default .navbar-nav > .active > a:hover {
+	color: rgb(0, 179, 254); background-color: transparent;
+}
+.navbar-default .navbar-nav > .active > a:focus {
+	color: rgb(0, 179, 254); background-color: transparent;
+}
+.navbar-default {
+	border-color: transparent; background-color: rgb(56, 68, 82);
+}
+.dropdown-menu {
+	background: rgb(56, 68, 82);
+}
+.dropdown-menu > li > a {
+	color: white; font-size: 12px; font-weight: 700;
+}
+.btn-theme {
+	border-color: rgb(56, 68, 82); margin: 4px; color: rgb(255, 255, 255); background-color: rgb(56, 68, 82);
+}
+.btn-theme:hover {
+	border-color: rgb(0, 179, 254); color: rgb(255, 255, 255); background-color: rgb(0, 179, 254);
+}
+.btn-theme:focus {
+	border-color: rgb(0, 179, 254); color: rgb(255, 255, 255); background-color: rgb(0, 179, 254);
+}
+.btn-theme:active {
+	border-color: rgb(0, 179, 254); color: rgb(255, 255, 255); background-color: rgb(0, 179, 254);
+}
+.btn-theme.active {
+	border-color: rgb(0, 179, 254); color: rgb(255, 255, 255); background-color: rgb(0, 179, 254);
+}
+.open .dropdown-toggle.btn-theme {
+	border-color: rgb(0, 179, 254); color: rgb(255, 255, 255); background-color: rgb(0, 179, 254);
+}
+.dmbutton:hover {
+	border-color: rgb(255, 255, 255); color: rgb(255, 255, 255); background-color: rgb(34, 34, 34);
+}
+.dmbutton:active {
+	border-color: rgb(255, 255, 255); color: rgb(255, 255, 255); background-color: rgb(34, 34, 34);
+}
+.dmbutton:focus {
+	border-color: rgb(255, 255, 255); color: rgb(255, 255, 255); background-color: rgb(34, 34, 34);
+}
+.dmbutton {
+	background: rgba(0, 0, 0, 0); margin: 0px 0px 1.25rem; padding: 1.02rem 2.25rem 1.08rem; border-radius: 2px; border: 1px solid rgb(255, 255, 255); transition:background-color 300ms ease-out; border-image: none; text-align: center; color: rgb(255, 255, 255); line-height: normal; letter-spacing: 0.85px; font-size: 1.55rem; font-weight: normal !important; text-decoration: none; display: inline-block; cursor: pointer; -webkit-appearance: none; -webkit-transition: background-color 300ms ease-out; -moz-transition: background-color 300ms ease-out; -webkit-border-radius: 2px;
+}
+.mtb {
+	margin-top: 80px; margin-bottom: 80px;
+}
+.mb {
+	margin-bottom: 60px;
+}
+.mt {
+	margin-top: 60px;
+}
+.hline {
+	border-bottom-color: rgb(56, 68, 82); border-bottom-width: 2px; border-bottom-style: solid;
+}
+.hline-w {
+	margin-bottom: 25px; border-bottom-color: rgb(255, 255, 255); border-bottom-width: 2px; border-bottom-style: solid;
+}
+#headerwrap {
+	/*text-align: right;*/ padding-top: 75px; padding-bottom: 3px; min-height: 80px; background-color: rgb(0, 179, 254);
+}
+#headerwrap h1 {
+	color: white; margin-bottom: 25px;
+}
+#headerwrap h2 {
+    color: white; text-align: left;
+}
+#headerwrap h3 {
+	color: white; font-weight: 400;
+}
+#headerwrap h5 {
+	color: white; font-weight: 400;
+}
+#headerwrap .img-responsive {
+	margin: 0px auto;
+}
+#service {
+	margin-top: 100px; margin-bottom: 80px;
+}
+#service i {
+	/*padding: 15px;*/ color: rgb(0, 179, 254); /*font-size: 60px; ... was 60px, had at 6px before too*/
+}
+#portfoliowrap {
+	text-align: center; padding-top: 60px; margin-bottom: 60px; display: block;
+}
+#portfoliowrap h3 {
+	margin-bottom: 25px;
+}
+.portfolio {
+	margin: 0px !important; padding: 0px !important; display: block;
+}
+.portfolio-item .title::before {
+	border-radius: 0px; display: none;
+}
+.portfolio-item p {
+	margin: 0px 0px 30px;
+}
+.portfolio-item h3 {
+	margin: -10px 0px 10px; text-transform: uppercase; font-size: 16px;
+}
+.tpl6 h3 {
+	margin: 0px; padding: 40px 5px 0px; color: rgb(255, 255, 255); text-transform: uppercase; font-size: 16px;
+}
+.tpl6 .dmbutton {
+	margin: 30px 5px 20px; font-size: 13px; display: inline-block;
+}
+.tpl6 .bg {
+	width: 100%; height: 100%; text-align: center; background-color: rgba(0, 179, 254, 0.9);
+}
+#twrap {
+	background: url("../img/t-back.jpg") no-repeat center / cover; width: 100%; text-align: center; padding-top: 60px; margin-top: 0px; min-height: 450px; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;
+}
+#twrap i {
+	color: white; font-size: 50px; margin-bottom: 25px;
+}
+#twrap p {
+	color: white; line-height: 30px; font-size: 15px;
+}
+#cwrap {
+	background: rgb(247, 247, 247); padding-top: 80px; padding-bottom: 100px; margin-top: 0px;
+}
+#cwrap h3 {
+	margin-bottom: 60px;
+}
+#footerwrap {
+	background: rgb(56, 68, 82); padding-top: 60px; padding-bottom: 60px;
+}
+#footerwrap p {
+	color: rgb(191, 201, 211);
+}
+#footerwrap h4 {
+	color: white;
+}
+#footerwrap i {
+	color: rgb(191, 201, 211); padding-right: 25px; font-size: 30px;
+}
+#footerwrap i:hover {
+	color: rgb(0, 179, 254);
+}
+#blue {
+	background: rgb(0, 179, 254); padding-top: 25px; padding-bottom: 25px; margin-top: 60px; margin-bottom: 60px;
+}
+#blue h3 {
+	color: white; margin-left: 15px;
+}
+.ctitle {
+	color: rgb(0, 179, 254); font-weight: 700; margin-bottom: 15px;
+}
+csmall {
+	color: rgb(179, 179, 179); font-size: 12px;
+}
+csmall2 {
+	color: rgb(243, 156, 18); font-size: 12px;
+}
+.spacing {
+	margin-top: 40px; margin-bottom: 40px;
+}
+.badge-theme {
+	background: rgb(0, 179, 254);
+}
+#contactwrap {
+	background: url("../img/contact.jpg") no-repeat center / cover; width: 100%; text-align: center; padding-top: 0px; margin-top: -60px; min-height: 400px; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;
+}
+.popular-posts {
+	margin: 0px; padding-left: 0px;
+}
+.popular-posts li {
+	list-style: none; margin-bottom: 20px; min-height: 70px;
+}
+.popular-posts li a {
+	color: rgb(47, 47, 47); text-decoration: none;
+}
+.popular-posts li a:hover {
+	color: rgb(47, 47, 47); text-decoration: none;
+}
+.popular-posts li img {
+	margin-right: 20px; float: left;
+}
+.popular-posts li em {
+	color: rgb(179, 179, 179); font-family: "Lato", sans-serif; font-size: 12px;
+}
+.popular-posts p {
+	line-height: normal; margin-bottom: auto;
+}
+.share i {
+	padding-right: 15px; font-size: 18px;
+}
