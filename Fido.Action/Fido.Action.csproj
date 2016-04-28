@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\Mapping\ConfigurationMapping.cs" />
     <Compile Include="Implementation\Mapping\ForgottenPasswordMapping.cs" />
     <Compile Include="Implementation\Mapping\ExternalCredentialMapping.cs" />
     <Compile Include="Implementation\Mapping\LocalCredentialAdminMapping.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Public\Models\Account\ExternalCredential.cs" />
     <Compile Include="Public\Models\Account\Password.cs" />
     <Compile Include="Public\Models\Account\SetLocalCredentialComplete.cs" />
+    <Compile Include="Public\Models\Administration\Configuration.cs" />
     <Compile Include="Public\Models\____Confirmation.cs" />
     <Compile Include="Public\Models\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\ForgottenPasswordInitiate.cs" />

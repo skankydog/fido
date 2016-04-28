@@ -8,7 +8,8 @@ namespace Fido.Entities.UserDetails
     public interface ILocalCredentialState
     {
         string Name { get; }
-        bool HasCredentials { get; }
+        bool ArePresent { get; }
+        bool AreUsable { get; }
 
         void Login();
 

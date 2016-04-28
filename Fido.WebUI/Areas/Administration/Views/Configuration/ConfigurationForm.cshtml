@@ -1,0 +1,24 @@
+﻿@model Fido.Action.Models.Configuration
+    
+<div class="row">
+    <div class="col-sm-6 skd-padding">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-gear"></i></span>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "name", @value = "" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6 col-centered">
+        <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
+            <span><i class="fa fa-check"></i></span>
+        </button>
+    </div>
+    <div class="col-xs-6 col-centered">
+        <a href="@Url.Action("Index", "Home")">
+            <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
+        </a>
+    </div>
+</div>

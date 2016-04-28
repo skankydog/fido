@@ -10,10 +10,11 @@ namespace Fido.Dtos
         public string EmailAddress { get; set; }
         public Fullname Fullname { get; set; }
 
-        public bool HasLocalCredentials { get; set; }
+        public bool LocalCredentialsArePresent { get; set; }
+        public bool LocalCredentialsAreUsable { get; set; }
         public string LocalCredentialState { get; set; }
 
-        public bool HasExternalCredentials { get; set; }
+        public bool ExternalCredentialsArePresent { get; set; }
         public string ExternalCredentialState { get; set; }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
 
@@ -21,5 +22,6 @@ namespace Fido.Dtos
         public int PasswordChangePolicyDays { get; set; }
 
         public int PasswordAgeDays { get; set; }
+        public int DaysUntilPasswordExpires { get { return PasswordChangePolicy == false ? 0 : PasswordChangePolicyDays - PasswordAgeDays; } }
     }
 }

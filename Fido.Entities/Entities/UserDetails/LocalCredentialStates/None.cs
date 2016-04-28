@@ -12,7 +12,8 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public const string Name_ = "None";
         public string Name { get { return Name_; } }
-        public bool HasCredentials { get { return false; } }
+        public bool ArePresent { get { return false; } }
+        public bool AreUsable { get { return false; } }
 
         public None(User Parent) { this.Parent = Parent; }
         #endregion

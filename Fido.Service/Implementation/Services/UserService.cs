@@ -255,7 +255,6 @@ namespace Fido.Service.Implementation
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    //var UserEntity = UserRepository.Get(UserId, "ExternalCredentials");
                     var UserEntity = UserRepository.Get(UserId);
 
                     var ConfigurationRepository = DataAccessFactory.CreateRepository<IConfigurationRepository>(UnitOfWork);

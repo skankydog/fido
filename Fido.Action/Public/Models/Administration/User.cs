@@ -38,7 +38,7 @@ namespace Fido.Action.Models
 
         public string About { get; set; }
 
-        public bool HasLocalCredentials { get; set; }
+        public bool LocalCredentialsArePresent { get; set; }
 
         [Display(Name = "email address")]
         public string EmailAddress { get; set; }

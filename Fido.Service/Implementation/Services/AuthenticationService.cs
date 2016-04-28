@@ -25,7 +25,7 @@ namespace Fido.Service.Implementation
                     var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = Repository.Get(UserId);
 
-                    return UserEntity.CurrentLocalCredentialState.HasCredentials;
+                    return UserEntity.CurrentLocalCredentialState.ArePresent;
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Fido.Service.Implementation
                     var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = Repository.Get(UserId);
 
-                    return UserEntity.CurrentExternalCredentialState.HasCredentials;
+                    return UserEntity.CurrentExternalCredentialState.ArePresent;
                 }
             }
         }

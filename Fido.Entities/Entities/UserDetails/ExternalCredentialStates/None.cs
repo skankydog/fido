@@ -12,7 +12,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
 
         public const string Name_ = "None";
         public string Name { get { return Name_; } }
-        public bool HasCredentials { get { return false; } }
+        public bool ArePresent { get { return false; } }
 
         public None(User Parent) { this.Parent = Parent; }
         #endregion

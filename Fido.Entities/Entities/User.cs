@@ -14,7 +14,8 @@ namespace Fido.Entities
         public ICollection<Role> Roles { get; set; }
 
         #region Local Credential Properties
-        public bool HasLocalCredentials { get { return CurrentLocalCredentialState.HasCredentials; } }
+        public bool LocalCredentialsArePresent { get { return CurrentLocalCredentialState.ArePresent; } }
+        public bool LocalCredentialsAreUsable { get { return CurrentLocalCredentialState.AreUsable; } }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
 
@@ -60,7 +61,7 @@ namespace Fido.Entities
         #endregion
 
         #region External Credential Properties
-        public bool HasExternalCredentials { get { return CurrentExternalCredentialState.HasCredentials; } }
+        public bool HasExternalCredentials { get { return CurrentExternalCredentialState.ArePresent; } }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
         public IExternalCredentialState CurrentExternalCredentialState { get; internal set; }
 

@@ -12,7 +12,8 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public bool HasLocalCredentials { get; set; }
+        public bool LocalCredentialsArePresent { get; set; }
+        public bool LocalCredentialsAreUsable { get; set; }
 
         [Display(Name = "email address")]
         public string EmailAddress { get; set; }

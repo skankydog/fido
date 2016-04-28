@@ -1,6 +1,6 @@
 ﻿@*
     For reference, I used the below link to display the image out of the model. This may not be wise once you consider the lack of
-    caching for the image, but this is the "my account/profile" page.
+    caching for the image, but this is only the "my account/profile" page, so not accessed a lot, I would assume.
     http://stackoverflow.com/questions/17952514/mvc-how-to-display-a-byte-array-image-from-model
 
     Will use the below method in all other locations to ensure caching and best-practice.
@@ -22,86 +22,63 @@
     @Html.Hidden("IsNew", Model.IsNew)
     @Html.Hidden("RowVersion", Model.RowVersion)
 
-    <div class="well">
-        <div class="row">
-            <div class="col-md-4">
-                <figure>
-                    
-                    @*width="80" height="80"*@
-                    <img src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt=@Model.FirstnameSurname class="center-block img-rounded img-responsive" />
+    <div class="row">
+        <div class="col-md-3">
+            <h4>Avatar</h4>
+            <div class="hline"></div>
 
-                    <figcaption class="skd-rating">
-                        <p class="text-center">
-                            Rating
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star"></span>
-                            </a>
-                            <a href="#">
-                                <span class="fa fa-star-o"></span>
-                            </a>
-                        </p>
-                    </figcaption>
-                </figure>
+            <figure class="avatar">                    
+                <img width="225" height="225" src="data:image;base64,@System.Convert.ToBase64String(Model.Image)" alt=@Model.FirstnameSurname class="center-block img-rounded img-responsive" />
+            </figure>
+
+            <p>
                 <input type="file" name="Image" id="Image" class="center-block" />
+            </p>
+        </div>
+
+        <div class="col-md-9">
+            <h4>Details</h4>
+            <div class="hline"></div>
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-comment fa-fw"></i></span>
+                @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
             </div>
 
-            <div class="col-md-8">
-                <p class="skd-h3-heading">@Model.FirstnameSurname</p>
-
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
-                </div>
-                @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
-
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
-                </div>
-                @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
-
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                    @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
-                </div>
-
-                <p>
-                    <strong>Account Age (Days): </strong>
-
-                    @if (@Model.CreatedAgeDays < 1)
-                    {
-                        <text>Within the last 24 hours</text>
-                    }
-                    else if (@Model.CreatedAgeDays < 2)
-                    {
-                        @Model.CreatedAgeDays<text> day ago</text>
-                    }
-                    else
-                    {
-                        @Model.CreatedAgeDays<text> days ago</text>
-                    }
-
-                </p>
-            </div>
+            @if (@Model.CreatedAgeDays < 1)
+            {
+                <p>Account created within the last 24 hours</p>
+            }
+            else if (@Model.CreatedAgeDays < 2)
+            {
+                <p>Account created 1 day ago</p>
+            }
+            else
+            {
+                <p>Account created @Model.CreatedAgeDays days ago</p>
+            }
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-6 col-centered">
+        <div class="col-xs-6 col-centered control-button">
             <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
                 <span><i class="fa fa-check"></i></span>
             </button>
         </div>
-        <div class="col-xs-6 col-centered">
+        <div class="col-xs-6 col-centered control-button">
             <a href="@Url.Action("Index", "Settings")">
                 <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
             </a>

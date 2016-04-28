@@ -8,7 +8,7 @@ namespace Fido.Entities.UserDetails
     public interface IExternalCredentialState
     {
         string Name { get; }
-        bool HasCredentials { get; }
+        bool ArePresent { get; }
 
         void Login();
         void Register(string EmailAddress, string Name);

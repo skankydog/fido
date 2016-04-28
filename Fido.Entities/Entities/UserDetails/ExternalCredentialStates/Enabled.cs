@@ -12,7 +12,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
 
         public const string Name_ = "Enabled";
         public string Name { get { return Name_; } }
-        public bool HasCredentials { get { return true; } }
+        public bool ArePresent { get { return true; } }
 
         public Enabled(User Parent) { this.Parent = Parent; }
         #endregion
@@ -49,7 +49,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
 
         public void Unlink(Guid Id)
         {
-            if (!Parent.CurrentLocalCredentialState.HasCredentials && Parent.ExternalCredentials.Count < 2)
+            if (!Parent.CurrentLocalCredentialState.ArePresent && Parent.ExternalCredentials.Count < 2)
                 throw new Exception("The account must have local credentials or one or more external credentials");
 
             // Because the ExternalCredential entity has a composite primary key that includes the

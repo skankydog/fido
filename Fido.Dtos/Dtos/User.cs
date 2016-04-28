@@ -12,7 +12,8 @@ namespace Fido.Dtos
         public string About { get; set; }
 
         #region Local Credentials
-        public bool HasLocalCredentials { get; set; }
+        public bool LocalCredentialsArePresent { get; set; }
+        public bool LocalCredentialsAreUsable { get; set; }
         public string LocalCredentialState { get; set; }
         public DateTime? EmailAddressLastChangeUtc { get; set; }
         public int EmailAddressAgeDays { get; set; }

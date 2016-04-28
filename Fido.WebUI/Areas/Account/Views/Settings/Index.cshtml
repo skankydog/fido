@@ -1,19 +1,157 @@
-﻿@model Fido.Action.Models.Settings
+﻿@using Microsoft.Owin.Security
+
+@model Fido.Action.Models.Settings
 
 @{
     ViewBag.Title = "Account Settings";
 }
 
-<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab"><i class="fa fa-home"></i> Local</a></li>
-    <li><a href="#tab2" data-toggle="tab"><i class="fa fa-cloud"></i> External</a></li>
-</ul>
+<div class="row">
+    <div class="col-md-4">
+        <h4>Local Credentials</h4>
+        <div class="hline"></div>
 
-<div id="my-tab-content" class="tab-content">
-    <div class="tab-pane fade in active" id="tab1">
-        @Html.Partial("SettingsLocal", Model)
+        @if (!Model.LocalCredentialsArePresent)
+        {
+            <p>
+                You do not have local credentials. Click @Html.ActionLink("here", "Initiate", "LocalCredential", null, new { @class = "modal-link" })
+                if you wish to register an email address and password.
+            </p>
+        }
+        else
+        {
+            if (Model.LocalCredentialsAreUsable)
+            {
+                <p>
+                    Your local credentials are @Model.LocalCredentialState.ToLower(), registered to @Model.EmailAddress. 
+
+                    @if (Model.PasswordChangePolicy == true)
+                    {
+                        <text>
+                            Your password is due to expire in @Model.DaysUntilPasswordExpires day(s).
+                        </text>
+                    }
+                </p>
+
+                <p>
+                    Click @Html.ActionLink("here", "Initiate", "EmailAddress", null, new { @class = "modal-link " }) to
+                    nominate a different email address or @Html.ActionLink("here", "Update", "Password", null, new { @class = "modal-link" })
+                    to reset your password.
+                </p>
+            }
+            else
+            {
+                <p>
+                    Your local credentials are @Model.LocalCredentialState.ToLower().
+                </p>
+
+                switch (Model.LocalCredentialState.ToLower())
+                {
+                    case "disabled":
+                        <p>
+                            Please contact your administrator to reactivate.
+                        </p>
+                        break;
+
+                    case "expired":
+                    <p>
+                        You will need to @Html.ActionLink("reset your password", "Initiate", "Password", null, new { @class = "modal-link" }) to reactivate.
+                    </p>
+                        break;
+
+                    case "registered":
+                    <p>
+                        When you registered you provided your email address - an email was sent to that address that contains a link
+                        that you must click on to confirm your email address is correct. You will need to follow this process before
+                        you can log in with this email address.
+                    </p>
+                        break;
+                }
+            }
+        }
     </div>
-    <div class="tab-pane fade" id="tab2">
-        @Html.Partial("SettingsExternal", Model)
+
+    <div class="col-md-4">
+        <h4>External Credentials</h4>
+        <div class="hline"></div>
+        @foreach (var ExternalCredential in Model.ExternalCredentials)
+        {
+            <div class="col-xs-1">
+                @switch (ExternalCredential.LoginProvider.Substring(0, 1).ToUpper())
+                {
+                    case "F":
+                        <span><i class="fa fa-facebook"></i></span>
+                        break;
+
+                    case "T":
+                        <span><i class="fa fa-twitter"></i></span>
+                        break;
+
+                    case "G":
+                        <span><i class="fa fa-google-plus"></i></span>
+                        break;
+
+                    case "L":
+                        <span><i class="fa fa-linkedin"></i></span>
+                        break;
+
+                    default:
+                        <span><i class="fa fa-question"></i></span>
+                        break;
+                }
+            </div>
+            <div class="col-xs-10">
+                @{ var EmailAddress = ExternalCredential.EmailAddress == null ? "no email address" : ExternalCredential.EmailAddress.ToLower(); }
+                @EmailAddress
+            </div>
+            <div class="col-xs-1">
+                <a href="@Url.Action("Unlink", "ExternalCredentials", new { Id = ExternalCredential.Id })">
+                    <i class="fa fa-unlink"></i>
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4">
+        <h4>Link More External Credentials</h4>
+        <div class="hline"></div>
+        @{
+            var ExternalProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+
+            var FacebookProvider = ExternalProviders.Where(e => e.Caption == "Facebook").FirstOrDefault();
+            var GoogleProvider = ExternalProviders.Where(e => e.Caption == "Google").FirstOrDefault();
+            var TwitterProvider = ExternalProviders.Where(e => e.Caption == "Twitter").FirstOrDefault();
+            var LinkedInProvider = ExternalProviders.Where(e => e.Caption == "LinkedIn").FirstOrDefault();
+
+            using (Html.BeginForm("Link", "ExternalCredentials", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-clearbutton"
+                            name="Provider" value="@FacebookProvider.AuthenticationType">
+                        <span><i class="fa fa-2x fa-facebook"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-clearbutton"
+                            name="Provider" value="@TwitterProvider.AuthenticationType">
+                        <span><i class="fa fa-2x fa-twitter"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-clearbutton"
+                            name="Provider" value="@GoogleProvider.AuthenticationType">
+                        <span><i class="fa fa-2x fa-google-plus"></i></span>
+                    </button>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-lg btn-block skd-btn-clearbutton"
+                            name="Provider" value="@LinkedInProvider.AuthenticationType">
+                        <span><i class="fa fa-2x fa-linkedin"></i></span>
+                    </button>
+                </div>
+            }
+        }
     </div>
 </div>

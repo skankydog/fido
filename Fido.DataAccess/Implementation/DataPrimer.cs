@@ -259,6 +259,9 @@ namespace Fido.DataAccess.Implementation
                 var ExternalCredentialRepository = DataAccessFactory.CreateRepository<IExternalCredentialRepository>(UnitOfWork);
                 ExternalCredentialRepository.Delete(e => e.Id != null);
 
+                var ConfigurationRepository = DataAccessFactory.CreateRepository<IConfigurationRepository>(UnitOfWork);
+                ConfigurationRepository.Delete(e => e.Id != null);
+
                 UnitOfWork.Commit();
             }
         }

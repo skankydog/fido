@@ -29,8 +29,8 @@ namespace Fido.WebUI.Common
             Dispatcher = ActionFactory.CreateDispatcher<ActionResult>(
                 this, this, this,
                 AuthoriseResult: () => new HttpUnauthorizedResult(),
-                PasswordResetResult: () => RedirectToAction("Settings", "Account"),
-                DefaultErrorResult: () => RedirectToAction("Login", "Authentication")); // TO DO: Change this to a dedicated "error page"
+                PasswordResetResult: () => RedirectToAction("Update", "Password", new { Area = "Account" }),
+                DefaultErrorResult: () => RedirectToAction("Login", "Authentication", new { Area = string.Empty })); // TO DO: Change this to a dedicated "error page" instead
             Flash = new Flasher();
         }
 
