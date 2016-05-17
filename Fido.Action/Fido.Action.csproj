@@ -67,14 +67,11 @@
     <Compile Include="Public\Models\Account\Password.cs" />
     <Compile Include="Public\Models\Account\SetLocalCredentialComplete.cs" />
     <Compile Include="Public\Models\Administration\Configuration.cs" />
-    <Compile Include="Public\Models\____Confirmation.cs" />
     <Compile Include="Public\Models\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\ForgottenPasswordInitiate.cs" />
     <Compile Include="Public\Models\Administration\LocalCredentialAdmin.cs" />
     <Compile Include="Public\Models\Administration\Activity.cs" />
     <Compile Include="Public\Models\Administration\Role.cs" />
-    <Compile Include="Public\Models\Administration\Virtuals.cs" />
-    <Compile Include="Public\Models\Administration\Virtual.cs" />
     <Compile Include="Public\Models\Administration\User.cs" />
     <Compile Include="Public\Models\Administration\Roles.cs" />
     <Compile Include="Public\Models\Administration\Activities.cs" />

@@ -12,14 +12,15 @@ namespace Fido.WebUI
                 .Include("~/Content/css/bootstrap.css")
                 .Include("~/Content/css/nolayout.css"));
 
-            Bundles.Add(new StyleBundle("~/layout.styles")
+            Bundles.Add(new StyleBundle("~/site.styles")
                 .Include("~/Content/css/bootstrap.css")
-                .Include("~/Content/css/layout.css"));
+                .Include("~/Content/bootstrap-chosen.css")
+                .Include("~/Content/css/site.css"));
 
             Bundles.Add(new StyleBundle("~/administration.styles")
                 .Include("~/Content/css/bootstrap.css")
-                .Include("~/Content/css/administration.css")
                 .Include("~/Content/bootstrap-chosen.css")
+                .Include("~/Content/css/administration.css")
                 .Include("~/Content/css/plugins/metisMenu/metisMenu.min.css")
                 .Include("~/Content/css/plugins/dataTables.bootstrap.css")
                 .Include("~/Content/css/gridforms.css")); // Not sure I am going to use this one. Consider removing

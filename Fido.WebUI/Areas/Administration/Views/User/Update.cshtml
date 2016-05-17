@@ -14,100 +14,104 @@
     @Html.Hidden("IsNew", Model.IsNew)
     @Html.Hidden("RowVersion", Model.RowVersion)
 
-    <div class="well">
+    <div class="row hidden-xs">
+        <div class="col-md-6">
+            <h4>Local Credentials</h4>
+            <div class="hline"></div>
+        </div>
+        <div class="col-md-6">
+            <h4>External Credentials</h4>
+            <div class="hline"></div>
+        </div>
+    </div>
+    <div class="row visible-xs">
+        <div class="col-md-6">
+            <h4>Local Credentials</h4>
+            <div class="hline"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8 col-md-4">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
+                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "no local credentials", @value = "", @disabled = "true" })
 
-        <div class="row">
-            @if (Model.HasLocalCredentials)
-            {
-                <div class="col-xs-12 skd-padding">
-                    <div>Password @Model.PasswordAgeDays day(s) old</div>
-                </div>
-            }
-
-            <div class="col-xs-6 skd-padding">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @placeholder = "no local credentials", @value = "", @disabled = "true" })
-                </div>
-            </div>
-            <div class="col-xs-3 skd-padding">
-                <div class="input-group">
-                    @if (Model.HasLocalCredentials)
-                    {
-                        @Html.DropDownListFor(m => m.LocalCredentialState, new SelectList(
-                            Model.AllLocalCredentialStates,
-                            Model.LocalCredentialState),
-                            new { @class = "form-control", @placeholder = "local credential state", @value = "" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(m => m.LocalCredentialState, new { @class = "form-control", @placeholder = "local credential state", @value = "", @disabled = "true" })
-                    }
-                </div>
-            </div>
-            <div class="col-xs-3 skd-padding">
-                @if(Model.HasLocalCredentials)
+                @if (Model.LocalCredentialsArePresent)
                 {
-                    @Html.ActionLink("Clear", "Delete", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    <span class="input-group-addon">
+                        <a href="@Url.Action("Delete", "LocalCredential", new { Id = Model.Id })" class="modal-link">
+                            <span><i class="fa fa-fw fa-remove"></i></span>
+                        </a>
+                    </span>
                 }
                 else
                 {
-                    @Html.ActionLink("Set", "Update", "LocalCredential", new { Id = Model.Id }, new { @class = "modal-link skd-fake-button skd-colour-button skd-table-cell" })
+                    <span class="input-group-addon">
+                        <a href="@Url.Action("Update", "LocalCredential", new { Id = Model.Id })" class="modal-link">
+                            <span><i class="fa fa-fw fa-plus"></i></span>
+                        </a>
+                    </span>
                 }
             </div>
         </div>
 
-        <div class="row col-centered">
-            <div class="col-xs-6 skd-padding">
-                @{
-                    string facebook_colour = "skd-colour-info";
-                    if (Model.HasFacebook) { facebook_colour = "skd-colour-facebook"; }
-
-                    string twitter_colour = "skd-colour-info";
-                    if (Model.HasTwitter) { twitter_colour = "skd-colour-twitter"; }
-
-                    string linkedin_colour = "skd-colour-info";
-                    if (Model.HasLinkedIn) { linkedin_colour = "skd-colour-linkedin"; }
-
-                    string google_colour = "skd-colour-info";
-                    if (Model.HasGoogle) { google_colour = "skd-colour-google"; }
-                }
-
-                <div class="col-xs-3 @facebook_colour">
-                    <span><i class="fa fa-facebook"></i></span>
-                </div>
-                <div class="col-xs-3 @twitter_colour">
-                    <span><i class="fa fa-twitter"></i></span>
-                </div>
-                <div class="col-xs-3 @linkedin_colour">
-                    <span><i class="fa fa-linkedin"></i></span>
-                </div>
-                <div class="col-xs-3 @google_colour">
-                    <span><i class="fa fa-google-plus"></i></span>
-                </div>
-            </div>
-            <div class="col-xs-3 skd-padding">
+        <div class="col-xs-4 col-md-2">
+            @if (Model.LocalCredentialsArePresent)
+            {
                 <div class="input-group">
-                    @if (Model.HasExternalCredentials)
-                    {
-                        @Html.DropDownListFor(m => m.ExternalCredentialState, new SelectList(
-                            Model.AllExternalCredentialStates,
-                            Model.ExternalCredentialState),
-                            new { @class = "form-control", @placeholder = "external credential state", @value = "" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(m => m.ExternalCredentialState, new { @class = "form-control", @placeholder = "external credential state", @value = "", @disabled = "true" })
-                    }
+                    @Html.DropDownListFor(m => m.LocalCredentialState, new SelectList(
+                    Model.AllLocalCredentialStates,
+                    Model.LocalCredentialState),
+                    new { @class = "form-control", @placeholder = "local credential state", @value = "" })
                 </div>
+            }
+        </div>
+
+        <div class="row visible-xs"></div>
+        <div class="col-xs-12 visible-xs">
+            <h4>External Credentials</h4>
+            <div class="hline"></div>
+        </div>
+
+        <div class="col-xs-8 col-md-4 col-centered">
+            @{
+                string facebook_colour = "skd-colour-info";
+                if (Model.HasFacebook) { facebook_colour = "skd-colour-facebook"; }
+
+                string twitter_colour = "skd-colour-info";
+                if (Model.HasTwitter) { twitter_colour = "skd-colour-twitter"; }
+
+                string linkedin_colour = "skd-colour-info";
+                if (Model.HasLinkedIn) { linkedin_colour = "skd-colour-linkedin"; }
+
+                string google_colour = "skd-colour-info";
+                if (Model.HasGoogle) { google_colour = "skd-colour-google"; }
+            }
+
+            <div>
+                <div class="col-xs-3 @facebook_colour"><span><i class="fa fa-fw fa-2x fa-facebook"></i></span></div>
+                <div class="col-xs-3 @twitter_colour"><span><i class="fa fa-fw fa-2x fa-twitter"></i></span></div>
+                <div class="col-xs-3 @linkedin_colour"><span><i class="fa fa-fw fa-2x fa-linkedin"></i></span></div>
+                <div class="col-xs-3 @google_colour"><span><i class="fa fa-fw fa-2x fa-google-plus"></i></span></div>
             </div>
         </div>
 
-        <div class="visible-xs">
-            <span class="skd-spacing"></span>
+        <div class="col-xs-4 col-md-2">
+            <div class="input-group">
+                @if (Model.HasExternalCredentials)
+                {
+                    @Html.DropDownListFor(m => m.ExternalCredentialState, new SelectList(
+                        Model.AllExternalCredentialStates,
+                        Model.ExternalCredentialState),
+                        new { @class = "form-control", @placeholder = "external credential state", @value = "" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.ExternalCredentialState, new { @class = "form-control", @placeholder = "external credential state", @value = "", @disabled = "true" })
+                }
+            </div>
         </div>
-        
-        @Html.Partial("UserForm", Model)
-        
     </div>
+
+    @Html.Partial("UserForm", Model)
 }

@@ -1,16 +1,18 @@
 ﻿@model Fido.Action.Models.User
     
+<h4>User Details</h4>
+<div class="hline"></div>
 <div class="row">
-    <div class="col-sm-6 skd-padding">
+    <div class="col-sm-6">
         <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
             @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
         </div>
         @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
     </div>
-    <div class="col-sm-6 skd-padding">
+    <div class="col-sm-6">
         <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
             @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
         </div>
         @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
@@ -18,17 +20,18 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12 skd-padding">
+    <div class="col-sm-12">
         <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-comment"></i></span>
+            <span class="input-group-addon"><i class="fa fa-fw fa-comment"></i></span>
             @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-12 skd-padding">
-        Roles
+    <div class="col-xs-12">
+        <h4>Roles</h4>
+        <div class="hline"></div>
     </div>
 
     <div class="col-xs-12">
@@ -36,19 +39,15 @@
     </div>
 </div>
 
-<span class="skd-spacing-large"></span>
-
 <div class="row">
-    <div class="col-xs-6 col-centered">
+    <div class="col-xs-6 col-centered control-button">
         <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
-            <span><i class="fa fa-check"></i></span>
+            <span><i class="fa fa-fw fa-check"></i></span>
         </button>
     </div>
-    <div class="col-xs-6 col-centered">
+    <div class="col-xs-6 col-centered control-button">
         <a href="@Url.Action("Index", "User")">
-            <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
+            <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-fw fa-times"></i></span>
         </a>
     </div>
 </div>
-
-<span class="skd-spacing-large"></span>
