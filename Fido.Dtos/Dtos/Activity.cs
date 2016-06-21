@@ -13,6 +13,8 @@ namespace Fido.Dtos
         }
 
         public string Name { get; set; }
+        public string Area { get; set; }
+        public string Action { get; set; }
 
         public IList<Role> Roles { get; set; }
     }

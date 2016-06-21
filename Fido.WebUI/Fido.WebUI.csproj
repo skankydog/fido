@@ -282,7 +282,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Administration\Views\web.config" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\_Layout-second.cshtml" />
     <Content Include="Areas\Administration\Views\User\Update.cshtml" />
     <Content Include="Areas\Administration\Views\User\Create.cshtml" />
     <Content Include="Areas\Administration\Views\User\Delete.cshtml" />
@@ -309,7 +308,6 @@
     <Content Include="Areas\Account\Views\LocalCredential\Initiate.cshtml" />
     <Content Include="Areas\Account\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Account\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\_Layout-original.cshtml" />
     <Content Include="Areas\Account\Views\Profile\Update - Copy.cshtml" />
     <Content Include="Areas\Administration\Views\Configuration\ConfigurationForm.cshtml" />
     <Content Include="Areas\Administration\Views\Configuration\Update.cshtml" />
@@ -382,7 +380,6 @@
     <Content Include="Views\Authentication\ExternalLogin.cshtml" />
     <Content Include="Areas\Administration\Views\User\Index.cshtml" />
     <Content Include="Views\Home\ModalRedirectToLocal.cshtml" />
-    <Content Include="Views\Shared\_Layout - Original.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

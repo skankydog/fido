@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
-using Fido.Action.Models;
+using Fido.Action.Models.Account;
 using Fido.WebUI.Common;
 
 namespace Fido.WebUI.Areas.Account.Controllers
@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.ReturnLoadedModel<Profile>(
+            return Dispatcher.Load<Profile>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }
@@ -23,7 +23,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         [HttpPost]
         public ActionResult Update(Profile Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 Result: m => View(m));
         }

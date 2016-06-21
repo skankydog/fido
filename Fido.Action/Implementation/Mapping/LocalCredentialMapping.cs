@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoMapper;
-using Fido.Action.Models;
+using Fido.Action.Models.Account;
 using Fido.Core;
 using Fido.Core.Bootstrapper;
 

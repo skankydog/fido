@@ -67,9 +67,9 @@ namespace Fido.Service.Tests
             Guid RoleId = RoleService.GetByName("AllActivitiesRole").Id;
 
             RoleService.SetActivitiesForRole(RoleId, new List<Activity>() {
-                        new Activity { Name = "NewActivity01" },
-                        new Activity { Name = "NewActivity02" },
-                        new Activity { Name = "NewActivity03" } });
+                        new Activity { Name = "NewActivity01", Area = "Area", Action = "Action" },
+                        new Activity { Name = "NewActivity02", Area = "Area", Action = "Action" },
+                        new Activity { Name = "NewActivity03", Area = "Area", Action = "Action" } });
         }
 
         #region Name Duplication Tests

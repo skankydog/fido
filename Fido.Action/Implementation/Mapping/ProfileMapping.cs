@@ -23,18 +23,18 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Dtos.Profile, Fido.Action.Models.Profile>()
+                Mapper.CreateMap<Dtos.Profile, Fido.Action.Models.Account.Profile>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
                     .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
                     .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.MapFrom(Src => Src.Fullname.FirstnameSurname))
                     .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
 
-                Mapper.CreateMap<Fido.Action.Models.Profile, Dtos.Fullname>()
+                Mapper.CreateMap<Fido.Action.Models.Account.Profile, Dtos.Fullname>()
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.Ignore())
                     .ForMember(Dest => Dest.SurnameFirstname, Options => Options.Ignore());
-                Mapper.CreateMap<Fido.Action.Models.Profile, Dtos.Profile>()
-                    .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<Fido.Action.Models.Profile, Dtos.Fullname>(Src)));
+                Mapper.CreateMap<Fido.Action.Models.Account.Profile, Dtos.Profile>()
+                    .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<Fido.Action.Models.Account.Profile, Dtos.Fullname>(Src)));
             }
         }
     }

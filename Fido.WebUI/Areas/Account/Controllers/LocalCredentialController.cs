@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
-using Fido.Action.Models;
+using Fido.Action.Models.Account;
 using Fido.WebUI.Common;
 
 namespace Fido.WebUI.Areas.Account.Controllers
@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Initiate()
         {
-            return Dispatcher.ReturnEmptyModel( // TO DO: Make this a read for consistency!!
+            return Dispatcher.Create( // TO DO: Make this a read for consistency!!
                 new SetLocalCredentialInitiate(),
                 Result: m => PartialView());
         }
@@ -23,7 +23,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         [HttpPost]
         public ActionResult Initiate(SetLocalCredentialInitiate Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
                 InvalidResult: m => PartialView(m));

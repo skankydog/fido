@@ -26,12 +26,12 @@ namespace Fido.Action.Models
         public bool RememberMe { get; set; }
         #endregion
 
-        public LocalLogin() { }
-        public LocalLogin(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+  //      public LocalLogin() { }
+        public LocalLogin()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: false, RequiresWritePermission: false)
         { }
 

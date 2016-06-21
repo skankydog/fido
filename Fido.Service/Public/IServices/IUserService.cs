@@ -39,6 +39,6 @@ namespace Fido.Service
         User SetRoles(Guid UserId, IList<Role> Roles);
 
         IList<Activity> GetActivities(Guid UserId);      // Returns unique activities
-        bool UserHasActivity(Guid UserId, string ActivityName);
+        bool UserHasActivity(Guid UserId, string Name, string Area, string Action);   // TO DO: Doubt this is needed
     }
 }

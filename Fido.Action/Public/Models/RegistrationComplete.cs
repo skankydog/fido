@@ -15,12 +15,12 @@ namespace Fido.Action.Models
         public Guid ConfirmationId { get; set; }
         #endregion
 
-        public RegistrationComplete() { }
-        public RegistrationComplete(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+    //    public RegistrationComplete() { }
+        public RegistrationComplete()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: false, RequiresWritePermission: false)
         { }
 

@@ -60,7 +60,7 @@ namespace Fido.DataAccess.Implementation
                 DbModelBuilder.Entity<User>().Property(e => e.RowVersion).IsRowVersion();
                 DbModelBuilder.Entity<User>().Property(e => e.EmailAddress).HasMaxLength(150);
                 DbModelBuilder.Entity<User>()
-                    .HasOptional(e => e.UserImage).WithRequired(e => e.User);//.WillCascadeOnDelete(true);
+                    .HasOptional(e => e.UserImage).WithRequired(e => e.User).WillCascadeOnDelete(true);
 
                 DbModelBuilder.Entity<UserImage>().HasKey(e => e.Id);
 
@@ -73,6 +73,8 @@ namespace Fido.DataAccess.Implementation
                 DbModelBuilder.Entity<Activity>().Property(e => e.CreatedUtc).IsRequired();
                 DbModelBuilder.Entity<Activity>().Property(e => e.RowVersion).IsRowVersion();
                 DbModelBuilder.Entity<Activity>().Property(e => e.Name).HasMaxLength(150).IsRequired();
+                DbModelBuilder.Entity<Activity>().Property(e => e.Action).HasMaxLength(50).IsRequired();
+                DbModelBuilder.Entity<Activity>().Property(e => e.Area).HasMaxLength(150).IsRequired();
 
                 DbModelBuilder.Entity<ExternalCredential>().HasKey(e => new { e.Id, e.UserId }); // Composite primary key
                 DbModelBuilder.Entity<ExternalCredential>().Property(e => e.CreatedUtc).IsRequired();

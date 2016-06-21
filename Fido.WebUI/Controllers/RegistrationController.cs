@@ -17,7 +17,7 @@ namespace Fido.WebUI.Controllers
     {
         public ActionResult Initiate()
         {
-            return Dispatcher.ReturnEmptyModel(
+            return Dispatcher.Create(
                 new RegistrationInitiate(),
                 Result: m => View());
         }
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Controllers
         [HttpPost]
         public ActionResult Initiate(RegistrationInitiate Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Home"),
                 InvalidResult: m => View(m));
@@ -33,7 +33,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Complete(Guid ConfirmationId)
         {
-            return Dispatcher.ReturnLoadedModel<RegistrationComplete>(
+            return Dispatcher.Load<RegistrationComplete>(
                 Id: ConfirmationId,
                 Result: m => View(m));
         }
@@ -41,7 +41,7 @@ namespace Fido.WebUI.Controllers
         [HttpPost]
         public ActionResult Complete(RegistrationComplete Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Home"),
                 InvalidResult: m => View(m));

@@ -14,23 +14,15 @@
     @Html.Hidden("IsNew", Model.IsNew)
     @Html.Hidden("RowVersion", Model.RowVersion)
 
-    <div class="row hidden-xs">
-        <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
             <h4>Local Credentials</h4>
             <div class="hline"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 hidden-xs">
             <h4>External Credentials</h4>
             <div class="hline"></div>
         </div>
-    </div>
-    <div class="row visible-xs">
-        <div class="col-md-6">
-            <h4>Local Credentials</h4>
-            <div class="hline"></div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-xs-8 col-md-4">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
@@ -54,7 +46,6 @@
                 }
             </div>
         </div>
-
         <div class="col-xs-4 col-md-2">
             @if (Model.LocalCredentialsArePresent)
             {
@@ -66,13 +57,10 @@
                 </div>
             }
         </div>
-
-        <div class="row visible-xs"></div>
         <div class="col-xs-12 visible-xs">
             <h4>External Credentials</h4>
             <div class="hline"></div>
         </div>
-
         <div class="col-xs-8 col-md-4 col-centered">
             @{
                 string facebook_colour = "skd-colour-info";
@@ -95,7 +83,6 @@
                 <div class="col-xs-3 @google_colour"><span><i class="fa fa-fw fa-2x fa-google-plus"></i></span></div>
             </div>
         </div>
-
         <div class="col-xs-4 col-md-2">
             <div class="input-group">
                 @if (Model.HasExternalCredentials)

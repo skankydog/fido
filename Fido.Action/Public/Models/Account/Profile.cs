@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Account
 {
     public class Profile : Model<Profile>
     {
@@ -42,12 +42,12 @@ namespace Fido.Action.Models
         public int CreatedAgeDays { get; set; } // Read only
         #endregion
 
-        public Profile() { }
-        public Profile(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+    //    public Profile() { }
+        public Profile()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base(//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 

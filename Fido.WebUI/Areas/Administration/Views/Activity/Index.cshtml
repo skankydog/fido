@@ -1,5 +1,5 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
-@model Fido.Action.Models.Activities
+@model Fido.Action.Models.Administration.Activities
 
 @using Fido.WebUI.Controllers
 
@@ -11,6 +11,8 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Area</th>
+            <th>Action</th>
             <th></th>
         </tr>
     </thead>
@@ -31,6 +33,8 @@
             "bProcessing": true,
             "aoColumns": [
                             { "sName": "Name" },
+                            { "sName": "Area" },
+                            { "sName": "Action" },
                             {
                                 "sName": "Edit",
                                 "bSearchable": false,
@@ -38,7 +42,7 @@
                                 "mRender": function (value) {
                                     return EditLink.replace("-999", value);
                                 }
-                            },
+                            }
             ]
         });
     });

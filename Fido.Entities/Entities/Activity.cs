@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Fido.Entities
 {
-    public enum Permission
-    {
-        Read = 0,
-        ReadWrite
-    }
+    //public enum Permission
+    //{
+    //    Read = 0,
+    //    ReadWrite
+    //}
 
     public class Activity : Entity
     {
@@ -19,6 +19,8 @@ namespace Fido.Entities
         }
 
         public string Name { get; set; }
+        public string Area { get; set; }
+        public string Action { get; set; }
 
         public ICollection<Role> Roles { get; set; }
     }

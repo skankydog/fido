@@ -29,6 +29,20 @@ namespace Fido.Service.Implementation
                 OrderByDescending: q => q.OrderByDescending(s => s.Name));
         }
 
+        public IList<Activity> GetPageInAreaOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Area),
+                OrderByDescending: q => q.OrderByDescending(s => s.Action));
+        }
+
+        public IList<Activity> GetPageInActionOrder(char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Action),
+                OrderByDescending: q => q.OrderByDescending(s => s.Area));
+        }
+
         private IList<Activity> GetPage(char SortOrder, int Skip, int Take, string Filter,
             Func<IQueryable<Entities.Activity>, IOrderedQueryable<Entities.Activity>> OrderByAscending,
             Func<IQueryable<Entities.Activity>, IOrderedQueryable<Entities.Activity>> OrderByDescending)
@@ -43,7 +57,9 @@ namespace Fido.Service.Implementation
 
                     if (Filter.IsNotNullOrEmpty())
                     {
-                        Query = Query.Where(e => e.Name.ToLower().Contains(Filter.ToLower()));
+                        Query = Query.Where(e => e.Name.ToLower().Contains(Filter.ToLower())
+                            || e.Action.ToLower().Contains(Filter.ToLower())
+                            || e.Area.ToLower().Contains(Filter.ToLower()));
                     }
 
                     Query = Query.Skip(Skip).Take(Take);
@@ -56,6 +72,22 @@ namespace Fido.Service.Implementation
             }
         }
         #endregion
+
+        public Activity Get(string Name, string Area, string Action)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var Repository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
+                    var ActivityEntity = Repository.Get(e => e.Name == Name && e.Area == Area && e.Action == Action);
+
+                    var ActivityDTO = Mapper.Map<Entities.Activity, Activity>(ActivityEntity);
+
+                    return ActivityDTO;
+                }
+            }
+        }
 
         public Activity GetByName(string Name)
         {

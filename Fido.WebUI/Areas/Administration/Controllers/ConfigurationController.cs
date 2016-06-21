@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
 using Fido.Action;
-using Fido.Action.Models;
+using Fido.Action.Models.Administration;
 using Fido.WebUI.Common;
 using Fido.WebUI.Binders;
 
@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.ReturnLoadedModel<Configuration>(
+            return Dispatcher.Load<Configuration>(
                 Id: Guid.Empty,
                 Result: m => View(m));
         }
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(Configuration Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Configuration"),
                 InvalidResult: m => View(m));

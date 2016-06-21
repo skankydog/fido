@@ -31,7 +31,8 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.DateOfBirth, Options => Options.Ignore()); // TO DO: DoB needed later
 
                 Mapper.CreateMap<Dtos.Profile, Entities.UserImage>()
-                    .ForMember(Dest => Dest.Image, Options => Options.MapFrom(Src => Src.Image));
+                    .ForMember(Dest => Dest.Image, Options => Options.MapFrom(Src => Src.Image))
+                    .ForMember(Dest => Dest.User, Options => Options.Ignore());
                 Mapper.CreateMap<Dtos.Profile, Entities.User>()
                     .ForMember(Dest => Dest.UserImage, Options => Options.MapFrom(Src => Mapper.Map<Dtos.Profile, Entities.UserImage>(Src)))
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore()) // Don't know

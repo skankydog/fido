@@ -29,10 +29,10 @@ namespace Fido.WebUI.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToLocal(ReturnUrl),
-                InvalidResult: m => View());
+                InvalidResult: m => View(m));
         }
         #endregion
 
@@ -57,7 +57,7 @@ namespace Fido.WebUI.Controllers
                 return RedirectToAction("Login");
             }
 
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: new ExternalLoginCallback
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,
@@ -88,15 +88,15 @@ namespace Fido.WebUI.Controllers
         #region Registration
         public ActionResult Registration()
         {
-            return Dispatcher.ReturnEmptyModel(
+            return Dispatcher.Create(
                 new RegistrationInitiate(),
-                Result: m => View());
+                Result: m => View(m));
         }
 
         [HttpPost]
         public ActionResult Registration(RegistrationInitiate Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Login"),
                 InvalidResult: m => View(m));

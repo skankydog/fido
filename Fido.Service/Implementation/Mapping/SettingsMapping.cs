@@ -29,6 +29,7 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.EmailAddress, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Fullname, Options => Options.Ignore())
                     .ForMember(Dest => Dest.LocalCredentialsArePresent, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.LocalCredentialsAreUsable, Options => Options.Ignore())
                     .ForMember(Dest => Dest.LocalCredentialState, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ExternalCredentialsArePresent, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ExternalCredentialState, Options => Options.Ignore())

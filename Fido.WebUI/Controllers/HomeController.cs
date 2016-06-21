@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Fido.Core;
 using Fido.Action;
+using Fido.Action.Models;
 using Fido.WebUI.Extensions;
 using Fido.WebUI.Flash.Messages;
 using Fido.WebUI.Common;
@@ -15,7 +16,8 @@ namespace Fido.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return Dispatcher.View(
+                Result: m => View(m));
         }
 
         public ActionResult About()
@@ -25,7 +27,8 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Contact()
         {
-            return View();
+            return Dispatcher.View(
+                Result: m => View(m));
         }
 
         public ActionResult ModalRedirectToLocal(ModalRedirectToLocalModel Model)

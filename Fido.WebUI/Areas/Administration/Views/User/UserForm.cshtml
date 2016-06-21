@@ -1,26 +1,25 @@
 ﻿@model Fido.Action.Models.User
     
-<h4>User Details</h4>
-<div class="hline"></div>
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-xs-12">
+        <h4>Details</h4>
+        <div class="hline"></div>
+    </div>
+    <div class="col-md-6">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
             @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @placeholder = "first name", @value = "" })
         </div>
         @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-6">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
             @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "surname", @value = "" })
         </div>
         @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
     </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
+    <div class="col-xs-12">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-fw fa-comment"></i></span>
             @Html.TextAreaFor(m => m.About, 6, 6, new { @class = "form-control", @placeholder = "about", @value = "" })
@@ -33,7 +32,6 @@
         <h4>Roles</h4>
         <div class="hline"></div>
     </div>
-
     <div class="col-xs-12">
         @Html.ListBoxFor(m => m.SelectedRoles, new SelectList(Model.AllRoles, "Id", "Name"), new { @class = "form-control chosen-select" })
     </div>

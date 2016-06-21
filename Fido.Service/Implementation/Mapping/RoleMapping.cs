@@ -34,8 +34,9 @@ namespace Fido.Service.Mapping
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)); // Dto was created from a read
 
                 Mapper.CreateMap<Dtos.Role, Entities.Role>()
+                    .ForMember(Dest => Dest.Users, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Activities, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Activity>, IList<Entities.Activity>>(Src.Activities)))
-                    .ForMember(Dest => Dest.Users, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.User>, IList<Entities.User>>(Src.Users)));
+                   ; //.ForMember(Dest => Dest.Users, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.User>, IList<Entities.User>>(Src.Users)));
             }
         }
     }

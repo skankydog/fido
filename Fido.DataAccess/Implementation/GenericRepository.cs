@@ -164,30 +164,67 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual void SetUnique(string FieldName)
+        public virtual void SetUnique(string Fields)
+        {
+            SetUnique(Fields.Replace(" ", "").Split(','));
+        }
+
+        public virtual void SetUnique(params string[] Fields)
         {
             using (new FunctionLogger(Log))
             {
+                string Listed = ListToString(Fields, ',');
+                string IndexName = ListToString(Fields, '_');
                 string TableName = Context.GetTableName<TENTITY>();
                 string EntityName = typeof(TENTITY).ToString().Split('.').Last();
-                string SQL = string.Format(
-                    @"IF NOT EXISTS(
-                        SELECT * 
-                        FROM sys.indexes 
-                        WHERE name='IX_{0}_{1}' AND object_id = OBJECT_ID('{2}')) 
-                    BEGIN 
-                        CREATE UNIQUE INDEX IX_{0}_{1} ON {2}({1}) 
-                        WHERE {1} IS NOT NULL;  
-                    END",
-                    EntityName, FieldName, TableName);
 
+                string SQL = string.Format(
+                    @"IF NOT EXISTS( " +
+                     "   SELECT * " +
+                     "   FROM sys.indexes " + 
+                     "   WHERE name='IX_{0}_{1}' AND object_id = OBJECT_ID('{2}')) " + 
+                     "BEGIN " +
+                     "   CREATE UNIQUE INDEX IX_{0}_{1} ON {2}({3}) ",
+                     EntityName, IndexName, TableName, Listed);
+
+                SQL = string.Concat(SQL, BuildWhereClause(Fields));
+                SQL = string.Concat(SQL, "END");
+
+                Log.DebugFormat("Index: {0}", IndexName);
+                Log.DebugFormat("Listed: {0}", Listed);
                 Log.DebugFormat("Table: {0}", TableName);
                 Log.DebugFormat("Entity: {0}", EntityName);
-                Log.DebugFormat("FieldName: {0}", FieldName);
                 Log.DebugFormat("SQL: {0}", SQL);
 
                 Context.Database.ExecuteSqlCommand(SQL);
             }
+        }
+
+        private string ListToString(string[] Fields, char Separator)
+        {
+            if (Fields.Count() < 1) return "";
+            string List = Fields[0];
+
+            for (int i = 1; i < Fields.Count(); i++)
+            {
+                List = string.Concat(List, Separator, Fields[i]);
+            }
+
+            return List;
+        }
+
+        private string BuildWhereClause(string[] Fields)
+        {
+            if (Fields.Count() < 1) return "";
+            string List = string.Format("WHERE {0} IS NOT NULL", Fields[0]);
+
+            for (int i = 1; i < Fields.Count(); i++)
+            {
+                List = string.Concat(List, string.Format(" AND {0} IS NOT NULL", Fields[i]));
+            }
+
+            List = string.Concat(List, ";");
+            return List;
         }
 
         public virtual void Index(string FieldName)

@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Account
 {
     public class Settings : Model<Settings>
     {
@@ -32,13 +32,8 @@ namespace Fido.Action.Models
         public IList<ExternalCredential> ExternalCredentials { get; set; }
         #endregion
 
-        public Settings() { }
-        public Settings(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+        public Settings()
+            : base(RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 
         public override Settings Read(Guid Id)

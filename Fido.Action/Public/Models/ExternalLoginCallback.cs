@@ -18,12 +18,12 @@ namespace Fido.Action.Models
         public string Name { get; set; }
         #endregion
 
-        public ExternalLoginCallback() { }
-        public ExternalLoginCallback(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+   //     public ExternalLoginCallback() { }
+        public ExternalLoginCallback()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: false, RequiresWritePermission: false)
         { }
 

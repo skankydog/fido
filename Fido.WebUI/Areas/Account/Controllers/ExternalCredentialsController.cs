@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
-using Fido.Action.Models;
+using Fido.Action.Models.Account;
 using Fido.WebUI.Common;
 
 namespace Fido.WebUI.Areas.Account.Controllers
@@ -30,7 +30,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
                 return RedirectToAction("Index", "Settings");
             }
 
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: new ExternalCredential
                     {
                         Id = Guid.Empty,
@@ -45,7 +45,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         #region Unlink
         public ActionResult Unlink(ExternalCredential Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 Result: m => RedirectToAction("Index", "Settings"));
         }

@@ -468,7 +468,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public bool UserHasActivity(Guid UserId, string ActivityName)
+        public bool UserHasActivity(Guid UserId, string Name, string Area, string Action)
         {
             using (new FunctionLogger(Log))
             {
@@ -478,7 +478,7 @@ namespace Fido.Service.Implementation
                     var Activities = (from u in UserRepository.GetAsIQueryable(e => e.Id == UserId)
                                       from r in u.Roles
                                       from a in r.Activities
-                                      where a.Name == ActivityName
+                                      where a.Name == Name && a.Area == Area && a.Action == Action
                                       select u).DistinctBy(u => u.Id).Count();
 
                     return Activities == 1;

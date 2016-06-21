@@ -61,7 +61,7 @@ namespace Fido.Entities
         #endregion
 
         #region External Credential Properties
-        public bool HasExternalCredentials { get { return CurrentExternalCredentialState.ArePresent; } }
+        public bool ExternalCredentialsArePresent { get { return CurrentExternalCredentialState.ArePresent; } }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
         public IExternalCredentialState CurrentExternalCredentialState { get; internal set; }
 

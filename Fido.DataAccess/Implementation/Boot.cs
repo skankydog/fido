@@ -31,7 +31,11 @@ namespace Fido.DataAccess.Implementation
                         RoleRepository.SetUnique("Name");
 
                         var ActivityRepository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
-                        ActivityRepository.SetUnique("Name");
+                    //    ActivityRepository.Index("Name");
+                    //    ActivityRepository.Index("Area");
+                    //    ActivityRepository.Index("Action");
+                        ActivityRepository.SetUnique("Name", "Area", "Action");
+                        ActivityRepository.SetUnique("Name, Area, Action");
 
                         //var ExternalLoginRepository = DataAccessFactory.CreateRepository<IExternalLoginRepository>(UnitOfWork);
                         //ExternalLoginRepository.Index("LoginProvider");

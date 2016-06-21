@@ -18,12 +18,12 @@ namespace Fido.Action.Models
         public string EmailAddress { get; set; }
         #endregion
 
-        public ForgottenPasswordInitiate() { }
-        public ForgottenPasswordInitiate(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+ //       public ForgottenPasswordInitiate() { }
+        public ForgottenPasswordInitiate()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: false, RequiresWritePermission: false)
         { }
 

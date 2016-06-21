@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Account
 {
     public class ChangeEmailAddressComplete : Model<ChangeEmailAddressComplete>
     {
@@ -15,13 +15,8 @@ namespace Fido.Action.Models
         public Guid ConfirmationId { get; set; }
         #endregion
 
-        public ChangeEmailAddressComplete() { }
-        public ChangeEmailAddressComplete(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+        public ChangeEmailAddressComplete()
+            : base(RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 
         public override bool Save(ChangeEmailAddressComplete Model)

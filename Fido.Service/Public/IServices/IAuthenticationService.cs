@@ -25,7 +25,7 @@ namespace Fido.Service
         User SetLocalCredentialComplete(Guid ConfirmationId);
         Guid ForgottenPasswordInitiate(string EmailAddress);
         Confirmation ForgottenPasswordReceive(Guid ConfirmationId);
-        User ForgottenPasswordComplete(Guid ConfirmationId, string NewPassword);
+        User ForgottenPasswordComplete(Guid UserId, string NewPassword);
         
         bool PasswordPassesValidation(string Password);
         PasswordScore GetPasswordScore(string Password);

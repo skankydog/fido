@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Account
 {
     public class SetLocalCredentialComplete : Model<SetLocalCredentialComplete>
     {
@@ -15,12 +15,12 @@ namespace Fido.Action.Models
         public Guid ConfirmationId { get; set; }
         #endregion
 
-        public SetLocalCredentialComplete() { }
-        public SetLocalCredentialComplete(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+    //    public SetLocalCredentialComplete() { }
+        public SetLocalCredentialComplete()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 

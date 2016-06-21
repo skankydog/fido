@@ -39,7 +39,8 @@ namespace Fido.DataAccess
         void Delete(TENTITY Entity);
         void Delete(Expression<Func<TENTITY, bool>> Predicate);
 
-        void SetUnique(string FieldName);
-        void Index(string FieldName);
+        void SetUnique(string Fields);
+        void SetUnique(params string[] Fields);
+        void Index(string Field);
     }
 }

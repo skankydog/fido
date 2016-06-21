@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
 using Fido.Action;
-using Fido.Action.Models;
+using Fido.Action.Models.Administration;
 using Fido.WebUI.Common;
 using Fido.WebUI.Binders;
 
@@ -17,21 +17,21 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.ReturnIndexWrapper(
+            return Dispatcher.View(
                 DataModel: new Activities(),
                 Result: m => View());
         }
 
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.ReturnLoadedModel<Activities>(
+            return Dispatcher.Load<Activities>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.ReturnLoadedModel<Activity>(
+            return Dispatcher.Load<Activity>(
                 Id: Id,
                 Result: m => View(m));
         }
@@ -39,7 +39,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(Activity Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Activity"),
                 InvalidResult: m => View(m));

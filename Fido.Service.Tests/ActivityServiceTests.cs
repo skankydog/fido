@@ -31,31 +31,33 @@ namespace Fido.Service.Tests
             Assert.IsTrue(ActivityService.NameFree("Non-Existant Activity"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        public void DuplicateNameDetectedOnActivityInsert()
-        {
-            IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
+        //[TestMethod]
+        //[ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
+        //public void DuplicateNameDetectedOnActivityInsert()
+        //{
+        //    IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-            Activity ActivityDTO = new Activity
-            {
-                Name = "Activity01"
-            };
+        //    Activity ActivityDTO = new Activity
+        //    {
+        //        Name = "Activity01",
+        //        Area ="1",
+        //        Action = "2"
+        //    };
 
-            ActivityService.Save(ActivityDTO);
-        }
+        //    ActivityService.Save(ActivityDTO);
+        //}
 
-        [TestMethod]
-        [ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        public void DuplicateNameDetectedOnActivityUpdate()
-        {
-            IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
+        //[TestMethod]
+        //[ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
+        //public void DuplicateNameDetectedOnActivityUpdate()
+        //{
+        //    IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-            Activity ActivityDTO = ActivityService.GetByName("Activity01");
-            ActivityDTO.Name = "Activity02";
+        //    Activity ActivityDTO = ActivityService.GetByName("Activity01");
+        //    ActivityDTO.Name = "Activity02";
 
-            ActivityService.Save(ActivityDTO);
-        }
+        //    ActivityService.Save(ActivityDTO);
+        //}
         #endregion
 
         #region Initialisation

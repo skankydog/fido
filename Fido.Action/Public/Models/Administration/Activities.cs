@@ -8,7 +8,7 @@ using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Administration
 {
     public class Activities : Model<Activities>
     {
@@ -21,14 +21,9 @@ namespace Fido.Action.Models
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Activities() { }
-        public Activities(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true,
-                        RequiresWritePermission: true)
+        public Activities()
+            : base (RequiresReadPermission: true,
+                    RequiresWritePermission: true)
         { }
 
         public override Activities Read(IndexOptions IndexOptions)
@@ -62,6 +57,14 @@ namespace Fido.Action.Models
                         ActivityDtos = ActivityService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
                         break;
 
+                    case 1:
+                        ActivityDtos = ActivityService.GetPageInAreaOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
+                    case 2:
+                        ActivityDtos = ActivityService.GetPageInActionOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
                     default:
                         ActivityDtos = ActivityService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
                         break;
@@ -70,6 +73,8 @@ namespace Fido.Action.Models
                 return (from ActivityDto in ActivityDtos
                         select new[] {
                         ActivityDto.Name.Nvl(),
+                        ActivityDto.Area.Nvl(),
+                        ActivityDto.Action.Nvl(),
                         ActivityDto.Id.ToString(), // Edit
                         ActivityDto.Id.ToString()  // Delete
                     }).ToArray();

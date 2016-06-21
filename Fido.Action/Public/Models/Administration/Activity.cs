@@ -9,7 +9,7 @@ using Fido.Action.Implementation;
 
 // http://odetocode.com/blogs/scott/archive/2013/03/11/dropdownlistfor-with-asp-net-mvc.aspx
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Administration
 {
     public class Activity : Model<Activity>
     {
@@ -32,14 +32,9 @@ namespace Fido.Action.Models
         public byte[] RowVersion { get; set; }
         #endregion
 
-        public Activity() { }
-        public Activity(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true,
-                        RequiresWritePermission: true)
+        public Activity()
+            : base(RequiresReadPermission: true,
+                   RequiresWritePermission: true)
         { }
 
         public override Activity Prepare(Activity Model)

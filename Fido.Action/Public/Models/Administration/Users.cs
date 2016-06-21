@@ -8,7 +8,7 @@ using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Administration
 {
     public class Users : Model<Users>
     {
@@ -21,13 +21,9 @@ namespace Fido.Action.Models
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Users() { }
-        public Users(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+        public Users()
+            : base (RequiresReadPermission: true,
+                    RequiresWritePermission: true)
         { }
 
         public override Users Read(IndexOptions IndexOptions)

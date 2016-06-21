@@ -210,7 +210,8 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var ConfirmationId = AuthenticationService.ForgottenPasswordInitiate("homer.simpson@skankydog.com");
-            AuthenticationService.ForgottenPasswordComplete(ConfirmationId, "SDssdsdeEEWe*&*74##");
+            var ConfirmationDto = AuthenticationService.ForgottenPasswordReceive(ConfirmationId);
+            AuthenticationService.ForgottenPasswordComplete(ConfirmationDto.UserId, "SDssdsdeEEWe*&*74##");
 
             var UserService = ServiceFactory.CreateService<IUserService>();
             var UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");

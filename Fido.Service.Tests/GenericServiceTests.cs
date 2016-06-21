@@ -45,7 +45,9 @@ namespace Fido.Service.Tests
         {
             Activity ActivityDto = new Activity
             {
-                Name = "BrandNewEntity"
+                Name = "BrandNewEntity",
+                Area = "Nowhere",
+                Action = "Read"
             };
 
             IActivityService Service = ServiceFactory.CreateService<IActivityService>();

@@ -22,7 +22,7 @@ namespace Fido.Dtos
         #endregion
 
         #region External Credentials
-        public bool HasExternalCredentials { get; set; }
+        public bool ExternalCredentialsArePresent { get; set; }
         public string ExternalCredentialState { get; set; }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
 

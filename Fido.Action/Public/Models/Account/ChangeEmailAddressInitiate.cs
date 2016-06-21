@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Account
 {
     public class ChangeEmailAddressInitiate : Model<ChangeEmailAddressInitiate>
     {
@@ -18,13 +18,8 @@ namespace Fido.Action.Models
         public string EmailAddress { get; set; }
         #endregion
 
-        public ChangeEmailAddressInitiate() { }
-        public ChangeEmailAddressInitiate(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+        public ChangeEmailAddressInitiate()
+            : base (RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 
         public override bool Save(ChangeEmailAddressInitiate Model)

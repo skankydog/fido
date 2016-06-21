@@ -29,8 +29,8 @@ namespace Fido.WebUI.Common
             Dispatcher = ActionFactory.CreateDispatcher<ActionResult>(
                 this, this, this,
                 AuthoriseResult: () => new HttpUnauthorizedResult(),
-                PasswordResetResult: () => RedirectToAction("Update", "Password", new { Area = "Account" }),
-                DefaultErrorResult: () => RedirectToAction("Login", "Authentication", new { Area = string.Empty })); // TO DO: Change this to a dedicated "error page" instead
+                PasswordResetResult: (m) => RedirectToAction("Update", "Password", new { Area = "Account" }),
+                DefaultErrorResult: (m) => RedirectToAction("Login", "Authentication", new { Area = string.Empty })); // TO DO: Change this to a dedicated "error page" instead
             Flash = new Flasher();
         }
 
@@ -155,7 +155,7 @@ namespace Fido.WebUI.Common
         {
             get
             {
-                if (!User.Identity.IsAuthenticated)
+                if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
                     return Guid.Empty; // allows redirect to login to occur
                 //  throw new Exception("The user is not authenticated to the application. It is likely that " +
                 //      "the action has not been set to requiring authentication.");
@@ -196,63 +196,6 @@ namespace Fido.WebUI.Common
                 return Mode.Development;
             }
         }
-        #endregion
-
-        #region Dispatch Helpers
-        //public ActionResult DispatchView<TMODEL>(
-        //    Func<ActionResult> Display)
-        //{
-        //    return ActionFactory.DispatchView<TMODEL, ActionResult>(
-        //        FeedbackService: this,
-        //        LoginService: this,
-        //        ModelService: this,
-        //        Display: Display,
-        //        Authorize: () => new HttpUnauthorizedResult(),
-        //        PasswordReset: () => RedirectToAction("Settings", "Account"));
-        //}
-
-        //public ActionResult DispatchRead<TMODEL>(
-        //    Guid Id,
-        //    Func<TMODEL, ActionResult> Display)
-        //{
-        //    return ActionFactory.DispatchRead<TMODEL, ActionResult>(
-        //        Id: Id,
-        //        FeedbackService: this,
-        //        LoginService: this,
-        //        ModelService: this,
-        //        Display: Display,
-        //        Authorize: () => new HttpUnauthorizedResult(),
-        //        PasswordReset: () => RedirectToAction("Settings", "Account"));
-        //}
-
-        //public ActionResult DispatchWrite<TMODEL>(
-        //    TMODEL Model,
-        //    Func<TMODEL, ActionResult> Success,
-        //    Func<TMODEL, ActionResult> Failure,
-        //    Func<TMODEL, ActionResult> Invalid)
-        //{
-        //    return ActionFactory.DispatchWrite<TMODEL, ActionResult>(
-        //        Model: Model,
-        //        FeedbackService: this,
-        //        LoginService: this,
-        //        ModelService: this,
-        //        Success: Success,
-        //        Failure: Failure,
-        //        Invalid: Invalid,
-        //        Authorize: () => new HttpUnauthorizedResult(),
-        //        PasswordReset: () => RedirectToAction("Settings", "Account"));
-        //}
-
-        //public ActionResult DispatchWrite<TMODEL>(
-        //    TMODEL Model,
-        //    Func<TMODEL, ActionResult> Display)
-        //{
-        //    return DispatchWrite(
-        //        Model: Model,
-        //        Success: Display,
-        //        Failure: Display,
-        //        Invalid: Display);
-        //}
         #endregion
     }
 }

@@ -17,15 +17,15 @@ namespace Fido.WebUI.Controllers
     {
         public ActionResult Initiate()
         {
-            return Dispatcher.ReturnEmptyModel(
+            return Dispatcher.Create(
                 new ForgottenPasswordInitiate(),
-                Result: m => View());
+                Result: m => View(m));
         }
 
         [HttpPost]
         public ActionResult Initiate(ForgottenPasswordInitiate Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Login"),
                 InvalidResult: m => View(m));
@@ -33,7 +33,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Complete(Guid ConfirmationId)
         {
-            return Dispatcher.ReturnLoadedModel<ForgottenPasswordComplete>(
+            return Dispatcher.Load<ForgottenPasswordComplete>(
                 Id: ConfirmationId,
                 Result: m => View(m));
         }
@@ -41,7 +41,7 @@ namespace Fido.WebUI.Controllers
         [HttpPost]
         public ActionResult Complete(ForgottenPasswordComplete Model)
         {
-            return Dispatcher.SavePostedModel(
+            return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Home"),
                 InvalidResult: m => View(m));

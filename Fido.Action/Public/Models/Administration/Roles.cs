@@ -8,7 +8,7 @@ using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Administration
 {
     public class Roles : Model<Roles>
     {
@@ -21,12 +21,12 @@ namespace Fido.Action.Models
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Roles() { }
-        public Roles(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+  //      public Roles() { }
+        public Roles()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 

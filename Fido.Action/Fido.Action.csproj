@@ -79,6 +79,7 @@
     <Compile Include="Public\Models\LocalLogin.cs" />
     <Compile Include="Public\Models\Account\Profile.cs" />
     <Compile Include="Public\Models\RegistrationComplete.cs" />
+    <Compile Include="Public\Models\_NoModel.cs" />
     <Compile Include="Public\Models\RegistrationInitiate.cs" />
     <Compile Include="Public\Models\ForgottenPasswordComplete.cs" />
     <Compile Include="Public\Models\Account\SetLocalCredentialInitiate.cs" />

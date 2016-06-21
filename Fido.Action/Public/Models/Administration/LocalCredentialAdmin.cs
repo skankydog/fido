@@ -5,7 +5,7 @@ using Fido.Core;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models
+namespace Fido.Action.Models.Administration
 {
     public class LocalCredentialAdmin : Model<LocalCredentialAdmin>
     {
@@ -18,12 +18,12 @@ namespace Fido.Action.Models
         public string Password { get; set; }
         #endregion
 
-        public LocalCredentialAdmin() { }
-        public LocalCredentialAdmin(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+        //public LocalCredentialAdmin() { }
+        public LocalCredentialAdmin()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: true, RequiresWritePermission: true)
         { }
 

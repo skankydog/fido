@@ -183,10 +183,10 @@ a:focus {
 #headerwrap .img-responsive {
 	margin: 0px auto;
 }
-#service {
+#bodywrap {
 	margin-top: 30px; margin-bottom: 30px;
 }
-#service i {
+#bodywrap i {
 	/*padding: 15px; color: rgb(0, 179, 254);*/ /*font-size: 60px; ... was 60px, had at 6px before too*/
 }
 #portfoliowrap {

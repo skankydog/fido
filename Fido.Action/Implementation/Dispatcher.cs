@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Fido.Core;
 using Fido.Service;
@@ -15,176 +16,141 @@ namespace Fido.Action.Implementation
         IAuthenticationAPI AuthenticationAPI;
         IModelAPI ModelAPI;
         Func<TRETURN> AuthenticateResult;
-        Func<TRETURN> PasswordResetResult;
-        Func<TRETURN> DefaultErrorResult;
+        Func<IDataModel, TRETURN> PasswordResetResult;
+        Func<IDataModel, TRETURN> ErrorResult;
 
         public Dispatcher(
             IFeedbackAPI FeedbackAPI,
             IAuthenticationAPI AuthenticationAPI,
             IModelAPI ModelAPI,
             Func<TRETURN> AuthenticateResult,
-            Func<TRETURN> PasswordResetResult,
-            Func<TRETURN> DefaultErrorResult)
+            Func<IDataModel, TRETURN> PasswordResetResult,
+            Func<IDataModel, TRETURN> ErrorResult)
         {
             this.FeedbackAPI = FeedbackAPI;
             this.AuthenticationAPI = AuthenticationAPI;
             this.ModelAPI = ModelAPI;
             this.AuthenticateResult = AuthenticateResult;
             this.PasswordResetResult = PasswordResetResult;
-            this.DefaultErrorResult = DefaultErrorResult;
+            this.ErrorResult = ErrorResult;
         }
 
-        #region Index
-        public TRETURN ReturnIndexWrapper<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        #region View/Create
+        public TRETURN View<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
         {
-            return ReturnModelOrView(
+            return DoView(
                 DataModel: DataModel,
                 SuccessResult: Result,
-                ErrorResult: DefaultErrorResult,
                 RequiredPermission: Permission.Read);
         }
 
-        public TRETURN ReturnIndexWrapper<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        public TRETURN View(Func<NoModel, TRETURN> Result)
         {
-            return ReturnModelOrView(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                ErrorResult: ErrorResult,
+            return DoView<NoModel>(
+                DataModel: new NoModel(),
+                SuccessResult: Result,
                 RequiredPermission: Permission.Read);
         }
-        #endregion
 
-        #region EmptyModel
-        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        public TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
         {
-            return ReturnModelOrView(
+            return DoView(
                 DataModel: DataModel,
                 SuccessResult: Result,
-                ErrorResult: DefaultErrorResult,
                 RequiredPermission: Permission.Write);
         }
 
-        public TRETURN ReturnEmptyModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
-        {
-            return ReturnModelOrView(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                ErrorResult: ErrorResult,
-                RequiredPermission: Permission.Write);
-        }
-        #endregion
-
-        private TRETURN ReturnModelOrView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult, Permission RequiredPermission)
+        private TRETURN DoView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Permission RequiredPermission)
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, RequiredPermission);
+                var Model = Build(DataModel);
+                var Redirect = CheckPermissions(Model, RequiredPermission);
 
                 if (Redirect != null)
                     return Redirect;
 
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
                 return Processor.ExecuteView(
-                    DataModel: DataModel,
+                    DataModel: Model,
                     SuccessResult: SuccessResult,
                     ErrorResult: ErrorResult);
             }
         }
+        #endregion
 
-        #region Reads
-        public TRETURN ReturnLoadedModel<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
-        {
-            return ReturnLoadedModel(
-                IndexOptions: IndexOptions,
-                SuccessResult: Result,
-                ErrorResult: DefaultErrorResult);
-        }
-
-        public TRETURN ReturnLoadedModel<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        #region Load
+        public TRETURN Load<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult)
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Read);
+                var Model = Build<TMODEL>();
+                var Redirect = CheckPermissions(Model, Permission.Read);
 
                 if (Redirect != null)
                     return Redirect;
 
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteRead(
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
+                return Processor.ExecuteRead<TMODEL>(
+                    DataModel: Model,
                     IndexOptions: IndexOptions,
                     SuccessResult: SuccessResult,
                     ErrorResult: ErrorResult);
             }
         }
 
-        public TRETURN ReturnLoadedModel<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
-        {
-            return ReturnLoadedModel(
-                Id: Id,
-                SuccessResult: Result,
-                ErrorResult: DefaultErrorResult);
-        }
-
-        public TRETURN ReturnLoadedModel<TMODEL>(Guid Id, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        public TRETURN Load<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write); // TO DO?: If they have read access, they should be able to view the record, just not save/write (Update post).
+                var Model = Build<TMODEL>();
+                var Redirect = CheckPermissions(Model, Permission.Read);
 
                 if (Redirect != null)
                     return Redirect;
 
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
-                return Processor.ExecuteRead(
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
+                return Processor.ExecuteRead<TMODEL>(
                     Id: Id,
-                    SuccessResult: SuccessResult,
+                    DataModel: Model,
+                    SuccessResult: Result,
                     ErrorResult: ErrorResult);
             }
         }
         #endregion
 
         #region Save
-        public TRETURN SavePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+        public TRETURN Save<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
         {
-            return SavePostedModel(
+            return Save(
                 DataModel: DataModel,
                 SuccessResult: Result,
-                InvalidResult: Result,
-                ErrorResult: DefaultErrorResult);
+                InvalidResult: Result);
         }
 
-        public TRETURN SavePostedModel<TMODEL>(
+        public TRETURN Save<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult)
-        {
-            return SavePostedModel(
-                DataModel: DataModel,
-                SuccessResult: SuccessResult,
-                InvalidResult: InvalidResult,
-                ErrorResult: DefaultErrorResult);
-        }
-
-        public TRETURN SavePostedModel<TMODEL>(
-            TMODEL DataModel,
-            Func<TMODEL, TRETURN> SuccessResult,
-            Func<TMODEL, TRETURN> InvalidResult,
-            Func<TRETURN> ErrorResult)
+                where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write);
+                var Model = Build(DataModel);
+                var Redirect = CheckPermissions(Model, Permission.Write);
 
                 if (Redirect != null)
                     return Redirect;
 
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
                 return Processor.ExecuteWrite(
-                    DataModel: DataModel,
+                    DataModel: Model,
                     SuccessResult: SuccessResult,
                     InvalidResult: InvalidResult,
                     ErrorResult: ErrorResult);
@@ -193,66 +159,97 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Delete
-        public TRETURN DeletePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
-        {
-            return DeletePostedModel(
-                DataModel: DataModel,
-                SuccessResult: Result,
-                ErrorResult: DefaultErrorResult);
-        }
-
-        public TRETURN DeletePostedModel<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TRETURN> ErrorResult)
+        public TRETURN Delete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult)
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                var LogicModel = CreateLogicModel<TMODEL>();
-                var Redirect = CheckForPermission(LogicModel, Permission.Write);
+                var Model = Build(DataModel);
+                var Redirect = CheckPermissions(Model, Permission.Write);
 
                 if (Redirect != null)
                     return Redirect;
 
-                var Processor = new Processor<TMODEL, TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, LogicModel);
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
                 return Processor.ExecuteDelete(
-                    DataModel: DataModel,
+                    DataModel: Model,
                     SuccessResult: SuccessResult,
                     ErrorResult: ErrorResult);
             }
         }
         #endregion
 
-        #region Private Members
-        private IModel<TMODEL> CreateLogicModel<TMODEL>()
+        #region Helpers
+        private TMODEL Build<TMODEL>()
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
                 var SourceAssembly = Assembly.GetAssembly(this.GetType());
-                var ModelPath = string.Concat(SourceAssembly.GetName().Name, ".Models.", typeof(TMODEL).Name);
+                //var ModelPath = string.Concat(SourceAssembly.GetName().Name, ".Models.", typeof(TMODEL).Name);
+                var ModelPath = typeof(TMODEL).FullName;
+                //var x = typeof(TMODEL).Namespace;
                 var ModelType = SourceAssembly.GetType(ModelPath);
 
                 if (ModelType == null)
                     throw new Exception(string.Format("{0} <T> not found", ModelPath));
 
-                return (IModel<TMODEL>)Activator.CreateInstance(ModelType, FeedbackAPI, AuthenticationAPI, ModelAPI);
+                var Data = (TMODEL)Activator.CreateInstance(ModelType);
+                return Build(Data);
             }
         }
 
-        private TRETURN CheckForPermission<TMODEL>(IModel<TMODEL> LogicModel, Permission Permission)
+        private TMODEL Build<TMODEL>(TMODEL Data)
+            where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                if (LogicModel.RequiresReadPermission && Permission == Permission.Read ||
-                    LogicModel.RequiresWritePermission && Permission == Permission.Write)
+                Guid Id = AuthenticationAPI.AuthenticatedId;
+                Data.Permissions = new List<Dtos.Activity>();
+
+                if (Id != Guid.Empty)
+                {
+                    var UserService = ServiceFactory.CreateService<IUserService>();
+                    var Activities = UserService.GetActivities(Id);
+
+                    Data.Permissions = (from Dtos.Activity a in Activities
+                                        select a).ToList();
+                }
+
+                Data.FeedbackAPI = FeedbackAPI;
+                Data.AuthenticationAPI = AuthenticationAPI;
+                Data.ModelAPI = ModelAPI;
+
+                return Data;
+            }
+        }
+
+        private TRETURN CheckPermissions<TMODEL>(TMODEL DataModel, Permission RequestedPermission)
+            where TMODEL : IModel<TMODEL>
+        {
+            using (new FunctionLogger(Log))
+            {
+                if (DataModel.RequiresReadPermission && RequestedPermission == Permission.Read ||
+                    DataModel.RequiresWritePermission && RequestedPermission == Permission.Write)
                 {
                     if (!AuthenticationAPI.Authenticated)
                         return AuthenticateResult();
 
-                    if (AuthenticationAPI.LoggedInCredentialState == "Expired")
-                        return PasswordResetResult();
+                    if (AuthenticationAPI.LoggedInCredentialState == "Expired") // Magic string to be fixed
+                        return PasswordResetResult(DataModel);
 
-                    var UserService = ServiceFactory.CreateService<IUserService>();
-                    var Name = string.Format("{0}-{1}", LogicModel.GetType().Name, Permission.ToString());
+                    var Name = DataModel.GetType().Name;
+                    var Area = string.Join(string.Empty, DataModel.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
+                    var Action = RequestedPermission.ToString();
+                    var Allowed = (from Dtos.Activity a in DataModel.Permissions
+                                   where a.Name == Name &&
+                                        a.Area == Area && 
+                                        a.Action == Action
+                                   select a).Count() == 1;
 
-                    if (!UserService.UserHasActivity(AuthenticationAPI.AuthenticatedId, Name))
+                    Log.InfoFormat("Permission: {0}, {1}, {2} = {3}", Name, Area, Action, Allowed);
+
+                    if (!Allowed)
                     {
                         FeedbackAPI.DisplayError("You are not authorised to perform the requested action.");
                         return AuthenticateResult();

@@ -13,12 +13,12 @@ namespace Fido.DataAccess.Implementation
         {
             Delete();
 
-            Activity Activity01 = new Activity { Id = Guid.NewGuid(), Name = "Activity01" };
-            Activity Activity02 = new Activity { Id = Guid.NewGuid(), Name = "Activity02" };
-            Activity Activity03 = new Activity { Id = Guid.NewGuid(), Name = "Activity03" };
-            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Name = "Activity04" };
-            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Name = "Activity05" };
-            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Name = "Activity06" };
+            Activity Activity01 = new Activity { Id = Guid.NewGuid(), Name = "Activity01", Area = "Area 1", Action = "Read" };
+            Activity Activity02 = new Activity { Id = Guid.NewGuid(), Name = "Activity02", Area = "Area 1", Action = "Write" };
+            Activity Activity03 = new Activity { Id = Guid.NewGuid(), Name = "Activity03", Area = "Area 1", Action = "Write" };
+            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Name = "Activity04", Area = "Area 1", Action = "Read" };
+            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Name = "Activity05", Area = "Area 1", Action = "Read" };
+            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Name = "Activity06", Area = "Area 1", Action = "Read" };
 
             Role AllActivitiesRole = new Role { Id = Guid.NewGuid(), Name = "AllActivitiesRole" };
             AllActivitiesRole.Activities.Add(Activity01);

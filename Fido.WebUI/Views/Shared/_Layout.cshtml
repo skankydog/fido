@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Fido.WebUI.Extensions
 
+@model Fido.Action.Implementation.IDataModel
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,10 +38,7 @@
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav">
-                        @if (Request.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-play-circle-o fa-fw"></i></a></li>
-                        }
+                        <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-cog fa-fw"></i></a></li>
 
                         <li><a href="@Url.Action("Index", "Home", new { Area = string.Empty })">HOME</a></li>
                         <li>@Html.ActionLink("ABOUT", "About", "Home", null, new { @class = "modal-link area=''" })</li>
@@ -72,7 +71,7 @@
         </div>
     </div>
 
-    <div id="service">
+    <div id="bodywrap">
         <div class="container">
 
             <div class="row">

@@ -37,12 +37,12 @@ namespace Fido.Action.Models
         public string ConfirmPassword { get; set; }
         #endregion
 
-        public RegistrationInitiate() { }
-        public RegistrationInitiate(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI LoginAPI,
-            IModelAPI ModelAPI)
-                : base (FeedbackAPI, LoginAPI, ModelAPI,
+      //  public RegistrationInitiate() { }
+        public RegistrationInitiate()
+            //IFeedbackAPI FeedbackAPI,
+            //IAuthenticationAPI LoginAPI,
+            //IModelAPI ModelAPI)
+                : base (//FeedbackAPI, LoginAPI, ModelAPI,
                         RequiresReadPermission: false, RequiresWritePermission: false)
         { }
 
