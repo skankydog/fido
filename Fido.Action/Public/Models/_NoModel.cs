@@ -12,7 +12,8 @@ namespace Fido.Action.Models
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public NoModel()
-            : base(RequiresReadPermission: false, RequiresWritePermission: false)
+          //  : base(RequiresReadPermission: false, RequiresWritePermission: false)
+            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
     }
 }

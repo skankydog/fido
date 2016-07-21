@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.Create( // TO DO: No read, however!!   Or should I??
+            return Dispatcher.Create(
                 new Password(),
                 Result: m => PartialView());
         }
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         {
             return Dispatcher.Save(
                 DataModel: Model,
-                SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
+                SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings")),
                 InvalidResult: m => PartialView(m));
         }
     }

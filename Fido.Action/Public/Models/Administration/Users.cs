@@ -22,8 +22,9 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Users()
-            : base (RequiresReadPermission: true,
-                    RequiresWritePermission: true)
+           // : base (RequiresReadPermission: true,
+           //         RequiresWritePermission: true)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
         public override Users Read(IndexOptions IndexOptions)
@@ -34,13 +35,14 @@ namespace Fido.Action.Models.Administration
                 var CountUnfiltered = CountAll();
                 var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new Users
+                var x = new Users
                 {
                     sEcho = IndexOptions.Echo,
                     iTotalRecords = CountUnfiltered,
                     iTotalDisplayRecords = CountFiltered,
                     aaData = PageOfRecords
                 };
+                return x;
             }
         }
 
@@ -80,14 +82,14 @@ namespace Fido.Action.Models.Administration
 
                 return (from UserDto in UserDtos
                         select new[] {
-                        UserDto.Fullname.Firstname.Nvl(),
-                        UserDto.Fullname.Surname.Nvl(),
-                        UserDto.EmailAddress.Nvl(),
-                        UserDto.LocalCredentialState.Nvl(),
-                        UserDto.ExternalCredentialState.Nvl(),
-                        UserDto.Id.ToString(), // Edit
-                        UserDto.Id.ToString()  // Delete
-                    }).ToArray();
+                            UserDto.Fullname.Firstname.Nvl(),
+                            UserDto.Fullname.Surname.Nvl(),
+                            UserDto.EmailAddress.Nvl(),
+                            UserDto.LocalCredentialState.Nvl(),
+                            UserDto.ExternalCredentialState.Nvl(),
+                            UserDto.Id.ToString(), // Edit
+                            UserDto.Id.ToString()  // Delete
+                        }).ToArray();
             }
         }
 

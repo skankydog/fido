@@ -33,7 +33,8 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public Settings()
-            : base(RequiresReadPermission: true, RequiresWritePermission: true)
+          //  : base(RequiresReadPermission: true, RequiresWritePermission: true)
+            : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
         public override Settings Read(Guid Id)

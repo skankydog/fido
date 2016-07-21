@@ -42,7 +42,7 @@ namespace Fido.Action.Implementation
             return DoView(
                 DataModel: DataModel,
                 SuccessResult: Result,
-                RequiredPermission: Permission.Read);
+                RequestedAction: Action.Read);
         }
 
         public TRETURN View(Func<NoModel, TRETURN> Result)
@@ -50,7 +50,7 @@ namespace Fido.Action.Implementation
             return DoView<NoModel>(
                 DataModel: new NoModel(),
                 SuccessResult: Result,
-                RequiredPermission: Permission.Read);
+                RequestedAction: Action.Read);
         }
 
         public TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
@@ -59,16 +59,16 @@ namespace Fido.Action.Implementation
             return DoView(
                 DataModel: DataModel,
                 SuccessResult: Result,
-                RequiredPermission: Permission.Write);
+                RequestedAction: Action.Write);
         }
 
-        private TRETURN DoView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Permission RequiredPermission)
+        private TRETURN DoView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Action RequestedAction)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
                 var Model = Build(DataModel);
-                var Redirect = CheckPermissions(Model, RequiredPermission);
+                var Redirect = Check(Model, RequestedAction);
 
                 if (Redirect != null)
                     return Redirect;
@@ -89,7 +89,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var Model = Build<TMODEL>();
-                var Redirect = CheckPermissions(Model, Permission.Read);
+                var Redirect = Check(Model, Action.Read);
 
                 if (Redirect != null)
                     return Redirect;
@@ -109,7 +109,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var Model = Build<TMODEL>();
-                var Redirect = CheckPermissions(Model, Permission.Read);
+                var Redirect = Check(Model, Action.Read);
 
                 if (Redirect != null)
                     return Redirect;
@@ -123,6 +123,22 @@ namespace Fido.Action.Implementation
             }
         }
         #endregion
+
+        public TRETURN Confirm<TMODEL>(Guid ConfirmationId, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
+        {
+            using (new FunctionLogger(Log))
+            {
+                var Model = Build<TMODEL>();
+
+                var Processor = new Processor<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI);
+                return Processor.ExecuteConfirm<TMODEL>(
+                    ConfirmationId: ConfirmationId,
+                    DataModel: Model,
+                    SuccessResult: Result,
+                    ErrorResult: ErrorResult);
+            }
+        }
 
         #region Save
         public TRETURN Save<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result)
@@ -143,7 +159,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var Model = Build(DataModel);
-                var Redirect = CheckPermissions(Model, Permission.Write);
+                var Redirect = Check(Model, Action.Write);
 
                 if (Redirect != null)
                     return Redirect;
@@ -165,7 +181,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var Model = Build(DataModel);
-                var Redirect = CheckPermissions(Model, Permission.Write);
+                var Redirect = Check(Model, Action.Write);
 
                 if (Redirect != null)
                     return Redirect;
@@ -186,9 +202,7 @@ namespace Fido.Action.Implementation
             using (new FunctionLogger(Log))
             {
                 var SourceAssembly = Assembly.GetAssembly(this.GetType());
-                //var ModelPath = string.Concat(SourceAssembly.GetName().Name, ".Models.", typeof(TMODEL).Name);
                 var ModelPath = typeof(TMODEL).FullName;
-                //var x = typeof(TMODEL).Namespace;
                 var ModelType = SourceAssembly.GetType(ModelPath);
 
                 if (ModelType == null)
@@ -224,13 +238,13 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private TRETURN CheckPermissions<TMODEL>(TMODEL DataModel, Permission RequestedPermission)
+        private TRETURN Check<TMODEL>(TMODEL DataModel, Action RequestedAction)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
             {
-                if (DataModel.RequiresReadPermission && RequestedPermission == Permission.Read ||
-                    DataModel.RequiresWritePermission && RequestedPermission == Permission.Write)
+                if (RequestedAction == Action.Read && DataModel.ReadAccess == Access.Permissioned ||
+                    RequestedAction == Action.Write && DataModel.WriteAccess == Access.Permissioned)
                 {
                     if (!AuthenticationAPI.Authenticated)
                         return AuthenticateResult();
@@ -240,14 +254,14 @@ namespace Fido.Action.Implementation
 
                     var Name = DataModel.GetType().Name;
                     var Area = string.Join(string.Empty, DataModel.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
-                    var Action = RequestedPermission.ToString();
+                    var ActionName = RequestedAction.ToString();
                     var Allowed = (from Dtos.Activity a in DataModel.Permissions
                                    where a.Name == Name &&
                                         a.Area == Area && 
-                                        a.Action == Action
+                                        a.Action == ActionName
                                    select a).Count() == 1;
 
-                    Log.InfoFormat("Permission: {0}, {1}, {2} = {3}", Name, Area, Action, Allowed);
+                    Log.InfoFormat("Permission: {0}, {1}, {2} = {3}", Name, Area, ActionName, Allowed);
 
                     if (!Allowed)
                     {

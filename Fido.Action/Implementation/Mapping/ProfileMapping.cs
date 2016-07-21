@@ -28,7 +28,8 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.Firstname, Options => Options.MapFrom(Src => Src.Fullname.Firstname))
                     .ForMember(Dest => Dest.Surname, Options => Options.MapFrom(Src => Src.Fullname.Surname))
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.MapFrom(Src => Src.Fullname.FirstnameSurname))
-                    .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
 
                 Mapper.CreateMap<Fido.Action.Models.Account.Profile, Dtos.Fullname>()
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.Ignore())

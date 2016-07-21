@@ -13,20 +13,27 @@ namespace Fido.WebUI.Areas.Account.Controllers
 {
     public class EmailAddressController : BaseController
     {
-        public ActionResult Initiate()
+        public ActionResult Create()
         {
             return Dispatcher.Create(
-                new ChangeEmailAddressInitiate(),
+                new EmailAddress(),
                 Result: m => PartialView());
         }
 
         [HttpPost]
-        public ActionResult Initiate(ChangeEmailAddressInitiate Model)
+        public ActionResult Create(EmailAddress Model)
         {
             return Dispatcher.Save(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
                 InvalidResult: m => PartialView(m));
+        }
+
+        public ActionResult Confirm(Guid ConfirmationId)
+        {
+            return Dispatcher.Confirm<EmailAddress>(
+                Id: ConfirmationId,
+                Result: m => RedirectToAction("Create", "Login", new { Area = "Authentication" }));
         }
     }
 }

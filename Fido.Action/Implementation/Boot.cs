@@ -25,41 +25,45 @@ namespace Fido.Action.Implementation
 
         private void BootPermissions()
         {
+            const string ROOT_NAMESPACE = "Fido.Action.Models.";
+
             using (new FunctionLogger(Log))
             {
-                var ModelTypes = new TypeFinder().Find<ILogicModel>().Where(t => t.Namespace.StartsWith("Fido.Action.Models."));
+                var ModelTypes = new TypeFinder().Find<ILogicModel>().Where(t => t.Namespace.StartsWith(ROOT_NAMESPACE));
 
                 foreach (var ModelType in ModelTypes)
                 {
                     var ModelInstance = (ILogicModel)Activator.CreateInstance(ModelType);
-                    var Area = string.Join(string.Empty, ModelType.Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
+                    var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
 
-                    if (ModelInstance.RequiresReadPermission)
-                        Ensure(ModelType.Name, Area, Permission.Read.ToString());
+                    if (ModelInstance.ReadAccess == Access.Permissioned)
+                        Ensure(ModelType.Name, Area, Action.Read);
 
-                    if (ModelInstance.RequiresWritePermission)
-                        Ensure(ModelType.Name, Area, Permission.Write.ToString());
+                    if (ModelInstance.WriteAccess == Access.Permissioned)
+                        Ensure(ModelType.Name, Area, Action.Write);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
-                RoleService.SetAdministrationRole("Fido Administrator");
+                RoleService.SetAdministrationRole("Administrator");
             }
         }
 
-        private void Ensure(string Name, string Area, string Action)
+        private void Ensure(string Name, string Area, Action Action)
         {
             using (new FunctionLogger(Log))
             {
+                var ActionName = Action.ToString();
+
                 Log.InfoFormat("Name: {0}", Name);
                 Log.InfoFormat("Area: {0}", Area);
-                Log.InfoFormat("Action: {0}", Action);
+                Log.InfoFormat("Action: {0}", ActionName);
 
                 var ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-                if (ActivityService.Get(Name, Area, Action) == null)
+                if (ActivityService.Get(Name, Area, ActionName) == null)
                 {
-                    Log.InfoFormat("Adding activity: {0}, {1}, {2}", Name, Area, Action);
-                    ActivityService.Save(new Dtos.Activity { Name = Name, Area = Area, Action = Action });
+                    Log.InfoFormat("Adding activity: {0}, {1}, {2}", Name, Area, ActionName);
+                    ActivityService.Save(new Dtos.Activity { Name = Name, Area = Area, Action = ActionName });
                 }
             }
         }

@@ -66,6 +66,8 @@ namespace Fido.Action.Implementation
             {
                 try
                 {
+                    var Tmp = DataModel.Permissions; // Mapping wipes this out
+
                     if (IndexOptions == null)
                     {
                         DataModel = DataModel.Read(Id);
@@ -75,12 +77,40 @@ namespace Fido.Action.Implementation
                         DataModel = DataModel.Read(IndexOptions);
                     }
 
+                    DataModel.Permissions = Tmp; // Restore after mapping
                     DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)
                 {
                     Log.Fatal(Ex.ToString());
                     
+                    FeedbackAPI.DisplayError(Ex.Message);
+                    return ErrorResult((IDataModel)DataModel);
+                }
+
+                return SuccessResult(DataModel);
+            }
+        }
+
+        public TRETURN ExecuteConfirm<TMODEL>(Guid ConfirmationId, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+            where TMODEL : IModel<TMODEL>
+        {
+            using (new FunctionLogger(Log))
+            {
+                try
+                {
+                    var Tmp = DataModel.Permissions; // Mapping wipes this out
+
+                    if (DataModel.Confirm(ConfirmationId) == false)
+                        Log.InfoFormat("Unsuccessful confirmation: {0}", ConfirmationId.ToString());
+
+                    DataModel.Permissions = Tmp; // Restore after mapping
+                    DataModel = DataModel.Prepare(DataModel);
+                }
+                catch (Exception Ex)
+                {
+                    Log.ErrorFormat("Exception thrown in 'Confirm': {0}", Ex.ToString());
+
                     FeedbackAPI.DisplayError(Ex.Message);
                     return ErrorResult((IDataModel)DataModel);
                 }

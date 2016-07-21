@@ -26,8 +26,9 @@ namespace Fido.Action.Models.Administration
             //IFeedbackAPI FeedbackAPI,
             //IAuthenticationAPI LoginAPI,
             //IModelAPI ModelAPI)
-                : base (//FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+//                : base (//FeedbackAPI, LoginAPI, ModelAPI,
+                    //    RequiresReadPermission: true, RequiresWritePermission: true)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
         public override Roles Read(IndexOptions IndexOptions)

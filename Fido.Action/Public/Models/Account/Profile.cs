@@ -42,13 +42,9 @@ namespace Fido.Action.Models.Account
         public int CreatedAgeDays { get; set; } // Read only
         #endregion
 
-    //    public Profile() { }
         public Profile()
-            //IFeedbackAPI FeedbackAPI,
-            //IAuthenticationAPI LoginAPI,
-            //IModelAPI ModelAPI)
-                : base(//FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+         //   : base(RequiresReadPermission: true, RequiresWritePermission: true)
+            : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
         public override Profile Read(Guid Id)

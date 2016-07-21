@@ -17,13 +17,13 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.Load<LocalCredentialAdmin>(
+            return Dispatcher.Load<LocalCredential>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Update(LocalCredentialAdmin Model)
+        public ActionResult Update(LocalCredential Model)
         {
             return Dispatcher.Save(
                 DataModel: Model,
@@ -32,13 +32,13 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Load<LocalCredentialAdmin>(
+            return Dispatcher.Load<LocalCredential>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
 
         [HttpPost]
-        public ActionResult Delete(LocalCredentialAdmin Model)
+        public ActionResult Delete(LocalCredential Model)
         {
             return Dispatcher.Delete(
                 DataModel: Model,

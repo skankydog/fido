@@ -1,5 +1,5 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
-@model Fido.Action.Models.Users
+@model Fido.Action.Models.Administration.Users
 
 @using Fido.WebUI.Controllers
 
@@ -40,13 +40,7 @@
             "aoColumns": [
                             { "sName": "Firstname" },
                             { "sName": "Surname" },
-                            {
-                                "sName": "Email Address",
-                                /*     "mRender": function (value) {
-                                           if (value !== null) { return value; }
-                                           else { return ''; }
-                                       } */
-                            },
+                            { "sName": "Email Address" },
                             { "sName": "Local Credentials" },
                             { "sName": "External Credentials" },
                             {

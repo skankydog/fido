@@ -16,9 +16,9 @@ namespace Fido.DataAccess.Implementation
             Activity Activity01 = new Activity { Id = Guid.NewGuid(), Name = "Activity01", Area = "Area 1", Action = "Read" };
             Activity Activity02 = new Activity { Id = Guid.NewGuid(), Name = "Activity02", Area = "Area 1", Action = "Write" };
             Activity Activity03 = new Activity { Id = Guid.NewGuid(), Name = "Activity03", Area = "Area 1", Action = "Write" };
-            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Name = "Activity04", Area = "Area 1", Action = "Read" };
-            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Name = "Activity05", Area = "Area 1", Action = "Read" };
-            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Name = "Activity06", Area = "Area 1", Action = "Read" };
+            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Name = "Activity04", Area = "Area 2", Action = "Read" };
+            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Name = "Activity05", Area = "Area 3", Action = "Read" };
+            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Name = "Activity06", Area = "Area 4", Action = "Read" };
 
             Role AllActivitiesRole = new Role { Id = Guid.NewGuid(), Name = "AllActivitiesRole" };
             AllActivitiesRole.Activities.Add(Activity01);
@@ -72,7 +72,7 @@ namespace Fido.DataAccess.Implementation
             {
                 Id = Guid.NewGuid(),
                 LocalCredentialState = "Enabled",
-                Password = "Jjdjsj^^77d8sJHJHDjjh",
+                Password = "hello",
                 PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "marge.simpson@skankydog.com",
                 EmailAddressLastChangeUtc = DateTime.UtcNow,
@@ -90,14 +90,14 @@ namespace Fido.DataAccess.Implementation
             {
                 Id = Guid.NewGuid(),
                 LocalCredentialState = "Enabled",
-                Password = "Jjdjsj^^77d8sJHJHDjjh",
+                Password = "hello",
                 PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "bart.simpson@skankydog.com",
                 EmailAddressLastChangeUtc = DateTime.UtcNow,
                 Fullname = new Fullname { Firstname = "Bart", Surname = "Simpson" },
                 About = "This is something about Bart"
             };
-            // Bart Simpson has no roles
+            BartSimpson.Roles.Add(Role02);
             BartSimpson.ExternalCredentialState = "Enabled";
             BartSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "BartFacebook1", EmailAddress = "bart.simpson@skankydog.com" });
 

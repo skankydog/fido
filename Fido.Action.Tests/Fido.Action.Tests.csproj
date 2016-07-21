@@ -54,6 +54,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mocks\MockAuthenticationAPI.cs" />
+    <Compile Include="Mocks\MockModelAPI.cs" />
+    <Compile Include="Mocks\MockFeedbackAPI.cs" />
+    <Compile Include="PermissionTests.cs" />
     <Compile Include="MappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

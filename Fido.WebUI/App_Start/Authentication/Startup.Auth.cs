@@ -29,7 +29,7 @@ namespace Fido.WebUI
                 new CookieAuthenticationOptions
                 {
                     AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                    LoginPath = new PathString("/Authentication/Login"), // Should put this in the web.config
+                    LoginPath = new PathString("/Authentication/Login/Create"), // Should put this in the web.config
                     Provider = new CookieAuthenticationProvider
                     {
                         OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(

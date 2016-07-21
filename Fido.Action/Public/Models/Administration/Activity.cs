@@ -33,8 +33,9 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Activity()
-            : base(RequiresReadPermission: true,
-                   RequiresWritePermission: true)
+         //   : base(RequiresReadPermission: true,
+         //          RequiresWritePermission: true)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
         public override Activity Prepare(Activity Model)

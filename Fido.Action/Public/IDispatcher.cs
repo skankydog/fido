@@ -22,6 +22,8 @@ namespace Fido.Action
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
 
+        TRETURN Confirm<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+
         TRETURN Delete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
     }
 }

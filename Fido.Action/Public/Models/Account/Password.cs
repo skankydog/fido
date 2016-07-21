@@ -28,13 +28,9 @@ namespace Fido.Action.Models.Account
         public string ConfirmPassword { get; set; }
         #endregion
 
-    //    public Password() { }
         public Password()
-            //IFeedbackAPI FeedbackAPI,
-            //IAuthenticationAPI LoginAPI,
-            //IModelAPI ModelAPI)
-                : base (//FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: true, RequiresWritePermission: true)
+          //  : base (RequiresReadPermission: true, RequiresWritePermission: true)
+            : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
         public override bool Save(Password Model)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoMapper;
-using Fido.Action.Models;
+using Fido.Action.Models.Authentication;
 using Fido.Core;
 using Fido.Core.Bootstrapper;
 
@@ -23,7 +23,7 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Dtos.Confirmation, ForgottenPasswordComplete>()
+                Mapper.CreateMap<Dtos.Confirmation, ResetPassword>()
                     .ForMember(Dest => Dest.ConfirmationId, Options => Options.MapFrom(Src => Src.Id))
                     .ForMember(Dest => Dest.Password, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ConfirmPassword, Options => Options.Ignore());

@@ -25,7 +25,8 @@ namespace Fido.Action.Mapping
             {
                 Mapper.CreateMap<Dtos.Settings, Settings>()
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.ExternalCredential>, IList<ExternalCredential>>(Src.ExternalCredentials)))
-                    .ForMember(Dest => Dest.RequiresReadPermission, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
             }
         }
     }

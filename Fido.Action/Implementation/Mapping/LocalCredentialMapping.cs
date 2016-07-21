@@ -23,7 +23,7 @@ namespace Fido.Action.Mapping
         {
             using (new FunctionLogger(Log))
             {
-                Mapper.CreateMap<Dtos.User, SetLocalCredentialInitiate>()
+                Mapper.CreateMap<Dtos.User, LocalCredential>()
                     .ForMember(Dest => Dest.Password, Options => Options.Ignore());
             }
         }

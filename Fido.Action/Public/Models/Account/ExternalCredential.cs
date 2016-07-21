@@ -17,13 +17,9 @@ namespace Fido.Action.Models.Account
         public string EmailAddress { get; set; }
         #endregion
 
-   //     public ExternalCredential() { }
         public ExternalCredential()
-            //IFeedbackAPI FeedbackAPI,
-            //IAuthenticationAPI LoginAPI,
-            //IModelAPI ModelAPI)
-                : base (//FeedbackAPI, LoginAPI, ModelAPI,
-                        RequiresReadPermission: false, RequiresWritePermission: false)
+          //  : base(RequiresReadPermission: false, RequiresWritePermission: false)
+            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 
         public override bool Save(ExternalCredential Model)
