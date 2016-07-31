@@ -32,17 +32,14 @@
                 <a class="navbar-brand" href="@Url.Action("Index", "Home", new { Area = string.Empty })">FIDO</a>
             </div>
 
-            @*@Html.MyLink("Index", "AdHome", "Administration", "<i class=\"fa fa-2x fa-cog fa-fw\">");*@
-
             <div class="navbar-collapse collapse navbar-right">
-                @using (Html.BeginForm("Logout", "Authentication", new { Area = string.Empty }, FormMethod.Post, new { id = "LogoutForm" }))
+                @using (Html.BeginForm("Delete", "Login", new { Area = "Authentication" }, FormMethod.Post, new { id = "LogoutForm" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav">
-                        <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-cog fa-fw"></i></a></li>
-                        <li><a href="@Url.Action("Index", "Home", new { Area = string.Empty })">HOME</a></li>
-                        <li>@Html.ActionLink("ABOUT", "About", "Home", null, new { @class = "modal-link area=''" })</li>
+                        @Html.li(LinkType.Normal, "<i class=\"fa fa-2x fa-cog fa-fw\"></i>", "Index", "AdHome", "Administration")
+                        @Html.li(LinkType.Modal, "ABOUT", "About", "Home")
 
                         <li class="dropdown">
                             @if (Request.IsAuthenticated)

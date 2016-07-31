@@ -34,10 +34,9 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
                 InvalidResult: m => View(m));
         }
 
-        #region Logout
         [HttpPost]
-        [Authorize]
-        public ActionResult Logout()
+        [Authorize] // TO DO: Use the framework for this too
+        public ActionResult Delete()
         {
             // As this is the logout, there is no VM. The generation of
             // the view does not need service layer functions.
@@ -47,6 +46,5 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
 
             return RedirectToAction("Create", "Login");
         }
-        #endregion
     }
 }

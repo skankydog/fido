@@ -31,15 +31,12 @@
             </div>
 
             <div class="navbar-collapse collapse navbar-right">
-                @using (Html.BeginForm("Logout", "Authentication", new { Area = string.Empty }, FormMethod.Post, new { id = "LogoutForm" }))
+                @using (Html.BeginForm("Delete", "Login", new { Area = "Authentication" }, FormMethod.Post, new { id = "LogoutForm" }))
                 {
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav">
-                        @if (Request.IsAuthenticated)
-                        {
-                            <li><a href="@Url.Action("Index", "Home", new { Area = "" })"><i class="fa fa-2x fa-play fa-fw"></i></a></li>
-                        }
+                        <li><a href="@Url.Action("Index", "Home", new { Area = "" })"><i class="fa fa-2x fa-play fa-fw"></i></a></li>
 
                         <li class="dropdown">
                             @if (Request.IsAuthenticated)
@@ -49,6 +46,8 @@
                                     <li><a href="@Url.Action("Index", "User", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> USERS</a></li>
                                     <li><a href="@Url.Action("Index", "Role", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> ROLES</a></li>
                                     <li><a href="@Url.Action("Index", "Activity", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> ACTIVITIES</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="@Url.Action("Update", "Configuration", new { Area = "Administration" })"><i class="fa fa-cogs fa-fw"></i> CONFIGURATION</a></li>
                                     <li class="divider"></li>
                                     <li><a title="Logout" href="javascript:document.getElementById('LogoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> LOGOUT</a></li>
                                 </ul>

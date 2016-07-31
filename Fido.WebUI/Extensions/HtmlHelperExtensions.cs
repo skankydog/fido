@@ -7,6 +7,12 @@ using Fido.Action.Implementation;
 
 namespace Fido.WebUI.Extensions
 {
+    public enum LinkType
+    {
+        Normal = 0,
+        Modal
+    }
+
     public static class HtmlHelperExtensions
     {
         public static MvcHtmlString Flash<TYPE>(this HtmlHelper<TYPE> Helper)
@@ -36,37 +42,34 @@ namespace Fido.WebUI.Extensions
             return (TYPE)Value;
         }
 
-        public static MvcHtmlString MyAchor<TMODEL>(this HtmlHelper<TMODEL> Helper, string Action, string Controller, string Area, string Output)
+        // <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-cog fa-fw"></i></a></li>
+        public static string MyUrl<TMODEL>(this HtmlHelper<TMODEL> Html, string Display, string Action, string Controller, string Area = "")
             where TMODEL : IDataModel
         {
-            TMODEL Model = Helper.ViewData.Model;
-            MvcHtmlString Return = MvcHtmlString.Create("");
+            TMODEL Model = Html.ViewData.Model;
 
-        //    if (Model.HasReadPermission("AdHome", "Administration"))
-                Return = MvcHtmlString.Create("");
+            // TO DO: check permissions
 
-            //MvcHtmlString x = MvcHtmlString.Create("<li><a href=www.skankydog.com></a></li>");
-            MvcHtmlString x = MvcHtmlString.Create("<div>" + Model.GetType().ToString() + "</div>");
-            // Ok - I should have the model here
+            var Url = new UrlHelper(Html.ViewContext.RequestContext);
+            var y = Url.Action(Action, Controller, new { Area = Area });
 
-            return x;
+            return y.ToString();
         }
 
-        // <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-cog fa-fw"></i></a></li>
-        public static MvcHtmlString ListItem<TMODEL>(this HtmlHelper<TMODEL> Helper, string Action, string Controller, string Area)
+        public static MvcHtmlString li<TMODEL>(this HtmlHelper<TMODEL> Html, LinkType LinkType, string Display, string Action, string Controller, string Area = "")
             where TMODEL : IDataModel
         {
-            TMODEL Model = Helper.ViewData.Model;
-            MvcHtmlString Return = MvcHtmlString.Create("hello");// @Url.Action("Index", "AdHome", new { Area = "Administration" });
+            TMODEL Model = Html.ViewData.Model;
 
-       //     if (Model.HasReadPermission("AdHome", "Administration"))
-                Return = MvcHtmlString.Create("");
+            // TO DO: check permissions
 
-            //MvcHtmlString x = MvcHtmlString.Create("<li><a href=www.skankydog.com></a></li>");
-            MvcHtmlString x = MvcHtmlString.Create("<div>" + Model.GetType().ToString() + "</div>");
-            // Ok - I should have the model here
+            var Url = new UrlHelper(Html.ViewContext.RequestContext);
+            var Link = Url.Action(Action, Controller, new { Area = Area });
+            var AnchorClass = LinkType == LinkType.Modal ? "class = modal-link" : "";
 
-            return x;
+            var LI = string.Concat("<li><a ", AnchorClass, " href=\"", Link.ToString(), "\">", Display, "</a></li>");
+
+            return new MvcHtmlString(LI);
         }
     }
 }
