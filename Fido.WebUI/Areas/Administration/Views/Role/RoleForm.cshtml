@@ -16,11 +16,11 @@
     </div>
 
     <div class="col-xs-12">
-        @Html.ListBoxFor(m => m.SelectedActivities, new SelectList(Model.AllActivities, "Id", "Name"), new { @class = "form-control chosen-select" })
+        @Html.ListBoxFor(m => m.SelectedActivities, new SelectList(Model.AllActivities, "Id", "FullQualification"), new { @class = "form-control chosen-select" })
     </div>
 </div>
 
-<div class="row">
+@*<div class="row">
     <div class="col-xs-12 skd-padding">
         Users
     </div>
@@ -28,7 +28,7 @@
     <div class="col-xs-12">
         @Html.ListBoxFor(m => m.SelectedUsers, new SelectList(Model.AllUsers, "Id", "SurnameFirstname"), new { @class = "form-control chosen-select" })
     </div>
-</div>
+</div>*@
 
 <span class="skd-spacing-large"></span>
 

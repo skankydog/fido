@@ -442,10 +442,46 @@ namespace Fido.Service.Implementation
         //    }
         //}
 
-        public IList<Activity> GetActivities(Guid UserId)
+        public IList<Activity> GetAllowedActivities(Guid UserId)
         {
             using (new FunctionLogger(Log))
             {
+                var ActivityEntities = GetActivities(UserId);
+
+                IList<Dtos.Activity> ActivityDtos = new List<Dtos.Activity>();
+                ActivityDtos = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Dtos.Activity>>(ActivityEntities, ActivityDtos);
+
+                return ActivityDtos;
+            }
+        }
+
+        public IList<Activity> GetDeniedActivities(Guid UserId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var ActivityRepository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
+
+                    var All = ActivityRepository.GetAsIEnumerable(a => a.Id != null);
+                    var Allowed = GetActivities(UserId);
+                    var Denied = All.Where(a => !Allowed.Any(u => a.Id == u.Id)).ToList();
+
+                    IList<Dtos.Activity> ActivityDtos = new List<Dtos.Activity>();
+                    ActivityDtos = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Dtos.Activity>>(Denied, ActivityDtos);
+
+                    return ActivityDtos;
+                }
+            }
+        }
+
+        private IList<Entities.Activity> GetActivities(Guid UserId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                if (UserId == Guid.Empty)
+                    return new List<Entities.Activity>();
+
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
@@ -455,15 +491,12 @@ namespace Fido.Service.Implementation
                     foreach (var RoleEntity in UserEntity.Roles)
                     {
                         foreach (var ActivityEntity in RoleEntity.Activities)
-                            ActivityEntities.Add(ActivityEntity);           
+                            ActivityEntities.Add(ActivityEntity);
                     }
 
                     ActivityEntities = ActivityEntities.DistinctBy(e => e.Id).ToList();
 
-                    IList<Dtos.Activity> ActivityDtos = new List<Dtos.Activity>();
-                    ActivityDtos = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Dtos.Activity>>(ActivityEntities, ActivityDtos);
-
-                    return ActivityDtos;
+                    return ActivityEntities;
                 }
             }
         }

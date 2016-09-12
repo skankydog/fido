@@ -16,14 +16,12 @@ namespace Fido.Action.Implementation
 
     public interface IDataModel
     {
-        IList<Dtos.Activity> Permissions { get; set; }
+        IList<Dtos.Activity> Denied { get; set; }
 
-        //bool HasWritePermission(string Name, string Area);
-        //bool HasReadPermission(string Name, string Area);
-        //bool HasReadOrWritePermission(string Name, string Area);
-        //bool HasWritePermissions(string Area);
-        //bool HasReadPermissions(string Area);
-        bool HasArea(string Area);
+        void BuildDenied(Guid UserId);
+
+        bool Allowed(string Action, string Name, string Area);
+        bool NotAllowed(string Action, string Name, string Area);
     }
 
     public interface IModel<TMODEL> : ILogicModel, IDataModel

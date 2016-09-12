@@ -22,8 +22,6 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Activities()
-          //  : base (RequiresReadPermission: true,
-          //          RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 

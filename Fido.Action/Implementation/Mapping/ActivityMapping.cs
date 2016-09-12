@@ -32,7 +32,11 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
 
                 Mapper.CreateMap<Activity, Dtos.Activity>()
-                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.Roles, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Name, Options => Options.Ignore())    // Can't update from the UI
+                    .ForMember(Dest => Dest.Area, Options => Options.Ignore())    // Can't update from the UI
+                    .ForMember(Dest => Dest.Action, Options => Options.Ignore())  // Can't update from the UI
+                    .ForMember(Dest => Dest.Action, Options => Options.Ignore()); // Can't update from the UI
             }
         }
     }

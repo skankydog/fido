@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
 @using Fido.WebUI.Extensions
 
+@model Fido.Action.Implementation.IDataModel
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,25 +38,30 @@
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav">
-                        <li><a href="@Url.Action("Index", "Home", new { Area = "" })"><i class="fa fa-2x fa-play fa-fw"></i></a></li>
+                        @Html.li(LinkType.Normal, "<i class=\"fa fa-2x fa-play fa-fw\"></i>", "Index", "Home")
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">ADMINISTRATION<i class="fa fa-caret-down"></i></a>
+                            <ul class="dropdown-menu dropdown-user">
+                                @Html.li(LinkType.Normal, "<i class=\"fa fa-user fa-fw\"></i> USERS", "Index", "User", "Administration")
+                                @Html.li(LinkType.Normal, "<i class=\"fa fa-user fa-fw\"></i> ROLES", "Index", "Role", "Administration")
+                                @Html.li(LinkType.Normal, "<i class=\"fa fa-user fa-fw\"></i> ACTIVITIES", "Index", "Activity", "Administration")
+                                <li class="divider"></li>
+                                @Html.li(LinkType.Normal, "<i class=\"fa fa-cogs fa-fw\"></i> CONFIGURATION", "Update", "Configuration", "Administration")
+                            </ul>
+                        </li>
 
                         <li class="dropdown">
                             @if (Request.IsAuthenticated)
                             {
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">@User.Identity.GetUserName().ToUpper()<i class="fa fa-caret-down"></i></a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="@Url.Action("Index", "User", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> USERS</a></li>
-                                    <li><a href="@Url.Action("Index", "Role", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> ROLES</a></li>
-                                    <li><a href="@Url.Action("Index", "Activity", new { Area = "Administration" })"><i class="fa fa-user fa-fw"></i> ACTIVITIES</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="@Url.Action("Update", "Configuration", new { Area = "Administration" })"><i class="fa fa-cogs fa-fw"></i> CONFIGURATION</a></li>
-                                    <li class="divider"></li>
                                     <li><a title="Logout" href="javascript:document.getElementById('LogoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> LOGOUT</a></li>
                                 </ul>
                             }
                             else
                             {
-                                <a href="@Url.Action("Login", "Authentication", new { Area = string.Empty })">LOGIN</a>
+                                @Html.a(LinkType.Normal, "LOGIN", "Create", "Login", "Authentication")
                             }
                         </li>
                     </ul>

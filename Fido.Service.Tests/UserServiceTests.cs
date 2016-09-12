@@ -239,7 +239,7 @@ namespace Fido.Service.Tests
             Guid MargesUserId = UserService.GetByEmailAddress("marge.simpson@skankydog.com").Id;
 
             Assert.AreEqual(2, UserService.GetRoles(MargesUserId).Count);
-            Assert.AreEqual(6, UserService.GetActivities(MargesUserId).Count);
+            Assert.AreEqual(6, UserService.GetAllowedActivities(MargesUserId).Count);
         }
 
         //[TestMethod]

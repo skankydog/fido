@@ -12,9 +12,10 @@ namespace Fido.Dtos
         {
         }
 
-        public string Name { get; set; }
         public string Area { get; set; }
+        public string Name { get; set; }
         public string Action { get; set; }
+        public string FullQualification { get { return string.Concat(Area, ".", Name, ".", Action); } }
 
         public IList<Role> Roles { get; set; }
     }

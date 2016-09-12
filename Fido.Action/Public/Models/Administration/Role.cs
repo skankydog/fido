@@ -17,7 +17,7 @@ namespace Fido.Action.Models.Administration
 
         #region Data
         public IList<Activity> AllActivities = new List<Activity>();
-        public IList<User> AllUsers = new List<User>();
+    //    public IList<User> AllUsers = new List<User>();
 
         public Guid Id { get; set; }
 
@@ -26,7 +26,7 @@ namespace Fido.Action.Models.Administration
         public string Name { get; set; }
 
         public IList<Guid> SelectedActivities { get; set; }
-        public IList<Guid> SelectedUsers { get; set; }
+    //    public IList<Guid> SelectedUsers { get; set; }
 
         [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
@@ -36,14 +36,7 @@ namespace Fido.Action.Models.Administration
         public byte[] RowVersion { get; set; }
         #endregion
 
-        //public Role() { }
         public Role()
-            //IFeedbackAPI FeedbackAPI,
-            //IAuthenticationAPI LoginAPI,
-            //IModelAPI ModelAPI)
-            //    : base (//FeedbackAPI, LoginAPI, ModelAPI,
-            //            RequiresReadPermission: true,
-            //            RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
@@ -52,8 +45,8 @@ namespace Fido.Action.Models.Administration
             var ActivityService = ServiceFactory.CreateService<IActivityService>();
             Model.AllActivities = Mapper.Map<IList<Dtos.Activity>, IList<Activity>>(ActivityService.GetAll().OrderBy(a => a.Name).ToList());
 
-            var UserService = ServiceFactory.CreateService<IUserService>();
-            Model.AllUsers = Mapper.Map<IList<Dtos.User>, IList<User>>(UserService.GetAll().OrderBy(u => u.Fullname.SurnameFirstname).ToList());
+            //var UserService = ServiceFactory.CreateService<IUserService>();
+            //Model.AllUsers = Mapper.Map<IList<Dtos.User>, IList<User>>(UserService.GetAll().OrderBy(u => u.Fullname.SurnameFirstname).ToList());
 
             return Model;
         }
@@ -77,19 +70,17 @@ namespace Fido.Action.Models.Administration
             {
                 var RoleDto = Mapper.Map<Role, Dtos.Role>(Model);
 
-         //       RoleDto.Activities = new List<Dtos.Activity>();
                 RoleDto.Activities = Model.SelectedActivities == null ? new List<Dtos.Activity>()
                 : Mapper.Map<IList<Activity>, IList<Dtos.Activity>>(
                     (from a in Model.AllActivities
                      where (Model.SelectedActivities.Contains(a.Id))
                      select a).ToList());
 
-          //      RoleDto.Users = new List<Dtos.User>();
-                RoleDto.Users = Model.SelectedUsers == null ? new List<Dtos.User>()
-                : Mapper.Map<IList<User>, IList<Dtos.User>>(
-                    (from a in Model.AllUsers
-                     where (Model.SelectedUsers.Contains(a.Id))
-                     select a).ToList());
+                //RoleDto.Users = Model.SelectedUsers == null ? new List<Dtos.User>()
+                //: Mapper.Map<IList<User>, IList<Dtos.User>>(
+                //    (from a in Model.AllUsers
+                //     where (Model.SelectedUsers.Contains(a.Id))
+                //     select a).ToList());
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
                 RoleDto = RoleService.Save(RoleDto);

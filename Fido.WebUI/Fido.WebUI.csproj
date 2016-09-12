@@ -180,7 +180,7 @@
     <Compile Include="Areas\Account\Controllers\ExternalCredentialController.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\ConfigurationController.cs" />
-    <Compile Include="Areas\Administration\Controllers\AdHomeController.cs" />
+    <Compile Include="Areas\Administration\Controllers\xHomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\LocalCredentialController.cs" />
     <Compile Include="Areas\Administration\Controllers\RoleController.cs" />
     <Compile Include="Areas\Administration\Controllers\ActivityController.cs" />
@@ -302,8 +302,8 @@
     <Content Include="Areas\Administration\Views\Activity\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Activity\ActivityForm.cshtml" />
     <Content Include="Areas\Administration\Views\Activity\Update.cshtml" />
-    <Content Include="Areas\Administration\Views\AdHome\About.cshtml" />
-    <Content Include="Areas\Administration\Views\AdHome\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\xHome\About.cshtml" />
+    <Content Include="Areas\Administration\Views\xHome\Index.cshtml" />
     <Content Include="Areas\Account\Views\web.config" />
     <Content Include="Areas\Account\Views\EmailAddress\Create.cshtml" />
     <Content Include="Areas\Account\Views\Password\Update.cshtml" />

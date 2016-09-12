@@ -62,12 +62,11 @@
     <Compile Include="Implementation\Mapping\UserMapping.cs" />
     <Compile Include="Implementation\Access.cs" />
     <Compile Include="Public\IDispatcher.cs" />
-    <Compile Include="Public\Models\Account\__ChangeEmailAddressComplete.cs" />
     <Compile Include="Public\Models\Account\EmailAddress.cs" />
     <Compile Include="Public\Models\Account\ExternalCredential.cs" />
     <Compile Include="Public\Models\Account\Password.cs" />
-    <Compile Include="Public\Models\Account\__SetLocalCredentialComplete.cs" />
     <Compile Include="Public\Models\Administration\Configuration.cs" />
+    <Compile Include="Public\Models\Administration\Home.cs" />
     <Compile Include="Public\Models\Authentication\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\Authentication\ForgottenPassword.cs" />
     <Compile Include="Public\Models\Administration\LocalCredential.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Public\Models\Administration\Users.cs" />
     <Compile Include="Public\Models\Authentication\Login.cs" />
     <Compile Include="Public\Models\Account\Profile.cs" />
-    <Compile Include="Public\Models\Authentication\__RegistrationComplete.cs" />
     <Compile Include="Public\Models\_NoModel.cs" />
     <Compile Include="Public\Models\Authentication\Registration.cs" />
     <Compile Include="Public\Models\Authentication\ResetPassword.cs" />

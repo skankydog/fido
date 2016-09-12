@@ -66,7 +66,7 @@ namespace Fido.Action.Implementation
             {
                 try
                 {
-                    var Tmp = DataModel.Permissions; // Mapping wipes this out
+                    var Tmp = DataModel.Denied; // Mapping wipes this out
 
                     if (IndexOptions == null)
                     {
@@ -77,7 +77,7 @@ namespace Fido.Action.Implementation
                         DataModel = DataModel.Read(IndexOptions);
                     }
 
-                    DataModel.Permissions = Tmp; // Restore after mapping
+                    DataModel.Denied = Tmp; // Restore after mapping
                     DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)
@@ -99,12 +99,12 @@ namespace Fido.Action.Implementation
             {
                 try
                 {
-                    var Tmp = DataModel.Permissions; // Mapping wipes this out
+                    var Tmp = DataModel.Denied; // Mapping wipes this out
 
                     if (DataModel.Confirm(ConfirmationId) == false)
                         Log.InfoFormat("Unsuccessful confirmation: {0}", ConfirmationId.ToString());
 
-                    DataModel.Permissions = Tmp; // Restore after mapping
+                    DataModel.Denied = Tmp; // Restore after mapping
                     DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)

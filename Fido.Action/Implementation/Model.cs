@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
 using Fido.Action.Models;
+using Fido.Service;
 
 namespace Fido.Action.Implementation
 {
@@ -11,56 +12,69 @@ namespace Fido.Action.Implementation
     {
         #region IDataModel Implementation
         [ScriptIgnore]
-        public IList<Dtos.Activity> Permissions { get; set; }
+        public IList<Dtos.Activity> Denied { get; set; }
 
-        //public bool HasWritePermission(string Name, string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Name == Name &&
-        //                  p.Area == Area &&
-        //                  p.Action == Permission.Write.ToString()
-        //            select p).Count() == 1;
-        //}
-
-        //public bool HasReadPermission(string Name, string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Name == Name &&
-        //                  p.Area == Area &&
-        //                  p.Action == Permission.Read.ToString()
-        //            select p).Count() == 1;
-        //}
-
-        //public bool HasReadOrWritePermission(string Name, string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Name == Name &&
-        //                  p.Area == Area
-        //            select p).Count() > 0;
-        //}
-
-        //public bool HasWritePermissions(string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Area == Area &&
-        //                  p.Action == Permission.Write.ToString()
-        //            select p).Count() > 0;
-        //}
-
-        //public bool HasReadPermissions(string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Area == Area &&
-        //                  p.Action == Permission.Read.ToString()
-        //            select p).Count() > 0;
-        //}
-
-        public bool HasArea(string Area)
+        public void BuildDenied(Guid UserId)
         {
-            return (from p in Permissions
-                    where p.Area == Area
-                    select p).Count() > 0;
+            Denied = new List<Dtos.Activity>();
+
+            Guid Id = AuthenticationAPI.AuthenticatedId;
+
+            if (Id != Guid.Empty)
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
+                var Activities = UserService.GetDeniedActivities(Id);
+
+                Denied = (from Dtos.Activity a in Activities
+                          select a).ToList();
+            }
         }
+
+        public bool Allowed(string Action, string Name, string Area)
+        {
+            return (from Dtos.Activity a in Denied
+                    where a.Name == Name && 
+                    a.Area == Area &&
+                    a.Action == Action
+                    select a).Count() == 0;
+        }
+
+        public bool NotAllowed(string Action, string Name, string Area)
+        {
+            string ModelAction = "";
+
+            switch (Action)
+            {
+                case "Update|Get":
+                    ModelAction = "Read";
+                    break;
+
+                case "Update|Post":
+                    ModelAction = "Write";
+                    break;
+
+                case "Create|Get":
+                    ModelAction = "Write";
+                    break;
+
+                case "Create|Post":
+                    ModelAction = "Write";
+                    break;
+
+                    // ...
+            }
+
+            // now build the activity record and see if in the list - if in the list, check to see if we have it
+            // If not there at all, then return true (I think)
+            return true; // for now
+        }
+
+        //public bool HasArea(string Area)
+        //{
+        //    return (from p in Permissions
+        //            where p.Area == Area
+        //            select p).Count() > 0;
+        //}
         #endregion
 
         [ScriptIgnore]

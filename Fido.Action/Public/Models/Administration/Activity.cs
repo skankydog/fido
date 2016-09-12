@@ -20,7 +20,10 @@ namespace Fido.Action.Models.Administration
 
         public Guid Id { get; set; }
 
+        public string Area { get; set; }
         public string Name { get; set; }
+        public string Action { get; set; }
+        public string FullQualification { get; set; }
 
         public IList<Guid> SelectedRoles { get; set; }
 
@@ -33,8 +36,6 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Activity()
-         //   : base(RequiresReadPermission: true,
-         //          RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
@@ -63,7 +64,8 @@ namespace Fido.Action.Models.Administration
         {
             using (new FunctionLogger(Log))
             {
-                var ActivityDto = Mapper.Map<Activity, Dtos.Activity>(Model);
+                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+                var ActivityDto = ActivityService.Get(Model.Id);
 
                 ActivityDto.Roles = Model.SelectedRoles == null ? new List<Dtos.Role>()
                 : Mapper.Map<IList<Role>, IList<Dtos.Role>>(
@@ -71,7 +73,7 @@ namespace Fido.Action.Models.Administration
                      where (Model.SelectedRoles.Contains(a.Id))
                      select a).ToList());
 
-                var ActivityService = ServiceFactory.CreateService<IActivityService>();
+             //   ActivityDto = Mapper.Map<Activity, Dtos.Activity>(Model);
                 ActivityDto = ActivityService.Save(ActivityDto);
 
                 FeedbackAPI.DisplaySuccess("The activity details have been saved");

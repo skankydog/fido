@@ -218,21 +218,10 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                Guid Id = AuthenticationAPI.AuthenticatedId;
-                Data.Permissions = new List<Dtos.Activity>();
-
-                if (Id != Guid.Empty)
-                {
-                    var UserService = ServiceFactory.CreateService<IUserService>();
-                    var Activities = UserService.GetActivities(Id);
-
-                    Data.Permissions = (from Dtos.Activity a in Activities
-                                        select a).ToList();
-                }
-
                 Data.FeedbackAPI = FeedbackAPI;
                 Data.AuthenticationAPI = AuthenticationAPI;
                 Data.ModelAPI = ModelAPI;
+                Data.BuildDenied(AuthenticationAPI.AuthenticatedId);
 
                 return Data;
             }
@@ -243,6 +232,13 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
+                if ((RequestedAction == Action.Read && DataModel.ReadAccess == Access.Authenticated ||
+                     RequestedAction == Action.Write && DataModel.WriteAccess == Access.Authenticated) &&
+                     !AuthenticationAPI.Authenticated)
+                {
+                    return AuthenticateResult();
+                }
+
                 if (RequestedAction == Action.Read && DataModel.ReadAccess == Access.Permissioned ||
                     RequestedAction == Action.Write && DataModel.WriteAccess == Access.Permissioned)
                 {
@@ -252,16 +248,13 @@ namespace Fido.Action.Implementation
                     if (AuthenticationAPI.LoggedInCredentialState == "Expired") // Magic string to be fixed
                         return PasswordResetResult(DataModel);
 
+                    var ActionName = RequestedAction.ToString();
                     var Name = DataModel.GetType().Name;
                     var Area = string.Join(string.Empty, DataModel.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
-                    var ActionName = RequestedAction.ToString();
-                    var Allowed = (from Dtos.Activity a in DataModel.Permissions
-                                   where a.Name == Name &&
-                                        a.Area == Area && 
-                                        a.Action == ActionName
-                                   select a).Count() == 1;
 
-                    Log.InfoFormat("Permission: {0}, {1}, {2} = {3}", Name, Area, ActionName, Allowed);
+                    var Allowed = DataModel.Allowed(ActionName, Name, Area);
+
+                    Log.InfoFormat("Permission: {0}, {1}, {2} = {3}", ActionName, Name, Area, Allowed);
 
                     if (!Allowed)
                     {

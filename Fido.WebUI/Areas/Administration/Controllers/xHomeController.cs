@@ -13,11 +13,13 @@ using Fido.WebUI.Binders;
 
 namespace Fido.WebUI.Areas.Administration.Controllers
 {
-    public class AdHomeController : BaseController
+    public class xHomeController : BaseController
     {
         public ActionResult Index()
         {
-            return View();
+            return Dispatcher.View(
+                DataModel: new Home(),
+                Result: m => View());
         }
 
         public ActionResult About()

@@ -85,7 +85,7 @@
         </div>
         <div class="col-xs-4 col-md-2">
             <div class="input-group">
-                @if (Model.HasExternalCredentials)
+                @if (Model.ExternalCredentialsArePresent)
                 {
                     @Html.DropDownListFor(m => m.ExternalCredentialState, new SelectList(
                         Model.AllExternalCredentialStates,

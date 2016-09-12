@@ -42,34 +42,37 @@ namespace Fido.WebUI.Extensions
             return (TYPE)Value;
         }
 
-        // <li><a href="@Url.Action("Index", "AdHome", new { Area = "Administration" })"><i class="fa fa-2x fa-cog fa-fw"></i></a></li>
-        public static string MyUrl<TMODEL>(this HtmlHelper<TMODEL> Html, string Display, string Action, string Controller, string Area = "")
-            where TMODEL : IDataModel
-        {
-            TMODEL Model = Html.ViewData.Model;
-
-            // TO DO: check permissions
-
-            var Url = new UrlHelper(Html.ViewContext.RequestContext);
-            var y = Url.Action(Action, Controller, new { Area = Area });
-
-            return y.ToString();
-        }
-
         public static MvcHtmlString li<TMODEL>(this HtmlHelper<TMODEL> Html, LinkType LinkType, string Display, string Action, string Controller, string Area = "")
             where TMODEL : IDataModel
         {
             TMODEL Model = Html.ViewData.Model;
-
-            // TO DO: check permissions
+            
+     //       if (!Model.NotAllowed(Action, Controller, Area))
+     //           return new MvcHtmlString(string.Concat("<li>", Display, "</li>")); // greyed/disabled?
 
             var Url = new UrlHelper(Html.ViewContext.RequestContext);
             var Link = Url.Action(Action, Controller, new { Area = Area });
             var AnchorClass = LinkType == LinkType.Modal ? "class = modal-link" : "";
 
-            var LI = string.Concat("<li><a ", AnchorClass, " href=\"", Link.ToString(), "\">", Display, "</a></li>");
+            var ListItem = string.Concat("<li><a ", AnchorClass, " href=\"", Link.ToString(), "\">", Display, "</a></li>");
 
-            return new MvcHtmlString(LI);
+            return new MvcHtmlString(ListItem);
+        }
+
+        public static MvcHtmlString a<TMODEL>(this HtmlHelper<TMODEL> Html, LinkType LinkType, string Display, string Action, string Controller, string Area = "")
+            where TMODEL : IDataModel
+        {
+            TMODEL Model = Html.ViewData.Model;
+
+            // TO DO: check permissions - return disabled if no access
+
+            var Url = new UrlHelper(Html.ViewContext.RequestContext);
+            var Link = Url.Action(Action, Controller, new { Area = Area });
+            var AnchorClass = LinkType == LinkType.Modal ? "class = modal-link" : "";
+
+            var Anchor = string.Concat("<a ", AnchorClass, " href=\"", Link.ToString(), "\">", Display, "</a>");
+
+            return new MvcHtmlString(Anchor);
         }
     }
 }

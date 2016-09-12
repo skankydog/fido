@@ -1,17 +1,35 @@
 ﻿@model Fido.Action.Models.Administration.Activity
     
 <div class="row">
-    <div class="col-sm-6 skd-padding">
+    <div class="col-sm-6">
         <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-gear"></i></span>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "name", @value = "" })
+            <span class="input-group-addon"><i class="fa fa-gear"> @Html.LabelFor(m => m.Name)</i></span>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control disabled", @placeholder = "name", @value = "" })
         </div>
         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-gear"> @Html.LabelFor(m => m.Area)</i></span>
+            @Html.TextBoxFor(m => m.Area, new { @class = "form-control disabled", @placeholder = "name", @value = "" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Area, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-gear"></i> @Html.LabelFor(m => m.Action)</span>
+            @Html.TextBoxFor(m => m.Action, new { @class = "form-control disabled", @placeholder = "name", @value = "" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Action, "", new { @class = "text-danger" })
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-xs-12 skd-padding">
+    <div class="col-xs-12">
         Roles
     </div>
 
@@ -19,8 +37,6 @@
         @Html.ListBoxFor(m => m.SelectedRoles, new SelectList(Model.AllRoles, "Id", "Name"), new { @class = "form-control chosen-select" })
     </div>
 </div>
-
-<span class="skd-spacing-large"></span>
 
 <div class="row">
     <div class="col-xs-6 col-centered">

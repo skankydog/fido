@@ -38,7 +38,7 @@
                     @Html.AntiForgeryToken()
 
                     <ul class="nav navbar-nav">
-                        @Html.li(LinkType.Normal, "<i class=\"fa fa-2x fa-cog fa-fw\"></i>", "Index", "AdHome", "Administration")
+                        @Html.li(LinkType.Normal, "<i class=\"fa fa-2x fa-cog fa-fw\"></i>", "Index", "User", "Administration")
                         @Html.li(LinkType.Modal, "ABOUT", "About", "Home")
 
                         <li class="dropdown">
@@ -46,15 +46,15 @@
                             {
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">@User.Identity.GetUserName().ToUpper()<i class="fa fa-caret-down"></i></a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="@Url.Action("Update", "Profile", new { Area = "Account" })"><i class="fa fa-user fa-fw"></i> PROFILE</a></li>
-                                    <li><a href="@Url.Action("Settings", "Account", new { Area = string.Empty })"><i class="fa fa-gear fa-fw"></i> SETTINGS</a></li>
+                                    @Html.li(LinkType.Normal, "<i class=\"fa fa-user fa-fw\"></i> PROFILE", "Update", "Profile", "Account")
+                                    @Html.li(LinkType.Normal, "<i class=\"fa fa-gear fa-fw\"></i> SETTINGS", "Settings", "Account")
                                     <li class="divider"></li>
                                     <li><a title="Logout" href="javascript:document.getElementById('LogoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> LOGOUT</a></li>
                                 </ul>
                             }
                             else
                             {
-                                <a href="@Url.Action("Create", "Login", new { Area = "Authentication" })">LOGIN</a>
+                                @Html.a(LinkType.Normal, "LOGIN", "Create", "Login", "Authentication")
                             }
                         </li>
                     </ul>

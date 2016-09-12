@@ -57,7 +57,7 @@ namespace Fido.Action.Models.Administration
         [Display(Name = "password age (days)")]
         public int? PasswordAgeDays { get; set; }
 
-        public bool HasExternalCredentials { get; set; }
+        public bool ExternalCredentialsArePresent { get; set; }
         [Display(Name = "external credential state")]
         public string ExternalCredentialState { get; set; }
 
@@ -77,8 +77,6 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public User()
-        //    : base(RequiresReadPermission: true,
-        //           RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
