@@ -17,8 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.View(
-                DataModel: new Home(),
+            return Dispatcher.Index<Home>(
                 Result: m => View());
         }
 

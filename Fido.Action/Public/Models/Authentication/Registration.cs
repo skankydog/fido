@@ -38,7 +38,6 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public Registration()
-        //    : base(RequiresReadPermission: false, RequiresWritePermission: false)
             : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 

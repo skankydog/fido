@@ -16,13 +16,12 @@ namespace Fido.Action.Models.Administration
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public IList<Role> AllRoles = new List<Role>();
-
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+     //   public string Name { get; set; }
 
-        public IList<Guid> SelectedRoles { get; set; }
+        public int PasswordChangePolicyDays { get; set; }
+        public bool PasswordChangePolicy { get; set; }
 
         [Display(Name = "created date")]
         public DateTime CreatedUtc { get; set; }
@@ -32,14 +31,7 @@ namespace Fido.Action.Models.Administration
         public byte[] RowVersion { get; set; }
         #endregion
 
-   //     public Configuration() { }
         public Configuration()
-            //IFeedbackAPI FeedbackAPI,
-            //IAuthenticationAPI LoginAPI,
-            //IModelAPI ModelAPI)
-             //   : base (//FeedbackAPI, LoginAPI, ModelAPI,
-             //           RequiresReadPermission: true,
-             //           RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 

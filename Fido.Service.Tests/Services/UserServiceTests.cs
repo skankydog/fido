@@ -209,7 +209,7 @@ namespace Fido.Service.Tests
             IList<Role> BartsRoles = UserService.GetRoles(BartsUserId);
             IList<Role> MargesRoles = UserService.GetRoles(MargesUserId);
 
-            Assert.AreEqual(0, BartsRoles.Count);
+            Assert.AreEqual(1, BartsRoles.Count);
             Assert.AreEqual(2, MargesRoles.Count);
 
             UserService.SetRoles(BartsUserId, MargesRoles);
@@ -249,15 +249,15 @@ namespace Fido.Service.Tests
         //    Guid HomersId = UserService.GetByEmailAddress("homer.simpson@skankydog.com").Id;
         //    Guid BartsId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
 
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity01", "", ""));
-        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Activity01", "", ""));
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity02", "", ""));
-        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Activity02", "", ""));
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity03", "", ""));
-        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Activity03", "", ""));
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity04", "", ""));
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity05", "", ""));
-        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Activity06", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 1", "", ""));
+        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Controller/Model 1", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 2", "", ""));
+        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Controller/Model 2", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 3", "", ""));
+        //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Controller/Model 3", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 4", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 5", "", ""));
+        //    Assert.IsTrue(UserService.UserHasActivity(HomersId, "Controller/Model 6", "", ""));
         //    Assert.IsFalse(UserService.UserHasActivity(HomersId, "Non-Existent Activity", "", ""));
         //    Assert.IsFalse(UserService.UserHasActivity(BartsId, "Non-Existent Activity", "", ""));
         //}

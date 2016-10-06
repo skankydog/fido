@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Update(Guid ConfirmationId)
         {
-            return Dispatcher.Load<ResetPassword>(
+            return Dispatcher.Update<ResetPassword>(
                 Id: ConfirmationId,
                 Result: m => View(m));
         }
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
         [HttpPost]
         public ActionResult Update(ResetPassword Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Home"),
                 InvalidResult: m => View(m));

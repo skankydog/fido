@@ -31,7 +31,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
                 return RedirectToAction("Index", "Settings");
             }
 
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: new ExternalCredential
                     {
                         Id = Guid.Empty,
@@ -46,7 +46,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         #region Unlink
         public ActionResult Unlink(ExternalCredential Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 Result: m => RedirectToAction("Index", "Settings"));
         }

@@ -479,13 +479,14 @@ namespace Fido.Service.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                if (UserId == Guid.Empty)
-                    return new List<Entities.Activity>();
-
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(e => e.Id == UserId, "Roles.Activities");
+
+                    if (UserEntity == null)
+                        return new List<Entities.Activity>(); // no entities for an invalid user id
+
                     var ActivityEntities = new List<Entities.Activity>();
 
                     foreach (var RoleEntity in UserEntity.Roles)
@@ -495,7 +496,6 @@ namespace Fido.Service.Implementation
                     }
 
                     ActivityEntities = ActivityEntities.DistinctBy(e => e.Id).ToList();
-
                     return ActivityEntities;
                 }
             }

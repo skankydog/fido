@@ -20,7 +20,6 @@ namespace Fido.DataAccess.Tests
             User UserEntity = new User
             {
                 Id = Guid.NewGuid(),
-                //CreatedUtc = DateTime.UtcNow,
                 Password = "WEwew66&&3jhjsD",
                 EmailAddress = "john.citizen@skankydog.com",
                 Fullname = new Fullname { Firstname = "John", Surname = "Citizen" }
@@ -34,13 +33,63 @@ namespace Fido.DataAccess.Tests
                 UnitOfWork.Commit();
             }
 
-            Assert.IsTrue(Exists(UserEntity.Id));
+            Assert.IsNotNull(Helpers.GetUser(UserEntity.Id));
+        }
+
+        [TestMethod]
+        public void CanCascadeInsert()
+        {
+            Activity NewActivity01 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity01", Area = "", Action = "" };
+            Activity NewActivity02 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity02", Area = "", Action = "" };
+            Activity NewActivity03 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity03", Area = "", Action = "" };
+
+            Role NewRole1 = new Role { Id = Guid.NewGuid(), Name = "NewRole1" };
+            NewRole1.Activities.Add(NewActivity01);
+            NewRole1.Activities.Add(NewActivity02);
+
+            Role NewRole2 = new Role { Id = Guid.NewGuid(), Name = "NewRole2" };
+            NewRole2.Activities.Add(NewActivity01);
+            NewRole2.Activities.Add(NewActivity03);
+
+            User NewUser = new User
+            {
+                Id = Guid.NewGuid(),
+                LocalCredentialState = "Enabled",
+                Password = "some password",
+                PasswordLastChangeUtc = DateTime.UtcNow,
+                EmailAddress = "new.user@skankydog.com",
+                EmailAddressLastChangeUtc = DateTime.UtcNow,
+                Fullname = new Fullname { Firstname = "John", Surname = "Citizen" },
+                About = "about text"
+            };
+            NewUser.Roles.Add(NewRole1);
+            NewUser.Roles.Add(NewRole2);
+            NewUser.ExternalCredentialState = "Enabled";
+
+            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+            {
+                var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                UserRepository.CascadeInsert(NewUser);
+
+                UnitOfWork.Commit();
+            }
+
+            User SavedUser;
+
+            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+            {
+                var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                SavedUser = UserRepository.Get(NewUser.Id, "Roles, Roles.Activities");
+            }
+
+            Assert.AreEqual(2, SavedUser.Roles.Count());
+            Assert.AreEqual(2, SavedUser.Roles.First().Activities.Count());
         }
 
         [TestMethod]
         public void CanGetById()
         {
-            Guid Id = Insert();
+            Guid Id = Helpers.InsertCitizen();
             User UserEntity;
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
@@ -56,7 +105,7 @@ namespace Fido.DataAccess.Tests
         [TestMethod]
         public void CanGetByPredicate()
         {
-            Guid Id = Insert();
+            Guid Id = Helpers.InsertCitizen();
             User UserEntity;
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
@@ -69,35 +118,76 @@ namespace Fido.DataAccess.Tests
             Assert.IsNotNull(UserEntity);
         }
 
+        //[TestMethod]
+        //public void CanUpdate()
+        //{
+        //    Guid Id = Helpers.InsertCitizen();
+        //    User UserEntity = Helpers.GetUser(Id);
+
+        //    using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //    {
+        //        IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+
+        //        UserEntity.Fullname.Surname = "Changed";
+        //        Repository.Update(UserEntity);
+        //        UnitOfWork.Commit();
+        //    }
+
+        //    UserEntity = Helpers.GetUser(Id);
+        //    Assert.AreEqual("Changed", UserEntity.Fullname.Surname);
+        //}
+
         [TestMethod]
         public void CanUpdate()
         {
-            Guid Id = Insert();
-            User UserEntity = Get(Id);
+            User ReadUser;
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                ReadUser = UserRepository.GetByExternalEmailAddress("homer.simpson@skankydog.com");
+            }
 
-                UserEntity.Fullname.Surname = "Changed";
-                Repository.Update(UserEntity);
+            Assert.IsNotNull(ReadUser);
+            Assert.AreEqual(4, ReadUser.Roles.Count());
+
+            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+            {
+                var RoleRepository = DataAccessFactory.CreateRepository<IRoleRepository>(UnitOfWork);
+                var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+
+                var NumberedRoles = RoleRepository.GetAsIEnumerable(r => r.Name.StartsWith("Role"));
+                Assert.AreEqual(2, NumberedRoles.Count());
+
+                ReadUser.Roles = (ICollection<Role>)NumberedRoles;
+                ReadUser.Fullname.Surname = "Changed";
+                UserRepository.Update(ReadUser);
+
                 UnitOfWork.Commit();
             }
 
-            UserEntity = Get(Id);
-            Assert.AreEqual("Changed", UserEntity.Fullname.Surname);
+            User SavedUser;
+
+            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+            {
+                var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                SavedUser = UserRepository.Get(ReadUser.Id);
+            }
+
+            Assert.AreEqual(2, SavedUser.Roles.Count());
+            Assert.AreEqual("Changed", SavedUser.Fullname.Surname);
         }
 
         [TestMethod]
         public void CanDeleteByPredicate()
         {
-            Assert.AreEqual(0, Count());
+            Assert.AreEqual(0, Helpers.CountCitizens());
 
-            Insert();
-            Insert();
-            Insert();
+            Helpers.InsertCitizen();
+            Helpers.InsertCitizen();
+            Helpers.InsertCitizen();
 
-            Assert.AreEqual(3, Count());
+            Assert.AreEqual(3, Helpers.CountCitizens());
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -107,72 +197,10 @@ namespace Fido.DataAccess.Tests
                 UnitOfWork.Commit();
             }
 
-            Assert.AreEqual(0, Count());
+            Assert.AreEqual(0, Helpers.CountCitizens());
         }
 
-        private bool Exists(Guid Id)
-        {
-            User UserEntity;
-
-            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-            {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                UserEntity = Repository.Get(Id);
-            }
-
-            return UserEntity != null;
-        }
-
-        private Guid Insert()
-        {
-            User UserEntity = new User
-            {
-                Id = Guid.NewGuid(),
-                EmailAddress = string.Concat(Guid.NewGuid(), "@skankydog.com"),
-                Password = "WEwew66&&3jhjsD",
-                Fullname = new Fullname { Firstname = "John", Surname = "Citizen" }
-            };
-
-            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-            {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                Repository.CascadeInsert(UserEntity);
-                UnitOfWork.Commit();
-            }
-
-            return UserEntity.Id;
-        }
-
-        private User Get(Guid Id)
-        {
-            User UserEntity;
-
-            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-            {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                UserEntity = Repository.Get(Id);
-            }
-
-            return UserEntity;
-        }
-
-        private int Count()
-        {
-            int Count;
-
-            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-            {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                Count = Repository.GetAsIEnumerable(e => e.Fullname.Surname == "Citizen").ToList().Count;
-            }
-
-            return Count;
-        }
-
+        #region Initialisation
         [ClassInitialize]
         public static void Initialise(TestContext Context)
         {
@@ -190,5 +218,6 @@ namespace Fido.DataAccess.Tests
         {
             DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
+        #endregion
     }
 }

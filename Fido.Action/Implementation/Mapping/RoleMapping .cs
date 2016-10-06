@@ -32,7 +32,11 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.SelectedActivities, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Activity>, IList<Guid>>(Src.Activities)))
                //     .ForMember(Dest => Dest.SelectedUsers, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.User>, IList<Guid>>(Src.Users)))
                     .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore());
 
                 Mapper.CreateMap<Role, Dtos.Role>()
                     .ForMember(Dest => Dest.Activities, Options => Options.Ignore())

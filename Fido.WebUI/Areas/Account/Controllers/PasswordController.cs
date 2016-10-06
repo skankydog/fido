@@ -15,15 +15,14 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.Create(
-                new Password(),
+            return Dispatcher.Create<Password>(
                 Result: m => PartialView());
         }
 
         [HttpPost]
         public ActionResult Update(Password Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings")),
                 InvalidResult: m => PartialView(m));

@@ -35,7 +35,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
                 return RedirectToAction("Create", "Login", new { Area = "Authentication" });
             }
 
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: new ExternalLoginCallback
                     {
                         LoginProvider = ExternalLoginInfo.Login.LoginProvider,

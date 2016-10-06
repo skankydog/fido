@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.Load<Profile>(
+            return Dispatcher.Update<Profile>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }
@@ -23,7 +23,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
         [HttpPost]
         public ActionResult Update(Profile Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 Result: m => View(m));
         }

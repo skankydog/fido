@@ -17,36 +17,34 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.View(
-                DataModel: new Users(),
+            return Dispatcher.Index<Users>(
                 Result: m => View());
         }
 
         public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.Load<Users>(
+            return Dispatcher.Index<Users>(
                 IndexOptions: IndexOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Create()
         {
-            return Dispatcher.Create(
-                DataModel: new User(),
+            return Dispatcher.Create<User>(
                 Result: m => View(m));
         }
 
         [HttpPost]
         public ActionResult Create(User Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Create(
                 DataModel: Model,
                 Result: m => RedirectToAction("Index"));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.Load<User>(
+            return Dispatcher.Update<User>(
                 Id: Id,
                 Result: m => View(m));
         }
@@ -54,7 +52,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(User Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "User"),
                 InvalidResult: m => View(m));
@@ -62,7 +60,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Load<User>(
+            return Dispatcher.Update<User>(
                 Id: Id,
                 Result: m => PartialView(m));
         }

@@ -13,14 +13,14 @@ namespace Fido.DataAccess.Implementation
         {
             Delete();
 
-            Activity Activity01 = new Activity { Id = Guid.NewGuid(), Name = "Activity01", Area = "Area 1", Action = "Read" };
-            Activity Activity02 = new Activity { Id = Guid.NewGuid(), Name = "Activity02", Area = "Area 1", Action = "Write" };
-            Activity Activity03 = new Activity { Id = Guid.NewGuid(), Name = "Activity03", Area = "Area 1", Action = "Write" };
-            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Name = "Activity04", Area = "Area 2", Action = "Read" };
-            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Name = "Activity05", Area = "Area 3", Action = "Read" };
-            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Name = "Activity06", Area = "Area 4", Action = "Read" };
+            Activity Activity01 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 1", Area = "Namespace 1" };
+            Activity Activity02 = new Activity { Id = Guid.NewGuid(), Action = "Action 2", Name = "Controller/Model 2", Area = "Namespace 1" };
+            Activity Activity03 = new Activity { Id = Guid.NewGuid(), Action = "Action 2", Name = "Controller/Model 3", Area = "Namespace 1" };
+            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 4", Area = "Namespace 2" };
+            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 5", Area = "Namespace 3" };
+            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 6", Area = "Namespace 4" };
 
-            Role AllActivitiesRole = new Role { Id = Guid.NewGuid(), Name = "AllActivitiesRole" };
+            Role AllActivitiesRole = new Role { Id = Guid.NewGuid(), Name = "All Activities" };
             AllActivitiesRole.Activities.Add(Activity01);
             AllActivitiesRole.Activities.Add(Activity02);
             AllActivitiesRole.Activities.Add(Activity03);
@@ -28,17 +28,17 @@ namespace Fido.DataAccess.Implementation
             AllActivitiesRole.Activities.Add(Activity05);
             AllActivitiesRole.Activities.Add(Activity06);
 
-            Role Role02 = new Role { Id = Guid.NewGuid(), Name = "Role02" };
-            Role02.Activities.Add(Activity01);
-            Role02.Activities.Add(Activity02);
-            Role02.Activities.Add(Activity03);
-            Role02.Activities.Add(Activity04);
+            Role Role2 = new Role { Id = Guid.NewGuid(), Name = "Role 2" };
+            Role2.Activities.Add(Activity01);
+            Role2.Activities.Add(Activity02);
+            Role2.Activities.Add(Activity03);
+            Role2.Activities.Add(Activity04);
 
-            Role Role03 = new Role { Id = Guid.NewGuid(), Name = "Role03" };
-            Role03.Activities.Add(Activity03);
-            Role03.Activities.Add(Activity04);
-            Role03.Activities.Add(Activity05);
-            Role03.Activities.Add(Activity06);
+            Role Role3 = new Role { Id = Guid.NewGuid(), Name = "Role 3" };
+            Role3.Activities.Add(Activity03);
+            Role3.Activities.Add(Activity04);
+            Role3.Activities.Add(Activity05);
+            Role3.Activities.Add(Activity06);
 
             Role FidoAdministrator = new Role { Id = Guid.NewGuid(), Name = "Fido Administrator" };
 
@@ -57,8 +57,8 @@ namespace Fido.DataAccess.Implementation
                           "At this stage, there is not really any information about Homer.")
             };
             HomerSimpson.Roles.Add(AllActivitiesRole);
-            HomerSimpson.Roles.Add(Role02);
-            HomerSimpson.Roles.Add(Role03);
+            HomerSimpson.Roles.Add(Role2);
+            HomerSimpson.Roles.Add(Role3);
             HomerSimpson.Roles.Add(FidoAdministrator);
             HomerSimpson.ExternalCredentialState = "Enabled";
             HomerSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "HomerFacebook1", EmailAddress = "homer@gmail.com" });
@@ -79,8 +79,8 @@ namespace Fido.DataAccess.Implementation
                 Fullname = new Fullname { Firstname = "Marge", Surname = "Simpson" },
                 About = "This is something about Marge"
             };
-            MargeSimpson.Roles.Add(Role02);
-            MargeSimpson.Roles.Add(Role03);
+            MargeSimpson.Roles.Add(Role2);
+            MargeSimpson.Roles.Add(Role3);
             MargeSimpson.ExternalCredentialState = "Enabled";
             MargeSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "MargeFacebook1", EmailAddress = "marge.simpson@skankydog.com" });
             MargeSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "MargeFacebook3", EmailAddress = "simpsons@skankydog.com" });
@@ -97,7 +97,7 @@ namespace Fido.DataAccess.Implementation
                 Fullname = new Fullname { Firstname = "Bart", Surname = "Simpson" },
                 About = "This is something about Bart"
             };
-            BartSimpson.Roles.Add(Role02);
+            BartSimpson.Roles.Add(Role2);
             BartSimpson.ExternalCredentialState = "Enabled";
             BartSimpson.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "BartFacebook1", EmailAddress = "bart.simpson@skankydog.com" });
 

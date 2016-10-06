@@ -28,13 +28,13 @@ namespace Fido.DataAccess.Tests
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
                 Repository.CascadeInsert(UserEntity);
                 UnitOfWork.Rollback();
             }
 
-            Assert.IsFalse(Exists(UserEntity.Id));
+            Assert.IsNull(Helpers.GetUser(UserEntity.Id));
 
             // Make sure a change to an existing entity can be rolled back...
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
@@ -76,7 +76,7 @@ namespace Fido.DataAccess.Tests
                             new Activity {
                                 Id = Guid.NewGuid(),
                                 Name = "SomeActivity",
-                                Action ="Write",
+                                Action ="Action 2",
                                 Area = "SomeArea"
                             }
                         }
@@ -112,12 +112,12 @@ namespace Fido.DataAccess.Tests
             using (IUnitOfWork OuterUnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var OuterRepository = DataAccessFactory.CreateRepository<IActivityRepository>(OuterUnitOfWork);
-                var OuterEntity = OuterRepository.Get(e => e.Name == "Activity01");
+                var OuterEntity = OuterRepository.Get(e => e.Name == "Controller/Model 1");
 
                 using (IUnitOfWork InnerUnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var InnerRepository = DataAccessFactory.CreateRepository<IActivityRepository>(InnerUnitOfWork);
-                    var InnerEntity = InnerRepository.Get(e => e.Name == "Activity01");
+                    var InnerEntity = InnerRepository.Get(e => e.Name == "Controller/Model 1");
 
                     InnerEntity.Name = "New Name";
                     InnerRepository.Update(InnerEntity);
@@ -129,20 +129,7 @@ namespace Fido.DataAccess.Tests
             }
         }
 
-        private bool Exists(Guid Id)
-        {
-            User UserEntity;
-
-            using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-            {
-                IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-                UserEntity = Repository.Get(Id);
-            }
-
-            return UserEntity != null;
-        }
-
+        #region Initialisation
         [ClassInitialize]
         public static void ClassInitialise(TestContext Context)
         {
@@ -160,5 +147,6 @@ namespace Fido.DataAccess.Tests
         {
             DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
         }
+        #endregion
     }
 }

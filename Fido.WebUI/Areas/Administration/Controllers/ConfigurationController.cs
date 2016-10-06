@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.Load<Configuration>(
+            return Dispatcher.Update<Configuration>(
                 Id: Guid.Empty,
                 Result: m => View(m));
         }
@@ -25,7 +25,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(Configuration Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Configuration"),
                 InvalidResult: m => View(m));

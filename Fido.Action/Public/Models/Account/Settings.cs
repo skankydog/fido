@@ -24,7 +24,7 @@ namespace Fido.Action.Models.Account
         public int DaysUntilPasswordExpires { get; set; }
         public bool PasswordChangePolicy { get; set; }
 
-        public bool HasExternalCredentials { get; set; }
+        public bool ExternalCredentialsArePresent { get; set; }
         
         [Display(Name = "external credential state")]
         public string ExternalCredentialState { get; set; }
@@ -33,7 +33,6 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public Settings()
-          //  : base(RequiresReadPermission: true, RequiresWritePermission: true)
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 

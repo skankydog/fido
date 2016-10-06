@@ -8,20 +8,7 @@ namespace Fido.Action.Implementation
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected IFeedbackAPI FeedbackAPI { get; set; }
-        protected IAuthenticationAPI AuthenticationAPI { get; set; }
-        protected IModelAPI ModelAPI { get; set; }
-
-        internal Processor(
-            IFeedbackAPI FeedbackAPI,
-            IAuthenticationAPI AuthenticationAPI,
-            IModelAPI ModelAPI)
-        {
-            this.FeedbackAPI = FeedbackAPI;
-            this.AuthenticationAPI = AuthenticationAPI;
-            this.ModelAPI = ModelAPI;
-        }
-
+        #region View
         public TRETURN ExecuteView<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
@@ -35,29 +22,27 @@ namespace Fido.Action.Implementation
                 {
                     Log.Fatal(Ex.ToString());
 
-                    FeedbackAPI.DisplayError(Ex.Message);
+                    DataModel.FeedbackAPI.DisplayError(Ex.Message);
                     return ErrorResult((IDataModel)DataModel);
                 }
 
                 return SuccessResult(DataModel);
             }
         }
+        #endregion
 
-        #region Index Reads
+        #region Read
         public TRETURN ExecuteRead<TMODEL>(IndexOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             return DoExecuteRead(Guid.Empty, DataModel, IndexOptions, SuccessResult, ErrorResult);
         }
-        #endregion
 
-        #region Non-Index Reads
         public TRETURN ExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             return DoExecuteRead(Id, DataModel, null, SuccessResult, ErrorResult);
         }
-        #endregion
 
         private TRETURN DoExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
@@ -66,7 +51,7 @@ namespace Fido.Action.Implementation
             {
                 try
                 {
-                    var Tmp = DataModel.Denied; // Mapping wipes this out
+                    var Tmp = DataModel.DeniedActivities; // Mapping wipes this out
 
                     if (IndexOptions == null)
                     {
@@ -77,48 +62,23 @@ namespace Fido.Action.Implementation
                         DataModel = DataModel.Read(IndexOptions);
                     }
 
-                    DataModel.Denied = Tmp; // Restore after mapping
+                    DataModel.DeniedActivities = Tmp; // Restore after mapping
                     DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)
                 {
                     Log.Fatal(Ex.ToString());
                     
-                    FeedbackAPI.DisplayError(Ex.Message);
+                    DataModel.FeedbackAPI.DisplayError(Ex.Message);
                     return ErrorResult((IDataModel)DataModel);
                 }
 
                 return SuccessResult(DataModel);
             }
         }
+        #endregion
 
-        public TRETURN ExecuteConfirm<TMODEL>(Guid ConfirmationId, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
-            where TMODEL : IModel<TMODEL>
-        {
-            using (new FunctionLogger(Log))
-            {
-                try
-                {
-                    var Tmp = DataModel.Denied; // Mapping wipes this out
-
-                    if (DataModel.Confirm(ConfirmationId) == false)
-                        Log.InfoFormat("Unsuccessful confirmation: {0}", ConfirmationId.ToString());
-
-                    DataModel.Denied = Tmp; // Restore after mapping
-                    DataModel = DataModel.Prepare(DataModel);
-                }
-                catch (Exception Ex)
-                {
-                    Log.ErrorFormat("Exception thrown in 'Confirm': {0}", Ex.ToString());
-
-                    FeedbackAPI.DisplayError(Ex.Message);
-                    return ErrorResult((IDataModel)DataModel);
-                }
-
-                return SuccessResult(DataModel);
-            }
-        }
-
+        #region Write
         public TRETURN ExecuteWrite<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<TMODEL, TRETURN> InvalidResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
@@ -126,7 +86,7 @@ namespace Fido.Action.Implementation
             {
                 DataModel = DataModel.Prepare(DataModel);
 
-                if (ModelAPI.ModelStateIsValid())
+                if (DataModel.ModelAPI.ModelStateIsValid())
                 {
                     try
                     {
@@ -139,7 +99,7 @@ namespace Fido.Action.Implementation
                     catch (Exception Ex)
                     {
                         Log.Fatal(Ex.ToString());
-                        FeedbackAPI.DisplayError(Ex.Message);
+                        DataModel.FeedbackAPI.DisplayError(Ex.Message);
                     }
 
                     DataModel.OnFailedWrite(DataModel);
@@ -151,7 +111,9 @@ namespace Fido.Action.Implementation
                 return InvalidResult(DataModel);
             }
         }
+        #endregion
 
+        #region Delete
         public TRETURN ExecuteDelete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
@@ -164,7 +126,7 @@ namespace Fido.Action.Implementation
                 catch (Exception Ex)
                 {
                     Log.Fatal(Ex.ToString());
-                    FeedbackAPI.DisplayError(Ex.Message);
+                    DataModel.FeedbackAPI.DisplayError(Ex.Message);
 
                     return ErrorResult((IDataModel)DataModel);
                 }
@@ -172,5 +134,36 @@ namespace Fido.Action.Implementation
                 return SuccessResult(DataModel);
             }
         }
+        #endregion
+
+        #region Confirm
+        public TRETURN ExecuteConfirm<TMODEL>(Guid ConfirmationId, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+            where TMODEL : IModel<TMODEL>
+        {
+            using (new FunctionLogger(Log))
+            {
+                try
+                {
+         // Don't believe this is effected for confirm, only read as read returns a loaded model.
+         //           var Tmp = DataModel.DeniedActivities; // Mapping wipes this out
+
+                    if (DataModel.Confirm(ConfirmationId) == false)
+                        Log.InfoFormat("Unsuccessful confirmation: {0}", ConfirmationId.ToString());
+
+         //           DataModel.DeniedActivities = Tmp; // Restore after mapping
+                    DataModel = DataModel.Prepare(DataModel);
+                }
+                catch (Exception Ex)
+                {
+                    Log.ErrorFormat("Exception thrown in 'Confirm': {0}", Ex.ToString());
+
+                    DataModel.FeedbackAPI.DisplayError(Ex.Message);
+                    return ErrorResult((IDataModel)DataModel);
+                }
+
+                return SuccessResult(DataModel);
+            }
+        }
+        #endregion
     }
 }

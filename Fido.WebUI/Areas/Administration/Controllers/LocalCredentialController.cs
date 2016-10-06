@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.Load<LocalCredential>(
+            return Dispatcher.Update<LocalCredential>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
@@ -25,14 +25,14 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Update(LocalCredential Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Update(
                 DataModel: Model,
                 Result: m => ModalRedirectToLocal(Url.Action("Update", "User", new { Model.Id })));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Load<LocalCredential>(
+            return Dispatcher.Update<LocalCredential>(
                 Id: Id,
                 Result: m => PartialView(m));
         }

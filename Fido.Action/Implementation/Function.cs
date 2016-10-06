@@ -2,7 +2,7 @@
 
 namespace Fido.Action.Implementation
 {
-    public enum Action
+    public enum Function
     {
         Read = 0,
         Write

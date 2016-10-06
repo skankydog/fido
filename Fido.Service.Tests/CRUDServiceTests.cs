@@ -11,7 +11,7 @@ using Fido.Service.Exceptions;
 namespace Fido.Service.Tests
 {
     [TestClass]
-    public class GenericServiceTests
+    public class CRUDServiceTests
     {
         [TestMethod]
         public void CanGetAll()
@@ -45,9 +45,9 @@ namespace Fido.Service.Tests
         {
             Activity ActivityDto = new Activity
             {
+                Action = "Action 1",
                 Name = "BrandNewEntity",
-                Area = "Nowhere",
-                Action = "Read"
+                Area = "Nowhere"
             };
 
             IActivityService Service = ServiceFactory.CreateService<IActivityService>();
@@ -88,17 +88,17 @@ namespace Fido.Service.Tests
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             
-            // Something reads the entity
+            // someone reads the entity
             var OuterUserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
 
-            // Something else reads the entity and edits a field and saves the record. The
+            // someone else reads the entity, edits a field and saves the record - the
             // database now contains a different RowVersion value than OuterUserDTO
             var InnerUserDto = Service.GetByEmailAddress("homer.simpson@skankydog.com");
             InnerUserDto.Fullname.Firstname = "New";
             Service.Save(InnerUserDto);
 
-            // OuterUserDTO is now saved. The framework should see that the RowVersion field
-            // is different and throw an exception
+            // OuterUserDTO is now saved - the framework should see that the RowVersion
+            // field is different and throw an exception
             Service.Save(OuterUserDto);
         }
 

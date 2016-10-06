@@ -29,7 +29,12 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)) // Viewmodel created from a read
                     .ForMember(Dest => Dest.SelectedRoles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Guid>>(Src.Roles)))
                     .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AllRoles, Options => Options.Ignore());
 
                 Mapper.CreateMap<Activity, Dtos.Activity>()
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore())

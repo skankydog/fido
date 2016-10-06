@@ -40,7 +40,11 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.HasGoogle, Options => Options.MapFrom(Src => Src.HasLoginProvider("google")))
                     .ForMember(Dest => Dest.SelectedRoles, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.Role>, IList<Guid>>(Src.Roles)))
                     .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore());
 
                 Mapper.CreateMap<User, Dtos.Fullname>()
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.Ignore())
@@ -50,6 +54,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.ExternalCredentialState, Options => Options.MapFrom(m => m.ExternalCredentialState == null ? "None" : m.ExternalCredentialState))
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<User, Dtos.Fullname>(Src)))
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore()) // Can't be updated via this view
+                    .ForMember(Dest => Dest.LocalCredentialsAreUsable, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
             }
         }

@@ -18,7 +18,7 @@ namespace Fido.Service.Tests
         public void CanGetActivityByName()
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-            Assert.IsNotNull(ActivityService.GetByName("Activity01"));
+            Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
         }
 
         #region Name Duplication Tests
@@ -27,7 +27,7 @@ namespace Fido.Service.Tests
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-            Assert.IsFalse(ActivityService.NameFree("Activity01"));
+            Assert.IsFalse(ActivityService.NameFree("Controller/Model 1"));
             Assert.IsTrue(ActivityService.NameFree("Non-Existant Activity"));
         }
 
@@ -39,7 +39,7 @@ namespace Fido.Service.Tests
 
         //    Activity ActivityDTO = new Activity
         //    {
-        //        Name = "Activity01",
+        //        Name = "Controller/Model 1",
         //        Area ="1",
         //        Action = "2"
         //    };
@@ -53,8 +53,8 @@ namespace Fido.Service.Tests
         //{
         //    IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-        //    Activity ActivityDTO = ActivityService.GetByName("Activity01");
-        //    ActivityDTO.Name = "Activity02";
+        //    Activity ActivityDTO = ActivityService.GetByName("Controller/Model 1");
+        //    ActivityDTO.Name = "Controller/Model 2";
 
         //    ActivityService.Save(ActivityDTO);
         //}

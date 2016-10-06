@@ -18,7 +18,7 @@ namespace Fido.Service.Tests
         public void CanGetRoleByName()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
-            Assert.IsNotNull(RoleService.GetByName("AllActivitiesRole"));
+            Assert.IsNotNull(RoleService.GetByName("All Activities"));
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace Fido.Service.Tests
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
 
-            var RoleDTO = RoleService.GetByName("AllActivitiesRole");
+            var RoleDTO = RoleService.GetByName("All Activities");
             var Users = RoleService.GetUsersInRole(RoleDTO.Id);
 
             Assert.AreEqual(1, Users.Count);
@@ -37,7 +37,7 @@ namespace Fido.Service.Tests
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
-            Role RoleDTO = RoleService.GetByName("Role02");
+            Role RoleDTO = RoleService.GetByName("Role 2");
             Assert.AreEqual(4, RoleService.GetActivitiesForRole(RoleDTO.Id).Count);
         }
 
@@ -45,8 +45,8 @@ namespace Fido.Service.Tests
         public void CanSetActivitiesForRole()
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
-            var FirstRoleId = RoleService.GetByName("AllActivitiesRole").Id;
-            var SecondRoleId = RoleService.GetByName("Role03").Id;
+            var FirstRoleId = RoleService.GetByName("All Activities").Id;
+            var SecondRoleId = RoleService.GetByName("Role 3").Id;
 
             var FirstRoleActivities = RoleService.GetActivitiesForRole(FirstRoleId);
             var SecondRoleActivities = RoleService.GetActivitiesForRole(SecondRoleId);
@@ -64,7 +64,7 @@ namespace Fido.Service.Tests
         public void SetActivitiesForRoleThrowsOnNewRoles()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
-            Guid RoleId = RoleService.GetByName("AllActivitiesRole").Id;
+            Guid RoleId = RoleService.GetByName("All Activities").Id;
 
             RoleService.SetActivitiesForRole(RoleId, new List<Activity>() {
                         new Activity { Name = "NewActivity01", Area = "Area", Action = "Action" },
@@ -78,7 +78,7 @@ namespace Fido.Service.Tests
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
-            Assert.IsFalse(RoleService.NameFree("AllActivitiesRole"));
+            Assert.IsFalse(RoleService.NameFree("All Activities"));
             Assert.IsTrue(RoleService.NameFree("Non-Existant Role"));
         }
 
@@ -90,7 +90,7 @@ namespace Fido.Service.Tests
 
             Role RoleDTO = new Role
             {
-                Name = "AllActivitiesRole"
+                Name = "All Activities"
             };
 
             RoleService.Save(RoleDTO);
@@ -102,8 +102,8 @@ namespace Fido.Service.Tests
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
-            Role RoleDTO = RoleService.GetByName("Role02");
-            RoleDTO.Name = "Role03";
+            Role RoleDTO = RoleService.GetByName("Role 2");
+            RoleDTO.Name = "Role 3";
 
             RoleService.Save(RoleDTO);
         }

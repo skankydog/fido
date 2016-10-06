@@ -17,15 +17,14 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create(
-                new ForgottenPassword(),
+            return Dispatcher.Create<ForgottenPassword>(
                 Result: m => View(m));
         }
 
         [HttpPost]
         public ActionResult Create(ForgottenPassword Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Create", "Login"),
                 InvalidResult: m => View(m));

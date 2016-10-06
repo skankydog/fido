@@ -12,99 +12,51 @@ namespace Fido.Action.Implementation
     {
         #region IDataModel Implementation
         [ScriptIgnore]
-        public IList<Dtos.Activity> Denied { get; set; }
+        public IList<Dtos.Activity> DeniedActivities { get; set; }
 
-        public void BuildDenied(Guid UserId)
+        public void BuildDeniedActivities(Guid UserId)
         {
-            Denied = new List<Dtos.Activity>();
+            DeniedActivities = new List<Dtos.Activity>();
 
-            Guid Id = AuthenticationAPI.AuthenticatedId;
-
-            if (Id != Guid.Empty)
+            if (AuthenticationAPI.Authenticated)
             {
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var Activities = UserService.GetDeniedActivities(Id);
+                var Activities = UserService.GetDeniedActivities(AuthenticationAPI.AuthenticatedId);
 
-                Denied = (from Dtos.Activity a in Activities
+                DeniedActivities = (from Dtos.Activity a in Activities
                           select a).ToList();
             }
         }
 
-        public bool Allowed(string Action, string Name, string Area)
+        public bool Allowed(string FunctionName, string ModelName, string Namespace)
         {
-            return (from Dtos.Activity a in Denied
-                    where a.Name == Name && 
-                    a.Area == Area &&
-                    a.Action == Action
+            return (from Dtos.Activity a in DeniedActivities
+                    where a.Name == ModelName &&
+                    a.Area == Namespace &&
+                    a.Action == FunctionName
                     select a).Count() == 0;
         }
-
-        public bool NotAllowed(string Action, string Name, string Area)
-        {
-            string ModelAction = "";
-
-            switch (Action)
-            {
-                case "Update|Get":
-                    ModelAction = "Read";
-                    break;
-
-                case "Update|Post":
-                    ModelAction = "Write";
-                    break;
-
-                case "Create|Get":
-                    ModelAction = "Write";
-                    break;
-
-                case "Create|Post":
-                    ModelAction = "Write";
-                    break;
-
-                    // ...
-            }
-
-            // now build the activity record and see if in the list - if in the list, check to see if we have it
-            // If not there at all, then return true (I think)
-            return true; // for now
-        }
-
-        //public bool HasArea(string Area)
-        //{
-        //    return (from p in Permissions
-        //            where p.Area == Area
-        //            select p).Count() > 0;
-        //}
         #endregion
 
+        #region ILogicModel Implementation
         [ScriptIgnore]
-        public IFeedbackAPI FeedbackAPI { protected get; set; }
+        public IFeedbackAPI FeedbackAPI { get; set; }
         [ScriptIgnore]
-        public IAuthenticationAPI AuthenticationAPI { protected get; set; }
+        public IAuthenticationAPI AuthenticationAPI { get; set; }
         [ScriptIgnore]
-        public IModelAPI ModelAPI { protected get; set; }
-
-        //[ScriptIgnore]
-        //public bool ReadPermissioned { get; private set; }
-        //[ScriptIgnore]
-        //public bool WritePermissioned { get; private set; }
+        public IModelAPI ModelAPI { get; set; }
 
         [ScriptIgnore]
         public Access ReadAccess { get; private set; }
         [ScriptIgnore]
         public Access WriteAccess { get; private set; }
+        #endregion
 
         internal Model(Access ReadAccess, Access WriteAccess)
         {
             this.ReadAccess = ReadAccess;
             this.WriteAccess = WriteAccess;
         }
-
-        //internal Model(bool RequiresReadPermission, bool RequiresWritePermission)
-        //{
-        //    this.ReadPermissioned = RequiresReadPermission;
-        //    this.WritePermissioned = RequiresWritePermission;
-        //}
 
         public virtual TMODEL Prepare(TMODEL Model) { return Model; }
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }

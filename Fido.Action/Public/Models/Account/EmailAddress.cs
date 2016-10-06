@@ -19,7 +19,6 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public EmailAddress()
-          //  : base(RequiresReadPermission: true, RequiresWritePermission: true)
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 

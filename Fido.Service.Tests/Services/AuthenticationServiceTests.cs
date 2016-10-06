@@ -47,7 +47,7 @@ namespace Fido.Service.Tests
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
-            User UserDTO = AuthenticationService.LoginByLocalCredentials("marge.simpson@skankydog.com", "Jjdjsj^^77d8sJHJHDjjh");
+            User UserDTO = AuthenticationService.LoginByLocalCredentials("marge.simpson@skankydog.com", "hello");
             Assert.IsNotNull(UserDTO);
         }
         #endregion

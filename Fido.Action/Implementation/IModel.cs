@@ -6,9 +6,9 @@ namespace Fido.Action.Implementation
 {
     public interface ILogicModel
     {
-        IFeedbackAPI FeedbackAPI { set; }
-        IAuthenticationAPI AuthenticationAPI { set; }
-        IModelAPI ModelAPI { set; }
+        IFeedbackAPI FeedbackAPI { get;  set; }
+        IAuthenticationAPI AuthenticationAPI { get; set; }
+        IModelAPI ModelAPI { get; set; }
 
         Access ReadAccess { get; }
         Access WriteAccess { get; }
@@ -16,12 +16,10 @@ namespace Fido.Action.Implementation
 
     public interface IDataModel
     {
-        IList<Dtos.Activity> Denied { get; set; }
+        IList<Dtos.Activity> DeniedActivities { get; set; }
 
-        void BuildDenied(Guid UserId);
-
+        void BuildDeniedActivities(Guid UserId);
         bool Allowed(string Action, string Name, string Area);
-        bool NotAllowed(string Action, string Name, string Area);
     }
 
     public interface IModel<TMODEL> : ILogicModel, IDataModel

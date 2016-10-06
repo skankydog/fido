@@ -15,15 +15,14 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create(
-                new LocalCredential(),
+            return Dispatcher.Create <LocalCredential>(
                 Result: m => PartialView());
         }
 
         [HttpPost]
         public ActionResult Create(LocalCredential Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: m => ModalRedirectToLocal(Url.Action("Index", "Settings", new { Area = "Account" }, null)),
                 InvalidResult: m => PartialView(m));

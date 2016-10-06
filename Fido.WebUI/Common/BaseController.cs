@@ -157,8 +157,6 @@ namespace Fido.WebUI.Common
             {
                 if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
                     return Guid.Empty; // allows redirect to login to occur
-                //  throw new Exception("The user is not authenticated to the application. It is likely that " +
-                //      "the action has not been set to requiring authentication.");
 
                 return User.Identity.GetUserId().ToGuid();
             }

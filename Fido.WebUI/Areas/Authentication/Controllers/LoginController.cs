@@ -28,7 +28,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
         {
             ViewBag.ReturnUrl = ReturnUrl;
 
-            return Dispatcher.Save(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: m => RedirectToLocal(ReturnUrl),
                 InvalidResult: m => View(m));

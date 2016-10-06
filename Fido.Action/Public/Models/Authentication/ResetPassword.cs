@@ -28,7 +28,6 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public ResetPassword()
-        //    : base(RequiresReadPermission: false, RequiresWritePermission: false)
             : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 

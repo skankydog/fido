@@ -17,15 +17,14 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create(
-                new Registration(),
+            return Dispatcher.Create<Registration>(
                 Result: m => View());
         }
 
         [HttpPost]
         public ActionResult Create(Registration Model)
         {
-            return Dispatcher.Save(
+            return Dispatcher.Create(
                 DataModel: Model,
                 SuccessResult: m => RedirectToAction("Index", "Home"),
                 InvalidResult: m => View(m));

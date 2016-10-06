@@ -37,10 +37,10 @@ namespace Fido.Action.Implementation
                     var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
 
                     if (ModelInstance.ReadAccess == Access.Permissioned)
-                        Ensure(ModelType.Name, Area, Action.Read);
+                        Ensure(ModelType.Name, Area, Function.Read);
 
                     if (ModelInstance.WriteAccess == Access.Permissioned)
-                        Ensure(ModelType.Name, Area, Action.Write);
+                        Ensure(ModelType.Name, Area, Function.Write);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
@@ -48,7 +48,7 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private void Ensure(string Name, string Area, Action Action)
+        private void Ensure(string Name, string Area, Function Action)
         {
             using (new FunctionLogger(Log))
             {
