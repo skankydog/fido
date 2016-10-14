@@ -17,8 +17,8 @@ namespace Fido.Service.Tests
         [TestMethod]
         public void CanXXXX()
         {
-            IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-            Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+     //       Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
         }
 
         #region Initialisation

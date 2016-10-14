@@ -15,10 +15,16 @@ namespace Fido.Service.Tests
     public class ConfigurationServiceTests
     {
         [TestMethod]
-        public void CanXXXX()
+        public void CanSetConfiguration()
         {
-            IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-            Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
+            var ConfigurationService = ServiceFactory.CreateService<IConfigurationService>();
+            
+            var OriginalConfiguration = ConfigurationService.Get();
+            OriginalConfiguration.PasswordChangePolicyDays = 111;
+            ConfigurationService.Set(OriginalConfiguration);
+
+            var ChangedConfiguration = ConfigurationService.Get();
+            Assert.AreEqual(111, ChangedConfiguration.PasswordChangePolicyDays);
         }
 
         #region Initialisation

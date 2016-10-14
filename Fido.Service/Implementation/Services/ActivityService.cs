@@ -17,9 +17,7 @@ namespace Fido.Service.Implementation
         #region Pages
         public IList<Activity> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter)
         {
-            return GetPage(SortOrder, Skip, Take, Filter,
-                OrderByAscending: q => q.OrderBy(s => s.Id),
-                OrderByDescending: q => q.OrderByDescending(s => s.Id));
+            return GetPageInNameOrder(SortOrder, Skip, Take, Filter);
         }
 
         public IList<Activity> GetPageInNameOrder(char SortOrder, int Skip, int Take, string Filter)
@@ -33,14 +31,14 @@ namespace Fido.Service.Implementation
         {
             return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.Area),
-                OrderByDescending: q => q.OrderByDescending(s => s.Action));
+                OrderByDescending: q => q.OrderByDescending(s => s.Area));
         }
 
         public IList<Activity> GetPageInActionOrder(char SortOrder, int Skip, int Take, string Filter)
         {
             return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.Action),
-                OrderByDescending: q => q.OrderByDescending(s => s.Area));
+                OrderByDescending: q => q.OrderByDescending(s => s.Action));
         }
 
         private IList<Activity> GetPage(char SortOrder, int Skip, int Take, string Filter,
@@ -64,7 +62,7 @@ namespace Fido.Service.Implementation
 
                     Query = Query.Skip(Skip).Take(Take);
 
-                    var EntityList = Query.ToList(); // Hit the database
+                    var EntityList = Query.ToList(); // hit the database
 
                     IList<Activity> DtoList = AutoMapper.Mapper.Map<IList<Entities.Activity>, IList<Activity>>(EntityList);
                     return DtoList;
@@ -73,46 +71,19 @@ namespace Fido.Service.Implementation
         }
         #endregion
 
-        public Activity Get(string Name, string Area, string Action)
+        public Activity Get(string Action, string Name, string Area)
         {
             using (new FunctionLogger(Log))
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
-                    var ActivityEntity = Repository.Get(e => e.Name == Name && e.Area == Area && e.Action == Action);
+                    var ActivityEntity = Repository.Get(e => e.Action == Action && e.Name == Name && e.Area == Area);
 
                     var ActivityDTO = Mapper.Map<Entities.Activity, Activity>(ActivityEntity);
 
                     return ActivityDTO;
                 }
-            }
-        }
-
-        public Activity GetByName(string Name)
-        {
-            using (new FunctionLogger(Log))
-            {
-                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-                {
-                    var Repository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
-                    var ActivityEntity = Repository.Get(e => e.Name == Name);
-
-                    var ActivityDTO = Mapper.Map<Entities.Activity, Activity>(ActivityEntity);
-
-                    return ActivityDTO;
-                }
-            }
-        }
-
-        public bool NameFree(string Name)
-        {
-            using (new FunctionLogger(Log))
-            {
-                if (GetByName(Name) == null)
-                    return true;
-
-                return false;
             }
         }
     }

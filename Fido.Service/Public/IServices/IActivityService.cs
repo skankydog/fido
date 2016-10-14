@@ -14,8 +14,6 @@ namespace Fido.Service
         IList<Activity> GetPageInAreaOrder(char SortOrder, int Skip, int Take, string Filter);
         IList<Activity> GetPageInActionOrder(char SortOrder, int Skip, int Take, string Filter);
 
-        Activity Get(string Name, string Area, string Action);
-        Activity GetByName(string Name);                                     //  TO DO: Doubt this is needed
-        bool NameFree(string Name);             // Name must be unique           TO DO: Doubt this is needed
+        Activity Get(string Action, string Name, string Area);
     }
 }

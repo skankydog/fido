@@ -15,50 +15,37 @@ namespace Fido.Service.Tests
     public class ActivityServiceTests
     {
         [TestMethod]
-        public void CanGetActivityByName()
+        public void CanGetActivity()
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-            Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
+
+            Assert.IsNull(ActivityService.Get("None", "None", "None"));
+            Assert.IsNotNull(ActivityService.Get("Action 1", "Controller/Model 1", "Namespace 1"));
         }
 
-        #region Name Duplication Tests
         [TestMethod]
-        public void CanCheckActivityNameIsFree()
+        public void CanGetPageOfActivities()
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-            Assert.IsFalse(ActivityService.NameFree("Controller/Model 1"));
-            Assert.IsTrue(ActivityService.NameFree("Non-Existant Activity"));
+            Assert.AreEqual(3, ActivityService.GetPageInDefaultOrder('a', 0, 10, "Namespace 1").Count());
+            
+            Assert.AreEqual("Controller/Model 6", ActivityService.GetPageInDefaultOrder('d', 0, 10, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 1", ActivityService.GetPageInDefaultOrder('a', 0, 10, "Namespace").FirstOrDefault().Name);
+            
+            Assert.AreEqual("Namespace 4", ActivityService.GetPageInAreaOrder('d', 0, 10, "Namespace").FirstOrDefault().Area);
+            Assert.AreEqual("Namespace 1", ActivityService.GetPageInAreaOrder('a', 0, 10, "Namespace").FirstOrDefault().Area);
+            
+            Assert.AreEqual("Controller/Model 6", ActivityService.GetPageInActionOrder('a', 0, 10, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 2", ActivityService.GetPageInActionOrder('d', 0, 10, "Namespace").FirstOrDefault().Name);
+            
+            Assert.AreEqual(0, ActivityService.GetPageInDefaultOrder('a', 0, 100, "does not exist").Count());
+
+            Assert.AreEqual("Controller/Model 1", ActivityService.GetPageInDefaultOrder('a', 0, 1, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 2", ActivityService.GetPageInDefaultOrder('a', 1, 1, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 3", ActivityService.GetPageInDefaultOrder('a', 2, 1, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 4", ActivityService.GetPageInDefaultOrder('a', 3, 1, "Namespace").FirstOrDefault().Name);
         }
-
-        //[TestMethod]
-        //[ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        //public void DuplicateNameDetectedOnActivityInsert()
-        //{
-        //    IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-
-        //    Activity ActivityDTO = new Activity
-        //    {
-        //        Name = "Controller/Model 1",
-        //        Area ="1",
-        //        Action = "2"
-        //    };
-
-        //    ActivityService.Save(ActivityDTO);
-        //}
-
-        //[TestMethod]
-        //[ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        //public void DuplicateNameDetectedOnActivityUpdate()
-        //{
-        //    IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-
-        //    Activity ActivityDTO = ActivityService.GetByName("Controller/Model 1");
-        //    ActivityDTO.Name = "Controller/Model 2";
-
-        //    ActivityService.Save(ActivityDTO);
-        //}
-        #endregion
 
         #region Initialisation
         [TestInitialize]

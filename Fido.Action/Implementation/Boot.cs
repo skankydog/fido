@@ -37,10 +37,10 @@ namespace Fido.Action.Implementation
                     var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
 
                     if (ModelInstance.ReadAccess == Access.Permissioned)
-                        Ensure(ModelType.Name, Area, Function.Read);
+                        Ensure(Function.Read, ModelType.Name, Area);
 
                     if (ModelInstance.WriteAccess == Access.Permissioned)
-                        Ensure(ModelType.Name, Area, Function.Write);
+                        Ensure(Function.Write, ModelType.Name, Area);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
@@ -48,19 +48,19 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private void Ensure(string Name, string Area, Function Action)
+        private void Ensure(Function Action, string Name, string Area)
         {
             using (new FunctionLogger(Log))
             {
                 var ActionName = Action.ToString();
 
+                Log.InfoFormat("Action: {0}", ActionName);
                 Log.InfoFormat("Name: {0}", Name);
                 Log.InfoFormat("Area: {0}", Area);
-                Log.InfoFormat("Action: {0}", ActionName);
 
                 var ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-                if (ActivityService.Get(Name, Area, ActionName) == null)
+                if (ActivityService.Get(ActionName, Name, Area) == null)
                 {
                     Log.InfoFormat("Adding activity: {0}, {1}, {2}", Name, Area, ActionName);
                     ActivityService.Save(new Dtos.Activity { Name = Name, Area = Area, Action = ActionName });
