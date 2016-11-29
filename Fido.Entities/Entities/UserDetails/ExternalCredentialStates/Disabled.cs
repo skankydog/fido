@@ -5,16 +5,21 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.ExternalCredentialStates
 {
-    internal class Disabled : IExternalCredentialState
+    public static class Disabled
+    {
+        public const string Name = "Disabled";
+    }
+
+    internal class DisabledState : IExternalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
 
-        public const string Name_ = "Disabled";
-        public string Name { get { return Name_; } }
+        public string Name { get { return Disabled.Name; } }
         public bool ArePresent { get { return true; } }
+        public bool AreUsable { get { return false; } }
 
-        public Disabled(User Parent) { this.Parent = Parent; }
+        public DisabledState(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
@@ -40,7 +45,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
         #region Administration
         public void Enable()
         {
-            Parent.CurrentExternalCredentialState = new Enabled(Parent);
+            Parent.CurrentExternalCredentialState = new EnabledState(Parent);
         }
 
         public void Disable()

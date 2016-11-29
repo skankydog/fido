@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.ExternalCredentialStates
 {
-    internal class None : IExternalCredentialState
+    public static class None
+    {
+        public const string Name = "None";
+    }
+
+    internal class NoneState : IExternalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
@@ -13,8 +18,9 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
         public const string Name_ = "None";
         public string Name { get { return Name_; } }
         public bool ArePresent { get { return false; } }
+        public bool AreUsable { get { return false; } }
 
-        public None(User Parent) { this.Parent = Parent; }
+        public NoneState(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
@@ -31,7 +37,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             };
 
             Parent.EmailAddress = EmailAddress;
-            Parent.CurrentExternalCredentialState = new Enabled(Parent);
+            Parent.CurrentExternalCredentialState = new EnabledState(Parent);
         }
 
         public void Link(string LoginProvider, string ProviderKey, string EmailAddress)
@@ -46,7 +52,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             };
 
             Parent.ExternalCredentials.Add(ExternalCredentialEntity);
-            Parent.CurrentExternalCredentialState = new Enabled(Parent);
+            Parent.CurrentExternalCredentialState = new EnabledState(Parent);
         }
 
         public void Unlink(Guid Id)
@@ -62,7 +68,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
 
         public void Disable()
         {
-            Parent.CurrentExternalCredentialState = new Disabled(Parent);
+            Parent.CurrentExternalCredentialState = new DisabledState(Parent);
         }
         #endregion
     }

@@ -15,10 +15,57 @@ namespace Fido.Service.Tests
     public class AdministrationServiceTests
     {
         [TestMethod]
-        public void CanXXXX()
+        public void CanDisableAndEnableLocalCredentials()
         {
-            IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
-//            Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
+            var AdminService = ServiceFactory.CreateService<IAdministrationService>();
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+
+            Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
+
+            AdminService.DisableLocalCredentials(UserDto.Id);
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+
+            AdminService.EnableLocalCredentials(UserDto.Id);
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanSetEmailAddress()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CanSetLocalPassword()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CanClearLocalCredentials()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CanDisableAndEnableExternalCredentials()
+        {
+            var AdminService = ServiceFactory.CreateService<IAdministrationService>();
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+
+            Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
+
+            AdminService.DisableExternalCredentials(UserDto.Id);
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsFalse(UserDto.ExternalCredentialsAreUsable);
+
+            AdminService.EnableExternalCredentials(UserDto.Id);
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
         }
 
         #region Initialisation

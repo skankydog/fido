@@ -14,7 +14,7 @@ namespace Fido.Service.Implementation
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IList<Confirmation> GetConfirmationsForUser(Guid UserId)
+        public IList<Confirmation> GetAll(Guid UserId)
         {
             using (new FunctionLogger(Log))
             {
@@ -31,14 +31,14 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public IList<Confirmation> GetAllQueuedConfirmations()
+        public IList<Confirmation> GetQueued(Guid UserId)
         {
             using (new FunctionLogger(Log))
             {
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-                    var ConfirmationEntities = Repository.GetAsIEnumerable(e => e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null).ToList();
+                    var ConfirmationEntities = Repository.GetAsIEnumerable(e => e.UserId == UserId && e.QueuedUTC != null && e.SentUTC == null).ToList();
 
                     IList<Confirmation> ConfirmationDTOs = null;
                     ConfirmationDTOs = Mapper.Map<IList<Entities.Confirmation>, IList<Confirmation>>(ConfirmationEntities, ConfirmationDTOs);
@@ -48,45 +48,96 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public void MarkConfirmationAsSent(Guid Id)
+        public IList<Confirmation> GetSent(Guid UserId)
         {
             using (new FunctionLogger(Log))
             {
                 using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-                    var ConfirmationEntity = Repository.Get(e => e.Id == Id && e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null);
+                    var ConfirmationEntities = Repository.GetAsIEnumerable(e => e.UserId == UserId && e.SentUTC != null && e.ReceivedUTC == null).ToList();
 
-                    if (ConfirmationEntity == null)
+                    IList<Confirmation> ConfirmationDTOs = null;
+                    ConfirmationDTOs = Mapper.Map<IList<Entities.Confirmation>, IList<Confirmation>>(ConfirmationEntities, ConfirmationDTOs);
+
+                    return ConfirmationDTOs;
+                }
+            }
+        }
+
+        public IList<Confirmation> GetReceived(Guid UserId)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+                    var ConfirmationEntities = Repository.GetAsIEnumerable(e => e.UserId == UserId && e.ReceivedUTC != null).ToList();
+
+                    IList<Confirmation> ConfirmationDTOs = null;
+                    ConfirmationDTOs = Mapper.Map<IList<Entities.Confirmation>, IList<Confirmation>>(ConfirmationEntities, ConfirmationDTOs);
+
+                    return ConfirmationDTOs;
+                }
+            }
+        }
+
+        public IList<Confirmation> GetQueued()
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+                    var ConfirmationEntities = Repository.GetAsIEnumerable(e => e.QueuedUTC != null && e.SentUTC == null).ToList();
+
+                    IList<Confirmation> ConfirmationDTOs = null;
+                    ConfirmationDTOs = Mapper.Map<IList<Entities.Confirmation>, IList<Confirmation>>(ConfirmationEntities, ConfirmationDTOs);
+
+                    return ConfirmationDTOs;
+                }
+            }
+        }
+
+        public void MarkAsSent(Guid Id)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+                    var Queued = Repository.Get(e => e.Id == Id && e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null);
+
+                    if (Queued == null)
                         throw new ServiceException("The validation is either non-existent, not ready to be sent or is in an invalid state");
 
-                    ConfirmationEntity.SentUTC = DateTime.UtcNow;
-                    Repository.Update(ConfirmationEntity);
+                    Queued.SentUTC = DateTime.UtcNow;
+                    Repository.Update(Queued);
 
                     UnitOfWork.Commit();
                 }
             }
         }
 
-        public string GetConfirmationType(Guid Id)
-        {
-            using (new FunctionLogger(Log))
-            {
-                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-                {
-                    var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-                    var ConfirmationEntity = Repository.Get(e => e.Id == Id && e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null);
+        //public string GetConfirmationType(Guid Id)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+        //        {
+        //            var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+        //            var ConfirmationEntity = Repository.Get(e => e.Id == Id && e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null);
 
-                    if (ConfirmationEntity == null)
-                        throw new ServiceException("The validation is either non-existent, not ready to be sent or is in an invalid state");
+        //            if (ConfirmationEntity == null)
+        //                throw new ServiceException("The validation is either non-existent, not ready to be sent or is in an invalid state");
 
-                    return ConfirmationEntity.ConfirmType;
-                }
-            }
-        }
+        //            return ConfirmationEntity.ConfirmType;
+        //        }
+        //    }
+        //}
 
         #region Static Functions
-        internal static Guid QueueConfirmation(IUnitOfWork UnitOfWork, string Type, Guid UserId, string EmailAddress)
+        public static Guid QueueConfirmation(IUnitOfWork UnitOfWork, string Type, Guid UserId, string EmailAddress, bool AssumeSent = false)
         {
             using (new FunctionLogger(Log))
             {
@@ -103,7 +154,8 @@ namespace Fido.Service.Implementation
                     ConfirmType = Type,
                     UserId = UserId,
                     EmailAddress = EmailAddress,
-                    QueuedUTC = DateTime.UtcNow
+                    QueuedUTC = DateTime.UtcNow,
+                    SentUTC = (AssumeSent == true) ? DateTime.UtcNow : (DateTime?)null
                 };
 
                 Repository.CascadeInsert(Queued);
@@ -111,12 +163,12 @@ namespace Fido.Service.Implementation
             }
         }
 
-        internal static Entities.Confirmation ReceiveConfirmation(IUnitOfWork UnitOfWork, Guid Id, string Type)
+        public static Entities.Confirmation ReceiveConfirmation(IUnitOfWork UnitOfWork, Guid Id, string Type)
         {
             using (new FunctionLogger(Log))
             {
                 var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-                var Queued = Repository.Get(e => e.Id == Id && e.ConfirmType == Type && e.QueuedUTC != null && /*e.SentUTC != null &&*/ e.ReceivedUTC == null);
+                var Queued = Repository.Get(e => e.Id == Id && e.ConfirmType == Type && e.QueuedUTC != null && e.SentUTC != null && e.ReceivedUTC == null);
 
                 if (Queued == null)
                     throw new ServiceException("The validation is either not ready to be received or is in an invalid state");

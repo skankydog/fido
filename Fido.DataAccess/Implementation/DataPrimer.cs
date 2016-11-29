@@ -236,6 +236,22 @@ namespace Fido.DataAccess.Implementation
                 UserRepository.CascadeInsert(DiscoStu);
                 UserRepository.CascadeInsert(FatTony);
 
+                const string REGISTRATION = "Register Local Account";
+                const string SET_LOCAL_CREDENTIAL = "Register Local Credential";
+                const string FORGOTTEN_PASSWORD = "Forgotten Password";
+                const string CHANGE_EMAIL_ADDRESS = "Change Email Address";
+
+                var ConfirmationRepository = DataAccessFactory.CreateRepository<IConfirmationRepository>(UnitOfWork);
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = FORGOTTEN_PASSWORD, EmailAddress = "bart.simpson@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = null }); // sent
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = CHANGE_EMAIL_ADDRESS, EmailAddress = "new.email@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = null, ReceivedUTC = null }); // queued
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = CHANGE_EMAIL_ADDRESS, EmailAddress = "another.email@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = null, ReceivedUTC = null }); // queued
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = REGISTRATION, EmailAddress = "bart.simpson@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = DateTime.UtcNow }); // received
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = SET_LOCAL_CREDENTIAL, EmailAddress = "bart.simpson@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = DateTime.UtcNow }); // received
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = CHANGE_EMAIL_ADDRESS, EmailAddress = "bart.simpson@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = DateTime.UtcNow }); // received
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = BartSimpson.Id, ConfirmType = FORGOTTEN_PASSWORD, EmailAddress = "bart.simpson@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = DateTime.UtcNow }); // received
+
+                ConfirmationRepository.CascadeInsert(new Confirmation { Id = Guid.NewGuid(), UserId = WaylanSmithers.Id, ConfirmType = SET_LOCAL_CREDENTIAL, EmailAddress = "waylan.smithers@skankydog.com", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow, ReceivedUTC = null }); // sent
+
                 UnitOfWork.Commit();
             }
         }

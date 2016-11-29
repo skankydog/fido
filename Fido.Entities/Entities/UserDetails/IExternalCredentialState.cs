@@ -9,6 +9,8 @@ namespace Fido.Entities.UserDetails
     {
         string Name { get; }
         bool ArePresent { get; }
+        bool AreUsable { get; }
+
 
         void Login();
         void Register(string EmailAddress, string Name);

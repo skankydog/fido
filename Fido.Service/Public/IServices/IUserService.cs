@@ -18,7 +18,7 @@ namespace Fido.Service
         IList<User> GetPageInLocalCredentialOrder(char SortOrder,int Skip, int Take, string Filter);
         IList<User> GetPageInExternalCredentialOrder(char SortOrder, int Skip, int Take, string Filter);
 
-        Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress);
+        Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress, bool AssumeSent = false);
         User ChangeEmailAddressComplete(Guid ConfirmationId);
 
         User ChangeLocalPassword(Guid UserId, string OldPassword, string NewPassword);

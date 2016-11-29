@@ -31,7 +31,6 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public LocalCredential()
-         //   : base(RequiresReadPermission: true, RequiresWritePermission: true)
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 

@@ -19,15 +19,10 @@ namespace Fido.Service.Tests
         [TestMethod]
         public void CanChangeEmailAddress()
         {
-            var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
-
-            Guid IntitiateRegistrationConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
-            AuthenticationService.RegistrationComplete(IntitiateRegistrationConfirmationId);
-
             var UserService = ServiceFactory.CreateService<IUserService>();
-            var UserDTO = UserService.GetByEmailAddress("santas.little.helper@skankydog.com");
+            var UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
 
-            Guid ChangeEmailAddressConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com");
+            Guid ChangeEmailAddressConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com", AssumeSent: true);
             UserService.ChangeEmailAddressComplete(ChangeEmailAddressConfirmationId);
 
             UserDTO = UserService.GetByEmailAddress("moe.szyslak@skankydog.com");
@@ -57,10 +52,10 @@ namespace Fido.Service.Tests
             try
             {
                 // Initiate a change to an existing account
-                ConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com");
+                ConfirmationId = UserService.ChangeEmailAddressInitiate(UserDTO.Id, "moe.szyslak@skankydog.com", AssumeSent: true);
 
                 // Before the change is confirmed, register a new user
-                AuthenticationService.RegistrationInitiate("moe.szyslak@skankydog.com", "98(jsjhdJHJHSJHD00909(#(#", "Moe", "Szyslak");
+                AuthenticationService.RegistrationInitiate("moe.szyslak@skankydog.com", "98(jsjhdJHJHSJHD00909(#(#", "Moe", "Szyslak", AssumeSent: true);
             }
             catch(Exception)
             {
@@ -68,13 +63,6 @@ namespace Fido.Service.Tests
                 // catching all exceptions and continuing...
             }
 
-            // Attempt to complete the email address change - this should throw
-        //    var Confirmations = ConfirmationService.GetAllQueuedConfirmations();
-        //    var Confirmation = (from Confirmation C in Confirmations
-        //                        where C.EmailAddress == "moe.szyslak@skankydog.com"
-        //                        where C.Type == "Change Email Address"
-        //                        select C).FirstOrDefault();
-        //    ConfirmationService.MarkConfirmationAsSent(Confirmation.Id);
             UserService.ChangeEmailAddressComplete(ConfirmationId);
         }
 
@@ -96,7 +84,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
 
-            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen", AssumeSent: true);
             var UserDTO = AuthenticationService.RegistrationComplete(ConfirmationId);
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "9398349DKjsdkj((#$349");
@@ -112,7 +100,7 @@ namespace Fido.Service.Tests
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
 
-            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen");
+            var ConfirmationId = AuthenticationService.RegistrationInitiate("santas.little.helper@skankydog.com", "28*8sdjhhjdjssd", "John", "Citizen", AssumeSent: true);
             var UserDTO = AuthenticationService.RegistrationComplete(ConfirmationId);
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "weak");

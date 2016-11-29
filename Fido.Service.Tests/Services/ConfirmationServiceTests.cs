@@ -15,10 +15,74 @@ namespace Fido.Service.Tests
     public class ConfirmationServiceTests
     {
         [TestMethod]
-        public void CanXXXX()
+        public void CanGetAllConfirmationsForUser()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
+
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+            var All = ConfirmationService.GetAll(BartId).Count();
+            
+            Assert.AreEqual(7, All);
+        }
+
+        [TestMethod]
+        public void CanGetQueuedConfirmationsForUser()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
+
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+            var Queued = ConfirmationService.GetQueued(BartId).Count();
+
+            Assert.AreEqual(2, Queued);
+        }
+
+        [TestMethod]
+        public void CanGetSentConfirmationsForUser()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
+
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+            var Sent = ConfirmationService.GetSent(BartId).Count();
+
+            Assert.AreEqual(1, Sent);
+        }
+
+        [TestMethod]
+        public void CanGetReceivedConfirmationsForUser()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
+
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+            var Received = ConfirmationService.GetReceived(BartId).Count();
+
+            Assert.AreEqual(4, Received);
+        }
+
+        [TestMethod]
+        public void CanGetAllQueuedConfirmations()
         {
             var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
-     //       Assert.IsNotNull(ActivityService.GetByName("Controller/Model 1"));
+            var Queued = ConfirmationService.GetQueued().Count();
+
+            Assert.AreEqual(2, Queued);
+        }
+
+        [TestMethod]
+        public void CanMarkConfirmationAsSent()
+        {
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+
+            var QueuedBefore = ConfirmationService.GetQueued();
+            Assert.AreEqual(2, QueuedBefore.Count);
+
+            ConfirmationService.MarkAsSent(QueuedBefore.FirstOrDefault().Id);
+
+            var QueuedAfter = ConfirmationService.GetQueued();
+            Assert.AreEqual(1, QueuedAfter.Count);
         }
 
         #region Initialisation
@@ -37,7 +101,6 @@ namespace Fido.Service.Tests
         [ClassInitialize]
         public static void Initialise(TestContext Context)
         {
-            //DataAccess.DataAccessFactory.CreateBootstrapperEngine().Bootstrap();
             Service.ServiceFactory.Boot();
         }
         #endregion

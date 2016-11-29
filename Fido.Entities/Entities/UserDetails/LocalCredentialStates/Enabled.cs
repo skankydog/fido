@@ -5,17 +5,21 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.LocalCredentialStates
 {
-    internal class Enabled : ILocalCredentialState
+    public static class Enabled
+    {
+        public const string Name = "Enabled";
+    }
+
+    internal class EnabledState : ILocalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
 
-        public const string Name_ = "Enabled";
-        public string Name { get { return Name_; } }
+        public string Name { get { return Enabled.Name; } }
         public bool ArePresent { get { return true; } }
         public bool AreUsable { get { return true; } }
 
-        public Enabled(User Parent) { this.Parent = Parent; }
+        public EnabledState(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
@@ -74,7 +78,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
         #region Administration
         public void Expire()
         {
-            Parent.CurrentLocalCredentialState = new Expired(Parent);
+            Parent.CurrentLocalCredentialState = new ExpiredState(Parent);
         }
 
         public void Enable()
@@ -84,7 +88,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
 
         public void Disable()
         {
-            Parent.CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Disabled(Parent);
+            Parent.CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.DisabledState(Parent);
         }
 
         public void SetEmailAddress(string EmailAddress)
@@ -107,7 +111,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.EmailAddress = null;
             Parent.Password = null;
 
-            Parent.CurrentLocalCredentialState = new None(Parent);
+            Parent.CurrentLocalCredentialState = new NoneState(Parent);
         }
         #endregion
     }

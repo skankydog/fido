@@ -91,7 +91,7 @@ namespace Fido.Service.Implementation
         #region Change Email Address
         private const string CHANGE_EMAIL_ADDRESS = "Change Email Address";
 
-        public Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress)
+        public Guid ChangeEmailAddressInitiate(Guid UserId, string NewEmailAddress, bool AssumeSent)
         {
             using (new FunctionLogger(Log))
             {
@@ -111,7 +111,7 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new ServiceException("Failed to retrieve user details");
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, CHANGE_EMAIL_ADDRESS, UserId, NewEmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, CHANGE_EMAIL_ADDRESS, UserId, NewEmailAddress, AssumeSent);
                     UserEntity.CurrentLocalCredentialState.InitiateChangeEmailAddress();
 
                     UnitOfWork.Commit();

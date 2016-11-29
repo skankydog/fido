@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.ExternalCredentialStates
 {
-    internal class Enabled : IExternalCredentialState
+    public static class Enabled
+    {
+        public const string Name = "Enabled";
+    }
+
+    internal class EnabledState : IExternalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
@@ -13,8 +18,9 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
         public const string Name_ = "Enabled";
         public string Name { get { return Name_; } }
         public bool ArePresent { get { return true; } }
+        public bool AreUsable { get { return true; } }
 
-        public Enabled(User Parent) { this.Parent = Parent; }
+        public EnabledState(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
@@ -65,7 +71,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
             Parent.ExternalCredentials.Remove(ExternalCredentialToUnlink);
 
             if (Parent.ExternalCredentials.Count == 0)
-                Parent.CurrentExternalCredentialState = new None(Parent);
+                Parent.CurrentExternalCredentialState = new NoneState(Parent);
         }
 
         #region Administration
@@ -76,7 +82,7 @@ namespace Fido.Entities.UserDetails.ExternalCredentialStates
 
         public void Disable()
         {
-            Parent.CurrentExternalCredentialState = new Disabled(Parent);
+            Parent.CurrentExternalCredentialState = new DisabledState(Parent);
         }
         #endregion
     }

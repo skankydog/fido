@@ -15,13 +15,6 @@ namespace Fido.Service.Tests
     public class RoleServiceTests
     {
         [TestMethod]
-        public void CanGetRoleByName()
-        {
-            IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
-            Assert.IsNotNull(RoleService.GetByName("All Activities"));
-        }
-
-        [TestMethod]
         public void CanGetUsersInRole()
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
@@ -32,6 +25,7 @@ namespace Fido.Service.Tests
             Assert.AreEqual(1, Users.Count);
         }
 
+        #region Activity Tests
         [TestMethod]
         public void CanGetActivitiesForRole()
         {
@@ -71,8 +65,16 @@ namespace Fido.Service.Tests
                         new Activity { Name = "NewActivity02", Area = "Area", Action = "Action" },
                         new Activity { Name = "NewActivity03", Area = "Area", Action = "Action" } });
         }
+        #endregion
 
-        #region Name Duplication Tests
+        #region Name Tests
+        [TestMethod]
+        public void CanGetRoleByName()
+        {
+            IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
+            Assert.IsNotNull(RoleService.GetByName("All Activities"));
+        }
+
         [TestMethod]
         public void CanCheckRoleNameIsFree()
         {
@@ -125,7 +127,6 @@ namespace Fido.Service.Tests
         [ClassInitialize]
         public static void Initialise(TestContext Context)
         {
-            //DataAccess.DataAccessFactory.CreateBootstrapperEngine().Bootstrap();
             Service.ServiceFactory.Boot();
         }
         #endregion

@@ -170,7 +170,7 @@ namespace Fido.Service.Implementation
         #region Registration
         private string REGISTRATION = "Register Local Account";
 
-        public Guid RegistrationInitiate(string EmailAddress, string Password, string Firstname, string Surname)
+        public Guid RegistrationInitiate(string EmailAddress, string Password, string Firstname, string Surname, bool AssumeSent)
         {
             using (new FunctionLogger(Log))
             {
@@ -193,7 +193,7 @@ namespace Fido.Service.Implementation
                         CreatedUtc = DateTime.UtcNow
                     };
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, REGISTRATION, UserEntity.Id, EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, REGISTRATION, UserEntity.Id, EmailAddress, AssumeSent);
                     UserEntity.CurrentLocalCredentialState.InitiateRegistration(EmailAddress, Password, Firstname, Surname);
 
                     UserRepository.CascadeInsert(UserEntity);
@@ -231,7 +231,7 @@ namespace Fido.Service.Implementation
         #region Set Local Credential
         private string SET_LOCAL_CREDENTIAL = "Register Local Credential";
 
-        public Guid SetLocalCredentialInitiate(Guid UserId, string EmailAddress, string Password)
+        public Guid SetLocalCredentialInitiate(Guid UserId, string EmailAddress, string Password, bool AssumeSent)
         {
             using (new FunctionLogger(Log))
             {
@@ -249,7 +249,7 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(UserId);
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, SET_LOCAL_CREDENTIAL, UserEntity.Id, EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, SET_LOCAL_CREDENTIAL, UserEntity.Id, EmailAddress, AssumeSent);
 
                     UserEntity.CurrentLocalCredentialState.InitiateSetLocalCredentials(EmailAddress, Password);
                     UserRepository.Update(UserEntity);
@@ -287,7 +287,7 @@ namespace Fido.Service.Implementation
         #region Forgotten Password
         private string FORGOTTEN_PASSWORD = "Forgotten Password";
 
-        public Guid ForgottenPasswordInitiate(string EmailAddress)
+        public Guid ForgottenPasswordInitiate(string EmailAddress, bool AssumeSent)
         {
             using (new FunctionLogger(Log))
             {
@@ -299,7 +299,7 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an email address of {0} not found", EmailAddress));
 
-                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, FORGOTTEN_PASSWORD, UserEntity.Id, UserEntity.EmailAddress);
+                    Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, FORGOTTEN_PASSWORD, UserEntity.Id, UserEntity.EmailAddress, AssumeSent);
                     UserEntity.CurrentLocalCredentialState.InitiateForgottenPassword();
 
                     UnitOfWork.Commit();

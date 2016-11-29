@@ -5,17 +5,21 @@ using System.Text;
 
 namespace Fido.Entities.UserDetails.LocalCredentialStates
 {
-    internal class Disabled : ILocalCredentialState
+    public static class Disabled
+    {
+        public const string Name = "Disabled";
+    }
+
+    internal class DisabledState : ILocalCredentialState
     {
         #region Properties & Constructor
         private User Parent;
 
-        public const string Name_ = "Disabled";
-        public string Name { get { return Name_; } }
+        public string Name { get { return Disabled.Name; } }
         public bool ArePresent { get { return true; } }
         public bool AreUsable { get { return false; } }
 
-        public Disabled(User Parent) { this.Parent = Parent; }
+        public DisabledState(User Parent) { this.Parent = Parent; }
         #endregion
 
         public void Login()
@@ -82,7 +86,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
                 throw new Exception("Unable to enable credentials - missing email address and/or password");
             }
 
-            Parent.CurrentLocalCredentialState = new Enabled(Parent);
+            Parent.CurrentLocalCredentialState = new EnabledState(Parent);
         }
 
         public void Disable()
@@ -110,7 +114,7 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.EmailAddress = null;
             Parent.Password = null;
 
-            Parent.CurrentLocalCredentialState = new None(Parent);
+            Parent.CurrentLocalCredentialState = new NoneState(Parent);
         }
         #endregion
     }

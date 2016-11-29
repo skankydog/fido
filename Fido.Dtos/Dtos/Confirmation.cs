@@ -13,5 +13,6 @@ namespace Fido.Dtos
         public DateTime QueuedUTC { get; set; }
         public DateTime? SentUTC { get; set; }
         public DateTime? ReceivedUTC { get; set; }
+        public string State { get; set; }
     }
 }

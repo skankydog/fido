@@ -28,28 +28,29 @@ namespace Fido.Entities
             {
                 switch (value)
                 {
-                    case UserDetails.LocalCredentialStates.None.Name_:
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.None(this);
+                    case UserDetails.LocalCredentialStates.None.Name:
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.NoneState(this);
                         break;
 
-                    case UserDetails.LocalCredentialStates.Registered.Name_:
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Registered(this);
+                    case UserDetails.LocalCredentialStates.Registered.Name:
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.RegisteredState(this);
                         break;
 
-                    case UserDetails.LocalCredentialStates.Expired.Name_:
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Expired(this);
+                    case UserDetails.LocalCredentialStates.Expired.Name:
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.ExpiredState(this);
                         break;
 
-                    case UserDetails.LocalCredentialStates.Enabled.Name_:
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Enabled(this);
+                    case UserDetails.LocalCredentialStates.Enabled.Name:
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.EnabledState(this);
                         break;
 
-                    case UserDetails.LocalCredentialStates.Disabled.Name_:
-                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.Disabled(this);
+                 //   case UserDetails.LocalCredentialStates.DisabledState.Name_:
+                    case UserDetails.LocalCredentialStates.Disabled.Name:
+                        CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.DisabledState(this);
                         break;
 
                     default:
-                        throw new NotImplementedException(string.Format("Local state type {0} not implemented", value));
+                        throw new NotImplementedException(string.Format("Local credential state type {0} not implemented", value));
                 }
             }
         }
@@ -62,6 +63,7 @@ namespace Fido.Entities
 
         #region External Credential Properties
         public bool ExternalCredentialsArePresent { get { return CurrentExternalCredentialState.ArePresent; } }
+        public bool ExternalCredentialsAreUsable { get { return CurrentExternalCredentialState.AreUsable; } }
         public IList<ExternalCredential> ExternalCredentials { get; set; }
         public IExternalCredentialState CurrentExternalCredentialState { get; internal set; }
 
@@ -72,23 +74,20 @@ namespace Fido.Entities
             {
                 switch (value)
                 {
-                    case UserDetails.ExternalCredentialStates.None.Name_:
-                    //case "None":
-                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.None(this);
+                    case UserDetails.ExternalCredentialStates.None.Name:
+                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.NoneState(this);
                         break;
 
-                    case UserDetails.ExternalCredentialStates.Enabled.Name_:
-                    //case "Enabled":
-                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Enabled(this);
+                    case UserDetails.ExternalCredentialStates.Enabled.Name:
+                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.EnabledState(this);
                         break;
 
-                    case UserDetails.ExternalCredentialStates.Disabled.Name_:
-                    //case "Disabled":
-                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.Disabled(this);
+                    case UserDetails.ExternalCredentialStates.Disabled.Name:
+                        CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.DisabledState(this);
                         break;
 
                     default:
-                        throw new NotImplementedException(string.Format("Exteral state type {0} not implemented", value));
+                        throw new NotImplementedException(string.Format("External credential state type {0} not implemented", value));
                 }
             }
         }
@@ -148,8 +147,8 @@ namespace Fido.Entities
 
         public User()
         {
-            CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.None(this);
-            CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.None(this);
+            CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.NoneState(this);
+            CurrentExternalCredentialState = new UserDetails.ExternalCredentialStates.NoneState(this);
 
             Fullname = new Fullname();
             ExternalCredentials = new List<ExternalCredential>();
