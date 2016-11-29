@@ -26,9 +26,9 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an id of {0} not found", UserId));
 
-                    UserEntity.LocalCredentialState = "Enabled";
+                    UserEntity.LocalCredentialState = Fido.Entities.UserDetails.LocalCredentialStates.Enabled.Name;
+
                     UserRepository.Update(UserEntity);
-                  //  UserEntity.CurrentLocalCredentialState.Enable(Force: true);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
@@ -48,8 +48,9 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an id of {0} not found", UserId));
 
-              //      UserEntity.CurrentLocalCredentialState.Disable();
                     UserEntity.LocalCredentialState = Fido.Entities.UserDetails.LocalCredentialStates.Disabled.Name;
+
+                    UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
@@ -129,8 +130,9 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an id of {0} not found", UserId));
 
-                //    UserEntity.CurrentExternalCredentialState.Enable();
                     UserEntity.ExternalCredentialState = Fido.Entities.UserDetails.ExternalCredentialStates.Enabled.Name;
+
+                    UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
@@ -150,8 +152,9 @@ namespace Fido.Service.Implementation
                     if (UserEntity == null)
                         throw new Exception(string.Format("User with an id of {0} not found", UserId));
 
-             //       UserEntity.CurrentExternalCredentialState.Disable();
                     UserEntity.ExternalCredentialState = Fido.Entities.UserDetails.ExternalCredentialStates.Disabled.Name;
+
+                    UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
