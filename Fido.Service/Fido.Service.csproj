@@ -60,12 +60,10 @@
     <Compile Include="Implementation\Mapping\ProfileMapping.cs" />
     <Compile Include="Implementation\Mapping\SettingsMapping.cs" />
     <Compile Include="Implementation\Mapping\FullnameMapping.cs" />
-    <Compile Include="Implementation\Services\AdministrationService.cs" />
     <Compile Include="Implementation\Services\ConfirmationService.cs" />
     <Compile Include="Implementation\Services\UserImageService.cs" />
     <Compile Include="Implementation\Services\AuthenticationService.cs" />
     <Compile Include="Implementation\Services\ConfigurationService.cs" />
-    <Compile Include="Public\IServices\IAdministrationService.cs" />
     <Compile Include="Public\IServices\IConfigurationService.cs" />
     <Compile Include="Public\IServices\IConfirmationService.cs" />
     <Compile Include="Public\IServices\IUserImageService.cs" />

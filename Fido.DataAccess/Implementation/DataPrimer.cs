@@ -115,7 +115,7 @@ namespace Fido.DataAccess.Implementation
             User MontyBurns = new User
             {
                 Id = Guid.NewGuid(),
-                LocalCredentialState = "Enabled",
+                LocalCredentialState = "Disabled",
                 Password = "Jjdjsj^^77d8sJHJHDjjh",
                 PasswordLastChangeUtc = DateTime.UtcNow,
                 EmailAddress = "bernie@skankydog.com",
@@ -199,7 +199,7 @@ namespace Fido.DataAccess.Implementation
                 About = "Stu is cool"
             };
             // Disco Stu has no roles
-            DiscoStu.ExternalCredentialState = "Enabled";
+            DiscoStu.ExternalCredentialState = "Disabled";
             DiscoStu.ExternalCredentials.Add(new ExternalCredential { Id = Guid.NewGuid(), LoginProvider = "Facebook", ProviderKey = "DiscoStuFacebook1", EmailAddress = "stu@skankydog.com" });
 
             User FatTony = new User

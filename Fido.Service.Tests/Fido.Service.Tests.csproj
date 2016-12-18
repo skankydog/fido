@@ -54,7 +54,6 @@
     <Compile Include="Services\UserImageServiceTests.cs" />
     <Compile Include="Services\ConfirmationServiceTests.cs" />
     <Compile Include="Services\ConfigurationServiceTests.cs" />
-    <Compile Include="Services\AdministrationServiceTests.cs" />
     <Compile Include="CRUDServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MappingTests.cs" />

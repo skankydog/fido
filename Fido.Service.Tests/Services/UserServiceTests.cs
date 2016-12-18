@@ -105,6 +105,22 @@ namespace Fido.Service.Tests
 
             UserService.ChangeLocalPassword(UserDTO.Id, "28*8sdjhhjdjssd", "weak");
         }
+
+        [TestMethod]
+        public void CanExpireLocalCredentials()
+        {
+            const string EMAIL_ADDRESS = "homer.simpson@skankydog.com";
+
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = UserService.GetByEmailAddress(EMAIL_ADDRESS);
+
+            Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
+
+            UserService.ExpireLocalCredentials(UserDto.Id);
+            UserDto = UserService.GetByEmailAddress(EMAIL_ADDRESS);
+
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+        }
         #endregion
 
         #region Email Address Tests
@@ -129,6 +145,113 @@ namespace Fido.Service.Tests
 
             UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
             Assert.IsNotNull(UserDTO);
+        }
+        #endregion
+
+        #region Administrator Tests
+        [TestMethod]
+        public void CanExpireLocalCredentialsAsAdministrator()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+
+            var UserDto = UserService.GetByEmailAddress("bernie@skankydog.com");
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+
+            UserDto.LocalCredentialState = "Expired";
+            UserService.SaveAsAdministrator(UserDto);
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanEnableLocalCredentialsAsAdministrator()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+
+            var UserDto = UserService.GetByEmailAddress("bernie@skankydog.com");
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+
+            UserDto.LocalCredentialState = "Enabled";
+            UserService.SaveAsAdministrator(UserDto);
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanDisableLocalCredentialsAsAdministrator()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+            Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
+
+            UserDto.LocalCredentialState = "Disabled";
+            UserService.SaveAsAdministrator(UserDto);
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanEnableExternalCredentialsAsAdministrator()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+
+            var UserDto = UserService.GetByEmailAddress("stu@skankydog.com");
+            Assert.IsFalse(UserDto.ExternalCredentialsAreUsable);
+
+            UserDto.ExternalCredentialState = "Enabled";
+            UserService.SaveAsAdministrator(UserDto);
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanDisableExternalCredentialsAsAdministrator()
+        {
+            var UserService = ServiceFactory.CreateService<IUserService>();
+
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+            Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
+
+            UserDto.ExternalCredentialState = "Disabled";
+            UserService.SaveAsAdministrator(UserDto);
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.IsFalse(UserDto.ExternalCredentialsAreUsable);
+        }
+
+        [TestMethod]
+        public void CanCreateAsAdministrator()
+        {
+            const string EMAIL_ADDRESS = "maggie@skankydog.com";
+
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = new User { Fullname = new Fullname { Firstname = "Maggie", Surname = "Simpson" } };
+
+            UserService.CreateAsAdministrator(UserDto, EMAIL_ADDRESS, "expired password");
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
+            Assert.AreEqual("Expired", UserDto.LocalCredentialState);
+        }
+
+        [TestMethod]
+        public void CanResetLocalCredentialsAsAdministrator()
+        {
+            const string EMAIL_ADDRESS = "new@skankydog.com";
+
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+
+            UserService.ResetLocalCredentialsAsAdministrator(UserDto.Id, EMAIL_ADDRESS, "expired password");
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
+            Assert.AreEqual("Expired", UserDto.LocalCredentialState);
         }
         #endregion
 

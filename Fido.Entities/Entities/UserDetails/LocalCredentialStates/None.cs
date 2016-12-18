@@ -88,48 +88,9 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             throw new Exception("No local credentials");
         }
 
-        #region Administration
         public void Expire()
         {
             throw new Exception("No local credentials");
         }
-
-        public void Enable()
-        {
-            throw new Exception("No local credentials");
-        }
-
-        public void Disable()
-        {
-            Parent.CurrentLocalCredentialState = new DisabledState(Parent);
-        }
-
-        public void SetEmailAddress(string EmailAddress)
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.EmailAddress = EmailAddress;
-
-            if (Parent.Password == null)
-                return; // doesn't change state
-
-            Parent.CurrentLocalCredentialState = new EnabledState(Parent);
-        }
-
-        public void SetPassword(string Password)
-        {
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-            Parent.Password = Password;
-
-            if (Parent.EmailAddress == null)
-                return; // doesn't change state
-
-            Parent.CurrentLocalCredentialState = new EnabledState(Parent);
-        }
-
-        public void Clear()
-        {
-            // Does nothing
-        }
-        #endregion
     }
 }

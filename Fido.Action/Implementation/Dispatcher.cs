@@ -38,20 +38,7 @@ namespace Fido.Action.Implementation
         #region View
         public TRETURN View(Func<NoModel, TRETURN> Result)
         {
-            using (new FunctionLogger(Log))
-            {
-                var Model = BuildModel<NoModel>();
-                var Redirect = CheckPermissions(Model, Function.Read);
-
-                if (Redirect != null)
-                    return Redirect;
-
-                var Processor = new Processor<TRETURN>();
-                return Processor.ExecuteView(
-                    DataModel: Model,
-                    SuccessResult: Result,
-                    ErrorResult: ErrorResult);
-            }
+            return EmptyView<NoModel>(Result, Function.Read);
         }
         #endregion
 
@@ -59,7 +46,7 @@ namespace Fido.Action.Implementation
         public TRETURN Index<TMODEL>(Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
-            return ViewFromModelType<TMODEL>(
+            return EmptyView<TMODEL>(
                 Result: Result,
                 Function: Function.Read);
         }
@@ -89,24 +76,28 @@ namespace Fido.Action.Implementation
         public TRETURN Create<TMODEL>(Func<TMODEL, TRETURN> Result) // Create GET
             where TMODEL : IModel<TMODEL>
         {
-            return ViewFromModelType<TMODEL>(Result, Function.Write);
+            return EmptyView<TMODEL>(Result, Function.Write);
         }
 
         public TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>
-            { return Save(DataModel, Result); }
+        {
+            return Save(DataModel, Result);
+        }
 
         public TRETURN Create<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>
-            { return Save(DataModel, SuccessResult, InvalidResult);  }
+        {
+            return Save(DataModel, SuccessResult, InvalidResult);
+        }
         #endregion
 
         #region Update
         public TRETURN Update<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) // Update GET
             where TMODEL : IModel<TMODEL>
         {
-            return ViewFromId(Id, Result, Function.Read);
+            return Read(Id, Result, Function.Read);
         }
 
         public TRETURN Update<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>
@@ -123,7 +114,7 @@ namespace Fido.Action.Implementation
         public TRETURN Delete<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
-            return ViewFromId(Id, Result, Function.Write);
+            return Read(Id, Result, Function.Write);
         }
 
         public TRETURN Delete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult)
@@ -165,7 +156,7 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Private Functions
-        private TRETURN ViewFromId<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result, Function Function)
+        private TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result, Function Function)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
@@ -177,14 +168,15 @@ namespace Fido.Action.Implementation
                     return Redirect;
 
                 var Processor = new Processor<TRETURN>();
-                return Processor.ExecuteView(
+                return Processor.ExecuteRead(
+                    Id: Id,
                     DataModel: Model,
                     SuccessResult: Result,
                     ErrorResult: ErrorResult);
             }
         }
 
-        private TRETURN ViewFromModelType<TMODEL>(Func<TMODEL, TRETURN> Result, Function Function)
+        private TRETURN EmptyView<TMODEL>(Func<TMODEL, TRETURN> Result, Function Function)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))
@@ -279,7 +271,7 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                if (AuthenticationAPI.LoggedInCredentialState == "Expired") // Magic string to be fixed
+                if (AuthenticationAPI.LoggedInCredentialState == "Expired") // TO DO: Magic string to be fixed
                     return PasswordResetResult(DataModel);
 
                 if (Function == Function.Read && DataModel.ReadAccess != Access.Anonymous ||

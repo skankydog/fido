@@ -39,6 +39,7 @@ namespace Fido.Action.Models.Administration
         public string About { get; set; }
 
         public bool LocalCredentialsArePresent { get; set; }
+        public bool LocalCredentialsAreUsable { get; set; }
 
         [Display(Name = "email address")]
         public string EmailAddress { get; set; }
@@ -58,6 +59,7 @@ namespace Fido.Action.Models.Administration
         public int? PasswordAgeDays { get; set; }
 
         public bool ExternalCredentialsArePresent { get; set; }
+        public bool ExternalCredentialsAreUsable { get; set; }
         [Display(Name = "external credential state")]
         public string ExternalCredentialState { get; set; }
 
@@ -120,7 +122,7 @@ namespace Fido.Action.Models.Administration
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
 
-                UserDto = UserService.SaveWithStates(UserDto);
+                UserDto = UserService.SaveAsAdministrator(UserDto);
 
                 FeedbackAPI.DisplaySuccess("The user details have been saved");
                 return true;

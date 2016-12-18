@@ -80,44 +80,9 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             throw new Exception("Passords cannot be changed as the registration has not yet been confirmed");
         }
 
-        #region Administration
         public void Expire()
         {
             // Does nothing
         }
-
-        public void Enable()
-        {
-            Parent.CurrentLocalCredentialState = new EnabledState(Parent);
-        }
-
-        public void Disable()
-        {
-            Parent.CurrentLocalCredentialState = new DisabledState(Parent);
-        }
-
-        public void SetEmailAddress(string EmailAddress)
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.EmailAddress = EmailAddress;
-        }
-
-        public void SetPassword(string Password)
-        {
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-            Parent.Password = Password;
-        }
-
-        public void Clear()
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-
-            Parent.EmailAddress = null;
-            Parent.Password = null;
-
-            Parent.CurrentLocalCredentialState = new NoneState(Parent);
-        }
-        #endregion
     }
 }

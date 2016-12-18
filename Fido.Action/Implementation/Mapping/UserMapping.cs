@@ -55,6 +55,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.Fullname, Options => Options.MapFrom(Src => Mapper.Map<User, Dtos.Fullname>(Src)))
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.Ignore()) // Can't be updated via this view
                     .ForMember(Dest => Dest.LocalCredentialsAreUsable, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ExternalCredentialsAreUsable, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore());
             }
         }

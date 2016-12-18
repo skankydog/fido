@@ -72,50 +72,9 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             throw new Exception("Local credentials are disabled");
         }
 
-        #region Administration
         public void Expire()
         {
             throw new Exception("Local credentials are disabled");
         }
-
-        public void Enable()
-        {
-            if (string.IsNullOrEmpty(Parent.EmailAddress) ||
-                string.IsNullOrEmpty(Parent.Password))
-            {
-                throw new Exception("Unable to enable credentials - missing email address and/or password");
-            }
-
-            Parent.CurrentLocalCredentialState = new EnabledState(Parent);
-        }
-
-        public void Disable()
-        {
-            // Does nothing
-        }
-
-        public void SetEmailAddress(string EmailAddress)
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.EmailAddress = EmailAddress;
-        }
-
-        public void SetPassword(string Password)
-        {
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-            Parent.Password = Password;
-        }
-
-        public void Clear()
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-
-            Parent.EmailAddress = null;
-            Parent.Password = null;
-
-            Parent.CurrentLocalCredentialState = new NoneState(Parent);
-        }
-        #endregion
     }
 }

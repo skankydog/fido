@@ -170,7 +170,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User ExpireLocalCredential(Guid UserId)
+        public User ExpireLocalCredentials(Guid UserId)
         {
             using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -268,44 +268,7 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Administration
-        //public User SetLocalCredentialState(Guid UserId, string State)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //        {
-        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-        //            var UserEntity = UserRepository.Get(UserId);
-
-        //      //      UserEntity.SetLocalCredentialState(State);
-
-        //            var SavedUser = UserRepository.Update(UserEntity);
-        //            UnitOfWork.Commit();
-
-        //            return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
-        //        }
-        //    }
-        //}
-
-        //public User SetExternalCredentialState(Guid UserId, string State)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //        {
-        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-        //            var UserEntity = UserRepository.Get(UserId);
-
-        //            UserEntity.SetExternalCredentialState(State);
-        //            var SavedUser = UserRepository.Update(UserEntity);
-        //            UnitOfWork.Commit();
-
-        //            return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
-        //        }
-        //    }
-        //}
-
-        public User SaveWithStates(User User)
+        public User SaveAsAdministrator(User User)
         {
             using (new FunctionLogger(Log))
             {
@@ -315,8 +278,10 @@ namespace Fido.Service.Implementation
                     var UserEntity = UserRepository.Get(User.Id);
 
                     UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
+
                     UserEntity.LocalCredentialState = User.LocalCredentialState; // Not automapped
                     UserEntity.ExternalCredentialState = User.ExternalCredentialState; // Not automapped
+//                     UserEntity.EmailAddress = User.EmailAddress != null ? User.EmailAddress : UserEntity.EmailAddress; // Not automapped
 
                     var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();
@@ -326,21 +291,20 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User CreateLocalCredential(Guid UserId, string EmailAddress, string Password)
+        public User CreateAsAdministrator(User User, string EmailAddress, string Password)
         {
             using (new FunctionLogger(Log))
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = UserRepository.Get(UserId);
+                    var UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
 
-                    // Manual mapping as normal map updates all but the below...
-                    UserEntity.LocalCredentialState = "Expired";
+                    UserEntity.LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name;
                     UserEntity.EmailAddress = EmailAddress;
                     UserEntity.Password = Password;
 
-                    var SavedUser = UserRepository.Update(UserEntity);
+                    var SavedUser = UserRepository.Insert(UserEntity);
                     UnitOfWork.Commit();
 
                     return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
@@ -348,7 +312,7 @@ namespace Fido.Service.Implementation
             }
         }
 
-        public User DeleteLocalCredential(Guid UserId)
+        public User ResetLocalCredentialsAsAdministrator(Guid UserId, string EmailAddress, string Password)
         {
             using (new FunctionLogger(Log))
             {
@@ -357,10 +321,9 @@ namespace Fido.Service.Implementation
                     var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
                     var UserEntity = UserRepository.Get(UserId);
 
-                    // Manual mapping as normal map updates all but the below...
-                    UserEntity.LocalCredentialState = "None";
-                    UserEntity.EmailAddress = null;
-                    UserEntity.Password = null;
+                    UserEntity.LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name;
+                    UserEntity.EmailAddress = EmailAddress;
+                    UserEntity.Password = Password;
 
                     var SavedUser = UserRepository.Update(UserEntity);
                     UnitOfWork.Commit();

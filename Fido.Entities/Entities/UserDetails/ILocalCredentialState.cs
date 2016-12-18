@@ -27,13 +27,6 @@ namespace Fido.Entities.UserDetails
 
         void ChangePassword(string Password);
 
-        #region Administration
         void Expire();
-        void Enable();
-        void Disable();
-        void SetEmailAddress(string EmailAddress);
-        void SetPassword(string Password);
-        void Clear();
-        #endregion
     }
 }

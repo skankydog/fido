@@ -75,44 +75,9 @@ namespace Fido.Entities.UserDetails.LocalCredentialStates
             Parent.PasswordLastChangeUtc = DateTime.UtcNow;
         }
 
-        #region Administration
         public void Expire()
         {
             Parent.CurrentLocalCredentialState = new ExpiredState(Parent);
         }
-
-        public void Enable()
-        {
-            // Does nothing
-        }
-
-        public void Disable()
-        {
-            Parent.CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.DisabledState(Parent);
-        }
-
-        public void SetEmailAddress(string EmailAddress)
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.EmailAddress = EmailAddress;
-        }
-
-        public void SetPassword(string Password)
-        {
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-            Parent.Password = Password;
-        }
-
-        public void Clear()
-        {
-            Parent.EmailAddressLastChangeUtc = DateTime.UtcNow;
-            Parent.PasswordLastChangeUtc = DateTime.UtcNow;
-
-            Parent.EmailAddress = null;
-            Parent.Password = null;
-
-            Parent.CurrentLocalCredentialState = new NoneState(Parent);
-        }
-        #endregion
     }
 }
