@@ -19,7 +19,6 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public ExternalLoginCallback()
-         //   : base(RequiresReadPermission: false, RequiresWritePermission: false)
             : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 

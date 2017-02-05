@@ -107,9 +107,11 @@ namespace Fido.Service.Implementation
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
-                    Repository.Delete(Id);
+                    BeforeDelete(Id, UnitOfWork);
 
+                    TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
+
+                    Repository.Delete(Id);
                     UnitOfWork.Commit();
                     return true;
                 }
@@ -119,5 +121,6 @@ namespace Fido.Service.Implementation
         virtual protected TDTO BeforeSave(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
         virtual protected TDTO BeforeInsert(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
         virtual protected TDTO BeforeUpdate(TDTO Dto, IUnitOfWork UnitOfWork) { return Dto; }
+        virtual protected void BeforeDelete(Guid Id, IUnitOfWork UnitOfWork) { }
     }
 }

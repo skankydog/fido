@@ -9,26 +9,40 @@ using Fido.Service;
 
 namespace Fido.Action.Tests.Mocks
 {
+    public enum FeedbackState
+    {
+        Unknown = 0,
+        Success,
+        Failure
+    }
+
     public class MockFeedbackAPI : IFeedbackAPI
     {
+        public FeedbackState State { get; private set; }
+
+        public MockFeedbackAPI()
+        {
+            State = FeedbackState.Unknown;
+        }
+
         public void DisplayInfo(string Message)
         {
-            ;
+            ; // No change to state
         }
 
         public void DisplaySuccess(string Message)
         {
-            ;
+            State = FeedbackState.Success;
         }
 
         public void DisplayWarning(string Message)
         {
-            ;
+            State = FeedbackState.Failure;
         }
 
         public void DisplayError(string Message)
         {
-            ;
+            State = FeedbackState.Failure;
         }
 
         public Mode Mode

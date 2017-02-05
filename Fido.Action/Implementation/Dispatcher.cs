@@ -35,10 +35,10 @@ namespace Fido.Action.Implementation
             this.ErrorResult = ErrorResult;
         }
 
-        #region View
-        public TRETURN View(Func<NoModel, TRETURN> Result)
+        #region Simple
+        public TRETURN Simple(Func<NoModel, TRETURN> Result)
         {
-            return EmptyView<NoModel>(Result, Function.Read);
+            return View<NoModel>(Result, Function.Read);
         }
         #endregion
 
@@ -46,9 +46,23 @@ namespace Fido.Action.Implementation
         public TRETURN Index<TMODEL>(Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
-            return EmptyView<TMODEL>(
+            return View<TMODEL>(
                 Result: Result,
                 Function: Function.Read);
+        }
+
+        public TRETURN Index<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
+            where TMODEL : IModel<TMODEL>
+        {
+            var Model = BuildModel<TMODEL>();
+            var Redirect = CheckPermissions(Model, Function.Read);
+
+            if (Redirect != null)
+                return Redirect;
+
+            Model.Id = Id;
+
+            return Result(Model);
         }
 
         public TRETURN Index<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
@@ -70,13 +84,34 @@ namespace Fido.Action.Implementation
                     ErrorResult: ErrorResult);
             }
         }
+
+        //public TRETURN Index<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result)
+        //    where TMODEL : IModel<TMODEL>
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        var Model = BuildModel<TMODEL>();
+        //        var Redirect = CheckPermissions(Model, Function.Read);
+
+        //        if (Redirect != null)
+        //            return Redirect;
+
+        //        var Processor = new Processor<TRETURN>();
+        //        return Processor.ExecuteRead<TMODEL>(
+        //            Id: Id,
+        //            DataModel: Model,
+        //            IndexOptions: IndexOptions,
+        //            SuccessResult: Result,
+        //            ErrorResult: ErrorResult);
+        //    }
+        //}
         #endregion
 
         #region Create
-        public TRETURN Create<TMODEL>(Func<TMODEL, TRETURN> Result) // Create GET
+        public TRETURN CreateLoad<TMODEL>(Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
-            return EmptyView<TMODEL>(Result, Function.Write);
+            return View<TMODEL>(Result, Function.Write);
         }
 
         public TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>
@@ -94,7 +129,7 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Update
-        public TRETURN Update<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) // Update GET
+        public TRETURN UpdateLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) // Update GET
             where TMODEL : IModel<TMODEL>
         {
             return Read(Id, Result, Function.Read);
@@ -111,7 +146,7 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Delete
-        public TRETURN Delete<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
+        public TRETURN DeleteLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
             return Read(Id, Result, Function.Write);
@@ -156,6 +191,29 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Private Functions
+        private TRETURN IndexRead<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result, Function Function)
+            where TMODEL : IModel<TMODEL>
+        {
+            using (new FunctionLogger(Log))
+            {
+                var Model = BuildModel<TMODEL>();
+                var Redirect = CheckPermissions(Model, Function);
+
+                if (Redirect != null)
+                    return Redirect;
+
+                Model.Id = Id;
+
+                return Result(Model);
+                //var Processor = new Processor<TRETURN>();
+                //return Processor.ExecuteRead(
+                //    Id: Id,
+                //    DataModel: Model,
+                //    SuccessResult: Result,
+                //    ErrorResult: ErrorResult);
+            }
+        }
+
         private TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result, Function Function)
             where TMODEL : IModel<TMODEL>
         {
@@ -176,7 +234,7 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private TRETURN EmptyView<TMODEL>(Func<TMODEL, TRETURN> Result, Function Function)
+        private TRETURN View<TMODEL>(Func<TMODEL, TRETURN> Result, Function Function)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))

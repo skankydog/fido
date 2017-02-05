@@ -35,13 +35,19 @@ namespace Fido.Action.Implementation
         public TRETURN ExecuteRead<TMODEL>(IndexOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
-            return DoExecuteRead(Guid.Empty, DataModel, IndexOptions, SuccessResult, ErrorResult);
+            return DoExecuteRead(IndexOptions.Id, DataModel, IndexOptions, SuccessResult, ErrorResult);
         }
 
         public TRETURN ExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             return DoExecuteRead(Id, DataModel, null, SuccessResult, ErrorResult);
+        }
+
+        public TRETURN ExecuteRead<TMODEL>(Guid Id, IndexOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+            where TMODEL : IModel<TMODEL>
+        {
+            return DoExecuteRead(Id, DataModel, IndexOptions, SuccessResult, ErrorResult);
         }
 
         private TRETURN DoExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
@@ -59,7 +65,10 @@ namespace Fido.Action.Implementation
                     }
                     else
                     {
-                        DataModel = DataModel.Read(IndexOptions);
+                        if (Id == Guid.Empty)
+                            DataModel = DataModel.Read(IndexOptions);
+                        else
+                            DataModel = DataModel.Read(Id, IndexOptions);
                     }
 
                     DataModel.DeniedActivities = Tmp; // Restore after mapping

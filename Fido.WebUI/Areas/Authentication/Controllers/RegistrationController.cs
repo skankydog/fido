@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create<Registration>(
+            return Dispatcher.CreateLoad<Registration>(
                 Result: m => View());
         }
 

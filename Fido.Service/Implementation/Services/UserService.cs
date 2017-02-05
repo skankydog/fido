@@ -13,7 +13,7 @@ namespace Fido.Service.Implementation
     internal class UserService : CRUDService<User, Entities.User, DataAccess.IUserRepository>, IUserService
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>(); // TO DO: not necessary
+    //    private static Dictionary<Guid, IList<Activity>> PermissionCache = new Dictionary<Guid, IList<Activity>>(); // TO DO: not necessary
 
         #region Pages
         public IList<User> GetPageInDefaultOrder(char SortOrder, int Skip, int Take, string Filter)
@@ -287,6 +287,47 @@ namespace Fido.Service.Implementation
                     UnitOfWork.Commit();
 
                     return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                }
+            }
+        }
+
+        public User SaveAsAdministrator2(User User, string EmailAddress = null, string Password = null)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = UserRepository.Get(User.Id);
+
+                    if (UserEntity == null)
+                    {
+                        if (EmailAddress == null || Password == null)
+                            throw new Exception("A user cannot be created by an administrator without local credentials");
+
+                        UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
+                        UserEntity.LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name; // Not automapped
+                        UserEntity.EmailAddress = EmailAddress; // Not automapped
+                        UserEntity.Password = Password; // Not automapped
+
+                        var SavedUser = UserRepository.Insert(UserEntity);
+
+                        UnitOfWork.Commit();
+                        return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                    }
+                    else
+                    {
+                        UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
+                        UserEntity.LocalCredentialState = User.LocalCredentialState; // Not automapped
+                        UserEntity.ExternalCredentialState = User.ExternalCredentialState; // Not automapped
+                        UserEntity.EmailAddress = EmailAddress != null ? EmailAddress : UserEntity.EmailAddress; // Not automapped
+                        UserEntity.Password = Password != null ? EmailAddress : UserEntity.Password; // Not automapped
+
+                        var SavedUser = UserRepository.Update(UserEntity);
+
+                        UnitOfWork.Commit();
+                        return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                    }
                 }
             }
         }

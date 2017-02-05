@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Update(Guid ConfirmationId)
         {
-            return Dispatcher.Update<ResetPassword>(
+            return Dispatcher.UpdateLoad<ResetPassword>(
                 Id: ConfirmationId,
                 Result: m => View(m));
         }

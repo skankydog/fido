@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create<EmailAddress>(
+            return Dispatcher.CreateLoad<EmailAddress>(
                 Result: m => PartialView());
         }
 

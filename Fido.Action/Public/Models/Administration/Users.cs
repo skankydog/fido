@@ -22,8 +22,6 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Users()
-           // : base (RequiresReadPermission: true,
-           //         RequiresWritePermission: true)
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
@@ -35,14 +33,13 @@ namespace Fido.Action.Models.Administration
                 var CountUnfiltered = CountAll();
                 var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                var x = new Users
+                return new Users
                 {
                     sEcho = IndexOptions.Echo,
                     iTotalRecords = CountUnfiltered,
                     iTotalDisplayRecords = CountFiltered,
                     aaData = PageOfRecords
                 };
-                return x;
             }
         }
 

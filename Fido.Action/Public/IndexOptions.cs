@@ -8,6 +8,9 @@ namespace Fido.Action
 {
     public class IndexOptions
     {
+   //     public string[] data { get; set; }
+        public Guid Id { get; set; }
+
         public string Echo { get; set; } // Sequence number
         public string Filter { get; set; } // Typed into the search textbox
         public int Take { get; set; } // Number of items to display on the page

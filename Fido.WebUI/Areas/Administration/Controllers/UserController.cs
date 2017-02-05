@@ -30,7 +30,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Create()
         {
-            return Dispatcher.Create<User>(
+            return Dispatcher.CreateLoad<User>(
                 Result: m => View(m));
         }
 
@@ -44,7 +44,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.Update<User>(
+            return Dispatcher.UpdateLoad<User>(
                 Id: Id,
                 Result: m => View(m));
         }
@@ -60,7 +60,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.Update<User>(
+            return Dispatcher.UpdateLoad<User>(
                 Id: Id,
                 Result: m => PartialView(m));
         }

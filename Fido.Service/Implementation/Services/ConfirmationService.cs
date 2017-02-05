@@ -10,9 +10,47 @@ using Fido.DataAccess;
 
 namespace Fido.Service.Implementation
 {
-    internal class ConfirmationService : IConfirmationService
+    internal class ConfirmationService : CRUDService<Confirmation, Entities.Confirmation, DataAccess.IConfirmationRepository>, IConfirmationService
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        #region Pages
+        public IList<Confirmation> GetPageInDefaultOrder(Guid Id, char SortOrder, int Skip, int Take, string Filter)
+        {
+            return GetPage(Id, SortOrder, Skip, Take, Filter,
+                OrderByAscending: q => q.OrderBy(s => s.Id),
+                OrderByDescending: q => q.OrderByDescending(s => s.Id));
+        }
+
+        private IList<Confirmation> GetPage(Guid Id, char SortOrder, int Skip, int Take, string Filter,
+            Func<IQueryable<Entities.Confirmation>, IOrderedQueryable<Entities.Confirmation>> OrderByAscending,
+            Func<IQueryable<Entities.Confirmation>, IOrderedQueryable<Entities.Confirmation>> OrderByDescending)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var ConfirmationRepository = DataAccessFactory.CreateRepository<IConfirmationRepository>(UnitOfWork);
+                    var OrderBy = SortOrder == 'a' ? OrderByAscending : OrderByDescending;
+                    var Query = ConfirmationRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
+
+                    if (Filter.IsNotNullOrEmpty())
+                    {
+                        Query = Query.Where(e => e.ConfirmType.ToLower().Contains(Filter.ToLower())
+                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower())
+                                              || e.State.ToLower().Contains(Filter.ToLower()));
+                    }
+
+                    Query = Query.Skip(Skip).Take(Take);
+
+                    var EntityList = Query.ToList(); // Hit the database
+
+                    IList<Confirmation> DtoList = AutoMapper.Mapper.Map<IList<Entities.Confirmation>, IList<Confirmation>>(EntityList);
+                    return DtoList;
+                }
+            }
+        }
+        #endregion
 
         public IList<Confirmation> GetAll(Guid UserId)
         {
@@ -119,22 +157,16 @@ namespace Fido.Service.Implementation
             }
         }
 
-        //public string GetConfirmationType(Guid Id)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        using (var UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //        {
-        //            var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-        //            var ConfirmationEntity = Repository.Get(e => e.Id == Id && e.QueuedUTC != null && e.SentUTC == null && e.ReceivedUTC == null);
+        #region Hooks
+        protected override void BeforeDelete(Guid Id, IUnitOfWork UnitOfWork)
+        {
+            var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+            var ConfirmationEntity = Repository.Get(Id);
 
-        //            if (ConfirmationEntity == null)
-        //                throw new ServiceException("The validation is either non-existent, not ready to be sent or is in an invalid state");
-
-        //            return ConfirmationEntity.ConfirmType;
-        //        }
-        //    }
-        //}
+            if (!ConfirmationEntity.Deletable)
+                throw new Exception("The confirmation is not in a state that allows it to be deleted");
+        }
+        #endregion
 
         #region Static Functions
         public static Guid QueueConfirmation(IUnitOfWork UnitOfWork, string Type, Guid UserId, string EmailAddress, bool AssumeSent = false)

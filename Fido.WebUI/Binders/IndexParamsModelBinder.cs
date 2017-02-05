@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Fido.Action;
+using Fido.Core;
 
 namespace Fido.WebUI.Binders
 {
@@ -18,6 +19,7 @@ namespace Fido.WebUI.Binders
                 Request = ControllerContext.HttpContext.Request;
                 IndexOptions Model = new IndexOptions();
 
+                Model.Id = Request["sid"].ToGuid();
                 Model.Echo = Request["sEcho"];
                 Model.Filter = Request["sSearch"];
                 Model.Take = Convert.ToInt32(Request["iDisplayLength"]);

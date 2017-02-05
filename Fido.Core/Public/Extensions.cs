@@ -9,7 +9,14 @@ namespace Fido.Core
 
         public static Guid ToGuid(this string GuidAsString)
         {
-            return Guid.Parse(GuidAsString);
+            try
+            {
+                return Guid.Parse(GuidAsString);
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
         }
 
         public static bool IsNullOrEmpty(this string Param)
@@ -25,6 +32,11 @@ namespace Fido.Core
         public static string Nvl(this string Param)
         {
             return Param == null ? "" : Param;
+        }
+
+        public static string Nvl(this DateTime? Param)
+        {
+            return Param == null ? "" : Param.ToString();
         }
     }
 }

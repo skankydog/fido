@@ -38,6 +38,15 @@
 </div>
 
 <div class="row">
+    <div class="col-xs-12">
+        <div class="hline"></div>
+    </div>
+    <div class="col-xs-12">
+        @Html.ActionLink("Show Confirmations", "Index", "Confirmation", new { Id = Model.Id }, null)
+    </div>
+</div>
+
+<div class="row">
     <div class="col-xs-6 col-centered control-button">
         <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
             <span><i class="fa fa-fw fa-check"></i></span>

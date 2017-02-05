@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.Update<Settings>(
+            return Dispatcher.UpdateLoad<Settings>(
                 Id: AuthenticatedId,
                 Result: m => View(m));
         }

@@ -36,5 +36,22 @@ namespace Fido.Entities
                 return ERROR; // all are null
             }
         }
+
+        public bool Deletable
+        {
+            get
+            {
+                if (ReceivedUTC != null)
+                    return false;
+
+                if (SentUTC != null)
+                    return true;
+
+                if (QueuedUTC != null)
+                    return true;
+
+                return false; // all are null
+            }
+        }
     }
 }

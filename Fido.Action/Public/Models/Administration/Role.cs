@@ -19,7 +19,7 @@ namespace Fido.Action.Models.Administration
         public IList<Activity> AllActivities = new List<Activity>();
     //    public IList<User> AllUsers = new List<User>();
 
-        public Guid Id { get; set; }
+//        public Guid Id { get; set; }
 
         [Display(Name = "role name")]
         [Required(ErrorMessage = "The role name field cannot be left blank")]

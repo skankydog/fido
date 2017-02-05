@@ -179,6 +179,7 @@
     <Compile Include="Areas\Account\Controllers\LocalCredentialController.cs" />
     <Compile Include="Areas\Account\Controllers\ExternalCredentialController.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\ConfirmationController.cs" />
     <Compile Include="Areas\Administration\Controllers\ConfigurationController.cs" />
     <Compile Include="Areas\Administration\Controllers\xHomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\LocalCredentialController.cs" />
@@ -316,6 +317,8 @@
     <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Authentication\Views\web.config" />
     <Content Include="Areas\Authentication\Views\ResetPassword\Update.cshtml" />
+    <Content Include="Areas\Administration\Views\Confirmation\Index.cshtml" />
+    <Content Include="Areas\Administration\Views\Confirmation\Delete.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />

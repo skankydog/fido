@@ -13,35 +13,35 @@ using Fido.WebUI.Binders;
 
 namespace Fido.WebUI.Areas.Administration.Controllers
 {
-    public class ActivityController : BaseController
+    public class ConfirmationController : BaseController
     {
-        public ActionResult Index()
+        public ActionResult Index(Guid Id)
         {
-            return Dispatcher.Index<Activities>(
-                Result: m => View());
-        }
-
-        public ActionResult IndexRead(IndexOptions IndexOptions)
-        {
-            return Dispatcher.Index<Activities>(
-                IndexOptions: IndexOptions,
-                Result: m => Json(m, JsonRequestBehavior.AllowGet));
-        }
-
-        public ActionResult Update(Guid Id)
-        {
-            return Dispatcher.UpdateLoad<Activity>(
+            return Dispatcher.Index<Confirmations>(
                 Id: Id,
                 Result: m => View(m));
         }
 
-        [HttpPost]
-        public ActionResult Update(Activity Model)
+        public ActionResult IndexRead(IndexOptions IndexOptions)
         {
-            return Dispatcher.Update(
+            return Dispatcher.Index<Confirmations>(
+                IndexOptions: IndexOptions,
+                Result: m => Json(m, JsonRequestBehavior.AllowGet));
+        }
+
+        public ActionResult Delete(Guid Id)
+        {
+            return Dispatcher.UpdateLoad<Confirmation>(
+                Id: Id,
+                Result: m => PartialView(m));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(Confirmation Model)
+        {
+            return Dispatcher.Delete<Confirmation>(
                 DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "Activity"),
-                InvalidResult: m => View(m));
+                Result: m => ModalRedirectToLocal(Url.Action("Index", "Confirmation", new { Id = Model.UserId })));
         }
     }
 }

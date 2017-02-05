@@ -18,7 +18,7 @@ namespace Fido.Action.Models.Administration
         #region Data
         public IList<Role> AllRoles = new List<Role>();
 
-        public Guid Id { get; set; }
+  //      public Guid Id { get; set; }
 
         public string Area { get; set; }
         public string Name { get; set; }

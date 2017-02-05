@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\Function.cs" />
+    <Compile Include="Implementation\Mapping\ConfirmationMapping.cs" />
     <Compile Include="Implementation\Mapping\ConfigurationMapping.cs" />
     <Compile Include="Implementation\Mapping\ForgottenPasswordMapping.cs" />
     <Compile Include="Implementation\Mapping\ExternalCredentialMapping.cs" />
@@ -66,10 +67,11 @@
     <Compile Include="Public\Models\Account\ExternalCredential.cs" />
     <Compile Include="Public\Models\Account\Password.cs" />
     <Compile Include="Public\Models\Administration\Configuration.cs" />
+    <Compile Include="Public\Models\Administration\Confirmation.cs" />
     <Compile Include="Public\Models\Administration\Home.cs" />
+    <Compile Include="Public\Models\Administration\Confirmations.cs" />
     <Compile Include="Public\Models\Authentication\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\Authentication\ForgottenPassword.cs" />
-    <Compile Include="Public\Models\Administration\LocalCredential.cs" />
     <Compile Include="Public\Models\Administration\Activity.cs" />
     <Compile Include="Public\Models\Administration\Role.cs" />
     <Compile Include="Public\Models\Administration\User.cs" />

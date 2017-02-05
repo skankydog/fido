@@ -29,8 +29,6 @@ namespace Fido.Service
         User CreateAsAdministrator(User User, string EmailAddress, string Password);
         User ResetLocalCredentialsAsAdministrator(Guid UserId, string EmailAddress, string Password);
         User SaveAsAdministrator(User User);
-   //     User CreateLocalCredential(Guid UserId, string EmailAddress, string Password);
-   //     User DeleteLocalCredential(Guid UserId);
         #endregion
 
         User GetByEmailAddress(string EmailAddress);

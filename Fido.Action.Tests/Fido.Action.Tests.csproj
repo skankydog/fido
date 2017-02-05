@@ -57,6 +57,9 @@
     <Compile Include="Mocks\MockAuthenticationAPI.cs" />
     <Compile Include="Mocks\MockModelAPI.cs" />
     <Compile Include="Mocks\MockFeedbackAPI.cs" />
+    <Compile Include="Models\Account\LocalCredentialTests.cs" />
+    <Compile Include="Models\Account\ExternalCredentialTests.cs" />
+    <Compile Include="Models\Account\EmailAddressTests.cs" />
     <Compile Include="PermissionTests.cs" />
     <Compile Include="MappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +77,10 @@
       <Project>{23a08897-bf3d-419f-87de-6624a53dc0de}</Project>
       <Name>Fido.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Administration\" />
+    <Folder Include="Models\Authentication\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -93,58 +93,6 @@ namespace Fido.Entities
         }
         #endregion
 
-        //#region Administration
-        //public void SetLocalCredentialState(string State)
-        //{
-        //    switch (State)
-        //    {
-        //        case UserDetails.LocalCredentialStates.Expired.Name_:
-        //            CurrentLocalCredentialState.Expire();
-        //            break;
-
-        //        case UserDetails.LocalCredentialStates.Enabled.Name_:
-        //            CurrentLocalCredentialState.Enable();
-        //            break;
-
-        //        case UserDetails.LocalCredentialStates.Disabled.Name_:
-        //            CurrentLocalCredentialState.Disable();
-        //            break;
-
-        //        case UserDetails.LocalCredentialStates.None.Name_:
-        //            Password = null;
-        //            EmailAddress = null;
-        //            LocalCredentialState = "None";
-        //            break;
-
-        //        default:
-        //            throw new Exception(string.Format("Local credential state, '{0}', not valid", State));
-        //    }
-        //}
-
-        //public void SetExternalCredentialState(string State)
-        //{
-        //    switch (State)
-        //    {
-        //        case UserDetails.ExternalCredentialStates.Enabled.Name_:
-        //            CurrentExternalCredentialState.Enable();
-        //            break;
-
-        //        case UserDetails.ExternalCredentialStates.Disabled.Name_:
-        //            CurrentExternalCredentialState.Disable();
-        //            break;
-
-        //        case UserDetails.ExternalCredentialStates.None.Name_:
-        //            // TO DO:How do I delete all the external credentials here????
-        //            ExternalCredentials.Clear(); // I wonder if this works!!??
-        //            ExternalCredentialState = State;
-        //            break;
-
-        //        default:
-        //            throw new Exception(string.Format("External credential state, {0}, not valid", ExternalCredentialState));
-        //    }
-        //}
-        //#endregion
-
         public User()
         {
             CurrentLocalCredentialState = new UserDetails.LocalCredentialStates.NoneState(this);

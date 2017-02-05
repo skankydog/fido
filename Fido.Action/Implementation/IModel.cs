@@ -16,6 +16,8 @@ namespace Fido.Action.Implementation
 
     public interface IDataModel
     {
+        Guid Id { get; set; }
+
         IList<Dtos.Activity> DeniedActivities { get; set; }
 
         void BuildDeniedActivities(Guid UserId);
@@ -28,6 +30,7 @@ namespace Fido.Action.Implementation
         TMODEL Prepare(TMODEL Model);
         TMODEL Read(Guid Id);
         TMODEL Read(IndexOptions IndexOptions);
+        TMODEL Read(Guid Id, IndexOptions IndexOptions);
         bool Save(TMODEL Model);
         bool Confirm(Guid ConfirmationId);
         bool Delete(TMODEL Model);

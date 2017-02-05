@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Authentication.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.Create<ForgottenPassword>(
+            return Dispatcher.CreateLoad<ForgottenPassword>(
                 Result: m => View(m));
         }
 

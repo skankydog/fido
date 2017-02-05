@@ -20,7 +20,7 @@ namespace Fido.Action.Models.Administration
         public HashSet<string> AllExternalCredentialStates;
         public IList<Role> AllRoles = new List<Role>();
 
-        public Guid Id { get; set; }
+//        public Guid Id { get; set; }
 
         [Display(Name = "firstname")]
         [Required(ErrorMessage = "The first name field cannot be left blank")]
@@ -63,10 +63,10 @@ namespace Fido.Action.Models.Administration
         [Display(Name = "external credential state")]
         public string ExternalCredentialState { get; set; }
 
-        public bool HasFacebook;
-        public bool HasTwitter;
-        public bool HasLinkedIn;
-        public bool HasGoogle;
+        public bool HasFacebook { get; set; }
+        public bool HasTwitter { get; set; }
+        public bool HasLinkedIn { get; set; }
+        public bool HasGoogle { get; set; }
 
         public IList<Guid> SelectedRoles { get; set; }
 

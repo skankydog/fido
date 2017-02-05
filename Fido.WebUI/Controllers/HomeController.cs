@@ -16,7 +16,7 @@ namespace Fido.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.View(
+            return Dispatcher.Simple(
                 Result: m => View(m));
         }
 
@@ -27,7 +27,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Contact()
         {
-            return Dispatcher.View(
+            return Dispatcher.Simple(
                 Result: m => View(m));
         }
 

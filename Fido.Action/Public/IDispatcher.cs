@@ -9,19 +9,21 @@ namespace Fido.Action
 {
     public interface IDispatcher<TRETURN>
     {
-        TRETURN View(Func<NoModel, TRETURN> Result);
+        TRETURN Simple(Func<NoModel, TRETURN> Result);
 
         TRETURN Index<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN Index<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Index<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+     //   TRETURN Index<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 
-        TRETURN Create<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN CreateLoad<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Create<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
 
-        TRETURN Update<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN UpdateLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Update<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Update<TMODEL>(
             TMODEL DataModel,
@@ -34,7 +36,7 @@ namespace Fido.Action
         //    Func<TMODEL, TRETURN> SuccessResult,
         //    Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
 
-        TRETURN Delete<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN DeleteLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Delete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 
         TRETURN Confirm<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;

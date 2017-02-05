@@ -18,7 +18,6 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public ExternalCredential()
-          //  : base(RequiresReadPermission: false, RequiresWritePermission: false)
             : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 

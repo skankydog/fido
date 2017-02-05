@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models.Administration
 {
-    public class Roles : Model<Roles>
+    public class Confirmations : Model<Confirmations>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,19 +21,19 @@ namespace Fido.Action.Models.Administration
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Roles()
+        public Confirmations()
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Roles Read(IndexOptions IndexOptions)
+        public override Confirmations Read(Guid Id, IndexOptions IndexOptions)
         {
             using (new FunctionLogger(Log))
             {
-                var PageOfRecords = GetPageOfRecords(IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
+                var PageOfRecords = GetPageOfRecords(Id, IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
                 var CountUnfiltered = CountAll();
                 var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new Roles
+                return new Confirmations
                 {
                     sEcho = IndexOptions.Echo,
                     iTotalRecords = CountUnfiltered,
@@ -43,29 +43,24 @@ namespace Fido.Action.Models.Administration
             }
         }
 
-        private IList<string[]> GetPageOfRecords(int SortColumn, char SortOrder, int Skip, int Take, string Filter)
+        private IList<string[]> GetPageOfRecords(Guid Id, int SortColumn, char SortOrder, int Skip, int Take, string Filter)
         {
             using (new FunctionLogger(Log))
             {
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                IList<Dtos.Role> RoleDtos;
+                var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+                IList<Dtos.Confirmation> ConfirmationDtos;
 
-                switch (SortColumn)
-                {
-                    case 0:
-                        RoleDtos = RoleService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
-                        break;
+                ConfirmationDtos = ConfirmationService.GetPageInDefaultOrder(Id, SortOrder, Skip, Take, Filter);
 
-                    default:
-                        RoleDtos = RoleService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
-                        break;
-                }
-
-                return (from RoleDto in RoleDtos
+                return (from ConfirmationDto in ConfirmationDtos
                         select new[] {
-                        RoleDto.Name.Nvl(),
-                        RoleDto.Id.ToString(), // Edit
-                        RoleDto.Id.ToString()  // Delete
+                        ConfirmationDto.ConfirmType.Nvl(),
+                        ConfirmationDto.EmailAddress.Nvl(),
+                        ConfirmationDto.QueuedUTC.ToString(),
+                        ConfirmationDto.SentUTC.Nvl(),
+                        ConfirmationDto.ReceivedUTC.Nvl(),
+                        ConfirmationDto.State.Nvl(),
+                        ConfirmationDto.Deletable ? ConfirmationDto.Id.ToString() : string.Empty // Delete
                     }).ToArray();
             }
         }
@@ -74,8 +69,8 @@ namespace Fido.Action.Models.Administration
         {
             using (new FunctionLogger(Log))
             {
-                var RoleService = ServiceFactory.CreateService<IRoleService>();
-                return RoleService.CountAll();
+                var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+                return ConfirmationService.CountAll();
             }
         }
     }
