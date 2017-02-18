@@ -187,26 +187,6 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Private Functions
-        //private TRETURN Read<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result, Function Function)
-        //    where TMODEL : IModel<TMODEL>
-        //{ // here!!
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        var Model = BuildModel<TMODEL>();
-        //        var Redirect = CheckPermissions(Model, Function);
-
-        //        if (Redirect != null)
-        //            return Redirect;
-
-        //        var Processor = new Processor<TRETURN>();
-        //        return Processor.ExecuteRead(
-        //            Id: Id,
-        //            DataModel: Model,
-        //            SuccessResult: Result,
-        //            ErrorResult: ErrorResult);
-        //    }
-        //}
-
         private TRETURN View<TMODEL>(Func<TMODEL, TRETURN> Result, Function Function)
             where TMODEL : IModel<TMODEL>
         {

@@ -17,13 +17,6 @@ namespace Fido.Action.Models.Administration
         #region Data
         public int PasswordChangePolicyDays { get; set; }
         public bool PasswordChangePolicy { get; set; }
-
-//        [Display(Name = "created date")]
-//        public DateTime CreatedUtc { get; set; }
-//        [Display(Name = "record age")]
-//        public int? CreatedAgeDays { get; set; }
-//        public bool IsNew { get; set; }
-//        public byte[] RowVersion { get; set; }
         #endregion
 
         public Configuration()
