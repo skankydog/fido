@@ -14,10 +14,10 @@ namespace Fido.WebUI.Binders
 
         public override object BindModel(ControllerContext ControllerContext, ModelBindingContext BindingContext)
         {
-            if (BindingContext.ModelType == typeof(IndexOptions))
+            if (BindingContext.ModelType == typeof(ListOptions))
             {
                 Request = ControllerContext.HttpContext.Request;
-                IndexOptions Model = new IndexOptions();
+                ListOptions Model = new ListOptions();
 
                 Model.Id = Request["sid"].ToGuid();
                 Model.Echo = Request["sEcho"];

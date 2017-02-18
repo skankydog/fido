@@ -7,8 +7,8 @@ namespace Fido.Dtos
 {
     public class Confirmation : Dto
     {
-        public string ConfirmType { get; set; }
         public Guid UserId { get; set; }
+        public string ConfirmType { get; set; }
         public string EmailAddress { get; set; }
         public DateTime QueuedUTC { get; set; }
         public DateTime? SentUTC { get; set; }

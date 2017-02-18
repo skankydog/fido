@@ -15,23 +15,23 @@ namespace Fido.WebUI.Areas.Administration.Controllers
 {
     public class ConfirmationController : BaseController
     {
-        public ActionResult Index(Guid Id)
+        public ActionResult Index(Guid UserId)
         {
-            return Dispatcher.Index<Confirmations>(
-                Id: Id,
+            return Dispatcher.Index<ConfirmationIndex>(
+                Id: UserId,
                 Result: m => View(m));
         }
 
-        public ActionResult IndexRead(IndexOptions IndexOptions)
+        public ActionResult List(ListOptions ListOptions)
         {
-            return Dispatcher.Index<Confirmations>(
-                IndexOptions: IndexOptions,
+            return Dispatcher.List<ConfirmationList>(
+                IndexOptions: ListOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Delete(Guid Id)
         {
-            return Dispatcher.UpdateLoad<Confirmation>(
+            return Dispatcher.Load<Confirmation>(
                 Id: Id,
                 Result: m => PartialView(m));
         }
@@ -39,9 +39,9 @@ namespace Fido.WebUI.Areas.Administration.Controllers
         [HttpPost]
         public ActionResult Delete(Confirmation Model)
         {
-            return Dispatcher.Delete<Confirmation>(
+            return Dispatcher.DeleteIt<Confirmation>(
                 DataModel: Model,
-                Result: m => ModalRedirectToLocal(Url.Action("Index", "Confirmation", new { Id = Model.UserId })));
+                Result: m => ModalRedirectToLocal(Url.Action("Index", "Confirmation", new { UserId = Model.UserId })));
         }
     }
 }

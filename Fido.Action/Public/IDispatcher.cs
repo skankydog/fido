@@ -13,31 +13,24 @@ namespace Fido.Action
 
         TRETURN Index<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Index<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
-        TRETURN Index<TMODEL>(IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
-     //   TRETURN Index<TMODEL>(Guid Id, IndexOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN List<TMODEL>(ListOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 
-        TRETURN CreateLoad<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN Load<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN Load<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+
         TRETURN Create<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Create<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
 
-        TRETURN UpdateLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Update<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Update<TMODEL>(
             TMODEL DataModel,
             Func<TMODEL, TRETURN> SuccessResult,
             Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
 
-        //TRETURN Save<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
-        //TRETURN Save<TMODEL>(
-        //    TMODEL DataModel,
-        //    Func<TMODEL, TRETURN> SuccessResult,
-        //    Func<TMODEL, TRETURN> InvalidResult) where TMODEL : IModel<TMODEL>;
-
-        TRETURN DeleteLoad<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
-        TRETURN Delete<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
+        TRETURN DeleteIt<TMODEL>(TMODEL DataModel, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 
         TRETURN Confirm<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
     }

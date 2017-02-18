@@ -11,7 +11,7 @@ namespace Fido.Action.Models.Account
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public Guid Id { get; set; }
+   //     public Guid Id { get; set; }
         public string LoginProvider { get; set; }
         public string ProviderKey { get; set; }
         public string EmailAddress { get; set; }

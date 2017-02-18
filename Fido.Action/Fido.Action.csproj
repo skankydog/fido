@@ -68,16 +68,20 @@
     <Compile Include="Public\Models\Account\Password.cs" />
     <Compile Include="Public\Models\Administration\Configuration.cs" />
     <Compile Include="Public\Models\Administration\Confirmation.cs" />
+    <Compile Include="Public\Models\Administration\UserIndex.cs" />
+    <Compile Include="Public\Models\Administration\RoleIndex.cs" />
+    <Compile Include="Public\Models\Administration\ActivityIndex.cs" />
+    <Compile Include="Public\Models\Administration\ConfirmationIndex.cs" />
     <Compile Include="Public\Models\Administration\Home.cs" />
-    <Compile Include="Public\Models\Administration\Confirmations.cs" />
+    <Compile Include="Public\Models\Administration\ConfirmationList.cs" />
     <Compile Include="Public\Models\Authentication\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\Authentication\ForgottenPassword.cs" />
     <Compile Include="Public\Models\Administration\Activity.cs" />
     <Compile Include="Public\Models\Administration\Role.cs" />
     <Compile Include="Public\Models\Administration\User.cs" />
-    <Compile Include="Public\Models\Administration\Roles.cs" />
-    <Compile Include="Public\Models\Administration\Activities.cs" />
-    <Compile Include="Public\Models\Administration\Users.cs" />
+    <Compile Include="Public\Models\Administration\RoleList.cs" />
+    <Compile Include="Public\Models\Administration\ActivityList.cs" />
+    <Compile Include="Public\Models\Administration\UserList.cs" />
     <Compile Include="Public\Models\Authentication\Login.cs" />
     <Compile Include="Public\Models\Account\Profile.cs" />
     <Compile Include="Public\Models\_NoModel.cs" />
@@ -95,7 +99,7 @@
     <Compile Include="Public\APIs\IAuthenticationAPI.cs" />
     <Compile Include="Public\APIs\IModelAPI.cs" />
     <Compile Include="Public\APIs\IFeedbackAPI.cs" />
-    <Compile Include="Public\IndexOptions.cs" />
+    <Compile Include="Public\ListOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fido.Core\Fido.Core.csproj">

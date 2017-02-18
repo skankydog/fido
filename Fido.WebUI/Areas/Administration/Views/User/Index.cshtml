@@ -1,5 +1,5 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
-@*model Fido.Action.Models.Administration.Users*@
+@model Fido.Action.Models.Administration.UserIndex
 
 @using Fido.WebUI.Controllers
 
@@ -30,7 +30,7 @@
 <script type="text/javascript">
     var EditLink = '@(Html.ActionLink("Edit", "Update", "User", new { Id = -999 }, null))';
     var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "User", new { Id = -999 }, new { @class = "modal-link" }))';
-    var AjaxPath = '@(Url.Action("IndexRead", "User"))';
+    var AjaxPath = '@(Url.Action("List", "User"))';
 
     $(document).ready(function () {
         $('#IndexTable').dataTable({

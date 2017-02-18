@@ -32,7 +32,7 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Read
-        public TRETURN ExecuteRead<TMODEL>(IndexOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+        public TRETURN ExecuteRead<TMODEL>(ListOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             return DoExecuteRead(IndexOptions.Id, DataModel, IndexOptions, SuccessResult, ErrorResult);
@@ -44,13 +44,13 @@ namespace Fido.Action.Implementation
             return DoExecuteRead(Id, DataModel, null, SuccessResult, ErrorResult);
         }
 
-        public TRETURN ExecuteRead<TMODEL>(Guid Id, IndexOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+        public TRETURN ExecuteRead<TMODEL>(Guid Id, ListOptions IndexOptions, TMODEL DataModel, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             return DoExecuteRead(Id, DataModel, IndexOptions, SuccessResult, ErrorResult);
         }
 
-        private TRETURN DoExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, IndexOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
+        private TRETURN DoExecuteRead<TMODEL>(Guid Id, TMODEL DataModel, ListOptions IndexOptions, Func<TMODEL, TRETURN> SuccessResult, Func<IDataModel, TRETURN> ErrorResult)
             where TMODEL : IModel<TMODEL>
         {
             using (new FunctionLogger(Log))

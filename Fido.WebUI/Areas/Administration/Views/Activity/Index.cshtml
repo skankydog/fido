@@ -1,5 +1,5 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
-@*model Fido.Action.Models.Administration.Activities*@
+@model Fido.Action.Models.Administration.ActivityIndex
 
 @using Fido.WebUI.Controllers
 
@@ -24,7 +24,7 @@
 {
 <script type="text/javascript">
     var EditLink = '@(Html.ActionLink("Edit", "Update", "Activity", new { Id = -999 }, null))';
-    var AjaxPath = '@(Url.Action("IndexRead", "Activity"))';
+    var AjaxPath = '@(Url.Action("List", "Activity"))';
 
     $(document).ready(function () {
         $('#IndexTable').dataTable({

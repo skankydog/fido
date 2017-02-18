@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models.Administration
 {
-    public class Users : Model<Users>
+    public class UserList : Model<UserList>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,21 +21,21 @@ namespace Fido.Action.Models.Administration
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Users()
+        public UserList()
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Users Read(IndexOptions IndexOptions)
+        public override UserList Read(ListOptions ListOptions)
         {
             using (new FunctionLogger(Log))
             {
-                var PageOfRecords = GetPageOfRecords(IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
+                var PageOfRecords = GetPageOfRecords(ListOptions.SortColumn, ListOptions.SortOrder, ListOptions.Skip, ListOptions.Take, ListOptions.Filter);
                 var CountUnfiltered = CountAll();
-                var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
+                var CountFiltered = ListOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new Users
+                return new UserList
                 {
-                    sEcho = IndexOptions.Echo,
+                    sEcho = ListOptions.Echo,
                     iTotalRecords = CountUnfiltered,
                     iTotalDisplayRecords = CountFiltered,
                     aaData = PageOfRecords

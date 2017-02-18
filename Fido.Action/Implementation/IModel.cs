@@ -17,6 +17,10 @@ namespace Fido.Action.Implementation
     public interface IDataModel
     {
         Guid Id { get; set; }
+        DateTime CreatedUtc { get; set; }
+        int? CreatedAgeDays { get; set; }
+        bool IsNew { get; set; }
+        byte[] RowVersion { get; set; }
 
         IList<Dtos.Activity> DeniedActivities { get; set; }
 
@@ -29,8 +33,8 @@ namespace Fido.Action.Implementation
     {
         TMODEL Prepare(TMODEL Model);
         TMODEL Read(Guid Id);
-        TMODEL Read(IndexOptions IndexOptions);
-        TMODEL Read(Guid Id, IndexOptions IndexOptions);
+        TMODEL Read(ListOptions IndexOptions);
+        TMODEL Read(Guid Id, ListOptions IndexOptions);
         bool Save(TMODEL Model);
         bool Confirm(Guid ConfirmationId);
         bool Delete(TMODEL Model);

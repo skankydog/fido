@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models.Administration
 {
-    public class Activities : Model<Activities>
+    public class RoleList : Model<RoleList>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,21 +21,21 @@ namespace Fido.Action.Models.Administration
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Activities()
+        public RoleList()
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Activities Read(IndexOptions IndexOptions)
+        public override RoleList Read(ListOptions ListOptions)
         {
             using (new FunctionLogger(Log))
             {
-                var PageOfRecords = GetPageOfRecords(IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
+                var PageOfRecords = GetPageOfRecords(ListOptions.SortColumn, ListOptions.SortOrder, ListOptions.Skip, ListOptions.Take, ListOptions.Filter);
                 var CountUnfiltered = CountAll();
-                var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
+                var CountFiltered = ListOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new Activities
+                return new RoleList
                 {
-                    sEcho = IndexOptions.Echo,
+                    sEcho = ListOptions.Echo,
                     iTotalRecords = CountUnfiltered,
                     iTotalDisplayRecords = CountFiltered,
                     aaData = PageOfRecords
@@ -47,35 +47,25 @@ namespace Fido.Action.Models.Administration
         {
             using (new FunctionLogger(Log))
             {
-                var ActivityService = ServiceFactory.CreateService<IActivityService>();
-                IList<Dtos.Activity> ActivityDtos;
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+                IList<Dtos.Role> RoleDtos;
 
                 switch (SortColumn)
                 {
                     case 0:
-                        ActivityDtos = ActivityService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
-                        break;
-
-                    case 1:
-                        ActivityDtos = ActivityService.GetPageInAreaOrder(SortOrder, Skip, Take, Filter);
-                        break;
-
-                    case 2:
-                        ActivityDtos = ActivityService.GetPageInActionOrder(SortOrder, Skip, Take, Filter);
+                        RoleDtos = RoleService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     default:
-                        ActivityDtos = ActivityService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
+                        RoleDtos = RoleService.GetPageInDefaultOrder(SortOrder, Skip, Take, Filter);
                         break;
                 }
 
-                return (from ActivityDto in ActivityDtos
+                return (from RoleDto in RoleDtos
                         select new[] {
-                        ActivityDto.Name.Nvl(),
-                        ActivityDto.Area.Nvl(),
-                        ActivityDto.Action.Nvl(),
-                        ActivityDto.Id.ToString(), // Edit
-                        ActivityDto.Id.ToString()  // Delete
+                        RoleDto.Name.Nvl(),
+                        RoleDto.Id.ToString(), // Edit
+                        RoleDto.Id.ToString()  // Delete
                     }).ToArray();
             }
         }
@@ -84,8 +74,8 @@ namespace Fido.Action.Models.Administration
         {
             using (new FunctionLogger(Log))
             {
-                var ActivityService = ServiceFactory.CreateService<IActivityService>();
-                return ActivityService.CountAll();
+                var RoleService = ServiceFactory.CreateService<IRoleService>();
+                return RoleService.CountAll();
             }
         }
     }

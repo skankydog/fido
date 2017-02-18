@@ -10,7 +10,7 @@ using Fido.Action.Implementation;
 
 namespace Fido.Action.Models.Administration
 {
-    public class Confirmations : Model<Confirmations>
+    public class ConfirmationList : Model<ConfirmationList>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,25 +21,27 @@ namespace Fido.Action.Models.Administration
         public IList<string[]> aaData = new List<string[]>();
         #endregion
 
-        public Confirmations()
+        public ConfirmationList()
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Confirmations Read(Guid Id, IndexOptions IndexOptions)
+        public override ConfirmationList Read(Guid Id, ListOptions ListOptions)
         {
             using (new FunctionLogger(Log))
             {
-                var PageOfRecords = GetPageOfRecords(Id, IndexOptions.SortColumn, IndexOptions.SortOrder, IndexOptions.Skip, IndexOptions.Take, IndexOptions.Filter);
+                var PageOfRecords = GetPageOfRecords(Id, ListOptions.SortColumn, ListOptions.SortOrder, ListOptions.Skip, ListOptions.Take, ListOptions.Filter);
                 var CountUnfiltered = CountAll();
-                var CountFiltered = IndexOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
+                var CountFiltered = ListOptions.Filter.IsNullOrEmpty() ? CountUnfiltered : PageOfRecords.Count();
 
-                return new Confirmations
+                var Model = new ConfirmationList
                 {
-                    sEcho = IndexOptions.Echo,
+                    sEcho = ListOptions.Echo,
                     iTotalRecords = CountUnfiltered,
                     iTotalDisplayRecords = CountFiltered,
                     aaData = PageOfRecords
                 };
+
+                return Model;
             }
         }
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Fido.Action
 {
-    public class IndexOptions
+    public class ListOptions
     {
-   //     public string[] data { get; set; }
         public Guid Id { get; set; }
 
         public string Echo { get; set; } // Sequence number

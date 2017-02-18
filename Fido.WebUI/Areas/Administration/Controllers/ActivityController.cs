@@ -17,20 +17,20 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.Index<Activities>(
+            return Dispatcher.Index<ActivityIndex>(
                 Result: m => View());
         }
 
-        public ActionResult IndexRead(IndexOptions IndexOptions)
+        public ActionResult List(ListOptions ListOptions)
         {
-            return Dispatcher.Index<Activities>(
-                IndexOptions: IndexOptions,
+            return Dispatcher.List<ActivityList>(
+                IndexOptions: ListOptions,
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Update(Guid Id)
         {
-            return Dispatcher.UpdateLoad<Activity>(
+            return Dispatcher.Load<Activity>(
                 Id: Id,
                 Result: m => View(m));
         }

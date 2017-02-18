@@ -12,10 +12,10 @@ namespace Fido.Action.Models.Account
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-  //      public Guid Id { get; set; } // User entity
-        public DateTime CreatedUtc { get; set; } // User entity
-        public bool IsNew { get; set; } // User entity
-        public byte[] RowVersion { get; set; } // User entity
+        //public Guid Id { get; set; } // User entity
+        //public DateTime CreatedUtc { get; set; } // User entity
+        //public bool IsNew { get; set; } // User entity
+        //public byte[] RowVersion { get; set; } // User entity
 
         [Display(Name = "Email Address")]
         public string EmailAddress { get; set; } // Read only
@@ -38,8 +38,8 @@ namespace Fido.Action.Models.Account
         [Display(Name = "Date of Birth")]
         public DateTime DateOfBirth { get; set; }
 
-        [Display(Name = "Account Age (Days)")]
-        public int CreatedAgeDays { get; set; } // Read only
+//       [Display(Name = "Account Age (Days)")]
+//        public int CreatedAgeDays { get; set; } // Read only
         #endregion
 
         public Profile()

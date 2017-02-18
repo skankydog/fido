@@ -17,7 +17,7 @@ namespace Fido.WebUI.Areas.Administration.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.UpdateLoad<Configuration>(
+            return Dispatcher.Load<Configuration>(
                 Id: Guid.Empty,
                 Result: m => View(m));
         }

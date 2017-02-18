@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Update()
         {
-            return Dispatcher.CreateLoad<Password>(
+            return Dispatcher.Load<Password>(
                 Result: m => PartialView());
         }
 

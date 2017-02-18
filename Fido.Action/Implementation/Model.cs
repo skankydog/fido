@@ -11,11 +11,13 @@ namespace Fido.Action.Implementation
         where TMODEL : IModel<TMODEL>
     {
         #region IDataModel Implementation
-        [ScriptIgnore]
-        public Guid Id { get; set; }
+        [ScriptIgnore] public Guid Id { get; set; }
+        [ScriptIgnore] public DateTime CreatedUtc { get; set; }
+        [ScriptIgnore] public int? CreatedAgeDays { get; set; }
+        [ScriptIgnore] public bool IsNew { get; set; }
+        [ScriptIgnore] public byte[] RowVersion { get; set; }
 
-        [ScriptIgnore]
-        public IList<Dtos.Activity> DeniedActivities { get; set; }
+        [ScriptIgnore] public IList<Dtos.Activity> DeniedActivities { get; set; }
 
         public void BuildDeniedActivities(Guid UserId)
         {
@@ -63,8 +65,8 @@ namespace Fido.Action.Implementation
 
         public virtual TMODEL Prepare(TMODEL Model) { return Model; }
         public virtual TMODEL Read(Guid Id) { throw new NotImplementedException("Read not implemented"); }
-        public virtual TMODEL Read(IndexOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
-        public virtual TMODEL Read(Guid Id, IndexOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
+        public virtual TMODEL Read(ListOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
+        public virtual TMODEL Read(Guid Id, ListOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
         public virtual bool Confirm(Guid ConfirmationId) { throw new NotImplementedException("Confirm not implemented"); }
         public virtual bool Save(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
         public virtual bool Delete(TMODEL DataModel) { throw new NotImplementedException("Delete not implemented"); }

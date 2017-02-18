@@ -27,12 +27,12 @@ namespace Fido.Action.Models.Administration
 
         public IList<Guid> SelectedRoles { get; set; }
 
-        [Display(Name = "created date")]
-        public DateTime CreatedUtc { get; set; }
-        [Display(Name = "record age")]
-        public int? CreatedAgeDays { get; set; }
-        public bool IsNew { get; set; }
-        public byte[] RowVersion { get; set; }
+        //[Display(Name = "created date")]
+        //public DateTime CreatedUtc { get; set; }
+        //[Display(Name = "record age")]
+        //public int? CreatedAgeDays { get; set; }
+        //public bool IsNew { get; set; }
+        //public byte[] RowVersion { get; set; }
         #endregion
 
         public Activity()

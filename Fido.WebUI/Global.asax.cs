@@ -24,7 +24,7 @@ namespace Fido.WebUI
 
             ModelBinders.Binders.Remove(typeof(byte[]));
             ModelBinders.Binders.Add(typeof(byte[]), new CustomByteArrayModelBinder());
-            ModelBinders.Binders.Add(typeof(IndexOptions), new IndexParamsModelBinder());
+            ModelBinders.Binders.Add(typeof(ListOptions), new IndexParamsModelBinder());
         }
     }
 }

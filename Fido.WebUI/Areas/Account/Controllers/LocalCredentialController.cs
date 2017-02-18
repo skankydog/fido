@@ -15,7 +15,7 @@ namespace Fido.WebUI.Areas.Account.Controllers
     {
         public ActionResult Create()
         {
-            return Dispatcher.CreateLoad <LocalCredential>(
+            return Dispatcher.Load<LocalCredential>(
                 Result: m => PartialView());
         }
 

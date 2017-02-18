@@ -16,8 +16,8 @@ namespace Fido.Action.Models.Administration
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
-        public string ConfirmType { get; set; }
         public Guid UserId { get; set; }
+        public string ConfirmType { get; set; }
         public string EmailAddress { get; set; }
         public DateTime QueuedUTC { get; set; }
         public DateTime? SentUTC { get; set; }

@@ -3,27 +3,37 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using AutoMapper;
 using Fido.Core;
-using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
 namespace Fido.Action.Models.Administration
 {
-    public class Home : Model<Home>
+    public class ConfirmationIndex : Model<ConfirmationIndex>
     {
         protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Data
+        public Guid UserId { get; set; }
+        public string FirstnameSurname { get; set; }
         #endregion
 
-        public Home()
+        public ConfirmationIndex()
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Home Read(ListOptions IndexOptions)
+        public override ConfirmationIndex Read(Guid Id)
         {
-            return null;
+            using (new FunctionLogger(Log))
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
+
+                var UserDto = UserService.Get(Id);
+                var Model = Mapper.Map<Dtos.User, ConfirmationIndex>(UserDto);
+
+                return Model;
+            }
         }
     }
 }
