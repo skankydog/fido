@@ -193,7 +193,6 @@
     <Compile Include="Binders\IndexParamsModelBinder.cs" />
     <Compile Include="Common\ModalRedirectToLocalModel.cs" />
     <Compile Include="Areas\Authentication\Controllers\RegistrationController.cs" />
-    <Compile Include="Areas\Authentication\Controllers\_RegistrationCompleteController.cs" />
     <Compile Include="Areas\Authentication\Controllers\ForgottenPasswordController.cs" />
     <Compile Include="Areas\Authentication\Controllers\LoginController.cs" />
     <Compile Include="Common\ChallengeResult.cs" />

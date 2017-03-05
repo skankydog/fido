@@ -57,7 +57,7 @@ namespace Fido.Action.Implementation
             {
                 try
                 {
-                    var Tmp = DataModel.DeniedActivities; // Mapping wipes this out
+                    var Tmp = DataModel.Denied; // Mapping wipes this out
 
                     if (IndexOptions == null)
                     {
@@ -71,7 +71,7 @@ namespace Fido.Action.Implementation
                             DataModel = DataModel.Read(Id, IndexOptions);
                     }
 
-                    DataModel.DeniedActivities = Tmp; // Restore after mapping
+                    DataModel.Denied = Tmp; // Restore after mapping
                     DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)

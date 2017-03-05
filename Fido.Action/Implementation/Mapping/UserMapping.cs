@@ -44,10 +44,16 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.Denied, Options => Options.Ignore());
                 Mapper.CreateMap<Dtos.User, ConfirmationIndex>()
                     .ForMember(Dest => Dest.UserId, Options => Options.MapFrom(Src => Src.Id))
-                    .ForMember(Dest => Dest.FirstnameSurname, Options => Options.MapFrom(Src => Src.Fullname.FirstnameSurname));
+                    .ForMember(Dest => Dest.FirstnameSurname, Options => Options.MapFrom(Src => Src.Fullname.FirstnameSurname))
+                    .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Denied, Options => Options.Ignore());
 
                 Mapper.CreateMap<User, Dtos.Fullname>()
                     .ForMember(Dest => Dest.FirstnameSurname, Options => Options.Ignore())

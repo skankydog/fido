@@ -72,7 +72,8 @@
     <Compile Include="Public\Models\Administration\Role\RoleIndex.cs" />
     <Compile Include="Public\Models\Administration\Activity\ActivityIndex.cs" />
     <Compile Include="Public\Models\Administration\Confirmation\ConfirmationIndex.cs" />
-    <Compile Include="Public\Models\Administration\Home.cs" />
+    <Compile Include="Public\Models\Common\Contact.cs" />
+    <Compile Include="Public\Models\Common\Home.cs" />
     <Compile Include="Public\Models\Administration\Confirmation\ConfirmationList.cs" />
     <Compile Include="Public\Models\Authentication\ExternalLoginCallback.cs" />
     <Compile Include="Public\Models\Authentication\ForgottenPassword.cs" />

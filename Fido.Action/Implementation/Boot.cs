@@ -25,22 +25,27 @@ namespace Fido.Action.Implementation
 
         private void BootPermissions()
         {
-            const string ROOT_NAMESPACE = "Fido.Action.Models.";
+        //    const string ROOT_NAMESPACE = "Fido.Action.Models.";
 
             using (new FunctionLogger(Log))
             {
-                var ModelTypes = new TypeFinder().Find<ILogicModel>().Where(t => t.Namespace.StartsWith(ROOT_NAMESPACE));
+               // var ModelTypes = new TypeFinder().Find<ILogicModel>().Where(t => t.Namespace.StartsWith(ROOT_NAMESPACE));
+                var ModelTypes = new TypeFinder().Find<ILogicModel>();
 
                 foreach (var ModelType in ModelTypes)
                 {
                     var ModelInstance = (ILogicModel)Activator.CreateInstance(ModelType);
-                    var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
+                 //   var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
+                    var Area = ModelInstance.ModelArea;
+                    var Name = ModelInstance.ModelName;
 
                     if (ModelInstance.ReadAccess == Access.Permissioned)
-                        Ensure(Function.Read, ModelType.Name, Area);
+                        Ensure(Function.Read, Name, Area);
+                    //  Ensure(Function.Read, ModelType.Name, Area);
 
                     if (ModelInstance.WriteAccess == Access.Permissioned)
-                        Ensure(Function.Write, ModelType.Name, Area);
+                        Ensure(Function.Write, Name, Area);
+                    //  Ensure(Function.Write, ModelType.Name, Area);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();

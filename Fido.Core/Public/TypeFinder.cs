@@ -37,7 +37,7 @@ namespace Fido.Core
 
                 var TypesToFind = typeof(TYPE);
                 return SourceAssembly.GetTypes()
-                    .Where(t => TypesToFind.IsAssignableFrom(t))
+                    .Where(t => TypesToFind.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
                     .ToList();
             }
         }

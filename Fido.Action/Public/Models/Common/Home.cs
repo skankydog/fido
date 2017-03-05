@@ -8,7 +8,7 @@ using Fido.Dtos;
 using Fido.Service;
 using Fido.Action.Implementation;
 
-namespace Fido.Action.Models.Administration
+namespace Fido.Action.Models.Common
 {
     public class Home : Model<Home>
     {
@@ -18,12 +18,12 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Home()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
         { }
 
-        public override Home Read(ListOptions IndexOptions)
+        public override Home Read(Guid Id)
         {
-            return null;
+            return new Home();
         }
     }
 }

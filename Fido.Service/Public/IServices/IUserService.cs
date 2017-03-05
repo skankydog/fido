@@ -40,7 +40,7 @@ namespace Fido.Service
         IList<Role> GetRoles(Guid UserId);
         User SetRoles(Guid UserId, IList<Role> Roles);
 
-        IList<Activity> GetAllowedActivities(Guid UserId);      // Returns unique activities
+        //IList<Activity> GetAllowedActivities(Guid UserId);      // Returns unique activities
         IList<Activity> GetDeniedActivities(Guid UserId);
         bool UserHasActivity(Guid UserId, string Name, string Area, string Action);   // TO DO: Doubt this is needed
     }

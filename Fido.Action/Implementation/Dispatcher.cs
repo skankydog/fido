@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+//using AutoMapper;
 using Fido.Core;
-using Fido.Service;
-using Fido.Action.Models;
+//using Fido.Service;
+//using Fido.Action.Models;
+//using Fido.Action.Models.Administration;
 
 namespace Fido.Action.Implementation
 {
-    public class Dispatcher<TRETURN> : IDispatcher<TRETURN>
+    public class Dispatcher<TRETURN> : IDispatcher<TRETURN> where TRETURN : class
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -34,13 +36,6 @@ namespace Fido.Action.Implementation
             this.PasswordResetResult = PasswordResetResult;
             this.ErrorResult = ErrorResult;
         }
-
-        #region Simple
-        public TRETURN Simple(Func<NoModel, TRETURN> Result)
-        {
-            return View<NoModel>(Result, Function.Read);
-        }
-        #endregion
 
         #region Index
         public TRETURN Index<TMODEL>(Func<TMODEL, TRETURN> Result)
@@ -90,6 +85,11 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Load
+        //public TRETURN Load(Func<NoModel, TRETURN> Result)
+        //{
+        //    return View<NoModel>(Result, Function.Read);
+        //}
+
         public TRETURN Load<TMODEL>(Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
@@ -251,14 +251,7 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                var SourceAssembly = Assembly.GetAssembly(this.GetType());
-                var ModelPath = typeof(TMODEL).FullName;
-                var ModelType = SourceAssembly.GetType(ModelPath);
-
-                if (ModelType == null)
-                    throw new Exception(string.Format("{0} <T> not found", ModelPath));
-
-                var Data = (TMODEL)Activator.CreateInstance(ModelType);
+                var Data = (TMODEL)Activator.CreateInstance(typeof(TMODEL));
                 return BuildModel(Data);
             }
         }
@@ -268,10 +261,12 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
+                Guid Id = AuthenticationAPI.Authenticated ? AuthenticationAPI.AuthenticatedId : Guid.Empty;
+
+                Data.Denied = Fido.Action.Models.Administration.Activity.DeniedList(Id); // inject XXXService
                 Data.FeedbackAPI = FeedbackAPI;
                 Data.AuthenticationAPI = AuthenticationAPI;
                 Data.ModelAPI = ModelAPI;
-                Data.BuildDeniedActivities(AuthenticationAPI.AuthenticatedId);
 
                 return Data;
             }
@@ -291,18 +286,19 @@ namespace Fido.Action.Implementation
                     if (!AuthenticationAPI.Authenticated)
                         return AuthenticateResult();
 
-                    var FunctionName = Function.ToString();
-                    var ModelName = DataModel.GetType().Name;
-                    var Namespace = string.Join(string.Empty, DataModel.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
+                    var Action = Function.ToString();
+                    var Name = DataModel.ModelName; // model already knows
+                    var Area = DataModel.ModelArea;
+                    var Full = string.Concat(Action, ".", Name, ".", Area);
 
-                    if (!DataModel.Allowed(FunctionName, ModelName, Namespace))
+                    if (DataModel.Denied.Contains(Full))
                     {
                         FeedbackAPI.DisplayError("You are not authorised to perform the requested action.");
                         return AuthenticateResult();
                     }
                 }
 
-                return default(TRETURN);
+                return null;
             }
         }
         #endregion

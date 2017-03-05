@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
-using Fido.Action.Models;
-using Fido.Service;
+//using Fido.Action.Models.Administration;
 
 namespace Fido.Action.Implementation
 {
@@ -17,30 +16,39 @@ namespace Fido.Action.Implementation
         [ScriptIgnore] public bool IsNew { get; set; }
         [ScriptIgnore] public byte[] RowVersion { get; set; }
 
-        [ScriptIgnore] public IList<Dtos.Activity> DeniedActivities { get; set; }
+        [ScriptIgnore] public IList<string> Denied { get; set; }
 
-        public void BuildDeniedActivities(Guid UserId)
+        [ScriptIgnore]
+        public virtual string ModelName
         {
-            DeniedActivities = new List<Dtos.Activity>();
-
-            if (AuthenticationAPI.Authenticated)
+            get
             {
-                var UserService = ServiceFactory.CreateService<IUserService>();
-                var Activities = UserService.GetDeniedActivities(AuthenticationAPI.AuthenticatedId);
-
-                DeniedActivities = (from Dtos.Activity a in Activities
-                          select a).ToList();
+                return this.GetType().Name;
             }
         }
 
-        public bool Allowed(string FunctionName, string ModelName, string Namespace)
+        [ScriptIgnore]
+        public virtual string ModelArea
         {
-            return (from Dtos.Activity a in DeniedActivities
-                    where a.Name == ModelName &&
-                    a.Area == Namespace &&
-                    a.Action == FunctionName
-                    select a).Count() == 0;
+            get
+            {
+                return string.Join(string.Empty, this.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
+            }
         }
+
+        //public bool Allowed(string Action, string Name, string Area)
+        //{
+            //return (from Activity a in DeniedActivities
+            //        where a.Name == ModelName &&
+            //        a.Area == Namespace &&
+            //        a.Action == FunctionName
+            //        select a).Count() == 0;
+            //return (from string s in Denied
+            //        where s == string.Concat(Action, ".", Name, ".", Area)
+            //        select s).Count() == 0;
+        //    var Full = string.Concat(Action, ".", Name, ".", Area);
+        //    return Denied.Contains(Full) == false;
+        //}
         #endregion
 
         #region ILogicModel Implementation
@@ -57,7 +65,7 @@ namespace Fido.Action.Implementation
         public Access WriteAccess { get; private set; }
         #endregion
 
-        internal Model(Access ReadAccess, Access WriteAccess)
+        public Model(Access ReadAccess, Access WriteAccess)
         {
             this.ReadAccess = ReadAccess;
             this.WriteAccess = WriteAccess;

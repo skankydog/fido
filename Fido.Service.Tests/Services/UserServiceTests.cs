@@ -343,15 +343,15 @@ namespace Fido.Service.Tests
 
         //}
 
-        [TestMethod]
-        public void CanGetActivitiesForUser()
-        {
-            IUserService UserService = ServiceFactory.CreateService<IUserService>();
-            Guid MargesUserId = UserService.GetByEmailAddress("marge.simpson@skankydog.com").Id;
+        //[TestMethod]
+        //public void CanGetActivitiesForUser()
+        //{
+        //    IUserService UserService = ServiceFactory.CreateService<IUserService>();
+        //    Guid MargesUserId = UserService.GetByEmailAddress("marge.simpson@skankydog.com").Id;
 
-            Assert.AreEqual(2, UserService.GetRoles(MargesUserId).Count);
-            Assert.AreEqual(6, UserService.GetAllowedActivities(MargesUserId).Count);
-        }
+        //    Assert.AreEqual(2, UserService.GetRoles(MargesUserId).Count);
+        //    Assert.AreEqual(6, UserService.GetAllowedActivities(MargesUserId).Count);
+        //}
 
         //[TestMethod]
         //public void CanCheckIfUserHasActivity()

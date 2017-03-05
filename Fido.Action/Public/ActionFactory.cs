@@ -20,7 +20,7 @@ namespace Fido.Action
             IModelAPI ModelAPI,
             Func<TRETURN> AuthoriseResult,
             Func<IDataModel, TRETURN> PasswordResetResult,
-            Func<IDataModel, TRETURN> DefaultErrorResult)
+            Func<IDataModel, TRETURN> DefaultErrorResult) where TRETURN : class
         {
             return new Dispatcher<TRETURN>(FeedbackAPI, AuthenticationAPI, ModelAPI, AuthoriseResult, PasswordResetResult, DefaultErrorResult);
         }

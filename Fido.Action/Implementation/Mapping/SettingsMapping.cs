@@ -25,12 +25,17 @@ namespace Fido.Action.Mapping
             {
                 Mapper.CreateMap<Dtos.Settings, Settings>()
                     .ForMember(Dest => Dest.ExternalCredentials, Options => Options.MapFrom(Src => Mapper.Map<IList<Dtos.ExternalCredential>, IList<ExternalCredential>>(Src.ExternalCredentials)))
+                    .ForMember(Dest => Dest.Id, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.CreatedUtc, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.CreatedAgeDays, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.IsNew, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.RowVersion, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ReadAccess, Options => Options.Ignore())
                     .ForMember(Dest => Dest.WriteAccess, Options => Options.Ignore())
                     .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.Denied, Options => Options.Ignore());
             }
         }
     }

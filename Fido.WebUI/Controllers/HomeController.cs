@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Fido.Core;
 using Fido.Action;
-using Fido.Action.Models;
+using Fido.Action.Models.Common;
 using Fido.WebUI.Extensions;
 using Fido.WebUI.Flash.Messages;
 using Fido.WebUI.Common;
@@ -16,7 +16,7 @@ namespace Fido.WebUI.Controllers
     {
         public ActionResult Index()
         {
-            return Dispatcher.Simple(
+            return Dispatcher.Load<Home>(
                 Result: m => View(m));
         }
 
@@ -27,7 +27,7 @@ namespace Fido.WebUI.Controllers
 
         public ActionResult Contact()
         {
-            return Dispatcher.Simple(
+            return Dispatcher.Load<Contact>(
                 Result: m => View(m));
         }
 

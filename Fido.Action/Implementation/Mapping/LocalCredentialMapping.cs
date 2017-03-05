@@ -30,7 +30,7 @@ namespace Fido.Action.Mapping
                     .ForMember(Dest => Dest.FeedbackAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.DeniedActivities, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Denied, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ConfirmPassword, Options => Options.Ignore());
             }
         }

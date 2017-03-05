@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fido.Action.Models;
+//using Fido.Action.Models.Administration;
 
 namespace Fido.Action.Implementation
 {
@@ -12,6 +12,9 @@ namespace Fido.Action.Implementation
 
         Access ReadAccess { get; }
         Access WriteAccess { get; }
+
+        string ModelName { get; }
+        string ModelArea { get; }
     }
 
     public interface IDataModel
@@ -22,10 +25,11 @@ namespace Fido.Action.Implementation
         bool IsNew { get; set; }
         byte[] RowVersion { get; set; }
 
-        IList<Dtos.Activity> DeniedActivities { get; set; }
+        IList<string> Denied { get; set; }
 
-        void BuildDeniedActivities(Guid UserId);
-        bool Allowed(string Action, string Name, string Area);
+//        bool Allowed(string Action, string Name, string Area);
+
+
     }
 
     public interface IModel<TMODEL> : ILogicModel, IDataModel

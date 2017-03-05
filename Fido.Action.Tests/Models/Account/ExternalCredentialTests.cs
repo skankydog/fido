@@ -64,7 +64,7 @@ namespace Fido.Action.Tests
 
         private IList<ExternalCredential> GetExternalCredentials()
         {
-            var Result = MockDispatcher.UpdateLoad<Settings>(
+            var Result = MockDispatcher.Load<Settings>(
                 Id: MockAuthenticationAPI.AuthenticatedId,
                 Result: m => m) as Settings;
 

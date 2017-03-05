@@ -18,21 +18,12 @@ namespace Fido.Action.Models.Administration
         #region Data
         public IList<Role> AllRoles = new List<Role>();
 
-  //      public Guid Id { get; set; }
-
         public string Area { get; set; }
         public string Name { get; set; }
         public string Action { get; set; }
         public string FullQualification { get; set; }
 
         public IList<Guid> SelectedRoles { get; set; }
-
-        //[Display(Name = "created date")]
-        //public DateTime CreatedUtc { get; set; }
-        //[Display(Name = "record age")]
-        //public int? CreatedAgeDays { get; set; }
-        //public bool IsNew { get; set; }
-        //public byte[] RowVersion { get; set; }
         #endregion
 
         public Activity()
@@ -73,12 +64,31 @@ namespace Fido.Action.Models.Administration
                      where (Model.SelectedRoles.Contains(a.Id))
                      select a).ToList());
 
-             //   ActivityDto = Mapper.Map<Activity, Dtos.Activity>(Model);
                 ActivityDto = ActivityService.Save(ActivityDto);
 
                 FeedbackAPI.DisplaySuccess("The activity details have been saved");
                 return true;
             }
+        }
+
+        public static IList<string> DeniedList(Guid UserId)
+        {
+            var List = new List<string>();
+
+            if (UserId != Guid.Empty)
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
+                var Activities = UserService.GetDeniedActivities(UserId);
+                var ActivityDtos = (from Dtos.Activity a in Activities
+                                    select a).ToList();
+
+                foreach (var Activity in ActivityDtos)
+                {
+                    List.Add(string.Concat(Activity.Action, ".", Activity.Name, ".", Activity.Area));
+                }
+            }
+
+            return List;
         }
     }
 }
