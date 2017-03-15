@@ -40,7 +40,7 @@ namespace Fido.Action.Tests
     public class AnonymousModel : Model<AnonymousModel>
     {
         public AnonymousModel()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
         public override AnonymousModel Read(Guid Id) { return new AnonymousModel(); }

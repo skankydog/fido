@@ -22,7 +22,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public ActivityList()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
 
         public override ActivityList Read(ListOptions ListOptions)
@@ -71,12 +71,12 @@ namespace Fido.Action.Models.Administration
 
                 return (from ActivityDto in ActivityDtos
                         select new[] {
-                        ActivityDto.Name.Nvl(),
-                        ActivityDto.Area.Nvl(),
-                        ActivityDto.Action.Nvl(),
-                        ActivityDto.Id.ToString(), // Edit
-                        ActivityDto.Id.ToString()  // Delete
-                    }).ToArray();
+                            ActivityDto.Area.Nvl(),
+                            ActivityDto.Name.Nvl(),
+                            ActivityDto.Action.Nvl(),
+                            ActivityDto.Id.ToString(), // Edit
+                            ActivityDto.Id.ToString()  // Delete
+                        }).ToArray();
             }
         }
 

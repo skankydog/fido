@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Fido.Core;
 using Fido.Action.Implementation;
-//using Fido.Action.Models;
 
 namespace Fido.Action
 {
@@ -13,7 +12,6 @@ namespace Fido.Action
         TRETURN Index<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN List<TMODEL>(ListOptions IndexOptions, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 
-        //TRETURN Load(Func<NoModel, TRETURN> Result);
         TRETURN Load<TMODEL>(Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
         TRETURN Load<TMODEL>(Guid Id, Func<TMODEL, TRETURN> Result) where TMODEL : IModel<TMODEL>;
 

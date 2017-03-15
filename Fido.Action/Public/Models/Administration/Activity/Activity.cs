@@ -27,7 +27,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public Activity()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
 
         public override Activity Prepare(Activity Model)
@@ -51,7 +51,7 @@ namespace Fido.Action.Models.Administration
             }
         }
 
-        public override bool Save(Activity Model)
+        public override bool Write(Activity Model)
         {
             using (new FunctionLogger(Log))
             {
@@ -69,26 +69,6 @@ namespace Fido.Action.Models.Administration
                 FeedbackAPI.DisplaySuccess("The activity details have been saved");
                 return true;
             }
-        }
-
-        public static IList<string> DeniedList(Guid UserId)
-        {
-            var List = new List<string>();
-
-            if (UserId != Guid.Empty)
-            {
-                var UserService = ServiceFactory.CreateService<IUserService>();
-                var Activities = UserService.GetDeniedActivities(UserId);
-                var ActivityDtos = (from Dtos.Activity a in Activities
-                                    select a).ToList();
-
-                foreach (var Activity in ActivityDtos)
-                {
-                    List.Add(string.Concat(Activity.Action, ".", Activity.Name, ".", Activity.Area));
-                }
-            }
-
-            return List;
         }
     }
 }

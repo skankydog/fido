@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-//using Fido.Action.Models.Administration;
 
 namespace Fido.Action.Implementation
 {
@@ -13,8 +12,8 @@ namespace Fido.Action.Implementation
         Access ReadAccess { get; }
         Access WriteAccess { get; }
 
-        string ModelName { get; }
         string ModelArea { get; }
+        string ModelName { get; }
     }
 
     public interface IDataModel
@@ -26,10 +25,6 @@ namespace Fido.Action.Implementation
         byte[] RowVersion { get; set; }
 
         IList<string> Denied { get; set; }
-
-//        bool Allowed(string Action, string Name, string Area);
-
-
     }
 
     public interface IModel<TMODEL> : ILogicModel, IDataModel
@@ -39,7 +34,7 @@ namespace Fido.Action.Implementation
         TMODEL Read(Guid Id);
         TMODEL Read(ListOptions IndexOptions);
         TMODEL Read(Guid Id, ListOptions IndexOptions);
-        bool Save(TMODEL Model);
+        bool Write(TMODEL Model);
         bool Confirm(Guid ConfirmationId);
         bool Delete(TMODEL Model);
         void OnInvalidWrite(TMODEL Model);

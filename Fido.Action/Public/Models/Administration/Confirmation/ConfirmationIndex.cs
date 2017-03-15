@@ -20,7 +20,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public ConfirmationIndex()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
 
         public override ConfirmationIndex Read(Guid Id)

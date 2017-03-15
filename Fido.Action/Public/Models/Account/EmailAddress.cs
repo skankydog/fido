@@ -22,7 +22,7 @@ namespace Fido.Action.Models.Account
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
-        public override bool Save(EmailAddress Model)
+        public override bool Write(EmailAddress Model)
         {
             using (new FunctionLogger(Log))
             {

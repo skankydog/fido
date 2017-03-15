@@ -32,7 +32,7 @@ namespace Fido.Action.Models.Account
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
-        public override bool Save(Password Model)
+        public override bool Write(Password Model)
         {
             using (new FunctionLogger(Log))
             {

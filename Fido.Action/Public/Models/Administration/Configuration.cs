@@ -44,7 +44,7 @@ namespace Fido.Action.Models.Administration
             }
         }
 
-        public override bool Save(Configuration Model)
+        public override bool Write(Configuration Model)
         {
             using (new FunctionLogger(Log))
             {

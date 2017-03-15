@@ -51,7 +51,7 @@ namespace Fido.Action.Models.Account
             }
         }
 
-        public override bool Save(Profile Model)
+        public override bool Write(Profile Model)
         {
             using (new FunctionLogger(Log))
             {

@@ -4,7 +4,7 @@ namespace Fido.Action.Implementation
 {
     public enum Access
     {
-        Anonymous = 0,
+        NA = 0,
         Authenticated,
         Permissioned
     }

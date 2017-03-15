@@ -108,7 +108,7 @@ namespace Fido.Action.Models.Administration
             }
         }
 
-        public override bool Save(User Model)
+        public override bool Write(User Model)
         {
             using (new FunctionLogger(Log))
             {

@@ -38,10 +38,10 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public Registration()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
-        public override bool Save(Registration Model)
+        public override bool Write(Registration Model)
         {
             using (new FunctionLogger(Log))
             {

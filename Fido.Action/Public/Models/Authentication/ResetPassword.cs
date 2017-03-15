@@ -28,7 +28,7 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public ResetPassword()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
         public override ResetPassword Read(Guid ConfirmationId)
@@ -44,7 +44,7 @@ namespace Fido.Action.Models.Authentication
             }
         }
 
-        public override bool Save(ResetPassword Model)
+        public override bool Write(ResetPassword Model)
         {
             using (new FunctionLogger(Log))
             {

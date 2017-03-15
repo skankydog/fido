@@ -18,7 +18,7 @@ namespace Fido.Action.Models.Common
         #endregion
 
         public Home()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
         public override Home Read(Guid Id)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
-//using Fido.Action.Models.Administration;
 
 namespace Fido.Action.Implementation
 {
@@ -18,23 +17,8 @@ namespace Fido.Action.Implementation
 
         [ScriptIgnore] public IList<string> Denied { get; set; }
 
-        [ScriptIgnore]
-        public virtual string ModelName
-        {
-            get
-            {
-                return this.GetType().Name;
-            }
-        }
-
-        [ScriptIgnore]
-        public virtual string ModelArea
-        {
-            get
-            {
-                return string.Join(string.Empty, this.GetType().Namespace.Skip("Fido.Action.Models.".Length)); // to do: remove magic string
-            }
-        }
+        [ScriptIgnore] public virtual string ModelName { get { return this.GetType().Name; } }
+        [ScriptIgnore] public virtual string ModelArea { get { return this.GetType().Namespace.Split('.').Last(); } }
 
         //public bool Allowed(string Action, string Name, string Area)
         //{
@@ -76,7 +60,7 @@ namespace Fido.Action.Implementation
         public virtual TMODEL Read(ListOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
         public virtual TMODEL Read(Guid Id, ListOptions IndexOptions) { throw new NotImplementedException("Read not implemented"); }
         public virtual bool Confirm(Guid ConfirmationId) { throw new NotImplementedException("Confirm not implemented"); }
-        public virtual bool Save(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
+        public virtual bool Write(TMODEL DataModel) { throw new NotImplementedException("Write not implemented");  }
         public virtual bool Delete(TMODEL DataModel) { throw new NotImplementedException("Delete not implemented"); }
         public virtual void OnInvalidWrite(TMODEL DataModel) { }
         public virtual void OnFailedWrite(TMODEL DataModel) { }

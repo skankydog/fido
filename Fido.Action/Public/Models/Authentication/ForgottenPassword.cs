@@ -19,11 +19,10 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public ForgottenPassword()
-          //  : base(RequiresReadPermission: false, RequiresWritePermission: false)
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
-        public override bool Save(ForgottenPassword Model)
+        public override bool Write(ForgottenPassword Model)
         {
             using (new FunctionLogger(Log))
             {

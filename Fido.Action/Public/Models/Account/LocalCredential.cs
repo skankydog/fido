@@ -34,7 +34,7 @@ namespace Fido.Action.Models.Account
             : base(ReadAccess: Access.Authenticated, WriteAccess: Access.Authenticated)
         { }
 
-        public override bool Save(LocalCredential Model)
+        public override bool Write(LocalCredential Model)
         {
             using (new FunctionLogger(Log))
             {

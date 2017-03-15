@@ -64,7 +64,7 @@ namespace Fido.Action.Models.Administration
             }
         }
 
-        public override bool Save(Role Model)
+        public override bool Write(Role Model)
         {
             using (new FunctionLogger(Log))
             {

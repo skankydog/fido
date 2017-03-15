@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-//using AutoMapper;
 using Fido.Core;
-//using Fido.Service;
-//using Fido.Action.Models;
-//using Fido.Action.Models.Administration;
+using Fido.Service;
 
 namespace Fido.Action.Implementation
 {
@@ -85,11 +82,6 @@ namespace Fido.Action.Implementation
         #endregion
 
         #region Load
-        //public TRETURN Load(Func<NoModel, TRETURN> Result)
-        //{
-        //    return View<NoModel>(Result, Function.Read);
-        //}
-
         public TRETURN Load<TMODEL>(Func<TMODEL, TRETURN> Result)
             where TMODEL : IModel<TMODEL>
         {
@@ -261,15 +253,36 @@ namespace Fido.Action.Implementation
         {
             using (new FunctionLogger(Log))
             {
-                Guid Id = AuthenticationAPI.Authenticated ? AuthenticationAPI.AuthenticatedId : Guid.Empty;
-
-                Data.Denied = Fido.Action.Models.Administration.Activity.DeniedList(Id); // inject XXXService
                 Data.FeedbackAPI = FeedbackAPI;
                 Data.AuthenticationAPI = AuthenticationAPI;
                 Data.ModelAPI = ModelAPI;
+                Data.Denied = GetDenied();
 
                 return Data;
             }
+        }
+
+        private IList<string> GetDenied()
+        {
+            var List = new List<string>();
+
+            if (AuthenticationAPI.Authenticated)
+            {
+                var UserService = ServiceFactory.CreateService<IUserService>();
+                var Activities = UserService.GetDeniedActivities(AuthenticationAPI.AuthenticatedId);
+
+                foreach (var Activity in Activities)
+                {
+                    List.Add(Identifier(Activity.Action, Activity.Name, Activity.Area));
+                }
+            }
+
+            return List;
+        }
+
+        private string Identifier(string Action, string Name, string Area)
+        {
+            return string.Concat(Action, ".", Name, ".", Area);
         }
 
         private TRETURN CheckPermissions<TMODEL>(TMODEL DataModel, Function Function)
@@ -280,16 +293,13 @@ namespace Fido.Action.Implementation
                 if (AuthenticationAPI.LoggedInCredentialState == "Expired") // TO DO: Magic string to be fixed
                     return PasswordResetResult(DataModel);
 
-                if (Function == Function.Read && DataModel.ReadAccess != Access.Anonymous ||
-                    Function == Function.Write && DataModel.WriteAccess != Access.Anonymous)
+                if (Function == Function.Read && DataModel.ReadAccess != Access.NA ||
+                    Function == Function.Write && DataModel.WriteAccess != Access.NA)
                 {
                     if (!AuthenticationAPI.Authenticated)
                         return AuthenticateResult();
 
-                    var Action = Function.ToString();
-                    var Name = DataModel.ModelName; // model already knows
-                    var Area = DataModel.ModelArea;
-                    var Full = string.Concat(Action, ".", Name, ".", Area);
+                    var Full = Identifier(Function.ToString(), DataModel.ModelName, DataModel.ModelArea);
 
                     if (DataModel.Denied.Contains(Full))
                     {

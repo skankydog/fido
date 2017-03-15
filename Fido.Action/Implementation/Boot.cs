@@ -25,27 +25,21 @@ namespace Fido.Action.Implementation
 
         private void BootPermissions()
         {
-        //    const string ROOT_NAMESPACE = "Fido.Action.Models.";
-
             using (new FunctionLogger(Log))
             {
-               // var ModelTypes = new TypeFinder().Find<ILogicModel>().Where(t => t.Namespace.StartsWith(ROOT_NAMESPACE));
                 var ModelTypes = new TypeFinder().Find<ILogicModel>();
 
                 foreach (var ModelType in ModelTypes)
                 {
-                    var ModelInstance = (ILogicModel)Activator.CreateInstance(ModelType);
-                 //   var Area = string.Join(string.Empty, ModelType.Namespace.Skip(ROOT_NAMESPACE.Length));
-                    var Area = ModelInstance.ModelArea;
-                    var Name = ModelInstance.ModelName;
+                    var Model = (ILogicModel)Activator.CreateInstance(ModelType);
 
-                    if (ModelInstance.ReadAccess == Access.Permissioned)
-                        Ensure(Function.Read, Name, Area);
-                    //  Ensure(Function.Read, ModelType.Name, Area);
+            //        if (Model.ReadAccess == Access.Permissioned)
+                        AddPermission(Model, Function.Read);
+                        //Ensure(Model.ModelArea, Model.ModelName, Function.Read);
 
-                    if (ModelInstance.WriteAccess == Access.Permissioned)
-                        Ensure(Function.Write, Name, Area);
-                    //  Ensure(Function.Write, ModelType.Name, Area);
+            //        if (Model.WriteAccess == Access.Permissioned)
+                        AddPermission(Model, Function.Write);
+                        //Ensure(Model.ModelArea, Model.ModelName, Function.Write);
                 }
 
                 var RoleService = ServiceFactory.CreateService<IRoleService>();
@@ -53,24 +47,52 @@ namespace Fido.Action.Implementation
             }
         }
 
-        private void Ensure(Function Action, string Name, string Area)
+        private void AddPermission(ILogicModel Model, Function Function)
         {
             using (new FunctionLogger(Log))
             {
-                var ActionName = Action.ToString();
+                var RequiredAccess = Function == Function.Write ? Model.WriteAccess : Model.ReadAccess;
 
-                Log.InfoFormat("Action: {0}", ActionName);
-                Log.InfoFormat("Name: {0}", Name);
-                Log.InfoFormat("Area: {0}", Area);
+                if (RequiredAccess != Access.Permissioned)
+                {
+                    Log.InfoFormat("Model {0} does not require permission for {1}", Model.ModelName, Function.ToString());
+                    return;
+                }
+
+                var Funct = Function.ToString();
+
+                Log.InfoFormat("Area: {0}", Model.ModelArea);
+                Log.InfoFormat("Name: {0}", Model.ModelName);
+                Log.InfoFormat("Function: {0}", Funct);
 
                 var ActivityService = ServiceFactory.CreateService<IActivityService>();
 
-                if (ActivityService.Get(ActionName, Name, Area) == null)
+                if (ActivityService.Get(Funct, Model.ModelName, Model.ModelArea) == null)
                 {
-                    Log.InfoFormat("Adding activity: {0}, {1}, {2}", Name, Area, ActionName);
-                    ActivityService.Save(new Dtos.Activity { Name = Name, Area = Area, Action = ActionName });
+                    Log.InfoFormat("Adding activity: {0}.{1}.{2}", Model.ModelArea, Model.ModelName, Funct);
+                    ActivityService.Save(new Dtos.Activity { Area = Model.ModelArea, Name = Model.ModelName, Action = Funct });
                 }
             }
         }
+
+        //private void Ensure(string Area, string Name, Function Function)
+        //{
+        //    using (new FunctionLogger(Log))
+        //    {
+        //        var Funct = Function.ToString();
+
+        //        Log.InfoFormat("Area: {0}", Area);
+        //        Log.InfoFormat("Name: {0}", Name);
+        //        Log.InfoFormat("Function: {0}", Funct);
+
+        //        var ActivityService = ServiceFactory.CreateService<IActivityService>();
+
+        //        if (ActivityService.Get(Funct, Name, Area) == null)
+        //        {
+        //            Log.InfoFormat("Adding activity: {0}.{1}.{2}", Area, Name, Funct);
+        //            ActivityService.Save(new Dtos.Activity { Area = Area, Name = Name, Action = Funct });
+        //        }
+        //    }
+        //}
     }
 }

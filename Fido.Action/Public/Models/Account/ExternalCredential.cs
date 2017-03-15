@@ -17,10 +17,10 @@ namespace Fido.Action.Models.Account
         #endregion
 
         public ExternalCredential()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
-        public override bool Save(ExternalCredential Model)
+        public override bool Write(ExternalCredential Model)
         {
             using (new FunctionLogger(Log))
             {

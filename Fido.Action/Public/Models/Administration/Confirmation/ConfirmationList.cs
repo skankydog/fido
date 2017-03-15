@@ -22,7 +22,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public ConfirmationList()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
 
         public override ConfirmationList Read(Guid Id, ListOptions ListOptions)

@@ -27,10 +27,10 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public Login()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
-        public override bool Save(Login Model)
+        public override bool Write(Login Model)
         {
             using (new FunctionLogger(Log))
             {

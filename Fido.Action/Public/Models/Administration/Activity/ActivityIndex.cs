@@ -18,7 +18,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public ActivityIndex()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
     }
 }

@@ -22,7 +22,7 @@ namespace Fido.Action.Models.Administration
         #endregion
 
         public RoleList()
-            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
+            : base(ReadAccess: Access.Permissioned, WriteAccess: Access.NA)
         { }
 
         public override RoleList Read(ListOptions ListOptions)

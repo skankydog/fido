@@ -19,10 +19,10 @@ namespace Fido.Action.Models.Authentication
         #endregion
 
         public ExternalLoginCallback()
-            : base(ReadAccess: Access.Anonymous, WriteAccess: Access.Anonymous)
+            : base(ReadAccess: Access.NA, WriteAccess: Access.NA)
         { }
 
-        public override bool Save(ExternalLoginCallback Model)
+        public override bool Write(ExternalLoginCallback Model)
         {
             using (new FunctionLogger(Log))
             {
