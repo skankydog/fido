@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 using Fido.Core;
-using Fido.Action;
+using Fido.ViewModel;
 
 [assembly: OwinStartupAttribute(typeof(Fido.WebUI.Startup))]
 namespace Fido.WebUI
@@ -10,7 +10,7 @@ namespace Fido.WebUI
     {
         public void Configuration(IAppBuilder App)
         {
-            ActionFactory.Boot();
+            ViewModelFactory.Boot();
 
             ConfigureAuth(App);
         }

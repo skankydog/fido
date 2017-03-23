@@ -1,5 +1,5 @@
 ﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
-@model Fido.Action.Models.Administration.ActivityIndex
+@model Fido.ViewModel.Models.Administration.ActivityIndex
 
 @using Fido.WebUI.Controllers
 
@@ -12,7 +12,7 @@
         <tr>
             <th>Area</th>
             <th>Name</th>
-            <th>Action</th>
+            <th>Read/Write</th>
             <th></th>
         </tr>
     </thead>
@@ -34,7 +34,7 @@
             "aoColumns": [
                             { "sName": "Area" },
                             { "sName": "Name" },
-                            { "sName": "Action" },
+                            { "sName": "ReadWrite" },
                             {
                                 "sName": "Edit",
                                 "bSearchable": false,

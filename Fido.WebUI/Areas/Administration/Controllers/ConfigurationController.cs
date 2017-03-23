@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
-using Fido.Action;
-using Fido.Action.Models.Administration;
+using Fido.ViewModel;
+using Fido.ViewModel.Models.Administration;
 using Fido.WebUI.Common;
 using Fido.WebUI.Binders;
 

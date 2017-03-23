@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Fido.Action;
+using Fido.ViewModel;
 using Fido.WebUI.Binders;
 
 namespace Fido.WebUI

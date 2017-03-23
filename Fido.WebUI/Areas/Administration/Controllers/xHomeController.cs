@@ -7,7 +7,7 @@
 //using Microsoft.Owin.Security;
 //using Fido.Core;
 //using Fido.Action;
-//using Fido.Action.Models.Administration;
+//using Fido.ViewModel.Models.Administration;
 //using Fido.WebUI.Common;
 //using Fido.WebUI.Binders;
 

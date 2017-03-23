@@ -76,7 +76,7 @@ namespace Fido.DataAccess.Tests
                             new Activity {
                                 Id = Guid.NewGuid(),
                                 Name = "SomeActivity",
-                                Action ="Action 2",
+                                ReadWrite ="Action 2",
                                 Area = "SomeArea"
                             }
                         }

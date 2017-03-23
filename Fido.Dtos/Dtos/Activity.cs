@@ -14,8 +14,8 @@ namespace Fido.Dtos
 
         public string Area { get; set; }
         public string Name { get; set; }
-        public string Action { get; set; }
-        public string FullQualification { get { return string.Concat(Area, ".", Name, ".", Action); } }
+        public string ReadWrite { get; set; }
+        public string FullQualification { get { return string.Concat(Area, ".", Name, ".", ReadWrite); } }
 
         public IList<Role> Roles { get; set; }
     }

@@ -39,9 +39,9 @@ namespace Fido.DataAccess.Tests
         [TestMethod]
         public void CanCascadeInsert()
         {
-            Activity NewActivity01 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity01", Area = "", Action = "" };
-            Activity NewActivity02 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity02", Area = "", Action = "" };
-            Activity NewActivity03 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity03", Area = "", Action = "" };
+            Activity NewActivity01 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity01", Area = "", ReadWrite = "" };
+            Activity NewActivity02 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity02", Area = "", ReadWrite = "" };
+            Activity NewActivity03 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity03", Area = "", ReadWrite = "" };
 
             Role NewRole1 = new Role { Id = Guid.NewGuid(), Name = "NewRole1" };
             NewRole1.Activities.Add(NewActivity01);

@@ -72,9 +72,9 @@ namespace Fido.DataAccess.Implementation
                 DbModelBuilder.Entity<Activity>().HasKey(e => e.Id);
                 DbModelBuilder.Entity<Activity>().Property(e => e.CreatedUtc).IsRequired();
                 DbModelBuilder.Entity<Activity>().Property(e => e.RowVersion).IsRowVersion();
-                DbModelBuilder.Entity<Activity>().Property(e => e.Name).HasMaxLength(150).IsRequired();
-                DbModelBuilder.Entity<Activity>().Property(e => e.Action).HasMaxLength(50).IsRequired();
                 DbModelBuilder.Entity<Activity>().Property(e => e.Area).HasMaxLength(150).IsRequired();
+                DbModelBuilder.Entity<Activity>().Property(e => e.Name).HasMaxLength(150).IsRequired();
+                DbModelBuilder.Entity<Activity>().Property(e => e.ReadWrite).HasMaxLength(50).IsRequired();
 
                 DbModelBuilder.Entity<ExternalCredential>().HasKey(e => new { e.Id, e.UserId }); // Composite primary key
                 DbModelBuilder.Entity<ExternalCredential>().Property(e => e.CreatedUtc).IsRequired();

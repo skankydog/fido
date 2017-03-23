@@ -61,9 +61,9 @@ namespace Fido.Service.Tests
             Guid RoleId = RoleService.GetByName("All Activities").Id;
 
             RoleService.SetActivitiesForRole(RoleId, new List<Activity>() {
-                        new Activity { Name = "NewActivity01", Area = "Area", Action = "Action" },
-                        new Activity { Name = "NewActivity02", Area = "Area", Action = "Action" },
-                        new Activity { Name = "NewActivity03", Area = "Area", Action = "Action" } });
+                        new Activity { Name = "NewActivity01", Area = "Area", ReadWrite = "Action" },
+                        new Activity { Name = "NewActivity02", Area = "Area", ReadWrite = "Action" },
+                        new Activity { Name = "NewActivity03", Area = "Area", ReadWrite = "Action" } });
         }
         #endregion
 

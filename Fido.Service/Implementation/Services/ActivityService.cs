@@ -37,8 +37,8 @@ namespace Fido.Service.Implementation
         public IList<Activity> GetPageInActionOrder(char SortOrder, int Skip, int Take, string Filter)
         {
             return GetPage(SortOrder, Skip, Take, Filter,
-                OrderByAscending: q => q.OrderBy(s => s.Action),
-                OrderByDescending: q => q.OrderByDescending(s => s.Action));
+                OrderByAscending: q => q.OrderBy(s => s.ReadWrite),
+                OrderByDescending: q => q.OrderByDescending(s => s.ReadWrite));
         }
 
         private IList<Activity> GetPage(char SortOrder, int Skip, int Take, string Filter,
@@ -56,7 +56,7 @@ namespace Fido.Service.Implementation
                     if (Filter.IsNotNullOrEmpty())
                     {
                         Query = Query.Where(e => e.Name.ToLower().Contains(Filter.ToLower())
-                            || e.Action.ToLower().Contains(Filter.ToLower())
+                            || e.ReadWrite.ToLower().Contains(Filter.ToLower())
                             || e.Area.ToLower().Contains(Filter.ToLower()));
                     }
 
@@ -71,14 +71,14 @@ namespace Fido.Service.Implementation
         }
         #endregion
 
-        public Activity Get(string Action, string Name, string Area)
+        public Activity Get(string Area, string Name, string ReadWrite)
         {
             using (new FunctionLogger(Log))
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
                     var Repository = DataAccessFactory.CreateRepository<IActivityRepository>(UnitOfWork);
-                    var ActivityEntity = Repository.Get(e => e.Action == Action && e.Name == Name && e.Area == Area);
+                    var ActivityEntity = Repository.Get(e => e.Area == Area && e.Name == Name && e.ReadWrite == ReadWrite);
 
                     var ActivityDTO = Mapper.Map<Entities.Activity, Activity>(ActivityEntity);
 

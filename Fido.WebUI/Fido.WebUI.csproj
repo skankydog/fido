@@ -396,9 +396,9 @@
       <Project>{f45befd2-0b4e-4fb5-92c2-84f7011b7944}</Project>
       <Name>Fido.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fido.Action\Fido.Action.csproj">
+    <ProjectReference Include="..\Fido.ViewModel\Fido.ViewModel.csproj">
       <Project>{c483a8ce-598c-466d-9370-3af1d98c0374}</Project>
-      <Name>Fido.Action</Name>
+      <Name>Fido.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fido.DataAccess.Exceptions\Fido.DataAccess.Exceptions.csproj">
       <Project>{fe8febcd-5d57-4f78-90dd-918e0b8a1166}</Project>

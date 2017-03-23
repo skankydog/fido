@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Fido.WebUI.Flash;
 using Fido.WebUI.Flash.Messages;
-using Fido.Action.Implementation;
+using Fido.ViewModel.Implementation;
 
 namespace Fido.WebUI.Extensions
 {

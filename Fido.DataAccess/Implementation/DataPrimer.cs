@@ -13,12 +13,12 @@ namespace Fido.DataAccess.Implementation
         {
             Delete();
 
-            Activity Activity01 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 1", Area = "Namespace 1" };
-            Activity Activity02 = new Activity { Id = Guid.NewGuid(), Action = "Action 9", Name = "Controller/Model 2", Area = "Namespace 1" };
-            Activity Activity03 = new Activity { Id = Guid.NewGuid(), Action = "Action 2", Name = "Controller/Model 3", Area = "Namespace 1" };
-            Activity Activity04 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 4", Area = "Namespace 2" };
-            Activity Activity05 = new Activity { Id = Guid.NewGuid(), Action = "Action 1", Name = "Controller/Model 5", Area = "Namespace 3" };
-            Activity Activity06 = new Activity { Id = Guid.NewGuid(), Action = "Action 0", Name = "Controller/Model 6", Area = "Namespace 4" };
+            Activity Activity01 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 1", Name = "Controller/Model 1", Area = "Namespace 1" };
+            Activity Activity02 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 9", Name = "Controller/Model 2", Area = "Namespace 1" };
+            Activity Activity03 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 2", Name = "Controller/Model 3", Area = "Namespace 1" };
+            Activity Activity04 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 1", Name = "Controller/Model 4", Area = "Namespace 2" };
+            Activity Activity05 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 1", Name = "Controller/Model 5", Area = "Namespace 3" };
+            Activity Activity06 = new Activity { Id = Guid.NewGuid(), ReadWrite = "Action 0", Name = "Controller/Model 6", Area = "Namespace 4" };
 
             Role AllActivitiesRole = new Role { Id = Guid.NewGuid(), Name = "All Activities" };
             AllActivitiesRole.Activities.Add(Activity01);

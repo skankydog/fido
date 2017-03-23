@@ -94,9 +94,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fido.Action\Fido.Action.csproj">
+    <ProjectReference Include="..\Fido.ViewModel\Fido.ViewModel.csproj">
       <Project>{c483a8ce-598c-466d-9370-3af1d98c0374}</Project>
-      <Name>Fido.Action</Name>
+      <Name>Fido.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fido.WebUI\Fido.WebUI.csproj">
       <Project>{EA223C70-C413-4B51-B65C-60E69B4F81AC}</Project>

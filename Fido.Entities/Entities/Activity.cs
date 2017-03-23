@@ -12,9 +12,9 @@ namespace Fido.Entities
             Roles = new List<Role>();
         }
 
-        public string Action { get; set; }
-        public string Name { get; set; }
         public string Area { get; set; }
+        public string Name { get; set; }
+        public string ReadWrite { get; set; }
 
         public ICollection<Role> Roles { get; set; }
     }

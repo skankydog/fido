@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Fido.Core;
-using Fido.Action.Models.Authentication;
+using Fido.ViewModel.Models.Authentication;
 using Fido.WebUI.Common;
 
 namespace Fido.WebUI.Areas.Authentication.Controllers

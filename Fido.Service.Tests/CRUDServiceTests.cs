@@ -45,7 +45,7 @@ namespace Fido.Service.Tests
         {
             Activity ActivityDto = new Activity
             {
-                Action = "Action 1",
+                ReadWrite = "Action 1",
                 Name = "BrandNewEntity",
                 Area = "Nowhere"
             };

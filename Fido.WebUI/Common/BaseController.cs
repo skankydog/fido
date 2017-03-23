@@ -13,7 +13,7 @@ using Fido.Core;
 using Fido.WebUI.Common;
 using Fido.WebUI.Filters;
 using Fido.WebUI.Flash;
-using Fido.Action;
+using Fido.ViewModel;
 
 namespace Fido.WebUI.Common
 {
@@ -26,7 +26,7 @@ namespace Fido.WebUI.Common
 
         protected BaseController()
         {
-            Dispatcher = ActionFactory.CreateDispatcher<ActionResult>(
+            Dispatcher = ViewModelFactory.CreateDispatcher<ActionResult>(
                 this, this, this,
                 AuthoriseResult: () => new HttpUnauthorizedResult(),
                 PasswordResetResult: (m) => RedirectToAction("Update", "Password", new { Area = "Account" }),

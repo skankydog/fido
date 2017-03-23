@@ -33,9 +33,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.DataAccess.Exceptions"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Service.Exceptions", "Fido.Service.Exceptions\Fido.Service.Exceptions.csproj", "{369B8259-1382-4FAD-B1B9-B7B01D6BE103}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Action", "Fido.Action\Fido.Action.csproj", "{C483A8CE-598C-466D-9370-3AF1D98C0374}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.ViewModel", "Fido.ViewModel\Fido.ViewModel.csproj", "{C483A8CE-598C-466D-9370-3AF1D98C0374}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Action.Tests", "Fido.Action.Tests\Fido.Action.Tests.csproj", "{1475FE2E-78B5-4E1E-A516-055F447AAB36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.ViewModel.Tests", "Fido.ViewModel.Tests\Fido.ViewModel.Tests.csproj", "{1475FE2E-78B5-4E1E-A516-055F447AAB36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
