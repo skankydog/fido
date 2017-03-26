@@ -301,7 +301,7 @@
     <Content Include="Areas\Administration\Views\Role\RoleForm.cshtml" />
     <Content Include="Areas\Administration\Views\Activity\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Activity\ActivityForm.cshtml" />
-    <Content Include="Areas\Administration\Views\Activity\Update.cshtml" />
+    <Content Include="Areas\Administration\Views\Activity\View.cshtml" />
     <Content Include="Areas\Administration\Views\xHome\About.cshtml" />
     <Content Include="Areas\Administration\Views\xHome\Index.cshtml" />
     <Content Include="Areas\Account\Views\web.config" />

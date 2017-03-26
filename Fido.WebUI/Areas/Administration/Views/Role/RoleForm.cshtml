@@ -20,29 +20,16 @@
     </div>
 </div>
 
-@*<div class="row">
-    <div class="col-xs-12 skd-padding">
-        Users
-    </div>
-
-    <div class="col-xs-12">
-        @Html.ListBoxFor(m => m.SelectedUsers, new SelectList(Model.AllUsers, "Id", "SurnameFirstname"), new { @class = "form-control chosen-select" })
-    </div>
-</div>*@
-
-<span class="skd-spacing-large"></span>
-
 <div class="row">
-    <div class="col-xs-6 col-centered">
+    <div class="col-xs-6 col-centered control-button">
         <button type="submit" class="btn btn-success btn-circle btn-lg" name="Cmd" value="Save">
             <span><i class="fa fa-check"></i></span>
         </button>
     </div>
-    <div class="col-xs-6 col-centered">
+    <div class="col-xs-6 col-centered control-button">
         <a href="@Url.Action("Index", "Role")">
             <span class="btn btn-danger btn-circle btn-lg"><i class="fa fa-times"></i></span>
         </a>
     </div>
 </div>
 
-<span class="skd-spacing-large"></span>

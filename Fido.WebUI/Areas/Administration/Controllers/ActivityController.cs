@@ -28,20 +28,20 @@ namespace Fido.WebUI.Areas.Administration.Controllers
                 Result: m => Json(m, JsonRequestBehavior.AllowGet));
         }
 
-        public ActionResult Update(Guid Id)
+        public ActionResult View(Guid Id)
         {
             return Dispatcher.Load<Activity>(
                 Id: Id,
                 Result: m => View(m));
         }
 
-        [HttpPost]
-        public ActionResult Update(Activity Model)
-        {
-            return Dispatcher.Update(
-                DataModel: Model,
-                SuccessResult: m => RedirectToAction("Index", "Activity"),
-                InvalidResult: m => View(m));
-        }
+        //[HttpPost]
+        //public ActionResult Update(Activity Model)
+        //{
+        //    return Dispatcher.Update(
+        //        DataModel: Model,
+        //        SuccessResult: m => RedirectToAction("Index", "Activity"),
+        //        InvalidResult: m => View(m));
+        //}
     }
 }

@@ -23,7 +23,7 @@
 @section scripts
 {
 <script type="text/javascript">
-    var EditLink = '@(Html.ActionLink("Edit", "Update", "Activity", new { Id = -999 }, null))';
+    var ViewLink = '@(Html.ActionLink("View", "View", "Activity", new { Id = -999 }, null))';
     var AjaxPath = '@(Url.Action("List", "Activity"))';
 
     $(document).ready(function () {
@@ -36,11 +36,11 @@
                             { "sName": "Name" },
                             { "sName": "ReadWrite" },
                             {
-                                "sName": "Edit",
+                                "sName": "View",
                                 "bSearchable": false,
                                 "bSortable": false,
                                 "mRender": function (value) {
-                                    return EditLink.replace("-999", value);
+                                    return ViewLink.replace("-999", value);
                                 }
                             }
             ]

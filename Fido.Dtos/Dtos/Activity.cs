@@ -9,8 +9,7 @@ namespace Fido.Dtos
     {
         public Activity()
             : base()
-        {
-        }
+        { }
 
         public string Area { get; set; }
         public string Name { get; set; }
