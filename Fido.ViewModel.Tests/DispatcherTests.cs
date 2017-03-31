@@ -71,13 +71,13 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<Result> MockDispatcher;
 
         [TestMethod]
-        public void reading_from_an_anonymous_model_does_not_require_login()
+        public void reading_from_anonymous_models_does_not_require_login()
         {
             CheckRead<AnonymousModel>(ResultType.Success);
         }
 
         [TestMethod]
-        public void reading_from_an_authenticated_model_requires_login()
+        public void reading_from_authenticated_models_requires_login()
         {
             CheckRead<AuthenticatedModel>(ResultType.Authentication);
 
@@ -86,7 +86,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void reading_from_a_permissioned_model_requires_login()
+        public void reading_from_permissioned_models_requires_login()
         {
             CheckRead<PermissionedModel>(ResultType.Authentication);
 
@@ -95,13 +95,13 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void writing_to_an_anonymous_model_does_not_require_login()
+        public void writing_to_anonymous_models_does_not_require_login()
         {
             CheckWrite<AnonymousModel>(ResultType.Success);
         }
 
         [TestMethod]
-        public void writing_to_an_authenticated_model_requires_login()
+        public void writing_to_authenticated_models_requires_login()
         {
             CheckWrite<AuthenticatedModel>(ResultType.Authentication);
 
@@ -110,7 +110,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void writing_to_a_permissioned_model_requires_login()
+        public void writing_to_permissioned_models_requires_login()
         {
             CheckWrite<PermissionedModel>(ResultType.Authentication);
 

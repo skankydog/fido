@@ -17,7 +17,7 @@ namespace Fido.Service.Tests
     {
         #region Change Email Address Tests
         [TestMethod]
-        public void CanChangeEmailAddress()
+        public void change_user_email_address()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             var UserDTO = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
@@ -31,7 +31,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressDuplicationException))]
-        public void DuplicateEmailAddressThrowsOnInitiateChangeEmailAddress()
+        public void initiate_change_user_email_address_throws_on_duplicate_email_address()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             User UserDTO = UserService.GetByEmailAddress("bart.simpson@skankydog.com");
@@ -41,7 +41,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(UniqueFieldException))]
-        public void DuplicateEmailAddressThrowsOnCompleteChangeEmailAddress()
+        public void complete_change_user_email_address_throws_on_duplicate_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -68,7 +68,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressValidationException))]
-        public void InvalidEmailAddressThrowsOnChangeEmailAddress()
+        public void initiate_change_user_email_address_throws_on_invalid_email_address()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             User UserDTO = UserService.GetByEmailAddress("bart.simpson@skankydog.com");
@@ -79,7 +79,7 @@ namespace Fido.Service.Tests
 
         #region Password Tests
         [TestMethod]
-        public void CanChangePassword()
+        public void change_user_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -95,7 +95,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(PasswordValidationException))]
-        public void InvalidPasswordThrowsOnChangePassword()
+        public void change_user_password_throws_on_invalid_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -107,7 +107,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanExpireLocalCredentials()
+        public void expire_user_local_credentials()
         {
             const string EMAIL_ADDRESS = "homer.simpson@skankydog.com";
 
@@ -125,14 +125,14 @@ namespace Fido.Service.Tests
 
         #region Email Address Tests
         [TestMethod]
-        public void CanGetUserByEmailAddress()
+        public void get_user_by_email_address()
         {
             IUserService UserService = ServiceFactory.CreateService<IUserService>();
             Assert.IsNotNull(UserService.GetByEmailAddress("homer.simpson@skankydog.com"));
         }
 
         [TestMethod]
-        public void EmailAddressIsIgnoredOnSave()
+        public void user_email_address_is_ignored_on_save()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -150,7 +150,7 @@ namespace Fido.Service.Tests
 
         #region Administrator Tests
         [TestMethod]
-        public void CanExpireLocalCredentialsAsAdministrator()
+        public void administrator_can_expire_users_local_credentials()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -165,7 +165,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanEnableLocalCredentialsAsAdministrator()
+        public void administrator_can_enable_users_local_credentials()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -180,7 +180,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanDisableLocalCredentialsAsAdministrator()
+        public void administrator_can_disable_users_local_credentials()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -195,7 +195,22 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanEnableExternalCredentialsAsAdministrator()
+        public void administrator_can_reset_users_local_credentials()
+        {
+            const string EMAIL_ADDRESS = "new@skankydog.com";
+
+            var UserService = ServiceFactory.CreateService<IUserService>();
+            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
+
+            UserService.ResetLocalCredentialsAsAdministrator(UserDto.Id, EMAIL_ADDRESS, "expired password");
+
+            UserDto = UserService.Get(UserDto.Id);
+            Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
+            Assert.AreEqual("Expired", UserDto.LocalCredentialState);
+        }
+
+        [TestMethod]
+        public void administrator_can_enable_users_external_credentials()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -210,7 +225,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanDisableExternalCredentialsAsAdministrator()
+        public void administrator_can_disable_users_external_credentials()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -225,7 +240,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanCreateAsAdministrator()
+        public void administrator_can_create_a_user()
         {
             const string EMAIL_ADDRESS = "maggie@skankydog.com";
 
@@ -238,26 +253,11 @@ namespace Fido.Service.Tests
             Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
             Assert.AreEqual("Expired", UserDto.LocalCredentialState);
         }
-
-        [TestMethod]
-        public void CanResetLocalCredentialsAsAdministrator()
-        {
-            const string EMAIL_ADDRESS = "new@skankydog.com";
-
-            var UserService = ServiceFactory.CreateService<IUserService>();
-            var UserDto = UserService.GetByEmailAddress("homer.simpson@skankydog.com");
-
-            UserService.ResetLocalCredentialsAsAdministrator(UserDto.Id, EMAIL_ADDRESS, "expired password");
-
-            UserDto = UserService.Get(UserDto.Id);
-            Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
-            Assert.AreEqual("Expired", UserDto.LocalCredentialState);
-        }
         #endregion
 
         #region Profile Tests
         [TestMethod]
-        public void CanGetProfile()
+        public void get_user_profile()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -270,7 +270,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanSetProfile()
+        public void set_user_profile()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -302,7 +302,7 @@ namespace Fido.Service.Tests
 
         #region Role and Activity Tests
         [TestMethod]
-        public void CanGetRolesForUser()
+        public void get_user_roles()
         {
             IUserService UserService = ServiceFactory.CreateService<IUserService>();
 
@@ -311,7 +311,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanSetRolesForUser()
+        public void set_user_roles()
         {
             IUserService UserService = ServiceFactory.CreateService<IUserService>();
             Guid BartsUserId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;

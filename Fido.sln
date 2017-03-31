@@ -25,9 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Dtos", "Fido.Dtos\Fido
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Service.Tests", "Fido.Service.Tests\Fido.Service.Tests.csproj", "{43957B16-1EC5-4DFB-A851-77B6F6EB9447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.WebUI", "Fido.WebUI\Fido.WebUI.csproj", "{EA223C70-C413-4B51-B65C-60E69B4F81AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Web", "Fido.Web\Fido.Web.csproj", "{EA223C70-C413-4B51-B65C-60E69B4F81AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.WebUI.Tests", "Fido.WebUI.Tests\Fido.WebUI.Tests.csproj", "{657C3694-C483-4954-9BD7-8ACFCB9DCFF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.Web.Tests", "Fido.Web.Tests\Fido.Web.Tests.csproj", "{657C3694-C483-4954-9BD7-8ACFCB9DCFF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fido.DataAccess.Exceptions", "Fido.DataAccess.Exceptions\Fido.DataAccess.Exceptions.csproj", "{FE8FEBCD-5D57-4F78-90DD-918E0B8A1166}"
 EndProject

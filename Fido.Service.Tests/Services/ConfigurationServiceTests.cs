@@ -15,7 +15,7 @@ namespace Fido.Service.Tests
     public class ConfigurationServiceTests
     {
         [TestMethod]
-        public void CanSetConfiguration()
+        public void set_configuration()
         {
             var ConfigurationService = ServiceFactory.CreateService<IConfigurationService>();
             

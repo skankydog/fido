@@ -15,16 +15,16 @@ namespace Fido.Service.Tests
     public class ActivityServiceTests
     {
         [TestMethod]
-        public void CanGetActivity()
+        public void get_activity()
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 
             Assert.IsNull(ActivityService.Get("None", "None", "None"));
-            Assert.IsNotNull(ActivityService.Get("Action 1", "Controller/Model 1", "Namespace 1"));
+            Assert.IsNotNull(ActivityService.Get("Namespace 1", "Controller/Model 1", "Action 1"));
         }
 
         [TestMethod]
-        public void CanGetPageOfActivities()
+        public void get_page_of_activities()
         {
             IActivityService ActivityService = ServiceFactory.CreateService<IActivityService>();
 

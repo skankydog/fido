@@ -13,7 +13,7 @@ namespace Fido.Service.Tests
     public class MappingTests
     {
         [TestMethod]
-        public void Mapping()
+        public void mapping()
         {
             Mapper.AssertConfigurationIsValid();
         }

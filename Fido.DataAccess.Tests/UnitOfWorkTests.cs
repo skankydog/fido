@@ -15,7 +15,7 @@ namespace Fido.DataAccess.Tests
     public class UnitOfWorkTests
     {
         [TestMethod]
-        public void CanRollback()
+        public void rollback_entity_changes()
         {
             // Make sure an insert of a new entity call be rolled back...
             User UserEntity = new User
@@ -60,7 +60,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanCommit()
+        public void commit_entity_changes()
         {
             User UserEntity = new User {
                 Id = Guid.NewGuid(),
@@ -107,7 +107,7 @@ namespace Fido.DataAccess.Tests
 
         [TestMethod]
         [ExpectedException(typeof(DbUpdateConcurrencyException))]
-        public void ChecksForOptimisticConcurrency()
+        public void update_entity_throws_on_concurrency_issues()
         {
             using (IUnitOfWork OuterUnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {

@@ -15,7 +15,7 @@ namespace Fido.Service.Tests
     public class ConfirmationServiceTests
     {
         [TestMethod]
-        public void CanGetAllConfirmationsForUser()
+        public void get_confirmations_by_user_id()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
@@ -27,7 +27,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanGetQueuedConfirmationsForUser()
+        public void get_queued_confirmations_by_user_id()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
@@ -39,7 +39,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanGetSentConfirmationsForUser()
+        public void get_sent_confirmations_by_user_id()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
@@ -51,7 +51,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanGetReceivedConfirmationsForUser()
+        public void get_received_confirmations_by_user_id()
         {
             var UserService = ServiceFactory.CreateService<IUserService>();
             var BartId = UserService.GetByEmailAddress("bart.simpson@skankydog.com").Id;
@@ -63,7 +63,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanGetAllQueuedConfirmations()
+        public void get_queued_confirmations()
         {
             var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
             var Queued = ConfirmationService.GetQueued().Count();
@@ -72,7 +72,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanMarkConfirmationAsSent()
+        public void mark_confirmation_as_sent()
         {
             var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
 

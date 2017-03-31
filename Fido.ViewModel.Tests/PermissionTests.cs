@@ -25,7 +25,7 @@ namespace Fido.ViewModel.Tests
         private IDataModel LoadedModel;
 
         [TestMethod]
-        public void Permissions()
+        public void permissions_mechanism()
         {
             //Assert.IsTrue(LoadedModel.Allowed("Action 1", "Controller/Model 1", "Namespace 1"));
             //Assert.IsTrue(LoadedModel.Allowed("Action 9", "Controller/Model 2", "Namespace 1"));

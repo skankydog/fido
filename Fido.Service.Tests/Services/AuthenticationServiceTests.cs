@@ -17,7 +17,7 @@ namespace Fido.Service.Tests
     {
         #region Has Local/External Credentials Tests
         [TestMethod]
-        public void CanCheckForLocalCredentials()
+        public void has_local_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -30,7 +30,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanCheckForExternalCredentials()
+        public void has_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -41,20 +41,20 @@ namespace Fido.Service.Tests
             Assert.IsTrue(AuthenticationService.HasExternalCredentials(IdWithExternalCredentials));
             Assert.IsFalse(AuthenticationService.HasExternalCredentials(IdWithoutExternalCredentials));
         }
+        #endregion
 
+        #region Login Tests
         [TestMethod]
-        public void CanLoginByLocalCredentials()
+        public void login_by_local_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
             User UserDTO = AuthenticationService.LoginByLocalCredentials("marge.simpson@skankydog.com", "hello");
             Assert.IsNotNull(UserDTO);
         }
-        #endregion
 
-        #region Login Tests
         [TestMethod]
-        public void CanLoginByExternalCredentials()
+        public void login_by_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -69,7 +69,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanLoginByExternalEmailAddress()
+        public void login_by_external_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -93,7 +93,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanCreateByExternalCredentials()
+        public void create_by_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -109,7 +109,7 @@ namespace Fido.Service.Tests
 
         #region Set Local Credentials Tests
         [TestMethod]
-        public void CanSetLocalCredentials()
+        public void set_local_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -130,7 +130,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressDuplicationException))]
-        public void DuplicateEmailAddressThrowsOnSetLocalCredentials()
+        public void set_local_credentials_throws_on_duplicate_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
@@ -140,7 +140,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressValidationException))]
-        public void InvalidEmailAddressThrowsOnSetLocalCredentials()
+        public void set_local_credentials_throws_on_invalid_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
@@ -150,7 +150,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(PasswordValidationException))]
-        public void InvalidPasswordThrowsOnSetLocalCredentials()
+        public void set_local_credentials_throws_on_invalid_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserDTO = AuthenticationService.LoginByExternalCredentials("Facebook", "WaylanFacebook1");
@@ -161,7 +161,7 @@ namespace Fido.Service.Tests
 
         #region Registration Tests
         [TestMethod]
-        public void CanRegisterForLocalAccount()
+        public void register_local_account()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -177,7 +177,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressDuplicationException))]
-        public void DuplicateEmailAddressThrowsOnRegistration()
+        public void registration_throws_on_duplicate_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -187,7 +187,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(EmailAddressValidationException))]
-        public void InvalidEmailAddressThrowsOnRegistration()
+        public void registration_throws_on_invalid_email_address()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -196,7 +196,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(PasswordValidationException))]
-        public void InvalidPasswordThrowsOnRegistration()
+        public void registration_throws_on_invalid_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -206,7 +206,7 @@ namespace Fido.Service.Tests
 
         #region Forgotten Password Tests
         [TestMethod]
-        public void CanPerformForgottenPassword()
+        public void forgotten_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -221,7 +221,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(PasswordValidationException))]
-        public void InvalidPasswordThrowsOnForgottenPassword()
+        public void fogotten_password_throws_on_invalid_password()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var ConfirmationId = AuthenticationService.ForgottenPasswordInitiate("homer.simpson@skankydog.com");
@@ -231,7 +231,7 @@ namespace Fido.Service.Tests
 
         #region Email Address Logic Tests
         [TestMethod]
-        public void CanCheckEmailAddressIsFree()
+        public void email_address_is_free()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -240,7 +240,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanValidateEmailAddress()
+        public void email_address_passes_validation()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -258,7 +258,7 @@ namespace Fido.Service.Tests
 
         #region Password Logic Tests
         [TestMethod]
-        public void CanValidatePassword()
+        public void password_passes_validation()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -273,7 +273,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanReturnPasswordScore()
+        public void get_password_score()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -315,7 +315,7 @@ namespace Fido.Service.Tests
 
         #region Manage External Credentials Tests
         [TestMethod]
-        public void CanGetExternalCredentials()
+        public void get_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
             var UserService = ServiceFactory.CreateService<IUserService>();
@@ -325,7 +325,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanLinkExternalCredentials()
+        public void link_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
@@ -338,7 +338,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanUnlinkedExternalCredentials()
+        public void unlink_external_credentials()
         {
             var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 

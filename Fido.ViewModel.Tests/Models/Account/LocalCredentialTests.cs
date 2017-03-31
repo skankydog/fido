@@ -24,7 +24,7 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void DuplicateEmailAddressGeneratesError()
+        public void update_local_credentials_with_duplicate_email_address_generates_error()
         {
             var LocalCredentialModel = new LocalCredential { EmailAddress = "homer.simpson@skankydog.com", Password = Guid.NewGuid().ToString() };
             var Returned = MockDispatcher.Update(
@@ -37,7 +37,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void InvalidEmailAddressGeneratesError()
+        public void update_local_credentials_with_invalid_email_address_generates_error()
         {
             var LocalCredentialModel = new LocalCredential { EmailAddress = "invalidemailaddress.com", Password = Guid.NewGuid().ToString() };
             var Returned = MockDispatcher.Update(
@@ -50,7 +50,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void WeakPasswordGeneratesError()
+        public void update_local_credentials_with_weak_password_generates_error()
         {
             var LocalCredentialModel = new LocalCredential { EmailAddress = "newemail@skankydog.com", Password = "password" };
             var Returned = MockDispatcher.Update(

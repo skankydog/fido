@@ -24,7 +24,7 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void DuplicateEmailAddressGeneratesError()
+        public void update_email_address_with_duplicate_generates_error()
         {
             var EmailAddressModel = new EmailAddress { Email = "homer.simpson@skankydog.com" };
             var Returned = MockDispatcher.Update(
@@ -37,7 +37,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void InvalidEmailAddressGeneratesError()
+        public void update_email_address_with_invalid_generates_error()
         {
             var EmailAddressModel = new EmailAddress { Email = "invalidemailaddress.com" };
             var Returned = MockDispatcher.Update(
@@ -50,7 +50,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void CanChangeEmailAddress()
+        public void update_email_address()
         {
             var EmailAddressModel = new EmailAddress { Email = "valid.email@skankydog.com" };
             var Returned = MockDispatcher.Update(

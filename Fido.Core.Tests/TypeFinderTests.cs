@@ -12,7 +12,7 @@ namespace Fido.Core.Tests
     public class TypeFinderTests
     {
         [TestMethod]
-        public void Find()
+        public void find_derived_classes()
         {
             TypeFinder Finder = new TypeFinder();
             List<System.Type> Types = Finder.Find<TypeToFindBase>();

@@ -1,0 +1,18 @@
+﻿@using Fido.Web.Flash.Messages
+@using Fido.Web.Extensions
+@model FlashMessage
+
+<div class="alert alert-@Model.Severity">
+    
+    <button type="button" class="close" data-dismiss="alert">×</button>
+
+    @*<strong>@Model.Title</strong>*@
+    <p> @Model.Description</p>
+
+    @if (Model.Data != null)
+    {
+        <div style="text-align:center">
+            <img src="@Url.Content(Model.Data.Cast<FlashImage>().Link)" alt="@(Model.Data.Cast<FlashImage>().Alt)" />
+        </div>
+    }
+</div>

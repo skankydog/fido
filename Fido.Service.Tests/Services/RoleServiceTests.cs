@@ -15,7 +15,7 @@ namespace Fido.Service.Tests
     public class RoleServiceTests
     {
         [TestMethod]
-        public void CanGetUsersInRole()
+        public void get_users_in_role()
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
 
@@ -27,7 +27,7 @@ namespace Fido.Service.Tests
 
         #region Activity Tests
         [TestMethod]
-        public void CanGetActivitiesForRole()
+        public void get_activities_for_role()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
@@ -36,7 +36,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanSetActivitiesForRole()
+        public void set_activities_for_role()
         {
             var RoleService = ServiceFactory.CreateService<IRoleService>();
             var FirstRoleId = RoleService.GetByName("All Activities").Id;
@@ -55,7 +55,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void SetActivitiesForRoleThrowsOnNewRoles()
+        public void set_activities_for_role_throws_on_new_role()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
             Guid RoleId = RoleService.GetByName("All Activities").Id;
@@ -69,14 +69,14 @@ namespace Fido.Service.Tests
 
         #region Name Tests
         [TestMethod]
-        public void CanGetRoleByName()
+        public void get_role_by_name()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
             Assert.IsNotNull(RoleService.GetByName("All Activities"));
         }
 
         [TestMethod]
-        public void CanCheckRoleNameIsFree()
+        public void role_name_free()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
@@ -86,7 +86,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        public void DuplicateNameDetectedOnRoleInsert()
+        public void insert_role_throws_on_duplicate_name()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 
@@ -100,7 +100,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(Fido.DataAccess.Exceptions.UniqueFieldException))]
-        public void DuplicateNameDetectedOnRoleUpdate()
+        public void update_role_throws_on_duplicate_name()
         {
             IRoleService RoleService = ServiceFactory.CreateService<IRoleService>();
 

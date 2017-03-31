@@ -15,7 +15,7 @@ namespace Fido.DataAccess.Tests
     public class GenericRepositoryTests
     {
         [TestMethod]
-        public void CanInsert()
+        public void insert_entity_flat()
         {
             User UserEntity = new User
             {
@@ -37,7 +37,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanCascadeInsert()
+        public void insert_entity_cascade()
         {
             Activity NewActivity01 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity01", Area = "", ReadWrite = "" };
             Activity NewActivity02 = new Activity { Id = Guid.NewGuid(), Name = "NewActivity02", Area = "", ReadWrite = "" };
@@ -87,7 +87,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanGetById()
+        public void get_entity_by_id()
         {
             Guid Id = Helpers.InsertCitizen();
             User UserEntity;
@@ -103,7 +103,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanGetByPredicate()
+        public void get_entity_by_predicate()
         {
             Guid Id = Helpers.InsertCitizen();
             User UserEntity;
@@ -138,7 +138,7 @@ namespace Fido.DataAccess.Tests
         //}
 
         [TestMethod]
-        public void CanUpdate()
+        public void update_entity()
         {
             User ReadUser;
 
@@ -179,7 +179,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanDeleteByPredicate()
+        public void delete_entity_by_predicate()
         {
             Assert.AreEqual(0, Helpers.CountCitizens());
 

@@ -1,0 +1,58 @@
+﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
+@model Fido.ViewModel.Models.Administration.RoleIndex
+
+@using Fido.Web.Controllers
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+@Html.ActionLink("Create New Role", "Create", "Role")<br/><br/>
+
+<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<span class="skd-spacing-large"></span>
+
+@section scripts
+{
+<script type="text/javascript">
+    var EditLink = '@(Html.ActionLink("Edit", "Update", "Role", new { Id = -999 }, null))';
+    var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "Role", new { Id = -999 }, new { @class = "modal-link" }))';
+    var AjaxPath = '@(Url.Action("List", "Role"))';
+
+    $(document).ready(function () {
+        $('#IndexTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": AjaxPath,
+            "bProcessing": true,
+            "aoColumns": [
+                            { "sName": "Name" },
+                            {
+                                "sName": "Edit",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "mRender": function (value) {
+                                    return EditLink.replace("-999", value);
+                                }
+                            },
+                            {
+                                "sName": "Delete",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "mRender": function (value) {
+                                    return DeleteLink.replace("-999", value);
+                                }
+                            }
+            ]
+        });
+    });
+</script>
+}

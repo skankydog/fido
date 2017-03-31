@@ -1,0 +1,50 @@
+﻿@* http://www.codeproject.com/Articles/155422/jQuery-DataTables-and-ASP-NET-MVC-Integration-Part *@
+@model Fido.ViewModel.Models.Administration.ActivityIndex
+
+@using Fido.Web.Controllers
+
+@{
+    ViewBag.Title = "Activities";
+}
+
+<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Area</th>
+            <th>Name</th>
+            <th>Read/Write</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<span class="skd-spacing-large"></span>
+
+@section scripts
+{
+<script type="text/javascript">
+    var ViewLink = '@(Html.ActionLink("View", "View", "Activity", new { Id = -999 }, null))';
+    var AjaxPath = '@(Url.Action("List", "Activity"))';
+
+    $(document).ready(function () {
+        $('#IndexTable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": AjaxPath,
+            "bProcessing": true,
+            "aoColumns": [
+                            { "sName": "Area" },
+                            { "sName": "Name" },
+                            { "sName": "ReadWrite" },
+                            {
+                                "sName": "View",
+                                "bSearchable": false,
+                                "bSortable": false,
+                                "mRender": function (value) {
+                                    return ViewLink.replace("-999", value);
+                                }
+                            }
+            ]
+        });
+    });
+</script>
+}

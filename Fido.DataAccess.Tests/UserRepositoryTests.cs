@@ -15,7 +15,7 @@ namespace Fido.DataAccess.Tests
     public class UserRepositoryTests
     {
         [TestMethod]
-        public void CanGetByExternalCredentials()
+        public void get_user_by_external_credentials()
         {
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
@@ -27,7 +27,7 @@ namespace Fido.DataAccess.Tests
         }
 
         [TestMethod]
-        public void CanGetByExternalEmailAddress()
+        public void get_user_by_external_email_address()
         {
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {

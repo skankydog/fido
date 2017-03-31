@@ -24,7 +24,7 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void CanLinkExternalCredential()
+        public void add_external_credentials_to_user()
         {
             var CountBefore = GetExternalCredentials().Count;
 
@@ -41,7 +41,7 @@ namespace Fido.ViewModel.Tests
         }
 
         [TestMethod]
-        public void CanUnlinkExternalCredential()
+        public void remove_external_credentials_from_user()
         {
             var ExternalCredentials = GetExternalCredentials();
 

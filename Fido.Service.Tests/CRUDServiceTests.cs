@@ -14,7 +14,7 @@ namespace Fido.Service.Tests
     public class CRUDServiceTests
     {
         [TestMethod]
-        public void CanGetAll()
+        public void get_all_dtos()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             var AllDtos = Service.GetAll();
@@ -23,7 +23,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanCountAll()
+        public void count_all_dtos()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             var AllDtoCount = Service.CountAll();
@@ -32,7 +32,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanGetEntityById()
+        public void get_dto_by_id()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             User UserDto = Service.GetByEmailAddress("bart.simpson@skankydog.com");
@@ -41,7 +41,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanInsertEntity()
+        public void insert_dto()
         {
             Activity ActivityDto = new Activity
             {
@@ -57,7 +57,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanUpdateEntity()
+        public void update_dto()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
 
@@ -72,7 +72,7 @@ namespace Fido.Service.Tests
         }
 
         [TestMethod]
-        public void CanDeleteEntity()
+        public void delete_dto_by_id()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
 
@@ -84,7 +84,7 @@ namespace Fido.Service.Tests
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void ChecksForOptimisticConcurrency()
+        public void update_dto_throws_on_concurrency_issues()
         {
             IUserService Service = ServiceFactory.CreateService<IUserService>();
             
