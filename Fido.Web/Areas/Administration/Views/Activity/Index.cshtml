@@ -7,44 +7,50 @@
     ViewBag.Title = "Activities";
 }
 
-<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Area</th>
-            <th>Name</th>
-            <th>Read/Write</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+@*<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">*@
+<div class="table-responsive">
+    <table id="IndexTable" class="display responsive nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Area</th>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 <span class="skd-spacing-large"></span>
 
 @section scripts
 {
-<script type="text/javascript">
-    var ViewLink = '@(Html.ActionLink("View", "View", "Activity", new { Id = -999 }, null))';
-    var AjaxPath = '@(Url.Action("List", "Activity"))';
+    <script type="text/javascript">
+        var ViewLink = '@(Html.ActionLink("View", "View", "Activity", new { Id = -999 }, null))';
+        var AjaxPath = '@(Url.Action("List", "Activity"))';
 
-    $(document).ready(function () {
-        $('#IndexTable').dataTable({
-            "bServerSide": true,
-            "sAjaxSource": AjaxPath,
-            "bProcessing": true,
-            "aoColumns": [
-                            { "sName": "Area" },
-                            { "sName": "Name" },
-                            { "sName": "ReadWrite" },
-                            {
-                                "sName": "View",
-                                "bSearchable": false,
-                                "bSortable": false,
-                                "mRender": function (value) {
-                                    return ViewLink.replace("-999", value);
-                                }
-                            }
-            ]
+        $(document).ready(function () {
+            $('#IndexTable').dataTable({
+                "bAutoWidth": false,
+                "responsive": true,
+                "bServerSide": true,
+                "sAjaxSource": AjaxPath,
+                "bProcessing": true,
+                "aoColumns": [
+                    { "sName": "Area", responsivePriority: 4 },
+                    { "sName": "Name", responsivePriority: 1 },
+                    { "sName": "ReadWrite", responsivePriority: 2 },
+                    {
+                        responsivePriority: 3,
+                        "sName": "View",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (value) {
+                            return ViewLink.replace("-999", value);
+                        }
+                    }
+                ]
+            });
         });
-    });
-</script>
+    </script>
 }

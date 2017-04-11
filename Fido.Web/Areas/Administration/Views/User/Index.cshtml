@@ -9,58 +9,65 @@
 
 @Html.ActionLink("Create New User", "Create", "User")<br/><br/>
 
-<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Firstname</th>
-            <th>Surname</th>
-            <th>Email Address</th>
-            <th>Local</th>
-            <th>External</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+@*table id="IndexTable" width="100%" class="table table-striped table-bordered display responsive nowrap" cellspacing="0"*@
+<div class="table-responsive">
+    <table id="IndexTable" class="display responsive nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Surname</th>
+                <th>Email Address</th>
+                <th>Local</th>
+                <th>External</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 <span class="skd-spacing-large"></span>
 
 @section scripts
 {
-<script type="text/javascript">
-    var EditLink = '@(Html.ActionLink("Edit", "Update", "User", new { Id = -999 }, null))';
-    var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "User", new { Id = -999 }, new { @class = "modal-link" }))';
-    var AjaxPath = '@(Url.Action("List", "User"))';
+    <script type="text/javascript">
+        var EditLink = '@(Html.ActionLink("Edit", "Update", "User", new { Id = -999 }, null))';
+        var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "User", new { Id = -999 }, new { @class = "modal-link" }))';
+        var AjaxPath = '@(Url.Action("List", "User"))';
 
-    $(document).ready(function () {
-        $('#IndexTable').dataTable({
-            "bServerSide": true,
-            "sAjaxSource": AjaxPath,
-            "bProcessing": true,
-            "aoColumns": [
-                            { "sName": "Firstname" },
-                            { "sName": "Surname" },
-                            { "sName": "Email Address" },
-                            { "sName": "Local Credentials" },
-                            { "sName": "External Credentials" },
-                            {
-                                "sName": "Edit",
-                                "bSearchable": false,
-                                "bSortable": false,
-                                "mRender": function (value) {
-                                    return EditLink.replace("-999", value);
-                                }
-                            },
-                            {
-                                "sName": "Delete",
-                                "bSearchable": false,
-                                "bSortable": false,
-                                "mRender": function (value) {
-                                    return DeleteLink.replace("-999", value);
-                                }
-                            }
-            ]
+        $(document).ready(function () {
+            $('#IndexTable').dataTable({
+                "bAutoWidth": false,
+                "responsive": true,
+                "bServerSide": true,
+                "sAjaxSource": AjaxPath,
+                "bProcessing": true,
+                "aoColumns": [
+                    { "sName": "Firstname", responsivePriority: 5 },
+                    { "sName": "Surname", responsivePriority: 4 },
+                    { "sName": "Email Address", responsivePriority: 1 },
+                    { "sName": "Local Credentials" },
+                    { "sName": "External Credentials" },
+                    {
+                        responsivePriority: 2,
+                        "sName": "Edit",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (value) {
+                            return EditLink.replace("-999", value);
+                        }
+                    },
+                    {
+                        responsivePriority: 3,
+                        "sName": "Delete",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (value) {
+                            return DeleteLink.replace("-999", value);
+                        }
+                    }
+                ]
+            });
         });
-    });
-</script>
+    </script>
 }
