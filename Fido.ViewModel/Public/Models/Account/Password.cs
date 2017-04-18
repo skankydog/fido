@@ -36,6 +36,12 @@ namespace Fido.ViewModel.Models.Account
         {
             using (new FunctionLogger(Log))
             {
+                if (Model.NewPassword != Model.ConfirmPassword)
+                {
+                    ModelAPI.ModelError("The new password and confirmation password do not match");
+                    return false;
+                }
+
                 var AuthenticationService = ServiceFactory.CreateService<IAuthenticationService>();
 
                 if (!AuthenticationService.PasswordPassesValidation(Model.NewPassword))

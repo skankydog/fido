@@ -58,6 +58,9 @@
     <Compile Include="Mocks\MockAuthenticationAPI.cs" />
     <Compile Include="Mocks\MockModelAPI.cs" />
     <Compile Include="Mocks\MockFeedbackAPI.cs" />
+    <Compile Include="Models\Account\SettingsTests.cs" />
+    <Compile Include="Models\Account\ProfileTests.cs" />
+    <Compile Include="Models\Account\PasswordTests.cs" />
     <Compile Include="Models\Account\LocalCredentialTests.cs" />
     <Compile Include="Models\Account\ExternalCredentialTests.cs" />
     <Compile Include="Models\Account\EmailAddressTests.cs" />
