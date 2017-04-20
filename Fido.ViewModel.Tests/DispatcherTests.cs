@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +16,7 @@ using Fido.ViewModel.Tests.Mocks;
 
 namespace Fido.ViewModel.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class AuthenticatedModel : Model<AuthenticatedModel>
     {
         public AuthenticatedModel()
@@ -26,6 +28,7 @@ namespace Fido.ViewModel.Tests
         public override bool Confirm(Guid ConfirmationId) { return true; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class PermissionedModel : Model<PermissionedModel>
     {
         public PermissionedModel()
@@ -37,6 +40,7 @@ namespace Fido.ViewModel.Tests
         public override bool Confirm(Guid ConfirmationId) { return true; }
     }
 
+    [ExcludeFromCodeCoverage]
     public class AnonymousModel : Model<AnonymousModel>
     {
         public AnonymousModel()
@@ -57,11 +61,13 @@ namespace Fido.ViewModel.Tests
         Invalid
     }
 
+    [ExcludeFromCodeCoverage]
     public class Result
     {
         public ResultType ResultType;
     }
 
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class DispatcherTests
     {

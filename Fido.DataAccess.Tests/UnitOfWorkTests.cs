@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using Fido.Entities.UserDetails;
 
 namespace Fido.DataAccess.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class UnitOfWorkTests
     {

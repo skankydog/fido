@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +9,7 @@ using Fido.Core.Bootstrapper;
 
 namespace Fido.Core.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class TypeFinderTests
     {

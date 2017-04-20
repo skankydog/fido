@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ using Fido.Web.Controllers;
 
 namespace Fido.Web.Tests.Controllers
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class HomeControllerTest
     {

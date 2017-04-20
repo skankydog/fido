@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +10,7 @@ using Fido.Service;
 
 namespace Fido.ViewModel.Tests.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class MockModelAPI : IModelAPI
     {
         private bool RaisedPropertyError = false;

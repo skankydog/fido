@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,6 +17,7 @@ namespace Fido.ViewModel.Tests.Mocks
         Failure
     }
 
+    [ExcludeFromCodeCoverage]
     public class MockFeedbackAPI : IFeedbackAPI
     {
         public FeedbackState State { get; private set; }

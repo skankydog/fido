@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Fido.Core;
@@ -10,6 +11,7 @@ using Fido.Service.Exceptions;
 
 namespace Fido.Service.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class CRUDServiceTests
     {

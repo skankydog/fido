@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Fido.Core;
+using System.Diagnostics.CodeAnalysis;
 using Fido.ViewModel;
 using Fido.ViewModel.Implementation;
 using Fido.ViewModel.Models;
@@ -15,6 +16,7 @@ using Fido.ViewModel.Tests.Mocks;
 
 namespace Fido.ViewModel.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class ResetPasswordTests
     {

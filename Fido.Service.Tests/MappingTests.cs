@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMapper;
@@ -9,6 +10,7 @@ using Fido.Service;
 
 namespace Fido.Service.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class MappingTests
     {

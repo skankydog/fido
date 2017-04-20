@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Fido.Entities;
@@ -8,6 +9,7 @@ using Fido.Entities.UserDetails;
 
 namespace Fido.DataAccess.Tests
 {
+    [ExcludeFromCodeCoverage]
     public static class Helpers
     {
         public static User GetUser(Guid Id)

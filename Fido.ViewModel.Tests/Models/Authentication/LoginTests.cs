@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +16,7 @@ using Fido.ViewModel.Tests.Mocks;
 
 namespace Fido.ViewModel.Tests
 {
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class LoginTests
     {
