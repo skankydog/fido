@@ -39,8 +39,9 @@
                 "sAjaxSource": AjaxPath,
                 "bProcessing": true,
                 "aoColumns": [
-                    { "sName": "Name" },
+                    { "sName": "Name", responsivePriority: 1 },
                     {
+                        responsivePriority: 2,
                         "sName": "Edit",
                         "bSearchable": false,
                         "bSortable": false,
@@ -49,6 +50,7 @@
                         }
                     },
                     {
+                        responsivePriority: 3,
                         "sName": "Delete",
                         "bSearchable": false,
                         "bSortable": false,

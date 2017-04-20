@@ -24,8 +24,9 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void unknown()
+        public void settings()
         {
+            throw new NotImplementedException();
         }
 
         #region Initialisation

@@ -24,7 +24,7 @@ namespace Fido.Web
                 .Include("~/Content/css/plugins/metisMenu/metisMenu.min.css")
                 .Include("~/Content/DataTables/css/jquery.dataTables.css")
                 .Include("~/Content/DataTables/css/responsive.dataTables.css"));
-           //     .Include("~/Content/css/gridforms.css")); // Not sure I am going to use this one. Consider removing
+            //    .Include("~/Content/css/gridforms.css")); // Not sure I am going to use this one. Consider removing
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -35,7 +35,7 @@ namespace Fido.Web
                 .Include("~/Scripts/DataTables/jquery.dataTables.js")
                 .Include("~/Scripts/DataTables/dataTables.bootstrap.js")
                 .Include("~/Scripts/DataTables/dataTables.responsive.js")
-                .Include("~/Scripts/gridforms.js")
+            //    .Include("~/Scripts/gridforms.js") // Not sure I am going to use this one. Consider removing
                 .Include("~/Scripts/modernizr-*"));
 
             Bundles.Add(new ScriptBundle("~/page.bottom.scripts")

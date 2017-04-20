@@ -64,6 +64,16 @@
     <Compile Include="Models\Account\LocalCredentialTests.cs" />
     <Compile Include="Models\Account\ExternalCredentialTests.cs" />
     <Compile Include="Models\Account\EmailAddressTests.cs" />
+    <Compile Include="Models\Administration\ActivityTests.cs" />
+    <Compile Include="Models\Administration\ConfirmationTests.cs" />
+    <Compile Include="Models\Administration\UserTests.cs" />
+    <Compile Include="Models\Administration\ConfigurationTests.cs" />
+    <Compile Include="Models\Administration\RoleTests.cs" />
+    <Compile Include="Models\Authentication\ExternlLoginCallbackTests.cs" />
+    <Compile Include="Models\Authentication\ForgottenPasswordTests.cs" />
+    <Compile Include="Models\Authentication\LoginTests.cs" />
+    <Compile Include="Models\Authentication\RegistrationTests.cs" />
+    <Compile Include="Models\Authentication\ResetPasswordTests.cs" />
     <Compile Include="PermissionTests.cs" />
     <Compile Include="MappingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,10 +92,7 @@
       <Name>Fido.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Administration\" />
-    <Folder Include="Models\Authentication\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

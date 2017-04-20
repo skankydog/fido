@@ -33,7 +33,6 @@ namespace Fido.ViewModel.Tests
                 InvalidResult: m => null);
 
             Assert.IsNull(Returned);
-            Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]

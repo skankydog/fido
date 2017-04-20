@@ -79,9 +79,9 @@ namespace Fido.ViewModel.Models.Administration
 
                 return (from UserDto in UserDtos
                         select new[] {
+                            UserDto.EmailAddress.Nvl(),
                             UserDto.Fullname.Firstname.Nvl(),
                             UserDto.Fullname.Surname.Nvl(),
-                            UserDto.EmailAddress.Nvl(),
                             UserDto.LocalCredentialState.Nvl(),
                             UserDto.ExternalCredentialState.Nvl(),
                             UserDto.Id.ToString(), // Edit

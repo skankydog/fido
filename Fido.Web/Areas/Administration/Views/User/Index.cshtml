@@ -14,9 +14,9 @@
     <table id="IndexTable" class="display responsive nowrap" cellspacing="0">
         <thead>
             <tr>
+                <th>Email Address</th>
                 <th>Firstname</th>
                 <th>Surname</th>
-                <th>Email Address</th>
                 <th>Local</th>
                 <th>External</th>
                 <th></th>
@@ -43,11 +43,11 @@
                 "sAjaxSource": AjaxPath,
                 "bProcessing": true,
                 "aoColumns": [
+                    { "sName": "Email Address", responsivePriority: 1 },
                     { "sName": "Firstname", responsivePriority: 5 },
                     { "sName": "Surname", responsivePriority: 4 },
-                    { "sName": "Email Address", responsivePriority: 1 },
-                    { "sName": "Local Credentials" },
-                    { "sName": "External Credentials" },
+                    { "sName": "Local Credentials", responsivePriority: 6 },
+                    { "sName": "External Credentials", responsivePriority: 7 },
                     {
                         responsivePriority: 2,
                         "sName": "Edit",

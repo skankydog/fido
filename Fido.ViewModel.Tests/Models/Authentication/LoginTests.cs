@@ -16,7 +16,7 @@ using Fido.ViewModel.Tests.Mocks;
 namespace Fido.ViewModel.Tests
 {
     [TestClass]
-    public class ProfileTests
+    public class LoginTests
     {
         private MockFeedbackAPI MockFeedbackAPI = new MockFeedbackAPI();
         private MockAuthenticationAPI MockAuthenticationAPI = new MockAuthenticationAPI();
@@ -24,7 +24,7 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void profile()
+        public void login()
         {
             throw new NotImplementedException();
         }

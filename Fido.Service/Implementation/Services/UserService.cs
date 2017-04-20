@@ -158,7 +158,7 @@ namespace Fido.Service.Implementation
                     var UserEntity = UserRepository.Get(e => e.Id == UserId && e.Password == OldPassword);
 
                     if (UserEntity == null)
-                        throw new ServiceException(string.Format("User id, {0}, does not exist or incorrect password entered", UserId));
+                        throw new ServiceException(string.Format("User id, {0}, does not exist or incorrect password has been entered", UserId));
 
                     UserEntity.CurrentLocalCredentialState.ChangePassword(NewPassword);
                     UserRepository.Update(UserEntity);
