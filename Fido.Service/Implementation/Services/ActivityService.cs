@@ -34,7 +34,7 @@ namespace Fido.Service.Implementation
                 OrderByDescending: q => q.OrderByDescending(s => s.Area));
         }
 
-        public IList<Activity> GetPageInActionOrder(char SortOrder, int Skip, int Take, string Filter)
+        public IList<Activity> GetPageInReadWriteOrder(char SortOrder, int Skip, int Take, string Filter)
         {
             return GetPage(SortOrder, Skip, Take, Filter,
                 OrderByAscending: q => q.OrderBy(s => s.ReadWrite),

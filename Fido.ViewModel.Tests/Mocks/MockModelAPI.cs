@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Fido.Core;
 using Fido.Service;
 
@@ -19,6 +18,17 @@ namespace Fido.ViewModel.Tests.Mocks
         public bool HasPropertyError { get { return RaisedPropertyError;  } }
         public bool HasModelError { get { return RaisedModelError; } }
         public bool HasAnyError { get { return RaisedPropertyError || RaisedModelError; } }
+
+        public MockModelAPI()
+        {
+            Clear();
+        }
+
+        public void Clear()
+        {
+            RaisedModelError = false;
+            RaisedPropertyError = false;
+        }
 
         public void PropertyError(string Property, string Message)
         {

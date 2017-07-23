@@ -73,7 +73,9 @@ namespace Fido.Service.Implementation
                     {
                         Query = Query.Where(e => e.Fullname.Firstname.ToLower().Contains(Filter.ToLower())
                                               || e.Fullname.Surname.ToLower().Contains(Filter.ToLower())
-                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower()));
+                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower())
+                                              || e.LocalCredentialState.ToLower().Contains(Filter.ToLower())
+                                              || e.ExternalCredentialState.ToLower().Contains(Filter.ToLower()));
                     }
 
                     Query = Query.Skip(Skip).Take(Take);
@@ -129,7 +131,9 @@ namespace Fido.Service.Implementation
                     var Confirmation = ConfirmationService.ReceiveConfirmation(UnitOfWork, ConfirmationId, CHANGE_EMAIL_ADDRESS);
 
                     if (Confirmation == null)
+                    {
                         throw new ServiceException(string.Format("Unable to change email address - {0} not found or expired", ConfirmationId));
+                    }
 
                     var UserEntity = UserRepository.Get(Confirmation.UserId);
 
@@ -267,7 +271,35 @@ namespace Fido.Service.Implementation
         #endregion
 
         #region Administration
-        public User SaveAsAdministrator(User User)
+        public User CreateAsAdministrator(Guid UserId, string Firstname, string Surname, string EmailAddress, string Password)
+        {
+            using (new FunctionLogger(Log))
+            {
+                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
+                {
+                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
+                    var UserEntity = new Entities.User
+                            {
+                                Id = UserId,
+                                LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name,
+                                Fullname = new Entities.UserDetails.Fullname
+                                    {
+                                        Firstname = Firstname,
+                                        Surname = Surname
+                                    },
+                                EmailAddress = EmailAddress,
+                                Password = Password
+                            };
+
+                    var SavedUser = UserRepository.Insert(UserEntity);
+                    UnitOfWork.Commit();
+
+                    return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
+                }
+            }
+        }
+
+        public User UpdateAsAdministrator(User User)
         {
             using (new FunctionLogger(Log))
             {
@@ -280,71 +312,9 @@ namespace Fido.Service.Implementation
 
                     UserEntity.LocalCredentialState = User.LocalCredentialState; // Not automapped
                     UserEntity.ExternalCredentialState = User.ExternalCredentialState; // Not automapped
-//                     UserEntity.EmailAddress = User.EmailAddress != null ? User.EmailAddress : UserEntity.EmailAddress; // Not automapped
+//                    UserEntity.EmailAddress = User.EmailAddress != null ? User.EmailAddress : UserEntity.EmailAddress; // Not automapped
 
                     var SavedUser = UserRepository.Update(UserEntity);
-                    UnitOfWork.Commit();
-
-                    return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
-                }
-            }
-        }
-
-        //public User SaveAsAdministrator2(User User, string EmailAddress = null, string Password = null)
-        //{
-        //    using (new FunctionLogger(Log))
-        //    {
-        //        using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //        {
-        //            var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-        //            var UserEntity = UserRepository.Get(User.Id);
-
-        //            if (UserEntity == null)
-        //            {
-        //                if (EmailAddress == null || Password == null)
-        //                    throw new Exception("A user cannot be created by an administrator without local credentials");
-
-        //                UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
-        //                UserEntity.LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name; // Not automapped
-        //                UserEntity.EmailAddress = EmailAddress; // Not automapped
-        //                UserEntity.Password = Password; // Not automapped
-
-        //                var SavedUser = UserRepository.Insert(UserEntity);
-
-        //                UnitOfWork.Commit();
-        //                return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
-        //            }
-        //            else
-        //            {
-        //                UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User, UserEntity);
-        //                UserEntity.LocalCredentialState = User.LocalCredentialState; // Not automapped
-        //                UserEntity.ExternalCredentialState = User.ExternalCredentialState; // Not automapped
-        //                UserEntity.EmailAddress = EmailAddress != null ? EmailAddress : UserEntity.EmailAddress; // Not automapped
-        //                UserEntity.Password = Password != null ? EmailAddress : UserEntity.Password; // Not automapped
-
-        //                var SavedUser = UserRepository.Update(UserEntity);
-
-        //                UnitOfWork.Commit();
-        //                return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);
-        //            }
-        //        }
-        //    }
-        //}
-
-        public User CreateAsAdministrator(User User, string EmailAddress, string Password)
-        {
-            using (new FunctionLogger(Log))
-            {
-                using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-                {
-                    var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                    var UserEntity = AutoMapper.Mapper.Map<User, Entities.User>(User);
-
-                    UserEntity.LocalCredentialState = Entities.UserDetails.LocalCredentialStates.Expired.Name;
-                    UserEntity.EmailAddress = EmailAddress;
-                    UserEntity.Password = Password;
-
-                    var SavedUser = UserRepository.Insert(UserEntity);
                     UnitOfWork.Commit();
 
                     return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);

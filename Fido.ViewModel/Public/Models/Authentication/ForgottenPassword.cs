@@ -16,6 +16,8 @@ namespace Fido.ViewModel.Models.Authentication
         [EmailAddress]
         [Display(Name = "email address")]
         public string EmailAddress { get; set; }
+
+        public Guid ConfirmationId { get; set; }
         #endregion
 
         public ForgottenPassword()
@@ -34,7 +36,7 @@ namespace Fido.ViewModel.Models.Authentication
                     return false;
                 }
 
-                var ConfirmationId = AuthenticationService.ForgottenPasswordInitiate(Model.EmailAddress);
+                ConfirmationId = AuthenticationService.ForgottenPasswordInitiate(Model.EmailAddress);
 
                 //if (System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Development" ||
                 //    System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Test")

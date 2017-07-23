@@ -53,6 +53,10 @@ namespace Fido.ViewModel.Implementation
         {
             this.ReadAccess = ReadAccess;
             this.WriteAccess = WriteAccess;
+
+            Id = Guid.NewGuid();
+            CreatedUtc = DateTime.UtcNow;
+            IsNew = true;
         }
 
         public virtual TMODEL Prepare(TMODEL Model) { return Model; }

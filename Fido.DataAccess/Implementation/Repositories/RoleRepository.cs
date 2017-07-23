@@ -26,7 +26,7 @@ namespace Fido.DataAccess.Implementation
             {
                 Log.InfoFormat("Role.Id='{0}'", Entity.Id);
 
-                Context.Set<Role>().Add(Entity);
+                Entity = Context.Set<Role>().Add(Entity);
 
                 foreach (var User in Entity.Users)
                     Context.Entry(User).State = System.Data.Entity.EntityState.Unchanged;

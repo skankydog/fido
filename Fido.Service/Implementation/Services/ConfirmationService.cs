@@ -32,13 +32,13 @@ namespace Fido.Service.Implementation
                 {
                     var ConfirmationRepository = DataAccessFactory.CreateRepository<IConfirmationRepository>(UnitOfWork);
                     var OrderBy = SortOrder == 'a' ? OrderByAscending : OrderByDescending;
-                    var Query = ConfirmationRepository.GetAsIQueryable(e => e.Id != null, OrderBy);
+                    var Query = ConfirmationRepository.GetAsIQueryable(e => e.Id != null && e.UserId == Id, OrderBy);
 
                     if (Filter.IsNotNullOrEmpty())
                     {
                         Query = Query.Where(e => e.ConfirmType.ToLower().Contains(Filter.ToLower())
-                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower())
-                                              || e.State.ToLower().Contains(Filter.ToLower()));
+                                              || e.EmailAddress.ToLower().Contains(Filter.ToLower()));
+                                              // State is a property & not stored in the db, can't be filtered
                     }
 
                     Query = Query.Skip(Skip).Take(Take);
@@ -200,12 +200,18 @@ namespace Fido.Service.Implementation
             using (new FunctionLogger(Log))
             {
                 var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-                var Queued = Repository.Get(e => e.Id == Id && e.ConfirmType == Type && e.QueuedUTC != null && e.SentUTC != null && e.ReceivedUTC == null);
+                var Queued = Repository.Get(e => e.Id == Id && e.ConfirmType == Type && e.QueuedUTC != null /*&& e.SentUTC != null*/ && e.ReceivedUTC == null);
 
                 if (Queued == null)
-                    throw new ServiceException("The validation is either not ready to be received or is in an invalid state");
+                {
+                    throw new ServiceException(string.Format("Failed to retrieve confirmation: Id={0}, Type={1}, Queued=<not null>, Received=<not null>", Id, Type));
+                }
 
                 Queued.ReceivedUTC = DateTime.UtcNow;
+
+                Log.InfoFormat("Received confirmation. Updating: Id={0}, Type={1}, Queued={2}(UTC), Sent={3}(UTC), Received={4}(UTC)",
+                    Queued.Id, Queued.ConfirmType, Queued.CreatedUtc, Queued.SentUTC, Queued.ReceivedUTC);
+                
                 Repository.Update(Queued);
                 return Queued;
             }

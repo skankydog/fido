@@ -68,6 +68,7 @@
     <Compile Include="Public\Models\Account\Password.cs" />
     <Compile Include="Public\Models\Administration\Configuration.cs" />
     <Compile Include="Public\Models\Administration\Confirmation\Confirmation.cs" />
+    <Compile Include="Public\Models\Administration\User\UserCreate.cs" />
     <Compile Include="Public\Models\Administration\User\UserIndex.cs" />
     <Compile Include="Public\Models\Administration\Role\RoleIndex.cs" />
     <Compile Include="Public\Models\Administration\Activity\ActivityIndex.cs" />

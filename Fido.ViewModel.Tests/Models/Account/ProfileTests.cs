@@ -26,10 +26,80 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void profile()
+        public void profile_read()
         {
-            throw new NotImplementedException();
+            const string FIRSTNAME = "read test firstname";
+            const string SURNAME = "read test surname";
+            const string ABOUT = "read test about text";
+            const int IMAGESIZE = 100;
+            var UpdatedProfile = UpdateProfile(FIRSTNAME, SURNAME, ABOUT, IMAGESIZE);
+
+            var ReadProfile = MockDispatcher.Load<Profile>(
+                Id: UpdatedProfile.Id,
+                Result: m => m) as Profile;
+
+            Assert.IsNotNull(ReadProfile);
+            Assert.AreEqual(FIRSTNAME, ReadProfile.Firstname);
+            Assert.AreEqual(SURNAME, ReadProfile.Surname);
+            Assert.AreEqual(ABOUT, ReadProfile.About);
+            Assert.AreEqual(IMAGESIZE, ReadProfile.Image.Count());
+            Assert.IsFalse(ReadProfile.IsNew);
+            Assert.AreEqual(UpdatedProfile.Id, ReadProfile.Id);
         }
+
+        [TestMethod]
+        public void profile_update()
+        {
+            const string FIRSTNAME = "update test firstname";
+            const string SURNAME = "update test surname";
+            const string ABOUT = "update test about text";
+            const int IMAGESIZE = 200;
+
+            var ReadProfile = GetProfile();
+
+            ReadProfile.Firstname = FIRSTNAME;
+            ReadProfile.Surname = SURNAME;
+            ReadProfile.About = ABOUT;
+            ReadProfile.Image = new byte[IMAGESIZE];
+            MockDispatcher.Update(
+                DataModel: ReadProfile,
+                Result: m => m);
+
+            var UpdatedProfile = GetProfile();
+
+            Assert.IsNotNull(UpdatedProfile);
+            Assert.AreEqual(FIRSTNAME, UpdatedProfile.Firstname);
+            Assert.AreEqual(SURNAME, UpdatedProfile.Surname);
+            Assert.AreEqual(ABOUT, UpdatedProfile.About);
+            Assert.AreEqual(IMAGESIZE, UpdatedProfile.Image.Count());
+            Assert.IsFalse(UpdatedProfile.IsNew);
+            Assert.AreEqual(UpdatedProfile.Id, ReadProfile.Id);
+        }
+
+        #region Private Members
+        private Profile UpdateProfile(string Firstname, string Surname, string About, int ImageSize)
+        {
+            var ReadProfile = GetProfile();
+            ReadProfile.Firstname = Firstname;
+            ReadProfile.Surname = Surname;
+            ReadProfile.About = About;
+            ReadProfile.Image = new byte[ImageSize];
+
+            var UpdatedProfile = MockDispatcher.Update(
+                DataModel: ReadProfile,
+                Result: m => m) as Profile;
+
+            //return GetProfile();
+            return UpdatedProfile;
+        }
+
+        private Profile GetProfile()
+        {
+            return MockDispatcher.Load<Profile>(
+                Id: MockAuthenticationAPI.AuthenticatedId,
+                Result: m => m) as Profile;
+        }
+        #endregion
 
         #region Initialisation
         [ClassInitialize]

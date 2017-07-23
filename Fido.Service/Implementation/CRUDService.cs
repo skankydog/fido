@@ -65,35 +65,35 @@ namespace Fido.Service.Implementation
             {
                 using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
                 {
-                    // Hook to allow modification in derived implementations
-                    Dto = BeforeSave(Dto, UnitOfWork);
+                    Dto = BeforeSave(Dto, UnitOfWork); // hook
 
                     TIREPOSITORY Repository = DataAccessFactory.CreateRepository<TIREPOSITORY>(UnitOfWork);
+                    TENTITY Entity;
 
                     if (Dto.IsNew)
                     {
-                        // Hook to allow modification in derived implementations
-                        Dto = BeforeInsert(Dto, UnitOfWork);
-                        Dto.IsNew = true;
+                        Dto = BeforeInsert(Dto, UnitOfWork); // hook
 
-                        TENTITY Entity = Mapper.Map<TDTO, TENTITY>(Dto);
-                //        Repository.CascadeInsert(Entity);
-                        Repository.Insert(Entity);
+                        Entity = Mapper.Map<TDTO, TENTITY>(Dto);
+                        Entity = Repository.Insert(Entity);
                     }
                     else
                     {
-                        // Hook to allow modification in derived implementations
-                        Dto = BeforeUpdate(Dto, UnitOfWork);
-                        Dto.IsNew = false;
+                        Dto = BeforeUpdate(Dto, UnitOfWork); // hook
 
-                        TENTITY Entity = Repository.Get(Dto.Id);
+                        Entity = Repository.Get(Dto.Id);
+
+                        if (Dto.RowVersion == null)
+                            throw new Exception(string.Format("The dto, {0}, has not been populated from are read - updates can only occur on read entities.", Dto.ToString()));
 
                         if (!Dto.RowVersion.SequenceEqual(Entity.RowVersion))
-                            throw new Exception(string.Format("The entity, {0}, was modified between when it was read and when this write was attempted. Please reprocess.", Entity));
+                            throw new Exception(string.Format("The dto, {0}, was modified between when it was read and when this write was attempted. Please reprocess.", Dto.ToString()));
 
                         Entity = Mapper.Map<TDTO, TENTITY>(Dto, Entity);
-                        Repository.Update(Entity);
+                        Entity = Repository.Update(Entity);
                     }
+
+                    Dto = Mapper.Map<TENTITY, TDTO>(Entity);
 
                     UnitOfWork.Commit();
                     return Dto;

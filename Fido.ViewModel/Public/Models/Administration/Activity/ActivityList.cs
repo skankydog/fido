@@ -53,15 +53,15 @@ namespace Fido.ViewModel.Models.Administration
                 switch (SortColumn)
                 {
                     case 0:
-                        ActivityDtos = ActivityService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
-                        break;
-
-                    case 1:
                         ActivityDtos = ActivityService.GetPageInAreaOrder(SortOrder, Skip, Take, Filter);
                         break;
 
+                    case 1:
+                        ActivityDtos = ActivityService.GetPageInNameOrder(SortOrder, Skip, Take, Filter);
+                        break;
+
                     case 2:
-                        ActivityDtos = ActivityService.GetPageInActionOrder(SortOrder, Skip, Take, Filter);
+                        ActivityDtos = ActivityService.GetPageInReadWriteOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     default:

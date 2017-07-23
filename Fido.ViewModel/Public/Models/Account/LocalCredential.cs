@@ -28,6 +28,8 @@ namespace Fido.ViewModel.Models.Account
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public Guid ConfirmationId { get; set; }
         #endregion
 
         public LocalCredential()
@@ -58,7 +60,7 @@ namespace Fido.ViewModel.Models.Account
                     return false;
                 }
 
-                var ConfirmationId = AuthenticationService.SetLocalCredentialInitiate(AuthenticationAPI.AuthenticatedId, Model.EmailAddress, Model.Password);
+                ConfirmationId = AuthenticationService.SetLocalCredentialInitiate(AuthenticationAPI.AuthenticatedId, Model.EmailAddress, Model.Password);
 
                 //if (System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Development" ||
                 //    System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Test")

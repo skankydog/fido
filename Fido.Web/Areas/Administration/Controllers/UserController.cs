@@ -30,12 +30,12 @@ namespace Fido.Web.Areas.Administration.Controllers
 
         public ActionResult Create()
         {
-            return Dispatcher.Load<User>(
+            return Dispatcher.Load<UserCreate>(
                 Result: m => View(m));
         }
 
         [HttpPost]
-        public ActionResult Create(User Model)
+        public ActionResult Create(UserCreate Model)
         {
             return Dispatcher.Create(
                 DataModel: Model,

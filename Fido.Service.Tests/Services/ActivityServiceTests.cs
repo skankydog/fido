@@ -38,8 +38,8 @@ namespace Fido.Service.Tests
             Assert.AreEqual("Namespace 4", ActivityService.GetPageInAreaOrder('d', 0, 10, "Namespace").FirstOrDefault().Area);
             Assert.AreEqual("Namespace 1", ActivityService.GetPageInAreaOrder('a', 0, 10, "Namespace").FirstOrDefault().Area);
             
-            Assert.AreEqual("Controller/Model 6", ActivityService.GetPageInActionOrder('a', 0, 10, "Namespace").FirstOrDefault().Name);
-            Assert.AreEqual("Controller/Model 2", ActivityService.GetPageInActionOrder('d', 0, 10, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 6", ActivityService.GetPageInReadWriteOrder('a', 0, 10, "Namespace").FirstOrDefault().Name);
+            Assert.AreEqual("Controller/Model 2", ActivityService.GetPageInReadWriteOrder('d', 0, 10, "Namespace").FirstOrDefault().Name);
             
             Assert.AreEqual(0, ActivityService.GetPageInDefaultOrder('a', 0, 100, "does not exist").Count());
 

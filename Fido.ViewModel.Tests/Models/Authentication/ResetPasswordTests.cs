@@ -26,7 +26,7 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void reset_password()
+        public void reset_password_create()
         {
             throw new NotImplementedException();
         }

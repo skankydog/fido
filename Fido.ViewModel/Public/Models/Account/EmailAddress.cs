@@ -16,6 +16,8 @@ namespace Fido.ViewModel.Models.Account
         [EmailAddress]
         [Display(Name = "email address")]
         public string Email { get; set; }
+
+        public Guid ConfirmationId { get; set; }
         #endregion
 
         public EmailAddress()
@@ -41,7 +43,8 @@ namespace Fido.ViewModel.Models.Account
                 }
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
-                var ConfirmationId = UserService.ChangeEmailAddressInitiate(AuthenticationAPI.AuthenticatedId, Model.Email);
+
+                ConfirmationId = UserService.ChangeEmailAddressInitiate(AuthenticationAPI.AuthenticatedId, Model.Email); // TEST MODE??
 
                 //if (System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Development" ||
                 //    System.Configuration.ConfigurationManager.AppSettings["UI-Mode"] == "Test")

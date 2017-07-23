@@ -20,8 +20,6 @@ namespace Fido.ViewModel.Models.Administration
         public HashSet<string> AllExternalCredentialStates;
         public IList<Role> AllRoles = new List<Role>();
 
-//        public Guid Id { get; set; }
-
         [Display(Name = "firstname")]
         [Required(ErrorMessage = "The first name field cannot be left blank")]
         public string Firstname { get; set; }
@@ -122,7 +120,10 @@ namespace Fido.ViewModel.Models.Administration
 
                 var UserService = ServiceFactory.CreateService<IUserService>();
 
-                UserDto = UserService.SaveAsAdministrator(UserDto);
+//                if (Model.IsNew)  // problem!! Need a new model for the create as it only contains 4 fields!! New view!!
+//                    UserDto = UserService.CreateAsAdministrator(Model.Firstname, Model.Surname, Model.EmailAddress, "password");
+//                else
+                    UserDto = UserService.UpdateAsAdministrator(UserDto);
 
                 FeedbackAPI.DisplaySuccess("The user details have been saved");
                 return true;

@@ -50,25 +50,5 @@ namespace Fido.ViewModel.Models.Administration
                 return Model;
             }
         }
-
-        public override bool Write(Activity Model)
-        {
-            using (new FunctionLogger(Log))
-            {
-                var ActivityService = ServiceFactory.CreateService<IActivityService>();
-                var ActivityDto = ActivityService.Get(Model.Id);
-
-                ActivityDto.Roles = Model.SelectedRoles == null ? new List<Dtos.Role>()
-                : Mapper.Map<IList<Role>, IList<Dtos.Role>>(
-                    (from a in Model.AllRoles
-                     where (Model.SelectedRoles.Contains(a.Id))
-                     select a).ToList());
-
-                ActivityDto = ActivityService.Save(ActivityDto);
-
-                FeedbackAPI.DisplaySuccess("The activity details have been saved");
-                return true;
-            }
-        }
     }
 }

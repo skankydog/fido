@@ -28,41 +28,66 @@ namespace Fido.ViewModel.Tests
         [TestMethod]
         public void update_email_address_with_duplicate_generates_error()
         {
-            var EmailAddressModel = new EmailAddress { Email = "homer.simpson@skankydog.com" };
-            var Returned = MockDispatcher.Update(
-                DataModel: EmailAddressModel,
+            var InvalidModel = new EmailAddress { Email = "homer.simpson@skankydog.com" };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]
         public void update_email_address_with_invalid_generates_error()
         {
-            var EmailAddressModel = new EmailAddress { Email = "invalidemailaddress.com" };
-            var Returned = MockDispatcher.Update(
-                DataModel: EmailAddressModel,
+            var InvalidModel = new EmailAddress { Email = "invalidemailaddress.com" };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]
         public void update_email_address()
         {
-            var EmailAddressModel = new EmailAddress { Email = "valid.email@skankydog.com" };
-            var Returned = MockDispatcher.Update(
-                DataModel: EmailAddressModel,
-                SuccessResult: m => m,
-                InvalidResult: m => null);
+            const string EMAIL_ADDRESS = "valid.email@skankydog.com";
 
-            Assert.IsNotNull(Returned);
+            var ValidModel = new EmailAddress { Email= EMAIL_ADDRESS };
+            var Initiated = MockDispatcher.Update(
+                DataModel: ValidModel,
+                SuccessResult: m => m,
+                InvalidResult: m => null) as EmailAddress;
+
+            Assert.IsNotNull(Initiated);
             Assert.IsFalse(MockModelAPI.HasAnyError);
+
+            MockModelAPI.Clear();
+
+            var Confirmed = MockDispatcher.Confirm<EmailAddress>(
+                Id: Initiated.ConfirmationId,
+                Result: m => m) as EmailAddress;
+
+            Assert.IsNotNull(Confirmed);
+            Assert.IsFalse(MockModelAPI.HasAnyError);
+
+            var Retrieved = GetEmailAddress();
+
+            Assert.IsNotNull(Retrieved);
+            Assert.AreEqual(EMAIL_ADDRESS, Retrieved.EmailAddress);
         }
+
+        #region Private Members
+        private User GetEmailAddress()
+        {
+            return MockDispatcher.Load<User>(
+                Id: MockAuthenticationAPI.AuthenticatedId,
+                Result: m => m) as User;
+        }
+        #endregion
 
         #region Initialisation
         [ClassInitialize]

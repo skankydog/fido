@@ -53,15 +53,15 @@ namespace Fido.ViewModel.Models.Administration
                 switch (SortColumn)
                 {
                     case 0:
-                        UserDtos = UserService.GetPageInFirstnameOrder(SortOrder, Skip, Take, Filter);
+                        UserDtos = UserService.GetPageInEmailAddressOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     case 1:
-                        UserDtos = UserService.GetPageInSurnameOrder(SortOrder, Skip, Take, Filter);
+                        UserDtos = UserService.GetPageInFirstnameOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     case 2:
-                        UserDtos = UserService.GetPageInEmailAddressOrder(SortOrder, Skip, Take, Filter);
+                        UserDtos = UserService.GetPageInSurnameOrder(SortOrder, Skip, Take, Filter);
                         break;
 
                     case 3:

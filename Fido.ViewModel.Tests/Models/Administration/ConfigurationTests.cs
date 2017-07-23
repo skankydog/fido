@@ -26,7 +26,19 @@ namespace Fido.ViewModel.Tests
         private IDispatcher<IDataModel> MockDispatcher;
 
         [TestMethod]
-        public void configuration()
+        public void configuration_create()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void configuration_read()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void configuration_update()
         {
             throw new NotImplementedException();
         }

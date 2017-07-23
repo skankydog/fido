@@ -58,6 +58,7 @@
     <Compile Include="Mocks\MockAuthenticationAPI.cs" />
     <Compile Include="Mocks\MockModelAPI.cs" />
     <Compile Include="Mocks\MockFeedbackAPI.cs" />
+    <Compile Include="Mocks\MockResult.cs" />
     <Compile Include="Models\Account\SettingsTests.cs" />
     <Compile Include="Models\Account\ProfileTests.cs" />
     <Compile Include="Models\Account\PasswordTests.cs" />
@@ -79,6 +80,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fido.Dtos\Fido.Dtos.csproj">
+      <Project>{2d279d1a-f39b-4866-9cc6-9386c2d40f66}</Project>
+      <Name>Fido.Dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fido.Service\Fido.Service.csproj">
+      <Project>{6955032a-05cc-41e5-ae8b-0a7a6d37f9f2}</Project>
+      <Name>Fido.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fido.ViewModel\Fido.ViewModel.csproj">
       <Project>{c483a8ce-598c-466d-9370-3af1d98c0374}</Project>
       <Name>Fido.ViewModel</Name>

@@ -28,39 +28,39 @@ namespace Fido.ViewModel.Tests
         [TestMethod]
         public void update_local_credentials_with_duplicate_email_address_generates_error()
         {
-            var LocalCredentialModel = new LocalCredential { EmailAddress = "homer.simpson@skankydog.com", Password = Guid.NewGuid().ToString() };
-            var Returned = MockDispatcher.Update(
-                DataModel: LocalCredentialModel,
+            var InvalidModel = new LocalCredential { EmailAddress = "homer.simpson@skankydog.com", Password = Guid.NewGuid().ToString() };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]
         public void update_local_credentials_with_invalid_email_address_generates_error()
         {
-            var LocalCredentialModel = new LocalCredential { EmailAddress = "invalidemailaddress.com", Password = Guid.NewGuid().ToString() };
-            var Returned = MockDispatcher.Update(
-                DataModel: LocalCredentialModel,
+            var InvalidModel = new LocalCredential { EmailAddress = "invalidemailaddress.com", Password = Guid.NewGuid().ToString() };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]
         public void update_local_credentials_with_weak_password_generates_error()
         {
-            var LocalCredentialModel = new LocalCredential { EmailAddress = "newemail@skankydog.com", Password = "password" };
-            var Returned = MockDispatcher.Update(
-                DataModel: LocalCredentialModel,
+            var InvalidModel = new LocalCredential { EmailAddress = "newemail@skankydog.com", Password = "password" };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
         }
 

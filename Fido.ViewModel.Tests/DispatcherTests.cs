@@ -52,21 +52,6 @@ namespace Fido.ViewModel.Tests
         public override bool Confirm(Guid ConfirmationId) { return true; }
     }
 
-    public enum ResultType
-    {
-        Success = 0,
-        Authentication,
-        PasswordReset,
-        Error,
-        Invalid
-    }
-
-    [ExcludeFromCodeCoverage]
-    public class Result
-    {
-        public ResultType ResultType;
-    }
-
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class DispatcherTests
@@ -74,7 +59,7 @@ namespace Fido.ViewModel.Tests
         private MockFeedbackAPI MockFeedbackAPI = new MockFeedbackAPI();
         private MockAuthenticationAPI MockAuthenticationAPI = new MockAuthenticationAPI();
         private MockModelAPI MockModelAPI = new MockModelAPI();
-        private IDispatcher<Result> MockDispatcher;
+        private IDispatcher<MockResult> MockDispatcher;
 
         [TestMethod]
         public void reading_from_anonymous_models_does_not_require_login()
@@ -131,7 +116,7 @@ namespace Fido.ViewModel.Tests
             Assert.AreEqual(ResultToCheck,
                 MockDispatcher.Load<TMODEL>(
                 Id: Guid.NewGuid(),
-                Result: m => new Result { ResultType = ResultType.Success }).ResultType);
+                Result: m => new MockResult { ResultType = ResultType.Success }).ResultType);
         }
 
         private void CheckWrite<TMODEL>(ResultType ResultToCheck)
@@ -141,14 +126,14 @@ namespace Fido.ViewModel.Tests
 
             var UpdateResult = MockDispatcher.Update(
                 DataModel: Model,
-                SuccessResult: m => new Result { ResultType = ResultType.Success },
-                InvalidResult: m => new Result { ResultType = ResultType.Invalid }).ResultType;
+                SuccessResult: m => new MockResult { ResultType = ResultType.Success },
+                InvalidResult: m => new MockResult { ResultType = ResultType.Invalid }).ResultType;
             Assert.AreEqual(ResultToCheck, UpdateResult);
 
             var CreateResult = MockDispatcher.Create(
                 DataModel: Model,
-                SuccessResult: m => new Result { ResultType = ResultType.Success },
-                InvalidResult: m => new Result { ResultType = ResultType.Invalid }).ResultType;
+                SuccessResult: m => new MockResult { ResultType = ResultType.Success },
+                InvalidResult: m => new MockResult { ResultType = ResultType.Invalid }).ResultType;
             Assert.AreEqual(ResultToCheck, CreateResult);
         }
         #endregion
@@ -158,8 +143,8 @@ namespace Fido.ViewModel.Tests
             var LoginModel = new Login { EmailAddress = "bart.simpson@skankydog.com", Password = "hello" };
             var Returned = MockDispatcher.Update(
                 DataModel: LoginModel,
-                SuccessResult: m => new Result { ResultType = ResultType.Success },
-                InvalidResult: m => new Result { ResultType = ResultType.Invalid }).ResultType;
+                SuccessResult: m => new MockResult { ResultType = ResultType.Success },
+                InvalidResult: m => new MockResult { ResultType = ResultType.Invalid }).ResultType;
 
             Assert.AreEqual(ResultType.Success, Returned);
         }
@@ -176,13 +161,13 @@ namespace Fido.ViewModel.Tests
         {
             DataAccess.DataAccessFactory.CreateDataPrimer().Refresh();
 
-            MockDispatcher = ViewModelFactory.CreateDispatcher<Result>(
+            MockDispatcher = ViewModelFactory.CreateDispatcher<MockResult>(
                 MockFeedbackAPI as IFeedbackAPI,
                 MockAuthenticationAPI as IAuthenticationAPI,
                 MockModelAPI as IModelAPI,
-                AuthoriseResult: () => new Result { ResultType = ResultType.Authentication },
-                PasswordResetResult: (m) => new Result { ResultType = ResultType.PasswordReset },
-                DefaultErrorResult: (m) => new Result { ResultType = ResultType.Error });
+                AuthoriseResult: () => new MockResult { ResultType = ResultType.Authentication },
+                PasswordResetResult: (m) => new MockResult { ResultType = ResultType.PasswordReset },
+                DefaultErrorResult: (m) => new MockResult { ResultType = ResultType.Error });
         }
 
         [TestCleanup]

@@ -28,39 +28,47 @@ namespace Fido.ViewModel.Tests
         [TestMethod]
         public void user_must_know_old_password_to_change()
         {
-            var PasswordModel = new Password { OldPassword = "incorrect password", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "UuIsd67sdJJHsddjskjsd" };
-            var Returned = MockDispatcher.Update(
-                DataModel: PasswordModel,
+            var InvalidModel = new Password { OldPassword = "incorrect password", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "UuIsd67sdJJHsddjskjsd" };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
+            Assert.IsFalse(MockModelAPI.HasAnyError);
+
+            var ValidModel = new Password { OldPassword = "hello", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "UuIsd67sdJJHsddjskjsd" };
+            var Valid = MockDispatcher.Update(
+                DataModel: ValidModel,
+                SuccessResult: m => m,
+                InvalidResult: m => null);
+
+            Assert.IsNotNull(Valid);
+            Assert.IsFalse(MockModelAPI.HasAnyError);
         }
 
         [TestMethod]
         public void user_must_confirm_new_password_to_change()
         {
-            var PasswordModel = new Password { OldPassword = "hello", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "different password" };
-            var Returned = MockDispatcher.Update(
-                DataModel: PasswordModel,
+            var InvalidModel = new Password { OldPassword = "hello", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "different password" };
+            var Invalid = MockDispatcher.Update(
+                DataModel: InvalidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
+            Assert.IsNull(Invalid);
             Assert.IsTrue(MockModelAPI.HasAnyError);
-        }
 
-        [TestMethod]
-        public void changing_password_confirms_validity()
-        {
-            var PasswordModel = new Password { OldPassword = "hello", NewPassword = "password", ConfirmPassword = "password" };
-            var Returned = MockDispatcher.Update(
-                DataModel: PasswordModel,
+            MockModelAPI.Clear();
+
+            var ValidModel = new Password { OldPassword = "hello", NewPassword = "UuIsd67sdJJHsddjskjsd", ConfirmPassword = "UuIsd67sdJJHsddjskjsd" };
+            var Valid = MockDispatcher.Update(
+                DataModel: ValidModel,
                 SuccessResult: m => m,
                 InvalidResult: m => null);
 
-            Assert.IsNull(Returned);
-            Assert.IsTrue(MockModelAPI.HasAnyError);
+            Assert.IsNotNull(Valid);
+            Assert.IsFalse(MockModelAPI.HasAnyError);
         }
 
         #region Initialisation

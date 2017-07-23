@@ -35,6 +35,7 @@ namespace Fido.ViewModel.Tests
                 DataModel: NewExternalCredential,
                 SuccessResult: m => m,
                 InvalidResult: m => null) as ExternalCredential;
+
             Assert.IsNotNull(Result);
             Assert.IsFalse(MockModelAPI.HasAnyError);
             
@@ -46,7 +47,6 @@ namespace Fido.ViewModel.Tests
         public void remove_external_credentials_from_user()
         {
             var ExternalCredentials = GetExternalCredentials();
-
             var CountBefore = ExternalCredentials.Count;
             Assert.IsTrue(CountBefore > 0);
 
@@ -64,6 +64,7 @@ namespace Fido.ViewModel.Tests
             Assert.AreEqual(CountBefore - 1, CountAfter);
         }
 
+        #region Private Members
         private IList<ExternalCredential> GetExternalCredentials()
         {
             var Result = MockDispatcher.Load<Settings>(
@@ -72,6 +73,7 @@ namespace Fido.ViewModel.Tests
 
             return Result.ExternalCredentials;
         }
+        #endregion
 
         #region Initialisation
         [ClassInitialize]

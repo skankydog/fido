@@ -22,5 +22,12 @@ namespace Fido.ViewModel
 
         public int SortColumn { get { return Convert.ToInt32(SortColumns[0]); } }
         public char SortOrder { get { return SortOrders[0].ToLower()[0]; } }
+
+        public ListOptions()
+        {
+            Columns = new List<string>();
+            SortColumns = new List<string>();
+            SortOrders = new List<string>();
+        }
     }
 }

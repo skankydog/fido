@@ -71,8 +71,8 @@ namespace Fido.ViewModel.Implementation
                             DataModel = DataModel.Read(Id, IndexOptions);
                     }
 
-                    DataModel.Denied = Tmp; // Restore after mapping
-                    DataModel = DataModel.Prepare(DataModel);
+                    if (DataModel != null) DataModel.Denied = Tmp; // Restore after mapping
+                    if (DataModel != null) DataModel = DataModel.Prepare(DataModel);
                 }
                 catch (Exception Ex)
                 {
@@ -102,6 +102,8 @@ namespace Fido.ViewModel.Implementation
                         if (DataModel.Write(DataModel) == true)
                         {
                             Log.Info("Successful write");
+
+                            DataModel.IsNew = false; // ensure caller now knows this is in the db
                             return SuccessResult(DataModel);
                         }
                     }
@@ -153,7 +155,7 @@ namespace Fido.ViewModel.Implementation
             {
                 try
                 {
-         // Don't believe this is effected for confirm, only read as read returns a loaded model.
+         // Don't believe this is affected for confirmation, only read as read returns a loaded model.
          //           var Tmp = DataModel.DeniedActivities; // Mapping wipes this out
 
                     if (DataModel.Confirm(ConfirmationId) == false)
@@ -164,7 +166,7 @@ namespace Fido.ViewModel.Implementation
                 }
                 catch (Exception Ex)
                 {
-                    Log.ErrorFormat("Exception thrown in 'Confirm': {0}", Ex.ToString());
+                    Log.ErrorFormat("Exception thrown in confirmation: {0}", Ex.ToString());
 
                     DataModel.FeedbackAPI.DisplayError(Ex.Message);
                     return ErrorResult((IDataModel)DataModel);

@@ -35,6 +35,8 @@ namespace Fido.ViewModel.Models.Authentication
         [Display(Name = "confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirm password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public Guid ConfirmationId { get; set; }
         #endregion
 
         public Registration()
@@ -65,7 +67,7 @@ namespace Fido.ViewModel.Models.Authentication
                     return false;
                 }
 
-                var ConfirmationId = AuthenticationService.RegistrationInitiate(Model.EmailAddress, Model.Password, Model.Firstname, Model.Surname);
+                ConfirmationId = AuthenticationService.RegistrationInitiate(Model.EmailAddress, Model.Password, Model.Firstname, Model.Surname);
 
                 FeedbackAPI.DisplaySuccess("An email will shortly be sent to your nominated email address for confirmation - once confirmed, you will be able to login.");
                 return true;

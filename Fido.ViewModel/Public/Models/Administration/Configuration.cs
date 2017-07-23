@@ -23,13 +23,13 @@ namespace Fido.ViewModel.Models.Administration
             : base(ReadAccess: Access.Permissioned, WriteAccess: Access.Permissioned)
         { }
 
-        public override Configuration Prepare(Configuration Model)
-        {
+//        public override Configuration Prepare(Configuration Model)
+//        {
             //var RoleService = ServiceFactory.CreateService<IRoleService>();
             //Model.AllRoles = Mapper.Map<IList<Dtos.Role>, IList<Role>>(RoleService.GetAll().OrderBy(r => r.Name).ToList());
 
-            return Model;
-        }
+//            return Model;
+//        }
 
         public override Configuration Read(Guid Id)
         {

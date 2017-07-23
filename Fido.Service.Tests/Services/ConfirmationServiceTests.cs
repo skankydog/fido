@@ -87,6 +87,17 @@ namespace Fido.Service.Tests
             Assert.AreEqual(1, QueuedAfter.Count);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void confirmation_deletion_throws_when_confirmtion_already_sent()
+        {
+            var ConfirmationService = ServiceFactory.CreateService<IConfirmationService>();
+            var Created = new Confirmation { Id = Guid.NewGuid(), ConfirmType = "Example", QueuedUTC = DateTime.UtcNow, SentUTC = DateTime.UtcNow };
+            var CreatedConfirmation = ConfirmationService.Save(Created);
+
+            var QueuedBefore = ConfirmationService.Delete(Created.Id);
+        }
+
         #region Initialisation
         [TestInitialize]
         public void TestInitialise()

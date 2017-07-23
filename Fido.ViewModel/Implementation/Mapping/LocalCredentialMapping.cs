@@ -31,7 +31,8 @@ namespace Fido.ViewModel.Mapping
                     .ForMember(Dest => Dest.AuthenticationAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.ModelAPI, Options => Options.Ignore())
                     .ForMember(Dest => Dest.Denied, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.ConfirmPassword, Options => Options.Ignore());
+                    .ForMember(Dest => Dest.ConfirmPassword, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ConfirmationId, Options => Options.Ignore());
             }
         }
     }

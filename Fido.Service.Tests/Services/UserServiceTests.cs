@@ -160,7 +160,7 @@ namespace Fido.Service.Tests
             Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
 
             UserDto.LocalCredentialState = "Expired";
-            UserService.SaveAsAdministrator(UserDto);
+            UserService.UpdateAsAdministrator(UserDto);
 
             UserDto = UserService.Get(UserDto.Id);
             Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
@@ -175,7 +175,7 @@ namespace Fido.Service.Tests
             Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
 
             UserDto.LocalCredentialState = "Enabled";
-            UserService.SaveAsAdministrator(UserDto);
+            UserService.UpdateAsAdministrator(UserDto);
 
             UserDto = UserService.Get(UserDto.Id);
             Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
@@ -190,7 +190,7 @@ namespace Fido.Service.Tests
             Assert.IsTrue(UserDto.LocalCredentialsAreUsable);
 
             UserDto.LocalCredentialState = "Disabled";
-            UserService.SaveAsAdministrator(UserDto);
+            UserService.UpdateAsAdministrator(UserDto);
 
             UserDto = UserService.Get(UserDto.Id);
             Assert.IsFalse(UserDto.LocalCredentialsAreUsable);
@@ -220,7 +220,7 @@ namespace Fido.Service.Tests
             Assert.IsFalse(UserDto.ExternalCredentialsAreUsable);
 
             UserDto.ExternalCredentialState = "Enabled";
-            UserService.SaveAsAdministrator(UserDto);
+            UserService.UpdateAsAdministrator(UserDto);
 
             UserDto = UserService.Get(UserDto.Id);
             Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
@@ -235,7 +235,7 @@ namespace Fido.Service.Tests
             Assert.IsTrue(UserDto.ExternalCredentialsAreUsable);
 
             UserDto.ExternalCredentialState = "Disabled";
-            UserService.SaveAsAdministrator(UserDto);
+            UserService.UpdateAsAdministrator(UserDto);
 
             UserDto = UserService.Get(UserDto.Id);
             Assert.IsFalse(UserDto.ExternalCredentialsAreUsable);
@@ -244,14 +244,16 @@ namespace Fido.Service.Tests
         [TestMethod]
         public void administrator_can_create_a_user()
         {
+            const string FIRSTNAME = "Maggie";
+            const string SURNAME = "Simpson";
             const string EMAIL_ADDRESS = "maggie@skankydog.com";
 
             var UserService = ServiceFactory.CreateService<IUserService>();
-            var UserDto = new User { Fullname = new Fullname { Firstname = "Maggie", Surname = "Simpson" } };
+            var CreatedUser = UserService.CreateAsAdministrator(Guid.NewGuid(), FIRSTNAME, SURNAME, EMAIL_ADDRESS, "one-off");
+            var UserDto = UserService.Get(CreatedUser.Id);
 
-            UserService.CreateAsAdministrator(UserDto, EMAIL_ADDRESS, "expired password");
-
-            UserDto = UserService.Get(UserDto.Id);
+            Assert.AreEqual(FIRSTNAME, UserDto.Fullname.Firstname);
+            Assert.AreEqual(SURNAME, UserDto.Fullname.Surname);
             Assert.AreEqual(EMAIL_ADDRESS, UserDto.EmailAddress);
             Assert.AreEqual("Expired", UserDto.LocalCredentialState);
         }

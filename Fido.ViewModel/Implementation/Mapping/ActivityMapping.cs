@@ -38,10 +38,9 @@ namespace Fido.ViewModel.Mapping
 
                 Mapper.CreateMap<Activity, Dtos.Activity>()
                     .ForMember(Dest => Dest.Roles, Options => Options.Ignore())
-                    .ForMember(Dest => Dest.Name, Options => Options.Ignore())    // Can't update from the UI
-                    .ForMember(Dest => Dest.Area, Options => Options.Ignore())    // Can't update from the UI
-                    .ForMember(Dest => Dest.ReadWrite, Options => Options.Ignore())  // Can't update from the UI
-                    .ForMember(Dest => Dest.ReadWrite, Options => Options.Ignore()); // Can't update from the UI
+                    .ForMember(Dest => Dest.Name, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Area, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.ReadWrite, Options => Options.Ignore());
             }
         }
     }

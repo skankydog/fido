@@ -7,57 +7,61 @@
     ViewBag.Title = "Confirmations: " + Model.FirstnameSurname;
 }
 
-<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Email Address</th>
-            <th>Queued (UTC)</th>
-            <th>Sent (UTC)</th>
-            <th>Received (UTC)</th>
-            <th>State</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+@*<table id="IndexTable" width="100%" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">*@
+<div class="table-responsive">
+    <table id="IndexTable" class="display responsive nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Email Address</th>
+                <th>Queued (UTC)</th>
+                <th>Sent (UTC)</th>
+                <th>Received (UTC)</th>
+                <th>State</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 <span class="skd-spacing-large"></span>
 
 @section scripts
 {
-<script type="text/javascript">
-    var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "Confirmation", new { Id = -999 }, new { @class = "modal-link" }))';
-    var AjaxPath = '@(Url.Action("List", "Confirmation"))';
-    var UserId = '@(Model.UserId.ToString())';
+    <script type="text/javascript">
+        var DeleteLink = '@(Html.ActionLink("Delete", "Delete", "Confirmation", new { Id = -999 }, new { @class = "modal-link" }))';
+        var AjaxPath = '@(Url.Action("List", "Confirmation"))';
+        var UserId = '@(Model.UserId.ToString())';
 
-    $(document).ready(function () {
-        $('#IndexTable').dataTable({
-            "bServerSide": true,
-            "sAjaxSource": AjaxPath,
-            "fnServerParams": function ( aoData ) {
-                aoData.push( { "name": "sid", "value": UserId } );
-            },
-            "bProcessing": true,
-            "aoColumns": [
-                            { "sName": "Type" },
-                            { "sName": "Email Address" },
-                            { "sName": "Queued (UTC)" },
-                            { "sName": "Sent (UTC)" },
-                            { "sName": "Received (UTC)" },
-                            { "sName": "State" },
-                            {
-                                "sName": "Delete",
-                                "bSearchable": false,
-                                "bSortable": false,
-                                "mRender": function (value) {
-                                    if (value == "")
-                                        return ""
-                                    else
-                                        return DeleteLink.replace("-999", value);
-                                }
-                            }
-            ]
+        $(document).ready(function () {
+            $('#IndexTable').dataTable({
+                "bServerSide": true,
+                "sAjaxSource": AjaxPath,
+                "fnServerParams": function (aoData) {
+                    aoData.push({ "name": "sid", "value": UserId });
+                },
+                "bProcessing": true,
+                "aoColumns": [
+                    { "sName": "Type", responsivePriority: 1 },
+                    { "sName": "Email Address", responsivePriority: 2 },
+                    { "sName": "Queued (UTC)", responsivePriority: 3 },
+                    { "sName": "Sent (UTC)", responsivePriority: 4 },
+                    { "sName": "Received (UTC)", responsivePriority: 5 },
+                    { "sName": "State", responsivePriority: 6 },
+                    {
+                        "sName": "Delete",
+                        responsivePriority: 7,
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (value) {
+                            if (value == "")
+                                return ""
+                            else
+                                return DeleteLink.replace("-999", value);
+                        }
+                    }
+                ]
+            });
         });
-    });
-</script>
+    </script>
 }
