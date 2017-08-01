@@ -32,7 +32,7 @@ namespace Fido.DataAccess
             Expression<Func<TENTITY, bool>> Predicate = null,
             Func<IQueryable<TENTITY>, IOrderedQueryable<TENTITY>> OrderBy = null,
             string IncludeProperties = null);
-        TENTITY CascadeInsert(TENTITY Entity);
+        TENTITY InsertWithChildren(TENTITY Entity);
         TENTITY Insert(TENTITY Entity);
         TENTITY Update(TENTITY Entity);
         void Delete(Guid Id);

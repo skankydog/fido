@@ -40,16 +40,10 @@ namespace Fido.Entities
         {
             get
             {
-                if (ReceivedUTC != null)
-                    return false;
-
-                if (SentUTC != null)
+                if (ReceivedUTC == null)
                     return true;
 
-                if (QueuedUTC != null)
-                    return true;
-
-                return false; // all are null
+                return false;
             }
         }
     }

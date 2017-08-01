@@ -158,7 +158,7 @@ namespace Fido.Service.Implementation
 
                     UserEntity.CurrentExternalCredentialState.Register(EmailAddress, Name);
                     UserEntity.CurrentExternalCredentialState.Link(LoginProvider, ProviderKey, EmailAddress);
-                    UserRepository.CascadeInsert(UserEntity);
+                    UserRepository.InsertWithChildren(UserEntity);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
@@ -196,7 +196,7 @@ namespace Fido.Service.Implementation
                     Guid ConfirmationId = ConfirmationService.QueueConfirmation(UnitOfWork, REGISTRATION, UserEntity.Id, EmailAddress, AssumeSent);
                     UserEntity.CurrentLocalCredentialState.InitiateRegistration(EmailAddress, Password, Firstname, Surname);
 
-                    UserRepository.CascadeInsert(UserEntity);
+                    UserRepository.Insert(UserEntity);
                     UnitOfWork.Commit();
 
                     return ConfirmationId;

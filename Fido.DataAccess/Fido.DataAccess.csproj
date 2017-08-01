@@ -67,7 +67,6 @@
     <Compile Include="Implementation\Repositories\ConfigurationRepository.cs" />
     <Compile Include="Implementation\Repositories\ConfirmationRepository.cs" />
     <Compile Include="Implementation\Repositories\ExternalCredentialRepository.cs" />
-    <Compile Include="Implementation\Repositories\UserImageRepository.cs" />
     <Compile Include="Pubilc\IDataPrimer.cs" />
     <Compile Include="Implementation\DataPrimer.cs" />
     <Compile Include="Implementation\Boot.cs" />

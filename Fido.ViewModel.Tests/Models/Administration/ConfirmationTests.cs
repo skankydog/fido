@@ -53,6 +53,7 @@ namespace Fido.ViewModel.Tests
             var ReadConfirmation = MockDispatcher.Load<Confirmation>(
                 Id: CreatedConfirmation.Id,
                 Result: m => m) as Confirmation;
+
             Assert.IsNull(ReadConfirmation);
         }
 

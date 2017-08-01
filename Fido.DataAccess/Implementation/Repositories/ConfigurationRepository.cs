@@ -20,7 +20,14 @@ namespace Fido.DataAccess.Implementation
 
         public override Configuration Insert(Configuration Entity)
         {
-            throw new NotImplementedException();
+            Entity.Id = EnsureId(Entity.Id);
+            Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
+
+            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+
+            Context.Set<Configuration>().Add(Entity);
+
+            return Entity;
         }
 
         public override Configuration Update(Configuration Entity)

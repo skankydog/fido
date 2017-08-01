@@ -54,7 +54,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.CascadeInsert(UserEntity);
+                Repository.Insert(UserEntity);
                 UnitOfWork.Commit();
             }
 

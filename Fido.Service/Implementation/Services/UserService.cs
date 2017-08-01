@@ -289,9 +289,9 @@ namespace Fido.Service.Implementation
                                     },
                                 EmailAddress = EmailAddress,
                                 Password = Password
-                            };
+                            }; // no new children
 
-                    var SavedUser = UserRepository.Insert(UserEntity);
+                    var SavedUser = UserRepository.InsertWithChildren(UserEntity);
                     UnitOfWork.Commit();
 
                     return AutoMapper.Mapper.Map<Entities.User, User>(SavedUser);

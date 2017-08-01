@@ -104,16 +104,15 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public virtual TENTITY CascadeInsert(TENTITY Entity)
+        protected Guid EnsureId(Guid Id) { return (Id == null || Id == Guid.Empty) ? Guid.NewGuid() : Id; }
+        protected DateTime EnsureDT(DateTime DT) { return (DT == null || DT == DateTime.MinValue) ? DateTime.UtcNow : DT; }
+
+        public virtual TENTITY InsertWithChildren(TENTITY Entity)
         {
             using (new FunctionLogger(Log))
             {
-                // Ensure Id and Created Date/Time...
-                if (Entity.Id == null || Entity.Id == Guid.Empty)
-                    Entity.Id = Guid.NewGuid();
-
-                if (Entity.CreatedUtc == null || Entity.CreatedUtc == DateTime.MinValue)
-                    Entity.CreatedUtc = DateTime.UtcNow;
+                Entity.Id = EnsureId(Entity.Id);
+                Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
 
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
 
@@ -142,7 +141,9 @@ namespace Fido.DataAccess.Implementation
             using (new FunctionLogger(Log))
             {
                 Log.InfoFormat("Entity.Id='{0}'", Entity.Id);
-                Context.Set<TENTITY>().Remove(Entity);
+
+                TENTITY E = Context.Set<TENTITY>().Find(Entity.Id); // only thing that works?
+                Context.Set<TENTITY>().Remove(E);
             }
         }
 

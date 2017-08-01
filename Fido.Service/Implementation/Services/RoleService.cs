@@ -151,7 +151,7 @@ namespace Fido.Service.Implementation
                     if (AdministratorRole == null)
                     {
                         AdministratorRole = new Entities.Role { Name = RoleName };
-                        AdministratorRole = RoleRepository.CascadeInsert(AdministratorRole);
+                        AdministratorRole = RoleRepository.InsertWithChildren(AdministratorRole);
                         UnitOfWork.Commit();
 
                         AdministratorRole = RoleRepository.Get(e => e.Name == RoleName);

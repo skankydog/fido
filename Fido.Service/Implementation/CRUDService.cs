@@ -75,7 +75,7 @@ namespace Fido.Service.Implementation
                         Dto = BeforeInsert(Dto, UnitOfWork); // hook
 
                         Entity = Mapper.Map<TDTO, TENTITY>(Dto);
-                        Entity = Repository.Insert(Entity);
+                        Entity = Repository.Insert(Entity);  // ????????????????????? Jamie: got to here!! Cascade???
                     }
                     else
                     {

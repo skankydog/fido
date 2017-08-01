@@ -20,7 +20,14 @@ namespace Fido.DataAccess.Implementation
 
         public override ExternalCredential Insert(ExternalCredential Entity)
         {
-            throw new NotImplementedException();
+            Entity.Id = EnsureId(Entity.Id);
+            Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
+
+            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+
+            Context.Set<ExternalCredential>().Add(Entity);
+
+            return Entity;
         }
 
         public override ExternalCredential Update(ExternalCredential Entity)

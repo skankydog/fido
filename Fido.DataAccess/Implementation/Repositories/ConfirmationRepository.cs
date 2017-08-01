@@ -18,9 +18,16 @@ namespace Fido.DataAccess.Implementation
             : base(UnitOfWork)
         {}
 
-        public override Confirmation Insert(Confirmation Confirmation)
+        public override Confirmation Insert(Confirmation Entity)
         {
-            throw new NotImplementedException();
+            Entity.Id = EnsureId(Entity.Id);
+            Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
+
+            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+
+            Context.Set<Confirmation>().Add(Entity);
+
+            return Entity;
         }
 
         public override Confirmation Update(Confirmation Entity)
@@ -28,6 +35,21 @@ namespace Fido.DataAccess.Implementation
             Context.UpdateGraph(Entity);
 
             return Entity;
+        }
+
+        public override void Delete(Guid Id)
+        {
+            var Entity = Get(Id);
+
+            Delete(Entity);
+        }
+
+        public override void Delete(Confirmation Entity)
+        {
+            if (!Entity.Deletable)
+                throw new Exception("The confirmation is not in a state that allows it to be deleted");
+
+            base.Delete(Entity);
         }
     }
 }

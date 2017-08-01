@@ -24,6 +24,9 @@ namespace Fido.DataAccess.Implementation
         {
             using (new FunctionLogger(Log))
             {
+                Entity.Id = EnsureId(Entity.Id);
+                Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
+
                 Log.InfoFormat("Role.Id='{0}'", Entity.Id);
 
                 Entity = Context.Set<Role>().Add(Entity);

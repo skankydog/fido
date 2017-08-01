@@ -26,13 +26,13 @@ namespace Fido.DataAccess.Tests
                 Password = "Jjdjsj^^77d8sJHJHDjjh",
                 EmailAddress = "john.citizen@skankydog.com",
                 Fullname = new Fullname { Firstname = "John", Surname = "Citizen" }
-            };
+            }; // no new children
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.CascadeInsert(UserEntity);
+                Repository.InsertWithChildren(UserEntity);
                 UnitOfWork.Rollback();
             }
 
@@ -90,7 +90,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.CascadeInsert(UserEntity);
+                Repository.InsertWithChildren(UserEntity);
                 UnitOfWork.Commit();
             }
 

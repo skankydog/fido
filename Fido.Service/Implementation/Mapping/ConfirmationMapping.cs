@@ -33,7 +33,9 @@ namespace Fido.Service.Mapping
                 Mapper.CreateMap<Entities.Confirmation, Dtos.Confirmation>()
                     .ForMember(Dest => Dest.IsNew, Options => Options.UseValue(false)); // Dto was created from a read
 
-                // One way only - no mapping from dto to entity
+                Mapper.CreateMap<Dtos.Confirmation, Entities.Confirmation>()
+                    .ForMember(Dest => Dest.State, Options => Options.Ignore())
+                    .ForMember(Dest => Dest.Deletable, Options => Options.Ignore());
             }
         }
     }

@@ -25,13 +25,13 @@ namespace Fido.DataAccess.Tests
                 Password = "WEwew66&&3jhjsD",
                 EmailAddress = "john.citizen@skankydog.com",
                 Fullname = new Fullname { Firstname = "John", Surname = "Citizen" }
-            };
+            }; // no new children
 
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.CascadeInsert(UserEntity);
+                Repository.InsertWithChildren(UserEntity);
                 UnitOfWork.Commit();
             }
 
@@ -71,7 +71,7 @@ namespace Fido.DataAccess.Tests
             using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
             {
                 var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                UserRepository.CascadeInsert(NewUser);
+                UserRepository.InsertWithChildren(NewUser);
 
                 UnitOfWork.Commit();
             }
@@ -119,25 +119,6 @@ namespace Fido.DataAccess.Tests
 
             Assert.IsNotNull(UserEntity);
         }
-
-        //[TestMethod]
-        //public void CanUpdate()
-        //{
-        //    Guid Id = Helpers.InsertCitizen();
-        //    User UserEntity = Helpers.GetUser(Id);
-
-        //    using (IUnitOfWork UnitOfWork = DataAccessFactory.CreateUnitOfWork())
-        //    {
-        //        IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-
-        //        UserEntity.Fullname.Surname = "Changed";
-        //        Repository.Update(UserEntity);
-        //        UnitOfWork.Commit();
-        //    }
-
-        //    UserEntity = Helpers.GetUser(Id);
-        //    Assert.AreEqual("Changed", UserEntity.Fullname.Surname);
-        //}
 
         [TestMethod]
         public void update_entity()

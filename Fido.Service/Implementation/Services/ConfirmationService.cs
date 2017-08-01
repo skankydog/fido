@@ -157,16 +157,16 @@ namespace Fido.Service.Implementation
             }
         }
 
-        #region Hooks
-        protected override void BeforeDelete(Guid Id, IUnitOfWork UnitOfWork)
-        {
-            var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
-            var ConfirmationEntity = Repository.Get(Id);
+        //#region Hooks
+        //protected override void BeforeDelete(Guid Id, IUnitOfWork UnitOfWork)
+        //{
+        //    var Repository = DataAccessFactory.CreateRepository<DataAccess.IConfirmationRepository>(UnitOfWork);
+        //    var ConfirmationEntity = Repository.Get(Id);
 
-            if (!ConfirmationEntity.Deletable)
-                throw new Exception("The confirmation is not in a state that allows it to be deleted");
-        }
-        #endregion
+        //    if (!ConfirmationEntity.Deletable)
+        //        throw new Exception("The confirmation is not in a state that allows it to be deleted");
+        //}
+        //#endregion
 
         #region Static Functions
         public static Guid QueueConfirmation(IUnitOfWork UnitOfWork, string Type, Guid UserId, string EmailAddress, bool AssumeSent = false)
@@ -190,7 +190,7 @@ namespace Fido.Service.Implementation
                     SentUTC = (AssumeSent == true) ? DateTime.UtcNow : (DateTime?)null
                 };
 
-                Repository.CascadeInsert(Queued);
+                Repository.InsertWithChildren(Queued);
                 return Queued.Id;
             }
         }
