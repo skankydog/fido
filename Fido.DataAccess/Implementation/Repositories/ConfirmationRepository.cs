@@ -18,17 +18,17 @@ namespace Fido.DataAccess.Implementation
             : base(UnitOfWork)
         {}
 
-        public override Confirmation Insert(Confirmation Entity)
-        {
-            Entity.Id = EnsureId(Entity.Id);
-            Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
+        //public override Confirmation Insert(Confirmation Entity)
+        //{
+        //    Entity.Id = EnsureId(Entity.Id);
+        //    Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
 
-            Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
+        //    Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
 
-            Context.Set<Confirmation>().Add(Entity);
+        //    Context.Set<Confirmation>().Add(Entity);
 
-            return Entity;
-        }
+        //    return Entity;
+        //}
 
         public override Confirmation Update(Confirmation Entity)
         {

@@ -190,7 +190,8 @@ namespace Fido.Service.Implementation
                     SentUTC = (AssumeSent == true) ? DateTime.UtcNow : (DateTime?)null
                 };
 
-                Repository.InsertWithChildren(Queued);
+                //Repository.InsertWithChildren(Queued);
+                Repository.Insert(Queued);
                 return Queued.Id;
             }
         }

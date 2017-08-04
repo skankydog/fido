@@ -224,17 +224,17 @@ namespace Fido.DataAccess.Implementation
                     new Configuration { PasswordChangePolicyDays = 30 });
 
                 var UserRepository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
-                UserRepository.InsertWithChildren(HomerSimpson);
-                UserRepository.InsertWithChildren(MargeSimpson);
-                UserRepository.InsertWithChildren(BartSimpson);
-                UserRepository.InsertWithChildren(WaylanSmithers);
-                UserRepository.InsertWithChildren(MontyBurns);
-                UserRepository.InsertWithChildren(Blinky);
-                UserRepository.InsertWithChildren(KentBrockman);
-                UserRepository.InsertWithChildren(BumblebeeMan);
-                UserRepository.InsertWithChildren(CrazyCatLady);
-                UserRepository.InsertWithChildren(DiscoStu);
-                UserRepository.InsertWithChildren(FatTony);
+                UserRepository.DeepInsert(HomerSimpson);
+                UserRepository.DeepInsert(MargeSimpson);
+                UserRepository.DeepInsert(BartSimpson);
+                UserRepository.DeepInsert(WaylanSmithers);
+                UserRepository.DeepInsert(MontyBurns);
+                UserRepository.DeepInsert(Blinky);
+                UserRepository.DeepInsert(KentBrockman);
+                UserRepository.DeepInsert(BumblebeeMan);
+                UserRepository.DeepInsert(CrazyCatLady);
+                UserRepository.DeepInsert(DiscoStu);
+                UserRepository.DeepInsert(FatTony);
 
                 const string REGISTRATION = "Register Local Account";
                 const string SET_LOCAL_CREDENTIAL = "Register Local Credential";

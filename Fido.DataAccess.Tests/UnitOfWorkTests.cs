@@ -32,7 +32,7 @@ namespace Fido.DataAccess.Tests
             {
                 var Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.InsertWithChildren(UserEntity);
+                Repository.DeepInsert(UserEntity);
                 UnitOfWork.Rollback();
             }
 
@@ -90,7 +90,7 @@ namespace Fido.DataAccess.Tests
             {
                 IUserRepository Repository = DataAccessFactory.CreateRepository<IUserRepository>(UnitOfWork);
 
-                Repository.InsertWithChildren(UserEntity);
+                Repository.DeepInsert(UserEntity);
                 UnitOfWork.Commit();
             }
 

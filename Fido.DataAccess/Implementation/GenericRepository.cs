@@ -107,7 +107,17 @@ namespace Fido.DataAccess.Implementation
         protected Guid EnsureId(Guid Id) { return (Id == null || Id == Guid.Empty) ? Guid.NewGuid() : Id; }
         protected DateTime EnsureDT(DateTime DT) { return (DT == null || DT == DateTime.MinValue) ? DateTime.UtcNow : DT; }
 
-        public virtual TENTITY InsertWithChildren(TENTITY Entity)
+        public virtual TENTITY DeepInsert(TENTITY Entity)
+        {
+            return GenericInsert(Entity);
+        }
+
+        public virtual TENTITY Insert(TENTITY Entity)
+        {
+            return GenericInsert(Entity);
+        }
+
+        private TENTITY GenericInsert(TENTITY Entity)
         {
             using (new FunctionLogger(Log))
             {
@@ -122,7 +132,6 @@ namespace Fido.DataAccess.Implementation
             }
         }
 
-        public abstract TENTITY Insert(TENTITY Entity);
         public abstract TENTITY Update(TENTITY Entity);
 
         public virtual void Delete(Guid Id)

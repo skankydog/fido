@@ -158,7 +158,8 @@ namespace Fido.Service.Implementation
 
                     UserEntity.CurrentExternalCredentialState.Register(EmailAddress, Name);
                     UserEntity.CurrentExternalCredentialState.Link(LoginProvider, ProviderKey, EmailAddress);
-                    UserRepository.InsertWithChildren(UserEntity);
+
+                    UserRepository.DeepInsert(UserEntity);
                     UnitOfWork.Commit();
 
                     return Mapper.Map<Entities.User, Dtos.User>(UserEntity);
