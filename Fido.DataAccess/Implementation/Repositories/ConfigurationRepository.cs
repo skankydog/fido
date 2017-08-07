@@ -18,18 +18,6 @@ namespace Fido.DataAccess.Implementation
             : base(UnitOfWork)
         {}
 
-        //public override Configuration Insert(Configuration Entity)
-        //{
-        //    Entity.Id = EnsureId(Entity.Id);
-        //    Entity.CreatedUtc = EnsureDT(Entity.CreatedUtc);
-
-        //    Log.InfoFormat("Activity.Id='{0}'", Entity.Id);
-
-        //    Context.Set<Configuration>().Add(Entity);
-
-        //    return Entity;
-        //}
-
         public override Configuration Update(Configuration Entity)
         {
             Context.UpdateGraph(Entity);
